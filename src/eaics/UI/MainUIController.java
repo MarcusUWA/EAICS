@@ -28,6 +28,12 @@ public class MainUIController implements Initializable {
         label.setText("Hello World!");
     }
     
+    @FXML
+    private void handleButtonAction2(ActionEvent event) {
+        System.out.println("You clicked me2!");
+        label.setText("Hello World2!");
+    }
+    
     /**
      * Initializes the controller class.
      */

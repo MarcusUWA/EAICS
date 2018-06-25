@@ -9,6 +9,7 @@ package eaics.SER;
  *
  * @author Markcuz
  */
-public class SERMessage {
+public class SERMessage 
+{
     
 }

@@ -3,8 +3,11 @@
  */
 package eaics;
 
+import eaics.CAN.CANFilter;
 import eaics.SER.SERMessage;
 import eaics.CAN.CANMessage;
+import eaics.CAN.CANRawStringMessages;
+import eaics.SER.LoadCell;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -25,21 +28,26 @@ import javafx.stage.Stage;
  * @author Markcuz
  * @version 0.1.0
  */
-public class EAICS extends Application {
+public class EAICS extends Application 
+{
     
-    static CANMessage rawMessage;
+    //static CANRawStringMessages canMsg = new CANRawStringMessages();
+    //static LoadCell loadCell = new LoadCell();
     
+    /*
     SERMessage loadcell;
     CANMessage evms;
     CANMessage esc;
     CANMessage charger;
     SERMessage autopilot;
+    */
     
     static Thread t1;
     static Thread t2;
     
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception 
+    {
         Parent root = FXMLLoader.load(getClass().getResource("/eaics/UI/MainUI.fxml"));
         
         Scene scene = new Scene(root);
@@ -53,15 +61,126 @@ public class EAICS extends Application {
      * @throws java.lang.InterruptedException
      * @throws java.io.IOException
      */
-    public static void main(String[] args) throws InterruptedException, IOException {
-        launch(args);
+    public static void main(String[] args) throws InterruptedException, IOException 
+    {
+        //launch(args);
+        
+        final CANMessage message = new CANMessage();
+        final CANFilter filter = new CANFilter();
+           
+        
+        //CANMessage message = new CANMessage();
+       // CANFilter filter = new CANFilter();
+
+        final Process candumpProgram = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
+
+        final CANRawStringMessages canMsg = new CANRawStringMessages();
+
+        Thread t1 = new Thread(new Runnable()
+        {
+                public void run()
+                {
+                        BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
+                        String rawCANmsg = null;
+
+                        try
+                        {
+                                while((rawCANmsg = input.readLine()) != null)
+                                {
+                                        //System.out.println("Test " + rawCANmsg);
+                                        canMsg.setMsg(rawCANmsg);
+                                }
+                        }
+                        catch(IOException e)
+                        {
+                                e.printStackTrace();
+                        }
+                }
+        });
+
+        t1.start();
+
+        final LoadCell loadCell = new LoadCell();
+        final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/loadCell");
+
+        Thread t2 = new Thread(new Runnable()
+        {
+                public void run()
+                {
+                        BufferedReader input = new BufferedReader(new InputStreamReader(loadCellProgram.getInputStream()));
+                        String loadCellmsg = null;
+
+                        try
+                        {
+                                while((loadCellmsg = input.readLine()) != null)
+                                {
+                                        //System.out.println("Test " + loadCellmsg);
+                                        if(loadCellmsg != null && !loadCellmsg.equals(""))
+                                        {
+                                                loadCell.setMsg(loadCellmsg);
+                                        }
+                                }
+                        }
+                        catch(IOException e)
+                        {
+                                e.printStackTrace();
+                        }
+                }
+        });
+
+        t2.start();
+
+
+        //TimeUnit.SECONDS.sleep(1);
+        String temp = "";
+        int count = 0;
+
+        Writer writer = null;
+
+        try
+        {
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));	
+
+                while(true)
+                {
+                        if(canMsg.isUnread())
+                        {
+                                message.newMessage(canMsg.getMsg());
+                                System.out.println(filter.run(message) + " " + loadCell.toString());
+                                writer.write(filter.run(message) + " " + loadCell.toString() + "\n");
+                                writer.flush();	//flush the writer
+                        }
+                }
+
+        }
+        catch(IOException e)
+        {
+                e.printStackTrace();
+        }
+        finally
+        {
+                try
+                {
+                        writer.close();
+                }
+                catch(Exception e)
+                {
+                }
+        }
+        
         
         //initialise the CANBus for read/write
-       // initCAN();
+        
+        //initCAN();
+        initCAN();
+        
         //initialise the Serial for read/write
         //initSER();
+        
         //write the log files
-        //writeLogFile();
+        writeLogFile();
+        
+        System.out.println("hello world");
     }
     
     /**
@@ -69,95 +188,22 @@ public class EAICS extends Application {
      * @throws InterruptedException
      * @throws IOException 
      */
-    private static void initCAN() throws InterruptedException, IOException{
-        System.out.println("Hello!");
+    private static void initCAN() throws InterruptedException, IOException
+    {
         
-        CANMessage message = new CANMessage();
-       // Filter filter = new Filter();
-		
-	final Process candumpProgram = Runtime.getRuntime().exec("./ReadCAN can0 -tz");
-
-	//final RawCANMsg canMsg = new RawCANMsg();
-        t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
-                String rawCANmsg = null;
-                
-                try {
-                    while((rawCANmsg = input.readLine()) != null) {
-                        //System.out.println("Test " + rawCANmsg);
-                       // canMsg.setMsg(rawCANmsg);
-                    }
-                }
-                catch(IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-	t1.start();
     }
     
     /**
      * Initialises the Serial console for reading
      * @throws IOException 
      */
-    private static void initSER() throws IOException {
-        //final LoadCell loadCell = new LoadCell();
-	final Process loadCellProgram = Runtime.getRuntime().exec("./loadCell");
-        
-        t2 = new Thread(new Runnable() {
-            public void run() {
-                BufferedReader input = new BufferedReader(new InputStreamReader(loadCellProgram.getInputStream()));
-                String loadCellmsg = null;
-                try {
-                    while((loadCellmsg = input.readLine()) != null) {
-			//System.out.println("Test " + loadCellmsg);
-			if(loadCellmsg != null && !loadCellmsg.equals("")) {
-                        //    loadCell.setMsg(loadCellmsg);
-			}
-                    }
-		}
-                catch(IOException e) {
-                    e.printStackTrace();
-		}
-            }
-	});
-
-	t2.start();
+    private static void initSER() throws IOException 
+    {
+	
     }
     
-    private static void writeLogFile() throws FileNotFoundException, UnsupportedEncodingException {
-        String temp = "";
-        int count = 0;
-
-        Writer writer = null;
-	try {
-            //Need to change log file name on every file...
-        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));
-            //need to change this from an infinite loop...
-            while(true) {
-                   /* if(canMsg.isUnread()) {
-			message.newMessage(canMsg.getMsg());
-                        System.out.println(filter.run(message) + " " + loadCell.toString());
-			writer.write(filter.run(message) + " " + loadCell.toString() + "\n");
-			writer.flush();	//flush the writer
-                    }
-                }
-                            */
-            }
-        }
-	catch(IOException e) {
-            e.printStackTrace();
-	}
-	finally {
-            try {
-                writer.close();
-            }
-            catch(Exception e) {
-            }
-	}
+    private static void writeLogFile() throws FileNotFoundException, UnsupportedEncodingException 
+    {
+        
     }
 }

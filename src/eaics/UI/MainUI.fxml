@@ -14,5 +14,6 @@
    <children>
       <Button layoutX="235.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Button" />
       <Label fx:id="label" layoutX="248.0" layoutY="111.0" />
+      <Button layoutX="85.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleButtonAction2" text="Button" />
    </children>
 </AnchorPane>
