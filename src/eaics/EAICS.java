@@ -129,58 +129,56 @@ public class EAICS extends Application
         });
 
         t2.start();
+	
+	Thread t3 = new Thread(new Runnable()
+        {
+                public void run()
+                {
+                        String temp = "";
+			int count = 0;
+
+			Writer writer = null;
+
+			try
+			{
+				writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));	
+
+				while(true)
+				{
+					if(canMsg.isUnread())
+					{
+						message.newMessage(canMsg.getMsg());
+						System.out.println(filter.run(message) + " " + loadCell.toString());
+						writer.write(filter.run(message) + " " + loadCell.toString() + "\n");
+						writer.flush();	//flush the writer
+					}
+				}
+
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				try
+				{
+					writer.close();
+				}
+				catch(Exception e)
+				{
+				}
+			}
+                }
+        });
+
+        t3.start();
 
 
         //TimeUnit.SECONDS.sleep(1);
-        String temp = "";
-        int count = 0;
-
-        Writer writer = null;
-
-        try
-        {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));	
-
-                while(true)
-                {
-                        if(canMsg.isUnread())
-                        {
-                                message.newMessage(canMsg.getMsg());
-                                System.out.println(filter.run(message) + " " + loadCell.toString());
-                                writer.write(filter.run(message) + " " + loadCell.toString() + "\n");
-                                writer.flush();	//flush the writer
-                        }
-                }
-
-        }
-        catch(IOException e)
-        {
-                e.printStackTrace();
-        }
-        finally
-        {
-                try
-                {
-                        writer.close();
-                }
-                catch(Exception e)
-                {
-                }
-        }
         
-        
-        //initialise the CANBus for read/write
-        
-        //initCAN();
-        initCAN();
-        
-        //initialise the Serial for read/write
-        //initSER();
-        
-        //write the log files
-        writeLogFile();
-        
-        System.out.println("hello world");
+	
+	// UI stuff here please.
     }
     
     /**

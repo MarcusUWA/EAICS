@@ -41,6 +41,12 @@ public class ESC
         this.battTemp = message.getByte(6);
     }
     
+    @Override
+    public String toString()
+    {
+	return "Volt: " + voltage + "Cur: " + current + "RPM: " + rpm + "O: " + odometer + "CT: " + controllerTemp + "MT: " + motorTemp + "BT: " + battTemp;
+    }
+    
     public int getVoltage()
     {
 	return this.voltage;

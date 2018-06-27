@@ -12,10 +12,12 @@ package eaics.CAN;
 public class CANFilter 
 {
 	private EVMS evms = null;
+	private ESC esc = null;
 	
 	public CANFilter()
 	{
 		this.evms = null;
+		this.esc = null;
 	}
 	
 	public String run(CANMessage message)
@@ -43,6 +45,15 @@ public class CANFilter
 			evms.setAll(message);
 			//System.out.println(evms.toString());
 			outString = evms.toString();
+		}
+		else if(message.getFrameID() == 696969)	//MGM ESC module
+		{
+		    if(esc == null)
+		    {
+			esc = new ESC();
+		    }
+		    esc.setAll(message);
+		    outString = esc.toString();
 		}
 		//System.out.println("end");
 
