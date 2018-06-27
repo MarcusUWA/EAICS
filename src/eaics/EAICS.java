@@ -63,8 +63,8 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
-        //launch(args);
-        
+        launch(args);
+        /*
         final CANMessage message = new CANMessage();
         final CANFilter filter = new CANFilter();
            
@@ -177,8 +177,13 @@ public class EAICS extends Application
 
         //TimeUnit.SECONDS.sleep(1);
         
+<<<<<<< Updated upstream
 	
 	// UI stuff here please.
+=======
+        System.out.println("hello world");
+        */
+>>>>>>> Stashed changes
     }
     
     /**
