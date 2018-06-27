@@ -44,7 +44,7 @@ public class ESC
     @Override
     public String toString()
     {
-	return "Volt: " + voltage + "Cur: " + current + "RPM: " + rpm + "O: " + odometer + "CT: " + controllerTemp + "MT: " + motorTemp + "BT: " + battTemp;
+	return "Volt: " + voltage + " Cur: " + current + " RPM: " + rpm + " O: " + odometer + " CT: " + controllerTemp + " MT: " + motorTemp + " BT: " + battTemp;
     }
     
     public int getVoltage()

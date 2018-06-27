@@ -17,7 +17,7 @@ public class CANFilter
 	public CANFilter()
 	{
 		this.evms = null;
-		this.esc = null;
+		this.esc = new ESC();
 	}
 	
 	public String run(CANMessage message)
@@ -48,15 +48,16 @@ public class CANFilter
 		}
 		else if(message.getFrameID() == 696969)	//MGM ESC module
 		{
-		    if(esc == null)
-		    {
-			esc = new ESC();
-		    }
 		    esc.setAll(message);
 		    outString = esc.toString();
 		}
 		//System.out.println("end");
 
-		return outString;
+		return toString();
+	}
+	
+	public String toString()
+	{
+	    return evms.toString() + " " + esc.toString();
 	}
 }
