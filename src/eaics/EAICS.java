@@ -8,6 +8,7 @@ import eaics.SER.SERMessage;
 import eaics.CAN.CANMessage;
 import eaics.CAN.CANRawStringMessages;
 import eaics.SER.LoadCell;
+import eaics.UI.MainUIController;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -31,16 +32,8 @@ import javafx.stage.Stage;
 public class EAICS extends Application 
 {
     
-    //static CANRawStringMessages canMsg = new CANRawStringMessages();
-    //static LoadCell loadCell = new LoadCell();
-    
-    /*
-    SERMessage loadcell;
-    CANMessage evms;
-    CANMessage esc;
-    CANMessage charger;
-    SERMessage autopilot;
-    */
+    static CANFilter filter = new CANFilter();
+    static LoadCell loadCell = new LoadCell();
     
     static Thread t1;
     static Thread t2;
@@ -48,11 +41,16 @@ public class EAICS extends Application
     @Override
     public void start(Stage stage) throws Exception 
     {
-        Parent root = FXMLLoader.load(getClass().getResource("/eaics/UI/MainUI.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
         
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(loader.load());
         
         stage.setScene(scene);
+        
+        stage.setTitle("ElectroAero Instrumentation and Control System");
+        
+        MainUIController controller = loader.getController();
+        controller.initData(filter, loadCell);
         stage.show();
     }
 
@@ -63,11 +61,9 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
-        launch(args);
         /*
         final CANMessage message = new CANMessage();
         final CANFilter filter = new CANFilter();
-           
         
         //CANMessage message = new CANMessage();
        // CANFilter filter = new CANFilter();
@@ -174,16 +170,11 @@ public class EAICS extends Application
 
         t3.start();
 
-
+*/
         //TimeUnit.SECONDS.sleep(1);
-        
-<<<<<<< Updated upstream
 	
-	// UI stuff here please.
-=======
-        System.out.println("hello world");
-        */
->>>>>>> Stashed changes
+	// UI stuff here please
+        launch(args);
     }
     
     /**

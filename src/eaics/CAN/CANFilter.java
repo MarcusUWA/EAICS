@@ -11,8 +11,8 @@ package eaics.CAN;
  */
 public class CANFilter 
 {
-	private EVMS evms = null;
-	private ESC esc = null;
+	public EVMS evms = null;
+	public ESC esc = null;
 	
 	public CANFilter()
 	{

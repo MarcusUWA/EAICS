@@ -81,6 +81,10 @@ public class LoadCell
 
 		return outString;
 	}
+        
+        public double getWeight() {
+            return (weight-calibration);
+        }
 	
 	@Override
 	public String toString()
