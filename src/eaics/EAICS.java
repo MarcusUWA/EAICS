@@ -31,12 +31,14 @@ import javafx.stage.Stage;
  */
 public class EAICS extends Application 
 {
-    
     static CANFilter filter = new CANFilter();
     static LoadCell loadCell = new LoadCell();
     
-    static Thread t1;
-    static Thread t2;
+    //static CANFilter filter = new CANFilter();
+    //static LoadCell loadCell = new LoadCell();
+    
+    //static Thread t1;
+    //static Thread t2;
     
     @Override
     public void start(Stage stage) throws Exception 
@@ -61,9 +63,9 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
-        /*
+        
         final CANMessage message = new CANMessage();
-        final CANFilter filter = new CANFilter();
+        //final CANFilter filter = new CANFilter();
         
         //CANMessage message = new CANMessage();
        // CANFilter filter = new CANFilter();
@@ -97,7 +99,7 @@ public class EAICS extends Application
         t1.start();
 
         final LoadCell loadCell = new LoadCell();
-        final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/loadCell");
+        final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
 
         Thread t2 = new Thread(new Runnable()
         {
@@ -170,7 +172,7 @@ public class EAICS extends Application
 
         t3.start();
 
-*/
+
         //TimeUnit.SECONDS.sleep(1);
 	
 	// UI stuff here please
