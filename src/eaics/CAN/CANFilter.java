@@ -11,12 +11,14 @@ package eaics.CAN;
  */
 public class CANFilter 
 {
-	public EVMS evms = null;
+	public EVMS_1 evms_1 = null;
+	public EVMS_3 evms_3 = null;
 	public ESC esc = null;
 	
 	public CANFilter()
 	{
-		this.evms = null;
+		this.evms_1 = new EVMS_1();
+		this.evms_3 = new EVMS_3();
 		this.esc = new ESC();
 	}
 	
@@ -24,40 +26,28 @@ public class CANFilter
 	{
 		String outString = "";
 
-		//System.out.println("start");
 		if(message.getFrameID() == 10)	//EVMS_1 Broadcast Status (Tx)
 		{
-			//System.out.println("*********old n shit");
-			if(evms == null)
-			{
-				evms = new EVMS_1();
-			}
-			evms.setAll(message);
-			//System.out.println(evms.toString());
-			outString = evms.toString();
+		    evms_1.setAll(message);
+		    outString = evms_1.toString();
 		}
 		else if(message.getFrameID() == 30)	//EVMS_3 Broadcast Status (Tx)
 		{
-			if(evms == null)
-			{
-				evms = new EVMS_3();
-			}
-			evms.setAll(message);
-			//System.out.println(evms.toString());
-			outString = evms.toString();
+		    evms_3.setAll(message);
+		    outString = evms_3.toString();
 		}
 		else if(message.getFrameID() == 696969)	//MGM ESC module
 		{
 		    esc.setAll(message);
 		    outString = esc.toString();
 		}
-		//System.out.println("end");
 
 		return toString();
 	}
 	
+	//Using the old EVMS 1, change this to 3 if using the newer verision.
 	public String toString()
 	{
-	    return evms.toString() + " " + esc.toString();
+	    return evms_1.toString() + " " + esc.toString();
 	}
 }

@@ -80,20 +80,20 @@ public class MainUIController implements Initializable {
     
     @FXML
     private void handleSettingsPressed(ActionEvent event) {
-        System.out.println("You clicked me!");
+        System.out.println("You clicked me! - Settings");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
     }
     
     @FXML
     private void handleBatteryPressed(ActionEvent event) {
-        System.out.println("You clicked me!");
+        System.out.println("You clicked me! - Battery");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery.fxml"));
     }
     
     
     @FXML
     private void handleTelemetryPressed(ActionEvent event) {
-        System.out.println("You clicked me!");
+        System.out.println("You clicked me! - Telemetry");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLTelemetry.fxml"));
     }
     

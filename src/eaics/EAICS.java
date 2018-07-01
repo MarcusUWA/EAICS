@@ -24,11 +24,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Markcuz
- * @version 0.1.0
- */
 public class EAICS extends Application 
 {
     static CANFilter filter = new CANFilter();
@@ -110,12 +105,19 @@ public class EAICS extends Application
 
                         try
                         {
-                                while((loadCellmsg = input.readLine()) != null)
+                                boolean isFirst = true;
+				while((loadCellmsg = input.readLine()) != null && isFirst)
+				{
+				    isFirst = false;
+				}
+			    
+				
+				while((loadCellmsg = input.readLine()) != null)
                                 {
                                         //System.out.println("Test " + loadCellmsg);
                                         if(loadCellmsg != null && !loadCellmsg.equals(""))
                                         {
-                                                loadCell.setMsg(loadCellmsg);
+					    loadCell.setMsg(loadCellmsg);
                                         }
                                 }
                         }
