@@ -105,7 +105,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="lowCellLabel" alignment="TOP_CENTER" layoutX="577.0" layoutY="303.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="lowCellLabel" alignment="TOP_CENTER" layoutX="577.0" layoutY="302.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -171,12 +171,12 @@
          </font>
       </Label>
       <Button layoutX="293.0" layoutY="421.0" mnemonicParsing="false" onAction="#handleSettingsPressed" prefHeight="45.0" prefWidth="183.0" text="Settings" />
-      <Label fx:id="battTempLabel" alignment="TOP_CENTER" layoutX="622.0" layoutY="368.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="battTempLabel" alignment="TOP_CENTER" layoutX="618.0" layoutY="366.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="565.0" layoutY="394.0" prefHeight="17.0" prefWidth="175.0" text="Battery Temp (C)" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="557.0" layoutY="395.0" prefHeight="17.0" prefWidth="175.0" text="Battery Temp (C)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
@@ -187,11 +187,6 @@
          </font>
       </Label>
       <Label fx:id="motorTempLabel" alignment="TOP_CENTER" layoutX="54.0" layoutY="368.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="auxVoltageLabel" alignment="TOP_CENTER" layoutX="358.0" layoutY="368.0" prefHeight="26.0" prefWidth="53.0" text="10" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -209,6 +204,11 @@
       <Label alignment="TOP_CENTER" layoutX="151.0" layoutY="394.0" prefHeight="17.0" prefWidth="133.0" text="Controller Temp (C)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="auxVoltageLabel" alignment="TOP_CENTER" layoutX="357.0" layoutY="365.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
          </font>
       </Label>
    </children>

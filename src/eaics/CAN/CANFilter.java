@@ -11,9 +11,9 @@ package eaics.CAN;
  */
 public class CANFilter 
 {
-	public EVMS_1 evms_1 = null;
-	public EVMS_3 evms_3 = null;
-	public ESC esc = null;
+	private EVMS_1 evms_1 = null;
+	private EVMS_3 evms_3 = null;
+	private ESC esc = null;
 	
 	public CANFilter()
 	{
@@ -43,6 +43,16 @@ public class CANFilter
 		}
 
 		return toString();
+	}
+	
+	public EVMS getEVMS()
+	{
+	    return evms_1;
+	}
+	
+	public ESC getESC()
+	{
+	    return esc;
 	}
 	
 	//Using the old EVMS 1, change this to 3 if using the newer verision.

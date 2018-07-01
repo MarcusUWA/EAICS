@@ -93,7 +93,7 @@ public class EAICS extends Application
 
         t1.start();
 
-        final LoadCell loadCell = new LoadCell();
+        //final LoadCell loadCell = new LoadCell();
         final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
 
         Thread t2 = new Thread(new Runnable()
@@ -118,6 +118,8 @@ public class EAICS extends Application
                                         if(loadCellmsg != null && !loadCellmsg.equals(""))
                                         {
 					    loadCell.setMsg(loadCellmsg);
+					    //System.out.println(loadCell.toString());
+					    //System.out.println(loadCell.getWeight());					    
                                         }
                                 }
                         }

@@ -6,6 +6,8 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
+import eaics.CAN.ESC;
+import eaics.CAN.EVMS;
 import eaics.SER.LoadCell;
 import java.net.URL;
 import javafx.util.Duration;
@@ -21,10 +23,9 @@ import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
- *
- * @author Markcuz
  */
-public class MainUIController implements Initializable {
+public class MainUIController implements Initializable 
+{    
     
     //refresh rate in ms
     int refreshFrequency = 10;
@@ -79,26 +80,30 @@ public class MainUIController implements Initializable {
     
     
     @FXML
-    private void handleSettingsPressed(ActionEvent event) {
+    private void handleSettingsPressed(ActionEvent event) 
+    {
         System.out.println("You clicked me! - Settings");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
     }
     
     @FXML
-    private void handleBatteryPressed(ActionEvent event) {
+    private void handleBatteryPressed(ActionEvent event) 
+    {
         System.out.println("You clicked me! - Battery");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery.fxml"));
     }
     
     
     @FXML
-    private void handleTelemetryPressed(ActionEvent event) {
+    private void handleTelemetryPressed(ActionEvent event) 
+    {
         System.out.println("You clicked me! - Telemetry");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLTelemetry.fxml"));
     }
     
     
-    public void initData(CANFilter fil, LoadCell cell) {
+    public void initData(CANFilter fil, LoadCell cell) 
+    {
         this.filter = fil;
         this.loadCell = cell;
     }
@@ -107,41 +112,78 @@ public class MainUIController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // TODO
        
-       Timeline refreshUI;
-        refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() {
+        Timeline refreshUI;
+        refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
+	{
             int count = 0;
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event) 
+	    {
+                EVMS evms = filter.getEVMS();
+		ESC esc = filter.getESC();
                 
-                tachoLabel.setText(""+filter.esc.getRpm());
+                //+------------------------------------------------------------+
+		//EVMS - Electric Vehicle Management System
+		//+------------------------------------------------------------+
+		
+		socLabel.setText("!" + evms.getCharge() + "%");
+		
+		voltsLabel.setText("!" + evms.getVoltage());
+		
+		ampsLabel.setText("!" + evms.getCurrent());
+		
+		auxVoltageLabel.setText("!" + evms.getAuxVoltage());
+		
+		//Leakage???
+		
+		battTempLabel.setText("!" + evms.getTemp());
+		
+		//Calculation variable
+		powerLabel.setText("!" + (evms.getVoltage() * evms.getCurrent() / 1000));
                 
-                //socLabel.setText(""+filter.evms.getCharge());
-                
-                powerLabel.setText(""+count);
-                count++;
-                
-                //powerLabel.setText(""+(filter.evms.getVoltage()*filter.evms.getCurrent()/1000));
-                
-               // voltsLabel.setText(""+filter.evms.getVoltage());
-                //ampsLabel.setText(""+filter.evms.getCurrent());
-                
-                //@todo get low Cell Voltage
+		
+		//+------------------------------------------------------------+
+		//ESC - Electronic Speed Controller
+		//+------------------------------------------------------------+
+		
+		//Voltage???
+		
+		//Current???
+		
+		tachoLabel.setText("!" + esc.getRpm());
+		
+		//Odometer???
+		
+		controllerTempLabel.setText("!" + esc.getControllerTemp());
+		
+		motorTempLabel.setText("!" + esc.getMotorTemp());
+		
+		//Battery Temperature???
+		
+		
+		//+------------------------------------------------------------+
+		//LC - Load Cell
+		//+------------------------------------------------------------+
+		
+		thrustLabel.setText("" + loadCell.getWeight());
+
+		
+		//+------------------------------------------------------------+
+		//BMS - Battery Managment System
+		//+------------------------------------------------------------+
+		
+		
+		//+------------------------------------------------------------+
+		
+		//@todo get low Cell Voltage
                 lowCellLabel.setText("--");
                 //@todo get high Cell Voltage
                 highCellLabel.setText("--");
-                
-                thrustLabel.setText(""+loadCell.getWeight());
-                
-                //battTempLabel.setText(""+filter.evms.getTemp());
-                
-                //auxVoltageLabel.setText(""+filter.evms.getAuxVoltage());
-                
-                motorTempLabel.setText(""+filter.esc.getMotorTemp());
-                
-                controllerTempLabel.setText(""+filter.esc.getControllerTemp());
+		
             }
             
         }));
