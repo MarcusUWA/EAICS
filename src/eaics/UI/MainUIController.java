@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
@@ -125,6 +126,7 @@ public class MainUIController implements Initializable
 	    {
                 EVMS evms = filter.getEVMS();
 		ESC esc = filter.getESC();
+		BMS bms = filter.getBMS();
                 
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
@@ -176,14 +178,14 @@ public class MainUIController implements Initializable
 		//BMS - Battery Managment System
 		//+------------------------------------------------------------+
 		
+		//Get low Cell Voltage
+                lowCellLabel.setText("!" + bms.getMinVoltage());
+		
+                //Get high Cell Voltage
+                highCellLabel.setText("!"+ bms.getMaxVoltage());
+		
 		
 		//+------------------------------------------------------------+
-		
-		//@todo get low Cell Voltage
-                lowCellLabel.setText("--");
-                //@todo get high Cell Voltage
-                highCellLabel.setText("--");
-		
             }
             
         }));

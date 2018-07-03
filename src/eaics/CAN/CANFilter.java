@@ -11,48 +11,53 @@ package eaics.CAN;
  */
 public class CANFilter 
 {
-	private EVMS_1 evms_1 = null;
-	private EVMS_3 evms_3 = null;
-	private ESC esc = null;
+	private EVMS_1 evms_1;
+	private EVMS_3 evms_3;
+	private ESC esc;
+	private BMS bms;
 	
 	public CANFilter()
 	{
 		this.evms_1 = new EVMS_1();
 		this.evms_3 = new EVMS_3();
 		this.esc = new ESC();
+		this.bms = new BMS();
 	}
 	
 	public String run(CANMessage message)
 	{
-		String outString = "";
-
-		if(message.getFrameID() == 10)	//EVMS_1 Broadcast Status (Tx)
-		{
+	    switch (message.getFrameID()) 
+	    {
+	    	case 10:			  //EVMS_1 Broadcast Status (Tx)
 		    evms_1.setAll(message);
-		    outString = evms_1.toString();
-		}
-		else if(message.getFrameID() == 30)	//EVMS_3 Broadcast Status (Tx)
-		{
+		    break;
+	    	case 30:			  //EVMS_3 Broadcast Status (Tx)
 		    evms_3.setAll(message);
-		    outString = evms_3.toString();
-		}
-		else if(message.getFrameID() == 696969)	//MGM ESC module
-		{
+		    break;
+	    	case 696969:			  //MGM ESC module
 		    esc.setAll(message);
-		    outString = esc.toString();
-		}
+		    break;
+		case 301: case 302: case 303: case 304:   //BMS Reply Data
+		    bms.setAll(message);
+		    break;
+	    }
 
-		return toString();
+	    return toString();
 	}
 	
 	public EVMS getEVMS()
 	{
-	    return evms_1;
+	    return this.evms_1;
 	}
 	
 	public ESC getESC()
 	{
-	    return esc;
+	    return this.esc;
+	}
+	
+	public BMS getBMS()
+	{
+	    return this.bms;
 	}
 	
 	//Using the old EVMS 1, change this to 3 if using the newer verision.
