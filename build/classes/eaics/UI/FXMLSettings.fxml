@@ -6,6 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettingsController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eaics.UI.FXMLSettingsController">
+   <children>
+      <Button fx:id="closeButton" layoutX="245.0" layoutY="179.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
+      <Button layoutX="218.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleSendCANMsg" text="Send CAN Message" />
+      <Label fx:id="label1" layoutX="261.0" layoutY="323.0" text="Press Here" />
+   </children>
 </AnchorPane>

@@ -10,6 +10,7 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
 import eaics.SER.LoadCell;
+import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
@@ -20,7 +21,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -81,10 +86,15 @@ public class MainUIController implements Initializable
     
     
     @FXML
-    private void handleSettingsPressed(ActionEvent event) 
+    private void handleSettingsPressed(ActionEvent event) throws IOException
     {
         System.out.println("You clicked me! - Settings");
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
+	Parent settings_page_parent = FXMLLoader.load(getClass().getResource("FXMLSettings.fxml"));
+	Scene settings_page_scene = new Scene(settings_page_parent);
+	Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+	app_stage.setScene(settings_page_scene);
+	app_stage.show();
     }
     
     @FXML
