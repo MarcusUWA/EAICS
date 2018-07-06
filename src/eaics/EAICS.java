@@ -80,7 +80,7 @@ public class EAICS extends Application
                         {
                                 while((rawCANmsg = input.readLine()) != null)
                                 {
-                                        //System.out.println("Test " + rawCANmsg);
+                                        System.out.println("Test " + rawCANmsg);
                                         canMsg.setMsg(rawCANmsg);
                                 }
                         }

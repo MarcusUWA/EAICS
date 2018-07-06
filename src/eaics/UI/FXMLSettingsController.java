@@ -78,7 +78,22 @@ public class FXMLSettingsController implements Initializable
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
 	
-	msg = "7DF#0201050000000000";
+	//msg = "7DF#0201050000000000";
+        //msg = "00a#005f41008077004f"; //message to test EVMS
+        //msg = "";
+        //unsigned int exampleVoltage = 3600; // millivolts
+        //data[0] = exampleVoltage >> 8;
+        //data[1] = exampleVoltage & 0xFF;
+        //CanTX(300 + 10*moduleID, data);
+        
+        int exampleVoltage = 3600; // millivolts
+        int moduleID = 2;
+        msg = "";
+        msg += Integer.toHexString(300 + 10*moduleID);
+        msg += "#";
+        msg += Integer.toHexString(exampleVoltage >> 8);
+        msg += Integer.toHexString(exampleVoltage & 0xFF);
+        System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
     
