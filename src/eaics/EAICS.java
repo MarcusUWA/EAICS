@@ -18,6 +18,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,12 +33,6 @@ public class EAICS extends Application
 {
     static CANFilter filter = new CANFilter();
     static LoadCell loadCell = new LoadCell();
-    
-    //static CANFilter filter = new CANFilter();
-    //static LoadCell loadCell = new LoadCell();
-    
-    //static Thread t1;
-    //static Thread t2;
     
     @Override
     public void start(Stage stage) throws Exception 
@@ -58,16 +57,22 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
-        
         final CANMessage message = new CANMessage();
-        //final CANFilter filter = new CANFilter();
-        
-        //CANMessage message = new CANMessage();
-       // CANFilter filter = new CANFilter();
-
-        final Process candumpProgram = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
-
         final CANRawStringMessages canMsg = new CANRawStringMessages();
+        
+        Runnable Logger = new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+                canMsg.setIsTimeToLog();
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
+        
+        final Process candumpProgram = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
 
         Thread t1 = new Thread(new Runnable()
         {
@@ -93,7 +98,6 @@ public class EAICS extends Application
 
         t1.start();
 
-        //final LoadCell loadCell = new LoadCell();
         final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
 
         Thread t2 = new Thread(new Runnable()
@@ -134,48 +138,53 @@ public class EAICS extends Application
 	
 	Thread t3 = new Thread(new Runnable()
         {
+                @Override
                 public void run()
                 {
-                        Writer writer = null;
+                    Writer writer = null;
+                    int count = 0;
 
-			try
-			{
-				writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));	
+                    try
+                    {
+                            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));	
 
-				while(true)
-				{
-					//if(canMsg.isUnread())
-					String temp = canMsg.getMsg();
-					if(!temp.equals(""))
-					{
-						message.newMessage(temp);
-						filter.run(message);
-						System.out.println(filter.toString() + " " + loadCell.toString());
-						writer.write(filter.toString() + " " + loadCell.toString() + "\n");
-						writer.flush();	//flush the writer
-					}
-				}
+                            while(true)
+                            {
+                                    //if(canMsg.isUnread())
+                                    String temp = canMsg.getMsg();
+                                    if(!temp.equals("") && canMsg.isTimeToLog())
+                                    {
+                                            message.newMessage(temp);
+                                            filter.run(message);
+                                            System.out.println(filter.toString() + " " + loadCell.toString());
+                                            writer.write(filter.toString() + " " + loadCell.toString() + "\n");
+                                            writer.flush();	//flush the writer
+                                    }
+                                    if(canMsg.isTimeToLog())
+                                    {
+                                        System.out.println("test: " + count++);
+                                    }
+                            }
 
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-			finally
-			{
-				try
-				{
-					writer.close();
-				}
-				catch(Exception e)
-				{
-				}
-			}
+                    }
+                    catch(IOException e)
+                    {
+                            e.printStackTrace();
+                    }
+                    finally
+                    {
+                            try
+                            {
+                                    writer.close();
+                            }
+                            catch(Exception e)
+                            {
+                            }
+                    }
                 }
         });
 
         t3.start();
-
 
         //TimeUnit.SECONDS.sleep(1);
 	

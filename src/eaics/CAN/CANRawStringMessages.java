@@ -13,12 +13,35 @@ public class CANRawStringMessages
 {
         private String msg;
 	private boolean unread;
+        private boolean isTimeToLog;
 
 	public CANRawStringMessages()
 	{
 		this.msg = "";
 		this.unread = false;
+                this.isTimeToLog = false;
 	}
+        
+        public void setIsTimeToLog()
+        {
+            this.isTimeToLog = !this.isTimeToLog;
+        }
+        
+        public boolean isTimeToLog()
+        {
+            boolean temp;
+            
+            if(this.isTimeToLog)
+            {
+                temp = true;
+                this.isTimeToLog = false;
+            }
+            else
+            {
+                temp = this.isTimeToLog;
+            }
+            return temp;
+        }
 
 	public void setMsg(String inMsg)
 	{
