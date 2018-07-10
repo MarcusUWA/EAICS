@@ -24,7 +24,7 @@ public class CANFilter
 		this.bms = new BMS();
 	}
 	
-	public String run(CANMessage message)
+	public void run(CANMessage message)
 	{
 	    switch (message.getFrameID()) 
 	    {
@@ -41,8 +41,6 @@ public class CANFilter
 		    bms.setAll(message);
 		    break;
 	    }
-
-	    return toString();
 	}
 	
 	public EVMS getEVMS()
@@ -61,8 +59,9 @@ public class CANFilter
 	}
 	
 	//Using the old EVMS 1, change this to 3 if using the newer verision.
+	@Override
 	public String toString()
 	{
-	    return evms_1.toString() + " " + esc.toString();
+	    return evms_1.toString() + " " + esc.toString() + " " + bms.toString();
 	}
 }

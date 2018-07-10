@@ -136,10 +136,7 @@ public class EAICS extends Application
         {
                 public void run()
                 {
-                        String temp = "";
-			int count = 0;
-
-			Writer writer = null;
+                        Writer writer = null;
 
 			try
 			{
@@ -147,11 +144,14 @@ public class EAICS extends Application
 
 				while(true)
 				{
-					if(canMsg.isUnread())
+					//if(canMsg.isUnread())
+					String temp = canMsg.getMsg();
+					if(!temp.equals(""))
 					{
-						message.newMessage(canMsg.getMsg());
-						System.out.println(filter.run(message) + " " + loadCell.toString());
-						writer.write(filter.run(message) + " " + loadCell.toString() + "\n");
+						message.newMessage(temp);
+						filter.run(message);
+						System.out.println(filter.toString() + " " + loadCell.toString());
+						writer.write(filter.toString() + " " + loadCell.toString() + "\n");
 						writer.flush();	//flush the writer
 					}
 				}

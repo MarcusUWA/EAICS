@@ -6,11 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eaics.UI.FXMLSettingsController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettingsController">
    <children>
       <Button fx:id="closeButton" layoutX="245.0" layoutY="179.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
-      <Button layoutX="218.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleSendCANMsg" text="Send CAN Message" />
-      <Label fx:id="label1" layoutX="261.0" layoutY="323.0" text="Press Here" />
+      <Button layoutX="25.0" layoutY="269.0" mnemonicParsing="false" onAction="#handleSendBMSCANMsg" text="Send BMS CAN Message" />
+      <Label fx:id="label1" layoutX="88.0" layoutY="323.0" text="Press Here" />
+      <Button layoutX="350.0" layoutY="269.0" mnemonicParsing="false" onAction="#handleSendEVMSCANMsg" text="Send EVMS CAN Message" />
+      <Button layoutX="183.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleSendGenericCANMsg" text="Send Generic CAN Message" />
+      <Label fx:id="label11" layoutX="415.0" layoutY="323.0" text="Press Here" />
+      <Label fx:id="label12" layoutX="260.0" layoutY="89.0" text="Press Here" />
    </children>
 </AnchorPane>

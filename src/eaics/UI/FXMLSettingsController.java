@@ -73,8 +73,10 @@ public class FXMLSettingsController implements Initializable
 	app_stage.show();
     }
     */
+    
+    
     @FXML
-    private void handleSendCANMsg(ActionEvent event) throws IOException
+    private void handleSendBMSCANMsg(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
 	
@@ -85,14 +87,48 @@ public class FXMLSettingsController implements Initializable
         //data[0] = exampleVoltage >> 8;
         //data[1] = exampleVoltage & 0xFF;
         //CanTX(300 + 10*moduleID, data);
-        
+        String temp = "";
         int exampleVoltage = 3600; // millivolts
         int moduleID = 2;
         msg = "";
         msg += Integer.toHexString(300 + 10*moduleID);
+	
         msg += "#";
-        msg += Integer.toHexString(exampleVoltage >> 8);
-        msg += Integer.toHexString(exampleVoltage & 0xFF);
+	
+        temp += Integer.toHexString(exampleVoltage >> 8);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+	temp = "";
+	
+	temp += Integer.toHexString(exampleVoltage & 0xFF);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+	temp = "";
+	
+        System.out.println("Message>>"+msg+"<<");
+	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+    }
+    
+    @FXML
+    private void handleSendEVMSCANMsg(ActionEvent event) throws IOException
+    {
+        System.out.println("Sending a CAN msg!"); //delete this after testing please.
+        msg = "00a#005f41008077004f"; //message to test EVMS
+        System.out.println("Message>>"+msg+"<<");
+	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+    }
+    
+    @FXML
+    private void handleSendGenericCANMsg(ActionEvent event) throws IOException
+    {
+        System.out.println("Sending a CAN msg!"); //delete this after testing please.
+        msg = "7DF#0201050000000000";
         System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
