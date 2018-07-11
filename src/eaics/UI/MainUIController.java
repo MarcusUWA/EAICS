@@ -134,7 +134,7 @@ public class MainUIController implements Initializable
             @Override
             public void handle(ActionEvent event) 
 	    {
-                EVMS evms = filter.getEVMS();
+                EVMS evmsV3 = filter.getEVMS_v3();
 		ESC esc = filter.getESC();
 		BMS bms = filter.getBMS();
                 
@@ -142,20 +142,23 @@ public class MainUIController implements Initializable
 		//EVMS - Electric Vehicle Management System
 		//+------------------------------------------------------------+
 		
-		socLabel.setText("!" + evms.getCharge() + "%");
+		//socLabel.setText("!" + evmsV3.getCharge() + "%"); // evmsV2 only
+		socLabel.setText("FIX");
+			
+		voltsLabel.setText("!" + evmsV3.getVoltage());
 		
-		voltsLabel.setText("!" + evms.getVoltage());
+		//ampsLabel.setText("!" + evmsV3.getCurrent());	    // evmsV2 only
+		ampsLabel.setText("FIX");
 		
-		ampsLabel.setText("!" + evms.getCurrent());
-		
-		auxVoltageLabel.setText("!" + evms.getAuxVoltage());
+		auxVoltageLabel.setText("!" + evmsV3.getAuxVoltage());
 		
 		//Leakage???
 		
-		battTempLabel.setText("!" + evms.getTemp());
+		battTempLabel.setText("!" + evmsV3.getTemp());
 		
 		//Calculation variable
-		powerLabel.setText("!" + (evms.getVoltage() * evms.getCurrent() / 1000));
+		//powerLabel.setText("!" + (evmsV3.getVoltage() * evmsV3.getCurrent() / 1000));	//evmsV2 only
+		powerLabel.setText("FIX");
                 
 		
 		//+------------------------------------------------------------+

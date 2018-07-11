@@ -11,15 +11,15 @@ package eaics.CAN;
  */
 public class CANFilter 
 {
-	private EVMS_1 evms_1;
-	private EVMS_3 evms_3;
+	private EVMS_v2 evms_v2;
+	private EVMS_v3 evms_v3;
 	private ESC esc;
 	private BMS bms;
 	
 	public CANFilter()
 	{
-		this.evms_1 = new EVMS_1();
-		this.evms_3 = new EVMS_3();
+		this.evms_v2 = new EVMS_v2();
+		this.evms_v3 = new EVMS_v3();
 		this.esc = new ESC();
 		this.bms = new BMS();
 	}
@@ -28,11 +28,11 @@ public class CANFilter
 	{
 	    switch (message.getFrameID()) 
 	    {
-	    	case 10:			  //EVMS_1 Broadcast Status (Tx)
-		    evms_1.setAll(message);
+	    	case 10:			  //EVMS_v2 Broadcast Status (Tx)
+		    evms_v2.setAll(message);
 		    break;
-	    	case 30:			  //EVMS_3 Broadcast Status (Tx)
-		    evms_3.setAll(message);
+	    	case 30:			  //EVMS_v3 Broadcast Status (Tx)
+		    evms_v3.setAll(message);
 		    break;
 	    	case 696969:			  //MGM ESC module
 		    esc.setAll(message);
@@ -43,9 +43,14 @@ public class CANFilter
 	    }
 	}
 	
-	public EVMS getEVMS()
+	public EVMS getEVMS_v2()
 	{
-	    return this.evms_1;
+	    return this.evms_v2;
+	}
+	
+	public EVMS getEVMS_v3()
+	{
+	    return this.evms_v3;
 	}
 	
 	public ESC getESC()
@@ -62,6 +67,6 @@ public class CANFilter
 	@Override
 	public String toString()
 	{
-	    return evms_1.toString() + " " + esc.toString() + " " + bms.toString();
+	    return evms_v2.toString() + " " + esc.toString() + " " + bms.toString();
 	}
 }

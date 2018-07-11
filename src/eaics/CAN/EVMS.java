@@ -11,34 +11,20 @@ package eaics.CAN;
  */
 public abstract class EVMS 
 {
-	private int charge;	//Battery State of Charge (0-100%)
 	private int voltage;
-	private int current;
 	private double auxVoltage;	//Auxiliary voltage (tenths of a volt)
 	private int leakage;	//Insulation integrity/leakage (0-100%)
 	private int temp;	//degrees C
 	
 	public EVMS()
 	{
-		this.charge = 0;
 		this.voltage = 0;
-		this.current = 0;
 		this.auxVoltage = 0;
 		this.leakage = 0;
 		this.temp = 0;
 	}
 	
 	public abstract void setAll(CANMessage message);
-	
-	public int getCharge()
-	{
-		return charge;		
-	}
-	
-	public void setCharge(int charge)
-	{
-		this.charge = charge;
-	}
 	
 	public int getVoltage()
 	{
@@ -48,16 +34,6 @@ public abstract class EVMS
 	public void setVoltage(int voltage)
 	{
 		this.voltage = voltage;
-	}
-	
-	public int getCurrent()
-	{
-		return current;
-	}
-	
-	public void setCurrent(int current)
-	{
-		this.current = current;
 	}
 	
 	public double getAuxVoltage()
@@ -90,8 +66,9 @@ public abstract class EVMS
 		this.temp = temp;
 	}
 	
+	@Override
 	public String toString()
 	{
-		return "Charge: " + charge + " Volt: " + voltage + " Cur: " + current + " Aux Volt: " + auxVoltage + " Leakage: " + leakage + " Temp: " + temp;
+		return " Volt: " + voltage + " Aux Volt: " + auxVoltage + " Leakage: " + leakage + " Temp: " + temp;
 	}
 }
