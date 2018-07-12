@@ -34,6 +34,9 @@ import javafx.util.Duration;
  */
 public class FXMLSettingsController implements Initializable 
 {
+    
+    MainUIController gui;
+    
     //refresh rate in ms
     int refreshFrequency = 10;
     
@@ -51,13 +54,8 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void closeButtonAction(ActionEvent event)
     {
-	Node source = (Node) event.getSource();
-	Stage stage = (Stage) source.getScene().getWindow();
-	stage.close();
-	//get a handle to the stage
-	//Stage stage = (Stage) closeButton.getScene().getWindow();
-	//close the stage
-	//stage.close();
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
     /*
     @FXML
@@ -138,6 +136,10 @@ public class FXMLSettingsController implements Initializable
         this.filter = fil;
         this.loadCell = cell;
     }
+    
+    public void initSettings(MainUIController mainGui) {
+        gui = mainGui;
+    }
 
     /**
      * Initializes the controller class.
@@ -146,22 +148,9 @@ public class FXMLSettingsController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         // TODO
-	
-	Timeline refreshUI;
-        refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
-	{
-            int count = 0;
-            @Override
-            public void handle(ActionEvent event) 
-	    {
-                label1.setText("" + count);
-		count++;
-		count %= 100;
-            }
-            
-        }));
-        refreshUI.setCycleCount(Timeline.INDEFINITE);
-        refreshUI.play();
+	System.out.println("hello in Settings");
+        
+        
     }    
     
 }

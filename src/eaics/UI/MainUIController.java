@@ -24,7 +24,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -32,6 +35,11 @@ import javafx.stage.Stage;
  */
 public class MainUIController implements Initializable 
 {    
+    
+    FXMLSettingsController settings;
+    
+    @FXML
+    Button buttonSettings;
     
     //refresh rate in ms
     int refreshFrequency = 10;
@@ -89,12 +97,42 @@ public class MainUIController implements Initializable
     private void handleSettingsPressed(ActionEvent event) throws IOException
     {
         System.out.println("You clicked me! - Settings");
+        /*
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
 	Parent settings_page_parent = FXMLLoader.load(getClass().getResource("FXMLSettings.fxml"));
 	Scene settings_page_scene = new Scene(settings_page_parent);
 	Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 	app_stage.setScene(settings_page_scene);
-	app_stage.show();
+	app_stage.show();*/
+        
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
+        
+        try {
+            Pane pane = loader.load();
+
+            settings = loader.getController();
+            settings.initSettings(this);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSettings.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Settings!!");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        
+        catch (Exception e) {
+            System.out.println("Failed to open Settings Window");
+        }
+        
+        
     }
     
     @FXML

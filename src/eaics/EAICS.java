@@ -42,7 +42,7 @@ public class EAICS extends Application
         Scene scene = new Scene(loader.load());
         
         stage.setScene(scene);
-        
+
         stage.setTitle("ElectroAero Instrumentation and Control System");
         
         MainUIController controller = loader.getController();
