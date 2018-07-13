@@ -88,7 +88,7 @@ public class FXMLSettingsController implements Initializable
         String temp = "";
         int exampleVoltage = 3600; // millivolts
         int moduleID = 2;
-        msg = "";
+        msg = "00000";
         msg += Integer.toHexString(300 + 10*moduleID);
 	
         msg += "#";

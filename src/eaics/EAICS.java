@@ -156,7 +156,7 @@ public class EAICS extends Application
                                     {
                                             message.newMessage(temp);
                                             filter.run(message);
-                                            System.out.println(filter.toString() + " " + loadCell.toString());
+                                            //System.out.println(filter.toString() + " " + loadCell.toString());
                                             writer.write(filter.toString() + " " + loadCell.toString() + "\n");
                                             writer.flush();	//flush the writer
                                     }
