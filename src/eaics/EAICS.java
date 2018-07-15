@@ -45,6 +45,8 @@ public class EAICS extends Application
 
         stage.setTitle("ElectroAero Instrumentation and Control System");
         
+        stage.setY(36);
+        
         MainUIController controller = loader.getController();
         controller.initData(filter, loadCell);
         stage.show();
