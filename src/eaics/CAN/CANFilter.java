@@ -15,6 +15,7 @@ public class CANFilter
 	private EVMS_v3 evms_v3;
 	private ESC esc;
 	private BMS bms;
+	private String ipAddress;
 	
 	public CANFilter()
 	{
@@ -22,6 +23,7 @@ public class CANFilter
 		this.evms_v3 = new EVMS_v3();
 		this.esc = new ESC();
 		this.bms = new BMS();
+		this.ipAddress = "";
 	}
 	
 	public void run(CANMessage message)
@@ -41,6 +43,16 @@ public class CANFilter
 		    bms.setAll(message);
 		    break;
 	    }
+	}
+	
+	public String getIpAddress()
+	{
+	    return this.ipAddress;
+	}
+	
+	public void setIpAddress(String ipAddress)
+	{
+	    this.ipAddress = ipAddress;
 	}
 	
 	public EVMS getEVMS_v2()

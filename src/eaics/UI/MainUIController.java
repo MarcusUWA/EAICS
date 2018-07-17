@@ -181,7 +181,8 @@ public class MainUIController implements Initializable
 		//+------------------------------------------------------------+
 		
 		//socLabel.setText("!" + evmsV3.getCharge() + "%"); // evmsV2 only
-		socLabel.setText("FIX");
+		//socLabel.setText("FIX");
+		socLabel.setText(filter.getIpAddress());
 			
 		voltsLabel.setText("!" + evmsV3.getVoltage());
 		
