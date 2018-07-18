@@ -9,6 +9,7 @@ import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
+import eaics.IPaddress;
 import eaics.SER.LoadCell;
 import java.io.IOException;
 import java.net.URL;
@@ -44,8 +45,8 @@ public class MainUIController implements Initializable
     //refresh rate in ms
     int refreshFrequency = 10;
     
-    CANFilter filter;
-    LoadCell loadCell;
+    private CANFilter filter;
+    private LoadCell loadCell;
     
     @FXML
     private Label tachoLabel;
@@ -89,9 +90,7 @@ public class MainUIController implements Initializable
     private Label thrustLabel; 
     
     @FXML
-    private Label auxVoltageLabel; 
-    
-    
+    private Label auxVoltageLabel;     
     
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
@@ -181,8 +180,7 @@ public class MainUIController implements Initializable
 		//+------------------------------------------------------------+
 		
 		//socLabel.setText("!" + evmsV3.getCharge() + "%"); // evmsV2 only
-		//socLabel.setText("FIX");
-		socLabel.setText(filter.getIpAddress());
+		socLabel.setText("FIX");
 			
 		voltsLabel.setText("!" + evmsV3.getVoltage());
 		
@@ -243,6 +241,5 @@ public class MainUIController implements Initializable
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
-    }    
-
+    }
 }

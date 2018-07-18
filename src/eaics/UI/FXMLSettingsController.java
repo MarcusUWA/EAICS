@@ -9,8 +9,11 @@ import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
+import eaics.IPaddress;
 import eaics.SER.LoadCell;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
@@ -40,13 +43,25 @@ public class FXMLSettingsController implements Initializable
     //refresh rate in ms
     int refreshFrequency = 10;
     
-    CANFilter filter;
-    LoadCell loadCell;
+    private CANFilter filter;
+    private LoadCell loadCell;
     
     private String msg;
     
+    //@FXML
+    //private Label label1;
+    
     @FXML
-    private Label label1;
+    private Label labelLAN;
+    
+    @FXML
+    private Label labelWiFi;
+    
+    @FXML
+    private Label label_IPaddress1;
+    
+    @FXML
+    private Label label_IPaddress2;
     
     @FXML
     private javafx.scene.control.Button closeButton;
@@ -131,13 +146,33 @@ public class FXMLSettingsController implements Initializable
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
     
-    public void initData(CANFilter fil, LoadCell cell) 
+    @FXML
+    private void handleRefreshIP(ActionEvent event) throws IOException
     {
-        this.filter = fil;
-        this.loadCell = cell;
+        IPaddress ipAddress = new IPaddress();
+        
+        String[] splited = ipAddress.getIPaddress().split("\\s+");
+        
+        if (splited.length == 1)
+        {
+            labelWiFi.setText("WiFi");
+            label_IPaddress1.setText(splited[0]);            
+        }
+        else if(splited.length == 2)
+        {
+            labelWiFi.setText("WiFi");
+            label_IPaddress1.setText(splited[1]);
+            labelLAN.setText("LAN");
+            label_IPaddress2.setText(splited[0]);
+        }
+        
+        
+        
+        //label_IPaddress.setText("hello");
     }
     
-    public void initSettings(MainUIController mainGui) {
+    public void initSettings(MainUIController mainGui) 
+    {
         gui = mainGui;
     }
 
@@ -149,8 +184,7 @@ public class FXMLSettingsController implements Initializable
     {
         // TODO
 	System.out.println("hello in Settings");
-        
-        
+        //
     }    
     
 }

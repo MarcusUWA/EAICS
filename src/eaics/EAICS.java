@@ -33,6 +33,7 @@ public class EAICS extends Application
 {
     static CANFilter filter = new CANFilter();
     static LoadCell loadCell = new LoadCell();
+    static IPaddress ipAddress = new IPaddress();
     
     @Override
     public void start(Stage stage) throws Exception 
@@ -45,7 +46,7 @@ public class EAICS extends Application
 
         stage.setTitle("ElectroAero Instrumentation and Control System");
         
-        stage.setY(36);
+        //stage.setY(36);
         
         MainUIController controller = loader.getController();
         controller.initData(filter, loadCell);
@@ -73,34 +74,6 @@ public class EAICS extends Application
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
-	
-	final Process ipAddressFinder = Runtime.getRuntime().exec("hostname -I");
-
-        Thread t0 = new Thread(new Runnable()
-        {
-                public void run()
-                {
-                        BufferedReader input = new BufferedReader(new InputStreamReader(ipAddressFinder.getInputStream()));
-                        String inIpAddress = null;
-			boolean quit = false;
-
-                        try
-                        {
-                                while((inIpAddress = input.readLine()) != null && !quit)
-                                {
-                                        System.out.println("Test " + inIpAddress);
-                                        filter.setIpAddress(inIpAddress);
-					quit = true;
-                                }
-                        }
-                        catch(IOException e)
-                        {
-                                e.printStackTrace();
-                        }
-                }
-        });
-
-        t0.start();
         
         final Process candumpProgram = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
 
