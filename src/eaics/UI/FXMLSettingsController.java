@@ -26,7 +26,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -37,6 +40,10 @@ import javafx.util.Duration;
  */
 public class FXMLSettingsController implements Initializable 
 {
+    FXMLSetupController setup;
+    
+    @FXML
+    Button buttonSetup;
     
     MainUIController gui;
     
@@ -72,34 +79,46 @@ public class FXMLSettingsController implements Initializable
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
-    /*
-    @FXML
-    private void handleMainMenuPressed(ActionEvent event) throws IOException
+
+    @FXML   
+    private void handleEnterSetup(ActionEvent event)
     {
-        System.out.println("You clicked me! - Main Menu");
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("MainUI.fxml"));
-	
-	Parent main_page_parent = FXMLLoader.load(getClass().getResource("MainUI.fxml"));
-	Scene main_page_scene = new Scene(main_page_parent);
-	Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	app_stage.setScene(main_page_scene);
-	app_stage.show();
-    }
-    */
-    
+        System.out.println("Entering Setup Now");    
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSetup.fxml"));
+        
+        try 
+        {
+            Pane pane = loader.load();
+
+            setup = loader.getController();
+            setup.initSettings(gui);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSetup.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Setup!!");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Settings Window");
+        }
+    }    
     
     @FXML
     private void handleSendBMSCANMsg(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
 	
-	//msg = "7DF#0201050000000000";
-        //msg = "00a#005f41008077004f"; //message to test EVMS
-        //msg = "";
-        //unsigned int exampleVoltage = 3600; // millivolts
-        //data[0] = exampleVoltage >> 8;
-        //data[1] = exampleVoltage & 0xFF;
-        //CanTX(300 + 10*moduleID, data);
         String temp = "";
         int exampleVoltage = 3600; // millivolts
         int moduleID = 2;
@@ -165,10 +184,6 @@ public class FXMLSettingsController implements Initializable
             labelLAN.setText("LAN");
             label_IPaddress2.setText(splited[0]);
         }
-        
-        
-        
-        //label_IPaddress.setText("hello");
     }
     
     public void initSettings(MainUIController mainGui) 
@@ -182,9 +197,16 @@ public class FXMLSettingsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        // TODO
-	System.out.println("hello in Settings");
-        //
+        System.out.println("hello in Settings");
+        
+        try
+        {
+            handleRefreshIP(new ActionEvent());
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }    
     
 }

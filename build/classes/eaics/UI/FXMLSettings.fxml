@@ -18,5 +18,6 @@
       <Button layoutX="34.0" layoutY="52.0" mnemonicParsing="false" onAction="#handleRefreshIP" prefHeight="25.0" prefWidth="164.0" text="Refresh IP Address" />
       <Label fx:id="label_IPaddress2" layoutX="92.0" layoutY="107.0" prefHeight="17.0" prefWidth="224.0" />
       <Label fx:id="labelLAN" layoutX="34.0" layoutY="107.0" />
+      <Button fx:id="buttonSetup" layoutX="68.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="71.0" prefWidth="130.0" text="Enter Setup" />
    </children>
 </AnchorPane>

@@ -95,15 +95,7 @@ public class MainUIController implements Initializable
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
     {
-        System.out.println("You clicked me! - Settings");
-        /*
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
-	Parent settings_page_parent = FXMLLoader.load(getClass().getResource("FXMLSettings.fxml"));
-	Scene settings_page_scene = new Scene(settings_page_parent);
-	Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-	app_stage.setScene(settings_page_scene);
-	app_stage.show();*/
-        
+        System.out.println("You clicked me! - Settings");        
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
         
@@ -127,11 +119,10 @@ public class MainUIController implements Initializable
             stage.show();
         }
         
-        catch (Exception e) {
+        catch (Exception e) 
+        {
             System.out.println("Failed to open Settings Window");
         }
-        
-        
     }
     
     @FXML
