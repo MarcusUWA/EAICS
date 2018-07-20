@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import eaics.BMSSettings;
 
 /**
  * FXML Controller class
@@ -28,9 +29,7 @@ public class FXMLSetupController implements Initializable
     
     FXMLNumpadController numpad;
     
-    private String unit;
-    private Double stateOfCharge;
-    
+    private BMSSettings bmsSettings;    
     
     @FXML
     Button buttonResetSoC;
@@ -45,6 +44,8 @@ public class FXMLSetupController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         // TODO
+        //System.out.println("setupCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+        this.bmsSettings = new BMSSettings();
     }    
     
     public void initSettings(MainUIController settingsGui) 
@@ -55,26 +56,19 @@ public class FXMLSetupController implements Initializable
     @FXML
     private void closeButtonAction(ActionEvent event)
     {
-        System.out.println("Reset SoC to >>" + stateOfCharge.toString() + unit);
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
     
-    @FXML
-    private void handleResetSoC(ActionEvent event) 
+    private void openNumpad(int index)
     {
-        stateOfCharge = new Double(100.0);
-        unit = "%";
-        
-        System.out.println("Reset SoC");
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLNumpad.fxml"));
         
         try 
         {
             Pane pane = loader.load();
             numpad = loader.getController();
-            numpad.initSettings(gui, stateOfCharge, unit);
+            numpad.initSettings(gui, this.bmsSettings, index);
         
             Stage stage = new Stage();
         
@@ -94,5 +88,60 @@ public class FXMLSetupController implements Initializable
             System.out.println("Failed to open Numpad Window");
             e.printStackTrace();
         }
+    }
+    
+    @FXML
+    private void handlePackCapcity(ActionEvent event) 
+    {
+        openNumpad(0);
+    }
+    
+    @FXML
+    private void handleSoCWarning(ActionEvent event) 
+    {
+        openNumpad(1);
+    }
+    
+    @FXML
+    private void handleFullVoltage(ActionEvent event) 
+    {
+        openNumpad(2);
+    }
+    
+    @FXML
+    private void handleWarnCurrent(ActionEvent event) 
+    {
+        openNumpad(3);
+    }
+    
+    @FXML
+    private void handleTripCurrent(ActionEvent event) 
+    {
+        openNumpad(4);
+    }
+    
+    @FXML
+    private void handleEVMSTempWarning(ActionEvent event) 
+    {
+        openNumpad(5);
+    }
+    
+    @FXML
+    private void handleMinAuxVoltage(ActionEvent event) 
+    {
+        openNumpad(6);
+    }
+    
+    @FXML
+    private void handleMinIsolation(ActionEvent event) 
+    {
+        openNumpad(7);
+    }
+    
+    @FXML
+    private void handleResetSoC(ActionEvent event) 
+    {
+        System.out.println("Reset SoC");
+        openNumpad(0);/////////////////////////////////change this later!!!!
     }
 }

@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import eaics.BMSSettings;
 
 /**
  * FXML Controller class
@@ -23,16 +24,16 @@ import javafx.stage.Stage;
 public class FXMLNumpadController implements Initializable 
 {
     MainUIController gui;
-    private Double setting;
-    private String unit;
+    private BMSSettings bmsSettings;
+    private int index;
     private boolean first;
     
-    public void initSettings(MainUIController settingsGui, Double setting, String unit) 
+    public void initSettings(MainUIController settingsGui, BMSSettings bmsSettings, int index) 
     {
         gui = settingsGui;
-        this.setting = setting;
-        this.unit = unit;
-        display.setText(display.getText() + unit);
+        this.bmsSettings = bmsSettings;
+        this.index = index;
+        display.setText(display.getText() + bmsSettings.getUnit(index));
         first = true;
     }
 
@@ -151,7 +152,8 @@ public class FXMLNumpadController implements Initializable
         else if (event.getSource() == enter) 
         {
             //System.out.println(">>>>>>>>>>>>>>>>>>" + display.getText());
-            this.setting = Double.valueOf(display.getText());
+            this.bmsSettings.setSetting(index, Integer.parseInt(display.getText()));
+            this.bmsSettings.update();
             Stage stage = (Stage) enter.getScene().getWindow();
             stage.close();
         }
