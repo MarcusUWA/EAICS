@@ -106,6 +106,78 @@ public class BMSSettings
             case 7:
                 this.minIsolation.setSetting(setting);
                 break;
+            case 8:
+                this.tachoPPR.setSetting(setting);
+                break;
+            case 9:
+                this.fuelGaugeFull.setSetting(setting);
+                break;
+            case 10:
+                this.fuelGaugeEmpty.setSetting(setting);
+                break;
+            case 11:
+                this.tempGaugeHot.setSetting(setting);
+                break;
+            case 12:
+                this.tempGaugeCold.setSetting(setting);
+                break;
+            case 13:
+                this.bmsMinVoltage.setSetting(setting);
+                break;
+            case 14:
+                this.bmsMaxVoltage.setSetting(setting);
+                break;
+            case 15:
+                this.balanceVoltage.setSetting(setting);
+                break;
+            case 16:
+                this.bmsHysteresis.setSetting(setting);
+                break;
+            case 17:
+                this.bmsMinTemp.setSetting(setting);
+                break;
+            case 18:
+                this.bmsMaxTemp.setSetting(setting);
+                break;
+            case 19:
+                this.maxChargeVoltage.setSetting(setting);
+                break;
+            case 20:
+                this.maxChargeCurrent.setSetting(setting);
+                break;
+            case 21:
+                this.altChargeVoltage.setSetting(setting);
+                break;
+            case 22:
+                this.altChargeCurrent.setSetting(setting);
+                break;
+            case 23:
+                this.sleepDelay.setSetting(setting);
+                break;
+            case 24:
+                this.mpiFunction.setSetting(setting);
+                break;
+            case 25:
+                this.mpo1Function.setSetting(setting);
+                break;
+            case 26:
+                this.mpo2Function.setSetting(setting);
+                break;
+            case 27:
+                this.parallelStrings.setSetting(setting);
+                break;
+            case 28:
+                this.enablePrecharge.setSetting(setting);
+                break;
+            case 29:
+                this.stationaryMode.setSetting(setting);
+                break;
+            case 30:
+                //reserved
+                break;
+            case 31:
+                //reserved
+                break;
         }
     }
     
@@ -138,6 +210,78 @@ public class BMSSettings
                 break;
             case 7:
                 unit = this.minIsolation.getUnit();
+                break;
+            case 8:
+                unit = this.tachoPPR.getUnit();
+                break;
+            case 9:
+                unit = this.fuelGaugeFull.getUnit();
+                break;
+            case 10:
+                unit = this.fuelGaugeEmpty.getUnit();
+                break;
+            case 11:
+                unit = this.tempGaugeHot.getUnit();
+                break;
+            case 12:
+                unit = this.tempGaugeCold.getUnit();
+                break;
+            case 13:
+                unit = this.bmsMinVoltage.getUnit();
+                break;
+            case 14:
+                unit = this.bmsMaxVoltage.getUnit();
+                break;
+            case 15:
+                unit = this.balanceVoltage.getUnit();
+                break;
+            case 16:
+                unit = this.bmsHysteresis.getUnit();
+                break;
+            case 17:
+                unit = this.bmsMinTemp.getUnit();
+                break;
+            case 18:
+                unit = this.bmsMaxTemp.getUnit();
+                break;
+            case 19:
+                unit = this.maxChargeVoltage.getUnit();
+                break;
+            case 20:
+                unit = this.maxChargeCurrent.getUnit();
+                break;
+            case 21:
+                unit = this.altChargeVoltage.getUnit();
+                break;
+            case 22:
+                unit = this.altChargeCurrent.getUnit();
+                break;
+            case 23:
+                unit = this.sleepDelay.getUnit();
+                break;
+            case 24:
+                unit = this.mpiFunction.getUnit();
+                break;
+            case 25:
+                unit = this.mpo1Function.getUnit();
+                break;
+            case 26:
+                unit = this.mpo2Function.getUnit();
+                break;
+            case 27:
+                unit = this.parallelStrings.getUnit();
+                break;
+            case 28:
+                unit = this.enablePrecharge.getUnit();
+                break;
+            case 29:
+                unit = this.stationaryMode.getUnit();
+                break;
+            case 30:
+                //reserved
+                break;
+            case 31:
+                //reserved
                 break;
         }
         

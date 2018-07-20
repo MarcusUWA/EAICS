@@ -9,22 +9,22 @@
 
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSetupController">
    <children>
-      <Button fx:id="buttonResetSoC" layoutX="30.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Reset SoC" />
-      <Button layoutX="30.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Fuel Gauge Empty" />
-      <Button layoutX="30.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Temp Gauge Hot" />
-      <Button layoutX="30.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Temp Gauge Cold" />
+      <Button layoutX="30.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Reset SoC" />
+      <Button layoutX="30.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleFuelGaugeEmpty" prefHeight="25.0" prefWidth="213.0" text="Fuel Gauge Empty" />
+      <Button layoutX="30.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleTempGaugeHot" prefHeight="25.0" prefWidth="213.0" text="Temp Gauge Hot" />
+      <Button layoutX="30.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleTempGaugeCold" prefHeight="25.0" prefWidth="213.0" text="Temp Gauge Cold" />
       <Button layoutX="30.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Peukert's Exp" />
-      <Button layoutX="30.0" layoutY="257.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Enable Pre-Charge" />
+      <Button layoutX="30.0" layoutY="257.0" mnemonicParsing="false" onAction="#handleEnablePrecharge" prefHeight="25.0" prefWidth="213.0" text="Enable Pre-Charge" />
       <Button layoutX="30.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Enable Aux Switch" />
-      <Button layoutX="30.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="BMS Min Voltage" />
-      <Button layoutX="30.0" layoutY="377.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="BMS Max Voltage" />
+      <Button layoutX="30.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleBMSMinVoltage" prefHeight="25.0" prefWidth="213.0" text="BMS Min Voltage" />
+      <Button layoutX="30.0" layoutY="377.0" mnemonicParsing="false" onAction="#handleBMSMaxVoltage" prefHeight="25.0" prefWidth="213.0" text="BMS Max Voltage" />
       <Button layoutX="294.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="BMS Shunt Voltage" />
-      <Button layoutX="293.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="BMS Low Temp Warn" />
-      <Button layoutX="294.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="BMS Overtemp Warn" />
-      <Button layoutX="294.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Stationary Mode" />
+      <Button layoutX="293.0" layoutY="97.0" mnemonicParsing="false" onAction="#handleBMSMinTemp" prefHeight="25.0" prefWidth="213.0" text="BMS Low Temp Warn" />
+      <Button layoutX="294.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleBMSMaxTemp" prefHeight="25.0" prefWidth="213.0" text="BMS Overtemp Warn" />
+      <Button layoutX="294.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleStationaryMode" prefHeight="25.0" prefWidth="213.0" text="Stationary Mode" />
       <Button layoutX="293.0" layoutY="217.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Current Sensor" />
-      <Button layoutX="293.0" layoutY="257.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Max Charge Voltage" />
-      <Button layoutX="293.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Max Charge Current" />
+      <Button layoutX="293.0" layoutY="257.0" mnemonicParsing="false" onAction="#handleMaxChargeVoltage" prefHeight="25.0" prefWidth="213.0" text="Max Charge Voltage" />
+      <Button layoutX="293.0" layoutY="297.0" mnemonicParsing="false" onAction="#handleMaxChargeCurrent" prefHeight="25.0" prefWidth="213.0" text="Max Charge Current" />
       <Button layoutX="293.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Night Brightness" />
       <Button layoutX="293.0" layoutY="377.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Buzzer On" />
       <Button layoutX="558.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Use Fahrenheit" />
@@ -37,7 +37,7 @@
       <Button layoutX="558.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleMinAuxVoltage" prefHeight="25.0" prefWidth="213.0" text="Min Aux Voltage" />
       <Button layoutX="558.0" layoutY="377.0" mnemonicParsing="false" onAction="#handleMinIsolation" prefHeight="25.0" prefWidth="213.0" text="Max Leakage" />
       <Button layoutX="30.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Tacho PPR" />
-      <Button layoutX="293.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleResetSoC" prefHeight="25.0" prefWidth="213.0" text="Fuel Gauge Full" />
+      <Button layoutX="293.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleFuelGaugeFull" prefHeight="25.0" prefWidth="213.0" text="Fuel Gauge Full" />
       <Button fx:id="closeButton" layoutX="558.0" layoutY="417.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="25.0" prefWidth="213.0" text="CLOSE SETUP" />
       <Label layoutX="345.0" layoutY="14.0" text="SETUP PAGE" textAlignment="CENTER">
          <font>

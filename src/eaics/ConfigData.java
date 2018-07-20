@@ -31,7 +31,10 @@ public class ConfigData
     
     public void setSetting(int setting)
     {
-        this.setting = setting;
+        if(setting <= max && setting >= min)
+        {
+            this.setting = setting;
+        }
     }
     
     public String getUnit()

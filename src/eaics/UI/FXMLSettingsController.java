@@ -110,7 +110,8 @@ public class FXMLSettingsController implements Initializable
         
         catch (Exception e) 
         {
-            System.out.println("Failed to open Settings Window");
+            System.out.println("Failed to open Setup Window");
+            e.printStackTrace();
         }
     }    
     
