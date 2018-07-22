@@ -60,7 +60,10 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
-        final CANMessage message = new CANMessage();
+        //final Process pixHawkProgram = Runtime.getRuntime().exec("/home/pi/bin/runPixHawkWiFi2");   //start the pixHawkProgram
+	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out 192.168.1.6:14550 --aircraft MyCopter");   //start the pixHawkProgram
+	
+	final CANMessage message = new CANMessage();
         final CANRawStringMessages canMsg = new CANRawStringMessages();
         
         Runnable Logger = new Runnable() 
