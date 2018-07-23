@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLConnectWifiController">
+   <children>
+      <VBox fx:id="root" layoutX="169.0" layoutY="60.0" prefHeight="292.0" prefWidth="464.0">
+         <children>
+            <HBox fx:id="ssidBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="SSID">
+                     <padding>
+                        <Insets right="30.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Password:" />
+                  <TextField fx:id="textField" prefHeight="27.0" prefWidth="274.0" />
+               </children>
+            </HBox>
+            <HBox fx:id="buttons" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
+                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeButtonAction" text="Back" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="342.0" layoutY="24.0" text="Wifi Setup">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

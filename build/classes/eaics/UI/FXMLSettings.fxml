@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettingsController">
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettingsController">
    <children>
-      <Button fx:id="closeButton" layoutX="245.0" layoutY="179.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
+      <Button fx:id="closeButton" layoutX="456.0" layoutY="346.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
       <Button layoutX="400.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleSendBMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send BMS CAN Message" />
       <Label fx:id="labelWiFi" layoutX="34.0" layoutY="89.0" />
       <Button layoutX="400.0" layoutY="167.0" mnemonicParsing="false" onAction="#handleSendEVMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send EVMS CAN Message" />
       <Button layoutX="400.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleSendGenericCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send Generic CAN Message" />
-      <Label fx:id="label11" layoutX="415.0" layoutY="323.0" text="Press Here" />
+      <Label fx:id="label11" layoutX="448.0" layoutY="35.0" text="Press Here" />
       <Label fx:id="label_IPaddress1" layoutX="92.0" layoutY="89.0" prefHeight="17.0" prefWidth="224.0" />
       <Button layoutX="34.0" layoutY="52.0" mnemonicParsing="false" onAction="#handleRefreshIP" prefHeight="25.0" prefWidth="164.0" text="Refresh IP Address" />
       <Label fx:id="label_IPaddress2" layoutX="92.0" layoutY="107.0" prefHeight="17.0" prefWidth="224.0" />
       <Label fx:id="labelLAN" layoutX="34.0" layoutY="107.0" />
-      <Button fx:id="buttonSetup" layoutX="68.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="71.0" prefWidth="130.0" text="Enter Setup" />
+      <Button fx:id="buttonSetup" layoutX="40.0" layoutY="346.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="27.0" prefWidth="110.0" text="Enter Setup" />
+      <Button fx:id="wifiConnect" layoutX="34.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleWifiSetup" prefHeight="27.0" prefWidth="164.0" text="Setup Wifi" />
+      <Label layoutX="236.0" layoutY="11.0" text="EAICS Settings">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

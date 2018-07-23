@@ -41,9 +41,13 @@ import javafx.util.Duration;
 public class FXMLSettingsController implements Initializable 
 {
     FXMLSetupController setup;
+    FXMLConnectWifiController wifiConnectController;
     
     @FXML
     Button buttonSetup;
+    
+    @FXML 
+    Button wifiConnect;
     
     MainUIController gui;
     
@@ -82,9 +86,7 @@ public class FXMLSettingsController implements Initializable
 
     @FXML   
     private void handleEnterSetup(ActionEvent event)
-    {
-        System.out.println("Entering Setup Now");    
-        
+    {   
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSetup.fxml"));
         
         try 
@@ -102,9 +104,8 @@ public class FXMLSettingsController implements Initializable
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Setup!!");
+            stage.setTitle("Battery Management Setup!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         
@@ -187,6 +188,38 @@ public class FXMLSettingsController implements Initializable
         }
     }
     
+    @FXML   
+    private void handleWifiSetup(ActionEvent event)
+    {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLConnectWifi.fxml"));
+        
+        try 
+        {
+            Pane pane = loader.load();
+
+            wifiConnectController = loader.getController();
+            wifiConnectController.test();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSetup.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Wifi Setup!!");
+            
+            stage.show();
+        }
+        
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Wifi Window");
+            e.printStackTrace();
+        }
+    }    
+    
     public void initSettings(MainUIController mainGui) 
     {
         gui = mainGui;
@@ -197,9 +230,7 @@ public class FXMLSettingsController implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) 
-    {
-        System.out.println("hello in Settings");
-        
+    {   
         try
         {
             handleRefreshIP(new ActionEvent());
@@ -208,6 +239,10 @@ public class FXMLSettingsController implements Initializable
         {
             e.printStackTrace();
         }
-    }    
+    }  
+    
+    
+    
+    
     
 }

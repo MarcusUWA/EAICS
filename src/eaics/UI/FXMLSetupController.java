@@ -77,7 +77,6 @@ public class FXMLSetupController implements Initializable
             stage.setScene(scene);
             stage.setTitle("Numpad!!!");
             
-            stage.setMaximized(true);
             stage.show();
         }        
         catch (Exception e) 
