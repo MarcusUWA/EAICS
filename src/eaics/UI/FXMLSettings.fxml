@@ -9,22 +9,25 @@
 
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettingsController">
    <children>
-      <Button fx:id="closeButton" layoutX="456.0" layoutY="346.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
-      <Button layoutX="400.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleSendBMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send BMS CAN Message" />
+      <Button fx:id="closeButton" layoutX="533.0" layoutY="432.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
+      <Button layoutX="459.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleSendBMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send BMS CAN Message" />
       <Label fx:id="labelWiFi" layoutX="34.0" layoutY="89.0" />
-      <Button layoutX="400.0" layoutY="167.0" mnemonicParsing="false" onAction="#handleSendEVMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send EVMS CAN Message" />
-      <Button layoutX="400.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleSendGenericCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send Generic CAN Message" />
-      <Label fx:id="label11" layoutX="448.0" layoutY="35.0" text="Press Here" />
-      <Label fx:id="label_IPaddress1" layoutX="92.0" layoutY="89.0" prefHeight="17.0" prefWidth="224.0" />
-      <Button layoutX="34.0" layoutY="52.0" mnemonicParsing="false" onAction="#handleRefreshIP" prefHeight="25.0" prefWidth="164.0" text="Refresh IP Address" />
-      <Label fx:id="label_IPaddress2" layoutX="92.0" layoutY="107.0" prefHeight="17.0" prefWidth="224.0" />
+      <Button layoutX="459.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleSendEVMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send EVMS CAN Message" />
+      <Button layoutX="459.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleSendGenericCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send Generic CAN Message" />
+      <Label fx:id="label11" layoutX="507.0" layoutY="161.0" text="Press Here" />
+      <Label fx:id="label_IPaddress1" layoutX="34.0" layoutY="90.0" prefHeight="17.0" prefWidth="224.0" />
+      <Button layoutX="34.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleRefreshIP" prefHeight="25.0" prefWidth="164.0" text="Refresh IP Address" />
+      <Label fx:id="label_IPaddress2" layoutX="34.0" layoutY="108.0" prefHeight="17.0" prefWidth="224.0" />
       <Label fx:id="labelLAN" layoutX="34.0" layoutY="107.0" />
-      <Button fx:id="buttonSetup" layoutX="40.0" layoutY="346.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="27.0" prefWidth="110.0" text="Enter Setup" />
-      <Button fx:id="wifiConnect" layoutX="34.0" layoutY="22.0" mnemonicParsing="false" onAction="#handleWifiSetup" prefHeight="27.0" prefWidth="164.0" text="Setup Wifi" />
+      <Button fx:id="buttonSetup" layoutX="486.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="27.0" prefWidth="110.0" text="Enter Setup" />
+      <Button fx:id="wifiConnect" layoutX="34.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleWifiSetup" prefHeight="27.0" prefWidth="164.0" text="Setup Wifi" />
       <Label layoutX="236.0" layoutY="11.0" text="EAICS Settings">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <Label layoutX="451.0" layoutY="14.0" text="Software Version: " />
+      <Label layoutX="596.0" layoutY="14.0" text="--" />
+      <Button fx:id="buttonUpdateSoftware" layoutX="451.0" layoutY="44.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
    </children>
 </AnchorPane>

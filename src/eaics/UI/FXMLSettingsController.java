@@ -78,6 +78,9 @@ public class FXMLSettingsController implements Initializable
     private javafx.scene.control.Button closeButton;
     
     @FXML
+    private Button buttonUpdateSoftware;
+    
+    @FXML
     private void closeButtonAction(ActionEvent event)
     {
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -241,8 +244,11 @@ public class FXMLSettingsController implements Initializable
         }
     }  
     
-    
-    
-    
+    @FXML
+    private void updateButtonAction(ActionEvent event) throws IOException
+    {
+        Runtime.getRuntime().exec("sudo wget http://robotics.ee.uwa.edu.au/courses/des/rasp/images-pi1/EAICS.jar");
+        Runtime.getRuntime().exec("cp EAICS.jar /home/pi/EAICS/dist/EAICS.jar");
+    }
     
 }
