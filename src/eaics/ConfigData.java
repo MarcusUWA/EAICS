@@ -16,12 +16,12 @@ public class ConfigData
     private int max;
     private int setting;
     
-    public ConfigData(String unit, int min, int max)
+    public ConfigData(String unit, int min, int max, int initialSetting)
     {
         this.unit = unit;
         this.min = min;
         this.max = max;
-        this. setting = 0;
+        this.setting = initialSetting;
     }
     
     public int getSetting()

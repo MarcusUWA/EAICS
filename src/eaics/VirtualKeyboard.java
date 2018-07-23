@@ -26,7 +26,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.PolygonBuilder;
 
-public class VirtualKeyboard {
+public class VirtualKeyboard 
+{
   private final VBox root ;
   
   /**
@@ -35,7 +36,8 @@ public class VirtualKeyboard {
    * If target is null, KeyEvents will be dynamically forwarded to the focus owner
    * in the Scene containing this keyboard.
    */
-  public VirtualKeyboard(ReadOnlyObjectProperty<Node> target) {
+  public VirtualKeyboard(ReadOnlyObjectProperty<Node> target) 
+  {
     this.root = new VBox(5);
     root.setPadding(new Insets(10));
     root.getStyleClass().add("virtual-keyboard");
@@ -88,7 +90,8 @@ public class VirtualKeyboard {
     final Node[][] extraRightButtons = new Node[][] { {backspace}, {delete}, {enter}, {modifiers.secondShiftKey()} };
 
     // build layout
-    for (int row = 0; row < unshifted.length; row++) {
+    for (int row = 0; row < unshifted.length; row++) 
+    {
       HBox hbox = new HBox(5);
       hbox.setAlignment(Pos.CENTER);
       root.getChildren().add(hbox);
@@ -114,7 +117,8 @@ public class VirtualKeyboard {
   /**
    * Creates a VirtualKeyboard which uses the focusProperty of the scene to which it is attached as its target
    */
-  public VirtualKeyboard() {
+  public VirtualKeyboard() 
+  {
     this(null);
   }
   
@@ -123,13 +127,14 @@ public class VirtualKeyboard {
    * Buttons in the view have a style class of "virtual-keyboard-button".
    * @return a view of the keyboard.
    */
-  public Node view() {
+  public Node view() 
+  {
     return root ;
   }
   
   // Creates a "regular" button that has an unshifted and shifted value
-  private Button createShiftableButton(final String unshifted, final String shifted,
-      final KeyCode code, Modifiers modifiers, final ReadOnlyObjectProperty<Node> target) {
+  private Button createShiftableButton(final String unshifted, final String shifted, final KeyCode code, Modifiers modifiers, final ReadOnlyObjectProperty<Node> target) 
+  {
     final ReadOnlyBooleanProperty letter = new SimpleBooleanProperty( unshifted.length() == 1 && Character.isLetter(unshifted.charAt(0)));
     final StringBinding text = 
         Bindings.when(modifiers.shiftDown().or(modifiers.capsLockOn().and(letter)))
@@ -140,14 +145,16 @@ public class VirtualKeyboard {
   }
 
   // Creates a button with fixed text not responding to Shift
-  private Button createNonshiftableButton(final String text, final KeyCode code, final Modifiers modifiers, final ReadOnlyObjectProperty<Node> target) {
+  private Button createNonshiftableButton(final String text, final KeyCode code, final Modifiers modifiers, final ReadOnlyObjectProperty<Node> target) 
+  {
     StringProperty textProperty = new SimpleStringProperty(text);
     Button button = createButton(textProperty, code, modifiers, target);
     return button;
   }
   
   // Creates a button with mutable text, and registers listener with it
-  private Button createButton(final ObservableStringValue text, final KeyCode code, final Modifiers modifiers, final ReadOnlyObjectProperty<Node> target) {
+  private Button createButton(final ObservableStringValue text, final KeyCode code, final Modifiers modifiers, final ReadOnlyObjectProperty<Node> target) 
+  {
     final Button button = new Button();
     button.textProperty().bind(text);
         
@@ -157,29 +164,39 @@ public class VirtualKeyboard {
     // Add a style class for css:
     button.getStyleClass().add("virtual-keyboard-button");
     
-    button.setOnAction(new EventHandler<ActionEvent>() {
+    button.setOnAction(new EventHandler<ActionEvent>() 
+    {
       @Override
-      public void handle(ActionEvent event) {
+      public void handle(ActionEvent event) 
+      {
 
         final Node targetNode ;
-        if (target != null) {
+        if (target != null) 
+	{
           targetNode = target.get();
-        } else {
+        } 
+	else 
+	{
           targetNode = view().getScene().getFocusOwner();
         }
         
-        if (targetNode != null) {
+        if (targetNode != null) 
+	{
           final String character;
-          if (text.get().length() == 1) {
+          if (text.get().length() == 1) 
+	  {
             character = text.get();
-          } else {
+          } 
+	  else 
+	  {
             character = KeyEvent.CHAR_UNDEFINED;
           }
           final KeyEvent keyPressEvent = createKeyEvent(button, targetNode, KeyEvent.KEY_PRESSED, character, code, modifiers);
           targetNode.fireEvent(keyPressEvent);
           final KeyEvent keyReleasedEvent = createKeyEvent(button, targetNode, KeyEvent.KEY_RELEASED, character, code, modifiers);
           targetNode.fireEvent(keyReleasedEvent);
-          if (character != KeyEvent.CHAR_UNDEFINED) {
+          if (character != KeyEvent.CHAR_UNDEFINED) 
+	  {
             final KeyEvent keyTypedEvent = createKeyEvent(button, targetNode, KeyEvent.KEY_TYPED, character, code, modifiers);
             targetNode.fireEvent(keyTypedEvent);
           }
@@ -191,16 +208,14 @@ public class VirtualKeyboard {
   }
 
   // Utility method to create a KeyEvent from the Modifiers
-  private KeyEvent createKeyEvent(Object source, EventTarget target,
-      EventType<KeyEvent> eventType, String character, KeyCode code,
-      Modifiers modifiers) {
-    return new KeyEvent(source, target, eventType, character, code.toString(),
-        code, modifiers.shiftDown().get(), modifiers.ctrlDown().get(),
-        modifiers.altDown().get(), modifiers.metaDown().get());
+  private KeyEvent createKeyEvent(Object source, EventTarget target, EventType<KeyEvent> eventType, String character, KeyCode code, Modifiers modifiers) 
+  {
+    return new KeyEvent(source, target, eventType, character, code.toString(), code, modifiers.shiftDown().get(), modifiers.ctrlDown().get(), modifiers.altDown().get(), modifiers.metaDown().get());
   }
   
   // Utility method for creating cursor keys:
-  private Button createCursorKey(KeyCode code, Modifiers modifiers, ReadOnlyObjectProperty<Node> target, Double... points) {
+  private Button createCursorKey(KeyCode code, Modifiers modifiers, ReadOnlyObjectProperty<Node> target, Double... points) 
+  {
     Button button = createNonshiftableButton("", code, modifiers, target);
     final Node graphic = PolygonBuilder.create().points(points).build();
     graphic.setStyle("-fx-fill: -fx-mark-color;");
@@ -210,7 +225,8 @@ public class VirtualKeyboard {
   }
   
   // Convenience class to bundle together the modifier keys and their selected state
-  private static class Modifiers {
+  private static class Modifiers 
+  {
     private final ToggleButton shift;
     private final ToggleButton shift2;
     private final ToggleButton ctrl;
@@ -218,7 +234,8 @@ public class VirtualKeyboard {
     private final ToggleButton meta;
     private final ToggleButton capsLock;
 
-    Modifiers() {
+    Modifiers() 
+    {
       this.shift = createToggle("Shift");
       this.shift2 = createToggle("Shift");
       this.ctrl = createToggle("Ctrl");
@@ -229,57 +246,70 @@ public class VirtualKeyboard {
       shift2.selectedProperty().bindBidirectional(shift.selectedProperty());
     }
 
-    private ToggleButton createToggle(final String text) {
+    private ToggleButton createToggle(final String text) 
+    {
       final ToggleButton tb = new ToggleButton(text);
       tb.setFocusTraversable(false);
       return tb;
     }
 
-    public Node shiftKey() {
+    public Node shiftKey() 
+    {
       return shift;
     }
 
-    public Node secondShiftKey() {
+    public Node secondShiftKey() 
+    {
       return shift2;
     }
 
-    public Node ctrlKey() {
+    public Node ctrlKey() 
+    {
       return ctrl;
     }
 
-    public Node altKey() {
+    public Node altKey() 
+    {
       return alt;
     }
 
-    public Node metaKey() {
+    public Node metaKey() 
+    {
       return meta;
     }
 
-    public Node capsLockKey() {
+    public Node capsLockKey() 
+    {
       return capsLock;
     }
 
-    public BooleanProperty shiftDown() {
+    public BooleanProperty shiftDown() 
+    {
       return shift.selectedProperty();
     }
 
-    public BooleanProperty ctrlDown() {
+    public BooleanProperty ctrlDown() 
+    {
       return ctrl.selectedProperty();
     }
 
-    public BooleanProperty altDown() {
+    public BooleanProperty altDown() 
+    {
       return alt.selectedProperty();
     }
 
-    public BooleanProperty metaDown() {
+    public BooleanProperty metaDown() 
+    {
       return meta.selectedProperty();
     }
 
-    public BooleanProperty capsLockOn() {
+    public BooleanProperty capsLockOn() 
+    {
       return capsLock.selectedProperty();
     }
 
-    public void releaseKeys() {
+    public void releaseKeys() 
+    {
       shift.setSelected(false);
       ctrl.setSelected(false);
       alt.setSelected(false);

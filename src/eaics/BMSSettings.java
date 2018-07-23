@@ -46,36 +46,36 @@ public class BMSSettings
     
     public BMSSettings()
     {
-        this.packCapacity = new ConfigData("Ah x5", 1, 250);
-        this.socWarning = new ConfigData("%", 0, 99);
-        this.fullVoltage = new ConfigData("V x2", 5, 251);
-        this.warnCurrent = new ConfigData("A x10", 1, 121);
-        this.tripCurrent = new ConfigData("A x10", 1, 121);
-        this.evmsTempWarning = new ConfigData("degrees C", 0, 151);
-        this.minAuxVoltage = new ConfigData("V", 8, 15);
-        this.minIsolation = new ConfigData("%", 0, 99);
-        this.tachoPPR = new ConfigData("", 1, 6);
-        this.fuelGaugeFull = new ConfigData("%", 0, 100);
-        this.fuelGaugeEmpty = new ConfigData("%", 0, 100);
-        this.tempGaugeHot = new ConfigData("%", 0, 100);
-        this.tempGaugeCold = new ConfigData("%", 0, 100);
-        this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 0, 250);
-        this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 0, 250);
-        this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 0, 252);
-        this.bmsHysteresis = new ConfigData("x0.01V", 0, 50);
-        this.bmsMinTemp = new ConfigData("n-40 degrees C", 0, 141);
-        this.bmsMaxTemp = new ConfigData("n-40 degrees C", 0, 141);
-        this.maxChargeVoltage = new ConfigData("V", 0, 255);
-        this.maxChargeCurrent = new ConfigData("A", 0, 255);
-        this.altChargeVoltage = new ConfigData("V", 0, 255);
-        this.altChargeCurrent = new ConfigData("A", 0, 255);
-        this.sleepDelay = new ConfigData("minutes", 1, 6);
-        this.mpiFunction = new ConfigData("", 0, 3);
-        this.mpo1Function = new ConfigData("", 0, 6);
-        this.mpo2Function = new ConfigData("", 0, 6);
-        this.parallelStrings = new ConfigData("", 1, 20);
-        this.enablePrecharge = new ConfigData("", 0, 1);
-        this.stationaryMode = new ConfigData("", 0, 1);
+        this.packCapacity = new ConfigData("Ah x5", 1, 250, 20);
+        this.socWarning = new ConfigData("%", 0, 99, 20);
+        this.fullVoltage = new ConfigData("V x2", 5, 251, 80);
+        this.warnCurrent = new ConfigData("A x10", 1, 121, 121);
+        this.tripCurrent = new ConfigData("A x10", 1, 121, 121);
+        this.evmsTempWarning = new ConfigData("degrees C", 0, 151, 151);    //Over temp (degC)
+        this.minAuxVoltage = new ConfigData("V", 8, 15, 10);
+        this.minIsolation = new ConfigData("%", 0, 99, 50);
+        this.tachoPPR = new ConfigData("", 1, 6, 2);
+        this.fuelGaugeFull = new ConfigData("%", 0, 100, 80);
+        this.fuelGaugeEmpty = new ConfigData("%", 0, 100, 20);
+        this.tempGaugeHot = new ConfigData("%", 0, 100, 80);
+        this.tempGaugeCold = new ConfigData("%", 0, 100, 20);
+        this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 0, 250, 100);
+        this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 0, 250, 180);
+        this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 0, 252, 251);
+        this.bmsHysteresis = new ConfigData("x0.01V", 0, 50, 20);
+        this.bmsMinTemp = new ConfigData("n-40 degrees C", 0, 141, 0);
+        this.bmsMaxTemp = new ConfigData("n-40 degrees C", 0, 141, 141);
+        this.maxChargeVoltage = new ConfigData("V", 0, 255, 100);
+        this.maxChargeCurrent = new ConfigData("A", 0, 255, 10);
+        this.altChargeVoltage = new ConfigData("V", 0, 255, 100);
+        this.altChargeCurrent = new ConfigData("A", 0, 255, 20);
+        this.sleepDelay = new ConfigData("minutes", 1, 6, 5);
+        this.mpiFunction = new ConfigData("", 0, 3, 0);
+        this.mpo1Function = new ConfigData("", 0, 6, 0);
+        this.mpo2Function = new ConfigData("", 0, 6, 0);
+        this.parallelStrings = new ConfigData("", 1, 20, 1);
+        this.enablePrecharge = new ConfigData("", 0, 1, 1);
+        this.stationaryMode = new ConfigData("", 0, 1, 0);
     }
     
     public void setSetting(int index, int setting)

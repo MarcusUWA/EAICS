@@ -13,15 +13,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class VirtualKeyboardExample extends Application {
+public class VirtualKeyboardExample extends Application 
+{
 
   @Override
-  public void start(Stage primaryStage) {
+  public void start(Stage primaryStage) 
+  {
 
     final TextField textField = new TextField();
-    textField.setOnAction(new EventHandler<ActionEvent>() {
+    textField.setOnAction(new EventHandler<ActionEvent>() 
+    {
       @Override
-      public void handle(ActionEvent event) {
+      public void handle(ActionEvent event) 
+      {
         System.out.println("text field: "+textField.getText());
       }
     });
@@ -29,18 +33,22 @@ public class VirtualKeyboardExample extends Application {
     
     final Button okButton = new Button("OK");
     okButton.setDefaultButton(true);
-    okButton.setOnAction(new EventHandler<ActionEvent>() {
+    okButton.setOnAction(new EventHandler<ActionEvent>() 
+    {
       @Override
-      public void handle(ActionEvent event) {
+      public void handle(ActionEvent event) 
+      {
         System.out.println("OK Button Pressed!");
       }
     });
     
     final Button cancelButton = new Button("Cancel");
     cancelButton.setCancelButton(true);
-    cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+    cancelButton.setOnAction(new EventHandler<ActionEvent>() 
+    {
       @Override
-      public void handle(ActionEvent event) {
+      public void handle(ActionEvent event) 
+      {
         System.out.println("Canceled!");
       }
     });
@@ -67,7 +75,8 @@ public class VirtualKeyboardExample extends Application {
     primaryStage.show();
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) 
+  {
     launch(args);
   }
 
