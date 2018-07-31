@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package eaics.UI;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
