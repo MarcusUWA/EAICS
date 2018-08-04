@@ -33,11 +33,9 @@ import javafx.util.Duration;
  *
  * @author Markcuz
  */
-public class FXMLBatteryCellPage1Controller implements Initializable 
+public class FXMLBatteryCellPage2Controller implements Initializable 
 {
     MainUIController gui;
-    
-    FXMLBatteryCellPage2Controller cellPage2;
     
     //refresh rate in ms
     int refreshFrequency = 10;
@@ -491,14 +489,15 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     @FXML
     private void handlePageRight(ActionEvent event)
     {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage2.fxml"));
+        /*
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryPage2.fxml"));
         
         try 
         {
             Pane pane = loader.load();
 
-            cellPage2 = loader.getController();
-            cellPage2.initSettings(gui);
+            batteryPage2 = loader.getController();
+            batteryPage2.initSettings(gui);
         
             Stage stage = new Stage();
         
@@ -518,5 +517,6 @@ public class FXMLBatteryCellPage1Controller implements Initializable
             System.out.println("Failed to open Battery Page 2 Window");
             e.printStackTrace();
         }
+	*/
     }
 }

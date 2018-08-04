@@ -36,7 +36,8 @@ import javafx.stage.Stage;
  */
 public class MainUIController implements Initializable 
 {    
-    FXMLBatteryCellPage1Controller batterys;
+    FXMLBatteryPageController batterys;
+    //FXMLBatteryCellPage1Controller batterys;
     FXMLSettingsController settings;
     
     @FXML
@@ -130,7 +131,7 @@ public class MainUIController implements Initializable
     {
         System.out.println("You clicked me! - Battery");
         
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage1.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryPage.fxml"));
         
         try 
 	{
@@ -156,6 +157,7 @@ public class MainUIController implements Initializable
         catch (Exception e) 
         {
             System.out.println("Failed to open Battery Window");
+	    e.printStackTrace();
         }
     }
     

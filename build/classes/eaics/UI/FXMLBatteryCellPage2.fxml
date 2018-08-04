@@ -8,12 +8,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eaics.UI.FXMLBatteryCellPage1Controller">
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLBatteryCellPage1Controller">
    <children>
       <Button layoutX="650.0" layoutY="432.0" mnemonicParsing="false" onAction="#handlePageRight" text="Page Right" />
       <Label fx:id="cellVoltage_0_7" layoutX="724.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="739.0" layoutY="60.0" text="8">
+      <Label layoutX="739.0" layoutY="60.0" text="16">
          <font>
             <Font size="20.0" />
          </font>
@@ -40,14 +39,14 @@
       <Label fx:id="cellVoltage_3_6" layoutX="645.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_6" layoutX="645.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_6" layoutX="645.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="660.0" layoutY="60.0" text="7">
+      <Label layoutX="660.0" layoutY="60.0" text="15">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label fx:id="cellVoltage_0_6" layoutX="645.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="cellVoltage_0_5" layoutX="558.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="573.0" layoutY="60.0" text="6">
+      <Label layoutX="573.0" layoutY="60.0" text="14">
          <font>
             <Font size="20.0" />
          </font>
@@ -74,14 +73,14 @@
       <Label fx:id="cellVoltage_3_4" layoutX="479.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_4" layoutX="479.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_4" layoutX="479.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="494.0" layoutY="60.0" text="5">
+      <Label layoutX="494.0" layoutY="60.0" text="13">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label fx:id="cellVoltage_0_4" layoutX="479.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="cellVoltage_0_2" layoutX="314.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="329.0" layoutY="60.0" text="3">
+      <Label layoutX="329.0" layoutY="60.0" text="11">
          <font>
             <Font size="20.0" />
          </font>
@@ -108,14 +107,14 @@
       <Label fx:id="cellVoltage_3_3" layoutX="393.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_3" layoutX="393.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_3" layoutX="393.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="408.0" layoutY="60.0" text="4">
+      <Label layoutX="408.0" layoutY="60.0" text="12">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label fx:id="cellVoltage_0_3" layoutX="393.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="cellVoltage_0_1" layoutX="225.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="240.0" layoutY="60.0" text="2">
+      <Label layoutX="240.0" layoutY="60.0" text="10">
          <font>
             <Font size="20.0" />
          </font>
@@ -202,7 +201,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="161.0" layoutY="60.0" text="1">
+      <Label layoutX="161.0" layoutY="60.0" text="9">
          <font>
             <Font size="20.0" />
          </font>
@@ -214,11 +213,12 @@
          </font>
       </Label>
       <Line endX="395.0" layoutX="410.0" layoutY="57.0" startX="-395.0" />
-      <Label layoutX="353.0" layoutY="25.0" text="Cell Page 1">
+      <Label layoutX="353.0" layoutY="25.0" text="Cell Page 2">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Button fx:id="closeButton" layoutX="337.0" layoutY="432.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Battery Menu" />
+      <Button layoutX="74.0" layoutY="432.0" mnemonicParsing="false" onAction="#handlePageRight" text="Page Left" />
    </children>
 </AnchorPane>

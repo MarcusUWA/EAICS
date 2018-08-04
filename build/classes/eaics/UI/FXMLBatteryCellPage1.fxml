@@ -214,11 +214,11 @@
          </font>
       </Label>
       <Line endX="395.0" layoutX="410.0" layoutY="57.0" startX="-395.0" />
-      <Label layoutX="344.0" layoutY="25.0" text="Battery Page 1">
+      <Label layoutX="353.0" layoutY="25.0" text="Cell Page 1">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="closeButton" layoutX="346.0" layoutY="432.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Close Button" />
+      <Button fx:id="closeButton" layoutX="337.0" layoutY="432.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Battery Menu" />
    </children>
 </AnchorPane>
