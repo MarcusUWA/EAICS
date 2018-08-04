@@ -61,7 +61,8 @@ public class EAICS extends Application
     public static void main(String[] args) throws InterruptedException, IOException 
     {
         //final Process pixHawkProgram = Runtime.getRuntime().exec("/home/pi/bin/runPixHawkWiFi2");   //start the pixHawkProgram
-	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out 192.168.1.6:14550 --aircraft MyCopter");   //start the pixHawkProgram
+	String ipAddressString = "192.168.1.6";
+	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
 	
 	final CANMessage message = new CANMessage();
         final CANRawStringMessages canMsg = new CANRawStringMessages();
@@ -166,10 +167,12 @@ public class EAICS extends Application
                                             writer.write(filter.toString() + " " + loadCell.toString() + "\n");
                                             writer.flush();	//flush the writer
                                     }
+				    /*
                                     if(canMsg.isTimeToLog())
                                     {
                                         System.out.println("test: " + count++);
                                     }
+				    */
                             }
 
                     }

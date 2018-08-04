@@ -7,21 +7,42 @@ package eaics.UI;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Markcuz
  */
-public class FXMLBatteryController implements Initializable {
-
+public class FXMLBatteryController implements Initializable 
+{
+    MainUIController gui;
+    
+    @FXML
+    private javafx.scene.control.Button closeButton;
+    
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // TODO
-    }    
+    }
+
+    public void initSettings(MainUIController mainGui) 
+    {
+        gui = mainGui;
+    }
     
+    @FXML
+    private void closeButtonAction(ActionEvent event)
+    {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
 }

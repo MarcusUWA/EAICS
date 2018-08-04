@@ -36,7 +36,7 @@ import javafx.stage.Stage;
  */
 public class MainUIController implements Initializable 
 {    
-    
+    FXMLBatteryController batterys;
     FXMLSettingsController settings;
     
     @FXML
@@ -99,7 +99,8 @@ public class MainUIController implements Initializable
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
         
-        try {
+        try 
+	{
             Pane pane = loader.load();
 
             settings = loader.getController();
@@ -118,7 +119,6 @@ public class MainUIController implements Initializable
             stage.setMaximized(true);
             stage.show();
         }
-        
         catch (Exception e) 
         {
             System.out.println("Failed to open Settings Window");
@@ -129,7 +129,33 @@ public class MainUIController implements Initializable
     private void handleBatteryPressed(ActionEvent event) 
     {
         System.out.println("You clicked me! - Battery");
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery.fxml"));
+        
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            batterys = loader.getController();
+            batterys.initSettings(this);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSettings.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Battery!!");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Battery Window");
+        }
     }
     
     
@@ -164,7 +190,7 @@ public class MainUIController implements Initializable
 	    {
                 EVMS evmsV3 = filter.getEVMS_v3();
 		ESC esc = filter.getESC();
-		BMS bms = filter.getBMS();
+		BMS[] bms = filter.getBMS();
                 
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
@@ -173,16 +199,16 @@ public class MainUIController implements Initializable
 		//socLabel.setText("!" + evmsV3.getCharge() + "%"); // evmsV2 only
 		socLabel.setText("FIX");
 			
-		voltsLabel.setText("!" + evmsV3.getVoltage());
+		voltsLabel.setText("" + evmsV3.getVoltage());
 		
 		//ampsLabel.setText("!" + evmsV3.getCurrent());	    // evmsV2 only
-		ampsLabel.setText("FIX");
+		ampsLabel.setText("");
 		
-		auxVoltageLabel.setText("!" + evmsV3.getAuxVoltage());
+		auxVoltageLabel.setText("" + evmsV3.getAuxVoltage());
 		
 		//Leakage???
 		
-		battTempLabel.setText("!" + evmsV3.getTemp());
+		battTempLabel.setText("" + evmsV3.getTemp());
 		
 		//Calculation variable
 		//powerLabel.setText("!" + (evmsV3.getVoltage() * evmsV3.getCurrent() / 1000));	//evmsV2 only
@@ -197,13 +223,13 @@ public class MainUIController implements Initializable
 		
 		//Current???
 		
-		tachoLabel.setText("!" + esc.getRpm());
+		tachoLabel.setText("" + esc.getRpm());
 		
 		//Odometer???
 		
-		controllerTempLabel.setText("!" + esc.getControllerTemp());
+		controllerTempLabel.setText("" + esc.getControllerTemp());
 		
-		motorTempLabel.setText("!" + esc.getMotorTemp());
+		motorTempLabel.setText("" + esc.getMotorTemp());
 		
 		//Battery Temperature???
 		
@@ -220,10 +246,12 @@ public class MainUIController implements Initializable
 		//+------------------------------------------------------------+
 		
 		//Get low Cell Voltage
-                lowCellLabel.setText("!" + bms.getMinVoltage());
+                //lowCellLabel.setText("FIX" + bms.getMinVoltage());
+		lowCellLabel.setText("FIX");
 		
                 //Get high Cell Voltage
-                highCellLabel.setText("!"+ bms.getMaxVoltage());
+                //highCellLabel.setText("FIX"+ bms.getMaxVoltage());
+		highCellLabel.setText("FIX");
 		
 		
 		//+------------------------------------------------------------+
