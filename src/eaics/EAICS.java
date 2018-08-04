@@ -64,15 +64,15 @@ public class EAICS extends Application
 	String ipAddressString = "192.168.1.6";
 	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
 	
-	final CANMessage message = new CANMessage();
-        final CANRawStringMessages canMsg = new CANRawStringMessages();
+	final CANMessage canMessage = new CANMessage();
+        final CANRawStringMessages canRawStringMessage = new CANRawStringMessages();
         
         Runnable Logger = new Runnable() 
         {
             @Override
             public void run() 
             {
-                canMsg.setIsTimeToLog();
+                canRawStringMessage.setIsTimeToLog();
             }
         };
 
@@ -92,8 +92,11 @@ public class EAICS extends Application
                         {
                                 while((rawCANmsg = input.readLine()) != null)
                                 {
-                                        System.out.println("Test " + rawCANmsg);
-                                        canMsg.setMsg(rawCANmsg);
+                                        System.out.println("Raw CAN Msg: " + rawCANmsg);
+                                        //canRawStringMessage.setMsg(rawCANmsg);
+					
+					canMessage.newMessage(rawCANmsg);
+					filter.run(canMessage);
                                 }
                         }
                         catch(IOException e)
@@ -142,7 +145,7 @@ public class EAICS extends Application
         });
 
         t2.start();
-	
+	/*
 	Thread t3 = new Thread(new Runnable()
         {
                 @Override
@@ -157,22 +160,26 @@ public class EAICS extends Application
 
                             while(true)
                             {
-                                    //if(canMsg.isUnread())
-                                    String temp = canMsg.getMsg();
-                                    if(!temp.equals("") && canMsg.isTimeToLog())
-                                    {
-                                            message.newMessage(temp);
-                                            filter.run(message);
+                                    //if(canRawStringMessage.isUnread())
+                                    //String temp = canRawStringMessage.getMsg();
+                                    //if(!temp.equals("") && canRawStringMessage.isUnread())
+                                    //{
+                                            //message.newMessage(temp);
+                                            //filter.run(canMessage);
                                             //System.out.println(filter.toString() + " " + loadCell.toString());
-                                            writer.write(filter.toString() + " " + loadCell.toString() + "\n");
-                                            writer.flush();	//flush the writer
-                                    }
-				    /*
-                                    if(canMsg.isTimeToLog())
+					    
+					    //if(canRawStringMessage.isTimeToLog())
+					    //{
+					//	writer.write(filter.toString() + " " + loadCell.toString() + "\n");
+					//	writer.flush();	//flush the writer
+					   // }
+                                   // }
+				    
+                                    if(canRawStringMessage.isTimeToLog())
                                     {
                                         System.out.println("test: " + count++);
                                     }
-				    */
+				    
                             }
 
                     }
@@ -194,6 +201,7 @@ public class EAICS extends Application
         });
 
         t3.start();
+	*/
 
         //TimeUnit.SECONDS.sleep(1);
 	

@@ -249,6 +249,5 @@ public class FXMLSettingsController implements Initializable
     {
         Runtime.getRuntime().exec("sudo wget http://robotics.ee.uwa.edu.au/courses/des/rasp/images-pi1/EAICS.jar");
         Runtime.getRuntime().exec("cp EAICS.jar /home/pi/EAICS/dist/EAICS.jar");
-    }
-    
+    }    
 }

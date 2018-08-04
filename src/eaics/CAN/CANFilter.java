@@ -24,7 +24,7 @@ public class CANFilter
 		this.bms = new BMS[16];
 		for(int ii = 0; ii < 16; ii++)
 		{
-		    this.bms[ii] = new BMS();
+		    this.bms[ii] = new BMS(ii);
 		}
 	}
 	
@@ -48,6 +48,7 @@ public class CANFilter
 		    bms[1].setAll(message);
 		    break;
 		case 321: case 322: case 323: case 324:   //Reply Data - BMS Module 2
+		    System.out.println("bms module 2 info incomming.");
 		    bms[2].setAll(message);
 		    break;
 		case 331: case 332: case 333: case 334:   //Reply Data - BMS Module 3

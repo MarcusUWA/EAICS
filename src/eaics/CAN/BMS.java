@@ -15,20 +15,20 @@ import java.util.List;
 public class BMS 
 {
         private final int BPID = 300;
-	
+	private int MODULE_ID;
 	private int[] voltage;
 	private int[] temp;
 	
-	public BMS()
+	public BMS(int inID)
 	{
+	    this.MODULE_ID = inID;
 	    this.voltage = new int[12];
 	    this.temp = new int[2];
 	}
 	
 	public void setAll(CANMessage message)
 	{
-	    
-	    switch(message.getFrameID() - BPID)
+	    switch(message.getFrameID() - (BPID + 10 * MODULE_ID))
 	    {
 		case 1:
 		    for (int ii = 0; ii < 4; ii++)
@@ -37,15 +37,15 @@ public class BMS
 		    }
 		    break;
 		case 2:
-		    for (int ii = 4; ii < 8; ii++)
+		    for (int ii = 0; ii < 4; ii++)
 		    {
-			this.voltage[ii] = (message.getByte(ii*2)<<8) + message.getByte(ii*2+1);
+			this.voltage[ii + 4] = (message.getByte(ii*2)<<8) + message.getByte(ii*2+1);
 		    }
 		    break;
 		case 3:
-		    for (int ii = 8; ii < 12; ii++)
+		    for (int ii = 0; ii < 4; ii++)
 		    {
-			this.voltage[ii] = (message.getByte(ii*2)<<8) + message.getByte(ii*2+1);
+			this.voltage[ii + 8] = (message.getByte(ii*2)<<8) + message.getByte(ii*2+1);
 		    }
 		    break;
 		case 4:
@@ -70,14 +70,15 @@ public class BMS
 	    return outstring;
 	}
 
+	//Returns the voltage of Cell ii (i.e. cell 0 to cell 11) in Volts, i.e. divide by 1000
 	public int getVoltage(int ii)
 	{
-	    return this.voltage[ii - 1];
+	    return this.voltage[ii];
 	}
 	
 	public int getTemp(int ii)
 	{
-	    return this.temp[ii - 1];
+	    return this.temp[ii];
 	}
 	
 	public int getMaxVoltage()

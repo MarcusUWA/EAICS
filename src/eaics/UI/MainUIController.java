@@ -36,7 +36,7 @@ import javafx.stage.Stage;
  */
 public class MainUIController implements Initializable 
 {    
-    FXMLBatteryController batterys;
+    FXMLBatteryCellPage1Controller batterys;
     FXMLSettingsController settings;
     
     @FXML
@@ -130,7 +130,7 @@ public class MainUIController implements Initializable
     {
         System.out.println("You clicked me! - Battery");
         
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage1.fxml"));
         
         try 
 	{
@@ -138,14 +138,15 @@ public class MainUIController implements Initializable
 
             batterys = loader.getController();
             batterys.initSettings(this);
-        
+	    batterys.initData(filter, loadCell);
+   
             Stage stage = new Stage();
-        
+ 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(buttonSettings.getScene().getWindow());
-        
+
             Scene scene = new Scene(pane);
-        
+  
             stage.setScene(scene);
             stage.setTitle("Battery!!");
             
