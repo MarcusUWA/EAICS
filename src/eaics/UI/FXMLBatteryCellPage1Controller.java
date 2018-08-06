@@ -371,7 +371,7 @@ public class FXMLBatteryCellPage1Controller implements Initializable
 	    {
 		
 		EVMS evmsV3 = filter.getEVMS_v3();
-		ESC esc = filter.getESC();
+		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
 		
 		//+------------------------------------------------------------+

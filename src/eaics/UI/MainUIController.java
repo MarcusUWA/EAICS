@@ -192,7 +192,7 @@ public class MainUIController implements Initializable
             public void handle(ActionEvent event) 
 	    {
                 EVMS evmsV3 = filter.getEVMS_v3();
-		ESC esc = filter.getESC();
+		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
                 
                 //+------------------------------------------------------------+
@@ -226,13 +226,13 @@ public class MainUIController implements Initializable
 		
 		//Current???
 		
-		tachoLabel.setText("" + esc.getRpm());
+		tachoLabel.setText("" + esc[0].getRpm());
 		
 		//Odometer???
 		
-		controllerTempLabel.setText("" + esc.getControllerTemp());
+		controllerTempLabel.setText("" + esc[0].getControllerTemp());
 		
-		motorTempLabel.setText("" + esc.getMotorTemp());
+		motorTempLabel.setText("" + esc[0].getMotorTemp());
 		
 		//Battery Temperature???
 		

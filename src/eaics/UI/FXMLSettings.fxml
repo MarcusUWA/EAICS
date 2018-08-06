@@ -31,5 +31,9 @@
       <Button fx:id="buttonUpdateSoftware" layoutX="451.0" layoutY="44.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
       <Button layoutX="47.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleSendInd0" prefHeight="25.0" prefWidth="164.0" text="Send Ind:0 +16" />
       <Button layoutX="224.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleSendInd1" prefHeight="25.0" prefWidth="164.0" text="Send Ind:1 +16" />
+      <Button layoutX="35.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC1" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 1" />
+      <Button layoutX="215.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC2" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 2" />
+      <Button layoutX="395.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC3" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 3" />
+      <Button layoutX="585.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC4" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 4" />
    </children>
 </AnchorPane>

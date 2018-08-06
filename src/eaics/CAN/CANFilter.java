@@ -13,14 +13,18 @@ public class CANFilter
 {
 	private EVMS_v2 evms_v2;
 	private EVMS_v3 evms_v3;
-	private ESC esc;
+	private ESC[] esc;
 	private BMS[] bms;
 	
 	public CANFilter()
 	{
 		this.evms_v2 = new EVMS_v2();
 		this.evms_v3 = new EVMS_v3();
-		this.esc = new ESC();
+		this.esc = new ESC[4];
+		for(int ii = 0; ii < 4; ii++)
+		{
+		    this.esc[ii] = new ESC(ii);
+		}
 		this.bms = new BMS[24];
 		for(int ii = 0; ii < 24; ii++)
 		{
@@ -30,6 +34,7 @@ public class CANFilter
 	
 	public void run(CANMessage message)
 	{
+	    //System.out.println("CANFilter:run: FrameID: " + message.getFrameID());
 	    switch (message.getFrameID()) 
 	    {
 	    	case 10:			  //EVMS_v2 Broadcast Status (Tx)
@@ -38,8 +43,18 @@ public class CANFilter
 	    	case 30:			  //EVMS_v3 Broadcast Status (Tx)
 		    evms_v3.setAll(message);
 		    break;
-	    	case 696969:			  //MGM ESC module
-		    esc.setAll(message);
+	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Top
+		    //System.out.println("CANFilter:run Incoming info for ESC[0]");
+		    esc[0].setAll(message);
+		    break;
+		case 2222: case 2223: case 2224: case 2225:	  //MGM ESC module Bottom
+		    esc[1].setAll(message);
+		    break;
+		case 3333: case 3334: case 3335: case 3336:	  //MGM ESC module Left
+		    esc[2].setAll(message);
+		    break;
+		case 4444: case 4445: case 4446: case 4447:	  //MGM ESC module Right
+		    esc[3].setAll(message);
 		    break;
 		case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
 		    bms[0].setAll(message);
@@ -126,7 +141,7 @@ public class CANFilter
 	    return this.evms_v3;
 	}
 	
-	public ESC getESC()
+	public ESC[] getESC()
 	{
 	    return this.esc;
 	}
@@ -134,12 +149,5 @@ public class CANFilter
 	public BMS[] getBMS()
 	{
 	    return this.bms;
-	}
-	
-	//Using the old EVMS 1, change this to 3 if using the newer verision.
-	@Override
-	public String toString()
-	{
-	    return evms_v2.toString() + " " + esc.toString() + " " + bms.toString();
 	}
 }
