@@ -7,7 +7,6 @@ package eaics.CAN;
 
 /**
  *
- * @author Markcuz
  */
 public class CANMessage
 {
@@ -32,6 +31,7 @@ public class CANMessage
 		//System.out.println("CANMessage:newMessage: " + rawDataString);
 		String[] splitStr = rawDataString.trim().split("\\s+");
 		//System.out.println("0: " + splitStr[0] + " 1: " + splitStr[1] + " 2: " + splitStr[2] + " 3: " + splitStr[3]);
+                //System.out.println("4: " + splitStr[4] + " 5: " + splitStr[5] + " 6: " + splitStr[6] + " 7: " + splitStr[7]);
 		setTime(splitStr[0]);
 		setBusInt(splitStr[1]);
 		setFrameID(splitStr[2]);
@@ -74,23 +74,11 @@ public class CANMessage
 	public void setByteData(String rawDataString[], int numData)
 	{
 		this.byteData = new int[numData];//splitStr[4]
-		
-		if(numData == 2)
-		{
-			this.byteData[0] = Integer.parseInt(rawDataString[4], 16) & 0xff;
-			this.byteData[1] = Integer.parseInt(rawDataString[5], 16) & 0xff;
-		}
-		else if(numData == 8)
-		{
-			this.byteData[0] = Integer.parseInt(rawDataString[4], 16) & 0xff;
-			this.byteData[1] = Integer.parseInt(rawDataString[5], 16) & 0xff;
-			this.byteData[2] = Integer.parseInt(rawDataString[6], 16) & 0xff;
-			this.byteData[3] = Integer.parseInt(rawDataString[7], 16) & 0xff;
-			this.byteData[4] = Integer.parseInt(rawDataString[8], 16) & 0xff;
-			this.byteData[5] = Integer.parseInt(rawDataString[9], 16) & 0xff;
-			this.byteData[6] = Integer.parseInt(rawDataString[10], 16) & 0xff;
-			this.byteData[7] = Integer.parseInt(rawDataString[11], 16) & 0xff;
-		}
+                
+                for(int ii = 0; ii < numData; ii++)
+                {
+                    this.byteData[ii] = Integer.parseInt(rawDataString[4 + ii], 16) & 0xff;
+                }
 	}
 	
 	public int[] getByteData()

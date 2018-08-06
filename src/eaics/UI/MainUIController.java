@@ -222,9 +222,13 @@ public class MainUIController implements Initializable
 		//ESC - Electronic Speed Controller
 		//+------------------------------------------------------------+
 		
-		//Voltage???
+		topRPMLabel.setText("" + esc[0].getRpm());
 		
-		//Current???
+		ampsLabel.setText("" + esc[0].getBatteryCurrent());
+                
+                voltsLabel.setText("" + esc[0].getBatteryVoltage());
+                
+                capacityLabel.setText("" + esc[0].getRemainingBatteryCapacity());
 		
 		tachoLabel.setText("" + esc[0].getRpm());
 		
@@ -233,7 +237,6 @@ public class MainUIController implements Initializable
 		controllerTempLabel.setText("" + esc[0].getControllerTemp());
 		
 		motorTempLabel.setText("" + esc[0].getMotorTemp());
-		
 		//Battery Temperature???
 		
 		
