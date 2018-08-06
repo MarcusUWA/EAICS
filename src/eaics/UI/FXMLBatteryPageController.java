@@ -45,6 +45,9 @@ public class FXMLBatteryPageController implements Initializable
     
     @FXML
     Button buttonCellPage3;
+    
+    @FXML
+    private javafx.scene.control.Button closeButton;
 
     /**
      * Initializes the controller class.
@@ -67,6 +70,13 @@ public class FXMLBatteryPageController implements Initializable
     }
     
     @FXML
+    private void closeButtonAction(ActionEvent event)
+    {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
+    
+    @FXML
     private void handleCellPage1(ActionEvent event) throws IOException
     {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage1.fxml"));
@@ -77,6 +87,7 @@ public class FXMLBatteryPageController implements Initializable
 
             cellPage1 = loader.getController();
             cellPage1.initSettings(gui);
+	    cellPage1.initData(filter, loadCell);
         
             Stage stage = new Stage();
         
@@ -86,14 +97,14 @@ public class FXMLBatteryPageController implements Initializable
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Battery Management Setup!!");
+            stage.setTitle("Battery Cell Page 1");
             
             stage.show();
         }
         
         catch (Exception e) 
         {
-            System.out.println("Failed to open Setup Window");
+            System.out.println("Failed to open Battery Cell Page 1");
             e.printStackTrace();
         }
     }
@@ -107,8 +118,9 @@ public class FXMLBatteryPageController implements Initializable
         {
             Pane pane = loader.load();
 
-            cellPage1 = loader.getController();
-            cellPage1.initSettings(gui);
+            cellPage2 = loader.getController();
+            cellPage2.initSettings(gui);
+	    cellPage2.initData(filter, loadCell);
         
             Stage stage = new Stage();
         
@@ -118,14 +130,14 @@ public class FXMLBatteryPageController implements Initializable
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Battery Management Setup!!");
+            stage.setTitle("Battery Cell Page 2");
             
             stage.show();
         }
         
         catch (Exception e) 
         {
-            System.out.println("Failed to open Setup Window");
+            System.out.println("Failed to open Battery Cell Page 2");
             e.printStackTrace();
         }
     }
@@ -138,9 +150,10 @@ public class FXMLBatteryPageController implements Initializable
         try 
         {
             Pane pane = loader.load();
-
-            cellPage1 = loader.getController();
-            cellPage1.initSettings(gui);
+	    
+            cellPage3 = loader.getController();
+            cellPage3.initSettings(gui);
+	    cellPage3.initData(filter, loadCell);
         
             Stage stage = new Stage();
         
@@ -150,14 +163,14 @@ public class FXMLBatteryPageController implements Initializable
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Battery Management Setup!!");
+            stage.setTitle("Battery Cell Page 3");
             
             stage.show();
         }
         
         catch (Exception e) 
         {
-            System.out.println("Failed to open Setup Window");
+            System.out.println("Failed to open Battery Cell Page 3");
             e.printStackTrace();
         }
     }

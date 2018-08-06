@@ -8,11 +8,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLBatteryCellPage1Controller">
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLBatteryCellPage3Controller">
    <children>
-      <Button layoutX="55.0" layoutY="432.0" mnemonicParsing="false" onAction="#handlePageRight" text="Page Left" />
       <Label fx:id="cellVoltage_0_7" layoutX="724.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="739.0" layoutY="60.0" text="8">
+      <Label layoutX="739.0" layoutY="60.0" text="24">
          <font>
             <Font size="20.0" />
          </font>
@@ -39,14 +38,14 @@
       <Label fx:id="cellVoltage_3_6" layoutX="645.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_6" layoutX="645.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_6" layoutX="645.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="660.0" layoutY="60.0" text="7">
+      <Label layoutX="660.0" layoutY="60.0" text="23">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label fx:id="cellVoltage_0_6" layoutX="645.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="cellVoltage_0_5" layoutX="558.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="573.0" layoutY="60.0" text="6">
+      <Label layoutX="573.0" layoutY="60.0" text="22">
          <font>
             <Font size="20.0" />
          </font>
@@ -73,14 +72,14 @@
       <Label fx:id="cellVoltage_3_4" layoutX="479.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_4" layoutX="479.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_4" layoutX="479.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="494.0" layoutY="60.0" text="5">
+      <Label layoutX="494.0" layoutY="60.0" text="21">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label fx:id="cellVoltage_0_4" layoutX="479.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="cellVoltage_0_2" layoutX="314.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="329.0" layoutY="60.0" text="3">
+      <Label layoutX="329.0" layoutY="60.0" text="19">
          <font>
             <Font size="20.0" />
          </font>
@@ -107,14 +106,14 @@
       <Label fx:id="cellVoltage_3_3" layoutX="393.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_3" layoutX="393.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_3" layoutX="393.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="408.0" layoutY="60.0" text="4">
+      <Label layoutX="408.0" layoutY="60.0" text="20">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Label fx:id="cellVoltage_0_3" layoutX="393.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="cellVoltage_0_1" layoutX="225.0" layoutY="102.0" text="0.00V" />
-      <Label layoutX="240.0" layoutY="60.0" text="2">
+      <Label layoutX="240.0" layoutY="60.0" text="18">
          <font>
             <Font size="20.0" />
          </font>
@@ -136,7 +135,7 @@
       <Label fx:id="cellVoltage_10_0" layoutX="146.0" layoutY="352.0" text="0.00V" />
       <Label fx:id="cellVoltage_11_0" layoutX="146.0" layoutY="377.0" text="0.00V" />
       <Label fx:id="cellVoltage_6_0" layoutX="146.0" layoutY="252.0" text="0.00V" />
-      <Label layoutX="146.0" layoutY="227.0" text="0.00V" />
+      <Label fx:id="cellVoltage_5_0" layoutX="146.0" layoutY="227.0" text="0.00V" />
       <Label fx:id="cellVoltage_4_0" layoutX="146.0" layoutY="202.0" text="0.00V" />
       <Label fx:id="cellVoltage_3_0" layoutX="146.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_0" layoutX="146.0" layoutY="152.0" text="0.00V" />
@@ -201,7 +200,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="161.0" layoutY="60.0" text="1">
+      <Label layoutX="161.0" layoutY="60.0" text="17">
          <font>
             <Font size="20.0" />
          </font>

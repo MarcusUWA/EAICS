@@ -19,7 +19,7 @@
       <Button layoutX="34.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleRefreshIP" prefHeight="25.0" prefWidth="164.0" text="Refresh IP Address" />
       <Label fx:id="label_IPaddress2" layoutX="34.0" layoutY="108.0" prefHeight="17.0" prefWidth="224.0" />
       <Label fx:id="labelLAN" layoutX="34.0" layoutY="107.0" />
-      <Button fx:id="buttonSetup" layoutX="486.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="27.0" prefWidth="110.0" text="Enter Setup" />
+      <Button fx:id="buttonSetup" layoutX="486.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="39.0" prefWidth="178.0" text="Enter Setup" />
       <Button fx:id="wifiConnect" layoutX="34.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleWifiSetup" prefHeight="27.0" prefWidth="164.0" text="Setup Wifi" />
       <Label layoutX="236.0" layoutY="11.0" text="EAICS Settings">
          <font>
@@ -29,5 +29,7 @@
       <Label layoutX="451.0" layoutY="14.0" text="Software Version: " />
       <Label layoutX="596.0" layoutY="14.0" text="--" />
       <Button fx:id="buttonUpdateSoftware" layoutX="451.0" layoutY="44.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
+      <Button layoutX="47.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleSendInd0" prefHeight="25.0" prefWidth="164.0" text="Send Ind:0 +16" />
+      <Button layoutX="224.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleSendInd1" prefHeight="25.0" prefWidth="164.0" text="Send Ind:1 +16" />
    </children>
 </AnchorPane>

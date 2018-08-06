@@ -21,8 +21,8 @@ public class CANFilter
 		this.evms_v2 = new EVMS_v2();
 		this.evms_v3 = new EVMS_v3();
 		this.esc = new ESC();
-		this.bms = new BMS[16];
-		for(int ii = 0; ii < 16; ii++)
+		this.bms = new BMS[24];
+		for(int ii = 0; ii < 24; ii++)
 		{
 		    this.bms[ii] = new BMS(ii);
 		}
@@ -48,7 +48,6 @@ public class CANFilter
 		    bms[1].setAll(message);
 		    break;
 		case 321: case 322: case 323: case 324:   //Reply Data - BMS Module 2
-		    System.out.println("bms module 2 info incomming.");
 		    bms[2].setAll(message);
 		    break;
 		case 331: case 332: case 333: case 334:   //Reply Data - BMS Module 3
@@ -89,6 +88,30 @@ public class CANFilter
 		    break;
 		case 451: case 452: case 453: case 454:   //Reply Data - BMS Module F
 		    bms[15].setAll(message);
+		    break;
+		case 461: case 462: case 463: case 464:   //Reply Data - BMS Module 0 + 16
+		    bms[16].setAll(message);
+		    break;
+		case 471: case 472: case 473: case 474:   //Reply Data - BMS Module 1 + 16
+		    bms[17].setAll(message);
+		    break;
+		case 481: case 482: case 483: case 484:   //Reply Data - BMS Module 2 + 16
+		    bms[18].setAll(message);
+		    break;
+		case 491: case 492: case 493: case 494:   //Reply Data - BMS Module 3 + 16
+		    bms[19].setAll(message);
+		    break;
+		case 501: case 502: case 503: case 504:   //Reply Data - BMS Module 4 + 16
+		    bms[20].setAll(message);
+		    break;
+		case 511: case 512: case 513: case 514:   //Reply Data - BMS Module 5 + 16
+		    bms[21].setAll(message);
+		    break;
+		case 521: case 522: case 523: case 524:   //Reply Data - BMS Module 6 + 16
+		    bms[22].setAll(message);
+		    break;
+		case 531: case 532: case 533: case 534:   //Reply Data - BMS Module 7 + 16
+		    bms[23].setAll(message);
 		    break;
 	    }
 	}

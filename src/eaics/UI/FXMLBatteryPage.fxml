@@ -11,6 +11,6 @@
       <Button fx:id="buttonCellPage1" layoutX="96.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleCellPage1" text="Cell Page 1" />
       <Button fx:id="buttonCellPage2" layoutX="346.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleCellPage2" text="Cell Page 2" />
       <Button fx:id="buttonCellPage3" layoutX="587.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleCellPage3" text="Cell Page 3" />
-      <Button layoutX="344.0" layoutY="390.0" mnemonicParsing="false" text="Main Menu" />
+      <Button fx:id="closeButton" layoutX="344.0" layoutY="390.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
    </children>
 </AnchorPane>

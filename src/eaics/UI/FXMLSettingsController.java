@@ -75,10 +75,10 @@ public class FXMLSettingsController implements Initializable
     private Label label_IPaddress2;
     
     @FXML
-    private javafx.scene.control.Button closeButton;
+    private Button buttonUpdateSoftware;
     
     @FXML
-    private Button buttonUpdateSoftware;
+    private javafx.scene.control.Button closeButton;
     
     @FXML
     private void closeButtonAction(ActionEvent event)
@@ -127,6 +127,72 @@ public class FXMLSettingsController implements Initializable
         String temp = "";
         int exampleVoltage = 3600; // millivolts
         int moduleID = 2;
+        msg = "00000";
+        msg += Integer.toHexString(300 + 10*moduleID);
+	
+        msg += "#";
+	
+        temp += Integer.toHexString(exampleVoltage >> 8);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+	temp = "";
+	
+	temp += Integer.toHexString(exampleVoltage & 0xFF);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+	temp = "";
+	
+        System.out.println("Message>>"+msg+"<<");
+	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+    }
+    
+    @FXML
+    private void handleSendInd0(ActionEvent event) throws IOException
+    {
+        System.out.println("Sending a CAN msg!"); //delete this after testing please.
+	
+        String temp = "";
+        int exampleVoltage = 3600; // millivolts
+        int moduleID = 0 + 16;
+        msg = "00000";
+        msg += Integer.toHexString(300 + 10*moduleID);
+	
+        msg += "#";
+	
+        temp += Integer.toHexString(exampleVoltage >> 8);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+	temp = "";
+	
+	temp += Integer.toHexString(exampleVoltage & 0xFF);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+	temp = "";
+	
+        System.out.println("Message>>"+msg+"<<");
+	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+    }
+    
+    @FXML
+    private void handleSendInd1(ActionEvent event) throws IOException
+    {
+        System.out.println("Sending a CAN msg!"); //delete this after testing please.
+	
+        String temp = "";
+        int exampleVoltage = 3600; // millivolts
+        int moduleID = 1 + 16;
         msg = "00000";
         msg += Integer.toHexString(300 + 10*moduleID);
 	

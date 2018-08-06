@@ -31,13 +31,10 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author Markcuz
  */
 public class FXMLBatteryCellPage1Controller implements Initializable 
 {
     MainUIController gui;
-    
-    FXMLBatteryCellPage2Controller cellPage2;
     
     //refresh rate in ms
     int refreshFrequency = 10;
@@ -360,13 +357,12 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     @FXML
     private javafx.scene.control.Button closeButton;
     
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
+    public void initData(CANFilter fil, LoadCell cell) 
     {
-        Timeline refreshUI;
+        this.filter = fil;
+        this.loadCell = cell;
+	
+	Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
 	{
             int count = 0;
@@ -461,17 +457,152 @@ public class FXMLBatteryCellPage1Controller implements Initializable
 		cellVoltage_10_2.setText((bms[2].getVoltage(10) / 1000.0) + "V");
 		
 		cellVoltage_11_2.setText((bms[2].getVoltage(11) / 1000.0) + "V");
+		
+		//+------------------------------------------------------------+
+		//BMS Module 3 (switch set to 3): 1 - 12 Cells
+		//+------------------------------------------------------------+
+		
+		cellVoltage_0_3.setText((bms[3].getVoltage(0) / 1000.0) + "V");
+		
+		cellVoltage_1_3.setText((bms[3].getVoltage(1) / 1000.0) + "V");
+		
+		cellVoltage_2_3.setText((bms[3].getVoltage(2) / 1000.0) + "V");
+		
+		cellVoltage_3_3.setText((bms[3].getVoltage(3) / 1000.0) + "V");
+		
+		cellVoltage_4_3.setText((bms[3].getVoltage(4) / 1000.0) + "V");
+		
+		cellVoltage_5_3.setText((bms[3].getVoltage(5) / 1000.0) + "V");
+		
+		cellVoltage_6_3.setText((bms[3].getVoltage(6) / 1000.0) + "V");
+		
+		cellVoltage_7_3.setText((bms[3].getVoltage(7) / 1000.0) + "V");
+		
+		cellVoltage_8_3.setText((bms[3].getVoltage(8) / 1000.0) + "V");
+		
+		cellVoltage_9_3.setText((bms[3].getVoltage(9) / 1000.0) + "V");
+		
+		cellVoltage_10_3.setText((bms[3].getVoltage(10) / 1000.0) + "V");
+		
+		cellVoltage_11_3.setText((bms[3].getVoltage(11) / 1000.0) + "V");
+		
+		//+------------------------------------------------------------+
+		//BMS Module 4 (switch set to 4): 1 - 12 Cells
+		//+------------------------------------------------------------+
+		
+		cellVoltage_0_4.setText((bms[4].getVoltage(0) / 1000.0) + "V");
+		
+		cellVoltage_1_4.setText((bms[4].getVoltage(1) / 1000.0) + "V");
+		
+		cellVoltage_2_4.setText((bms[4].getVoltage(2) / 1000.0) + "V");
+		
+		cellVoltage_3_4.setText((bms[4].getVoltage(3) / 1000.0) + "V");
+		
+		cellVoltage_4_4.setText((bms[4].getVoltage(4) / 1000.0) + "V");
+		
+		cellVoltage_5_4.setText((bms[4].getVoltage(5) / 1000.0) + "V");
+		
+		cellVoltage_6_4.setText((bms[4].getVoltage(6) / 1000.0) + "V");
+		
+		cellVoltage_7_4.setText((bms[4].getVoltage(7) / 1000.0) + "V");
+		
+		cellVoltage_8_4.setText((bms[4].getVoltage(8) / 1000.0) + "V");
+		
+		cellVoltage_9_4.setText((bms[4].getVoltage(9) / 1000.0) + "V");
+		
+		cellVoltage_10_4.setText((bms[4].getVoltage(10) / 1000.0) + "V");
+		
+		cellVoltage_11_4.setText((bms[4].getVoltage(11) / 1000.0) + "V");
+		
+		//+------------------------------------------------------------+
+		//BMS Module 5 (switch set to 5): 1 - 12 Cells
+		//+------------------------------------------------------------+
+		
+		cellVoltage_0_5.setText((bms[5].getVoltage(0) / 1000.0) + "V");
+		
+		cellVoltage_1_5.setText((bms[5].getVoltage(1) / 1000.0) + "V");
+		
+		cellVoltage_2_5.setText((bms[5].getVoltage(2) / 1000.0) + "V");
+		
+		cellVoltage_3_5.setText((bms[5].getVoltage(3) / 1000.0) + "V");
+		
+		cellVoltage_4_5.setText((bms[5].getVoltage(4) / 1000.0) + "V");
+		
+		cellVoltage_5_5.setText((bms[5].getVoltage(5) / 1000.0) + "V");
+		
+		cellVoltage_6_5.setText((bms[5].getVoltage(6) / 1000.0) + "V");
+		
+		cellVoltage_7_5.setText((bms[5].getVoltage(7) / 1000.0) + "V");
+		
+		cellVoltage_8_5.setText((bms[5].getVoltage(8) / 1000.0) + "V");
+		
+		cellVoltage_9_5.setText((bms[5].getVoltage(9) / 1000.0) + "V");
+		
+		cellVoltage_10_5.setText((bms[5].getVoltage(10) / 1000.0) + "V");
+		
+		cellVoltage_11_5.setText((bms[5].getVoltage(11) / 1000.0) + "V");
+		
+		//+------------------------------------------------------------+
+		//BMS Module 6 (switch set to 6): 1 - 12 Cells
+		//+------------------------------------------------------------+
+		
+		cellVoltage_0_6.setText((bms[6].getVoltage(0) / 1000.0) + "V");
+		
+		cellVoltage_1_6.setText((bms[6].getVoltage(1) / 1000.0) + "V");
+		
+		cellVoltage_2_6.setText((bms[6].getVoltage(2) / 1000.0) + "V");
+		
+		cellVoltage_3_6.setText((bms[6].getVoltage(3) / 1000.0) + "V");
+		
+		cellVoltage_4_6.setText((bms[6].getVoltage(4) / 1000.0) + "V");
+		
+		cellVoltage_5_6.setText((bms[6].getVoltage(5) / 1000.0) + "V");
+		
+		cellVoltage_6_6.setText((bms[6].getVoltage(6) / 1000.0) + "V");
+		
+		cellVoltage_7_6.setText((bms[6].getVoltage(7) / 1000.0) + "V");
+		
+		cellVoltage_8_6.setText((bms[6].getVoltage(8) / 1000.0) + "V");
+		
+		cellVoltage_9_6.setText((bms[6].getVoltage(9) / 1000.0) + "V");
+		
+		cellVoltage_10_6.setText((bms[6].getVoltage(10) / 1000.0) + "V");
+		
+		cellVoltage_11_6.setText((bms[6].getVoltage(11) / 1000.0) + "V");
+		
+		//+------------------------------------------------------------+
+		//BMS Module 7 (switch set to 7): 1 - 12 Cells
+		//+------------------------------------------------------------+
+		
+		cellVoltage_0_7.setText((bms[7].getVoltage(0) / 1000.0) + "V");
+		
+		cellVoltage_1_7.setText((bms[7].getVoltage(1) / 1000.0) + "V");
+		
+		cellVoltage_2_7.setText((bms[7].getVoltage(2) / 1000.0) + "V");
+		
+		cellVoltage_3_7.setText((bms[7].getVoltage(3) / 1000.0) + "V");
+		
+		cellVoltage_4_7.setText((bms[7].getVoltage(4) / 1000.0) + "V");
+		
+		cellVoltage_5_7.setText((bms[7].getVoltage(5) / 1000.0) + "V");
+		
+		cellVoltage_6_7.setText((bms[7].getVoltage(6) / 1000.0) + "V");
+		
+		cellVoltage_7_7.setText((bms[7].getVoltage(7) / 1000.0) + "V");
+		
+		cellVoltage_8_7.setText((bms[7].getVoltage(8) / 1000.0) + "V");
+		
+		cellVoltage_9_7.setText((bms[7].getVoltage(9) / 1000.0) + "V");
+		
+		cellVoltage_10_7.setText((bms[7].getVoltage(10) / 1000.0) + "V");
+		
+		cellVoltage_11_7.setText((bms[7].getVoltage(11) / 1000.0) + "V");
+		
             }
             
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
-    }
-    
-    public void initData(CANFilter fil, LoadCell cell) 
-    {
-        this.filter = fil;
-        this.loadCell = cell;
     }
 
     public void initSettings(MainUIController mainGui) 
@@ -486,37 +617,12 @@ public class FXMLBatteryCellPage1Controller implements Initializable
         stage.close();
     }
     
-    //FXMLBatteryPage2Controller batteryPage2;
-    
-    @FXML
-    private void handlePageRight(ActionEvent event)
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
     {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage2.fxml"));
         
-        try 
-        {
-            Pane pane = loader.load();
-
-            cellPage2 = loader.getController();
-            cellPage2.initSettings(gui);
-        
-            Stage stage = new Stage();
-        
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(closeButton.getScene().getWindow());
-        
-            Scene scene = new Scene(pane);
-        
-            stage.setScene(scene);
-            stage.setTitle("Battery Page 2");
-            
-            stage.show();
-        }
-        
-        catch (Exception e) 
-        {
-            System.out.println("Failed to open Battery Page 2 Window");
-            e.printStackTrace();
-        }
     }
 }
