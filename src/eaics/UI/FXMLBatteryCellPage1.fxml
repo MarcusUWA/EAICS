@@ -211,7 +211,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Line endX="395.0" layoutX="410.0" layoutY="57.0" startX="-395.0" />
+      <Line endX="395.0" layoutX="400.0" layoutY="57.0" startX="-395.0" />
       <Label layoutX="353.0" layoutY="25.0" text="Cell Page 1">
          <font>
             <Font size="20.0" />
