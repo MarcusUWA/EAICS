@@ -98,6 +98,7 @@ public class FXMLSettingsController implements Initializable
 
             setup = loader.getController();
             setup.initSettings(gui);
+            setup.initData(filter, loadCell);
         
             Stage stage = new Stage();
         
@@ -222,7 +223,7 @@ public class FXMLSettingsController implements Initializable
     private void handleSendESC1(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10001#8c170600000000"; //message to test ESC 1st packet
+        msg = "14a10001#39178b00be0000"; //message to test ESC 1st packet
         System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
@@ -231,7 +232,7 @@ public class FXMLSettingsController implements Initializable
     private void handleSendESC2(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10002#28e7ffff0d0000"; //message to test ESC 2nd packet
+        msg = "14a10002#bdc8ffff1b0000"; //message to test ESC 2nd packet
         System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
@@ -240,7 +241,7 @@ public class FXMLSettingsController implements Initializable
     private void handleSendESC3(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10003#00fc000000000300"; //message to test ESC 3rd packet
+        msg = "14a10003#a701a70100000000"; //message to test ESC 3rd packet
         System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
@@ -249,7 +250,7 @@ public class FXMLSettingsController implements Initializable
     private void handleSendESC4(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10004#64ab000000000000"; //message to test ESC 4th packet
+        msg = "14a10004#6426010000000100"; //message to test ESC 4th packet
         System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
@@ -328,6 +329,12 @@ public class FXMLSettingsController implements Initializable
     public void initSettings(MainUIController mainGui) 
     {
         gui = mainGui;
+    }
+    
+    public void initData(CANFilter filter, LoadCell loadCell)
+    {
+        this.filter = filter;
+        this.loadCell = loadCell;
     }
 
     /**

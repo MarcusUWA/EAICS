@@ -16,6 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import eaics.BMSSettings;
+import eaics.CAN.CANFilter;
+import eaics.SER.LoadCell;
 
 /**
  * FXML Controller class
@@ -25,6 +27,9 @@ import eaics.BMSSettings;
 public class FXMLSetupController implements Initializable 
 {
     MainUIController gui;
+    
+    private CANFilter filter;
+    private LoadCell loadCell;
     
     FXMLNumpadController numpad;
     
@@ -47,6 +52,12 @@ public class FXMLSetupController implements Initializable
     public void initSettings(MainUIController settingsGui) 
     {
         gui = settingsGui;
+    }
+    
+    public void initData(CANFilter filter, LoadCell loadCell)
+    {
+        this.filter = filter;
+        this.loadCell = loadCell;
     }
     
     @FXML

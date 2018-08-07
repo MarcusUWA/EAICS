@@ -106,6 +106,7 @@ public class MainUIController implements Initializable
 
             settings = loader.getController();
             settings.initSettings(this);
+            settings.initData(filter, loadCell);
         
             Stage stage = new Stage();
         

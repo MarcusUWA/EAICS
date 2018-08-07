@@ -89,7 +89,7 @@ public class CANFilter
 		case 401: case 402: case 403: case 404:   //Reply Data - BMS Module A
 		    bms[10].setAll(message);
 		    break;
-		case 411: case 42: case 43: case 44:   //Reply Data - BMS Module B
+		case 411: case 412: case 413: case 414:   //Reply Data - BMS Module B
 		    bms[11].setAll(message);
 		    break;
 		case 421: case 422: case 423: case 424:   //Reply Data - BMS Module C
