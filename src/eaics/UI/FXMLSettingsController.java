@@ -42,7 +42,9 @@ public class FXMLSettingsController implements Initializable
 {
     FXMLGeneralSettingsPage1 generalSettingsPage1;
     FXMLGeneralSettingsPage2 generalSettingsPage2;
-    //FXMLGeneralSettingsPage3 generalSettingsPage3;
+    FXMLGeneralSettingsPage3 generalSettingsPage3;
+    FXMLGeneralSettingsPage4 generalSettingsPage4;
+    
     FXMLConnectWifiController wifiConnectController;
     
     @FXML
@@ -53,6 +55,12 @@ public class FXMLSettingsController implements Initializable
     
     @FXML
     Button buttonGeneralSettingsPage3;
+    
+    @FXML
+    Button buttonGeneralSettingsPage4;
+    
+    @FXML
+    Button buttonResetSOC;
     
     @FXML 
     Button wifiConnect;
@@ -163,21 +171,21 @@ public class FXMLSettingsController implements Initializable
     @FXML   
     private void handleEnterGeneralSettingsPage3(ActionEvent event)
     {   
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLGeneralSettingsPage1.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLGeneralSettingsPage3.fxml"));
         
         try 
         {
             Pane pane = loader.load();
 
-            generalSettingsPage1 = loader.getController();
-            generalSettingsPage1.initSettings(gui);
-            generalSettingsPage1.initData(filter, loadCell);
-	    generalSettingsPage1.updateLabels();
+            generalSettingsPage3 = loader.getController();
+            generalSettingsPage3.initSettings(gui);
+            generalSettingsPage3.initData(filter, loadCell);
+	    generalSettingsPage3.updateLabels();
         
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+            stage.initOwner(buttonGeneralSettingsPage3.getScene().getWindow());
         
             Scene scene = new Scene(pane);
         
@@ -192,6 +200,49 @@ public class FXMLSettingsController implements Initializable
             System.out.println("Failed to open General Settings Page 3 Window");
             e.printStackTrace();
         }
+    }
+    
+    @FXML   
+    private void handleEnterGeneralSettingsPage4(ActionEvent event)
+    {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLGeneralSettingsPage4.fxml"));
+        
+        try 
+        {
+            Pane pane = loader.load();
+
+            generalSettingsPage4 = loader.getController();
+            generalSettingsPage4.initSettings(gui);
+            generalSettingsPage4.initData(filter, loadCell);
+	    generalSettingsPage4.updateLabels();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonGeneralSettingsPage4.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("General Settings Page 4!");
+            
+            stage.show();
+        }
+        
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open General Settings Page 4 Window");
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void handleResetSOC(ActionEvent event) throws IOException
+    {
+        System.out.println("Sending a CAN msg!"); //delete this after testing please.
+        msg = "00000026#64"; //message to test ESC 1st packet
+        System.out.println("Message>>"+msg+"<<");
+	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }
     
     @FXML
@@ -333,7 +384,7 @@ public class FXMLSettingsController implements Initializable
     private void handleSendEVMSCANMsg(ActionEvent event) throws IOException
     {
         System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "00a#005f41008077004f"; //message to test EVMS
+        msg = "01e#005f41008077004f"; //message to test EVMS
         System.out.println("Message>>"+msg+"<<");
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
     }

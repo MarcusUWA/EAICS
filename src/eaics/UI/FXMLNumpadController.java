@@ -92,6 +92,9 @@ public class FXMLNumpadController implements Initializable
 
     @FXML
     private Button five;
+    
+    @FXML
+    private Button backspace;
 
     @FXML
     void handleButtonAction(ActionEvent event) 
@@ -150,9 +153,14 @@ public class FXMLNumpadController implements Initializable
         {
             display.setText("");
         }
+	else if (event.getSource() == backspace) 
+        {
+            String str = display.getText();
+	    str = str.substring(0, str.length() - 1);
+	    display.setText(str);
+        }
         else if (event.getSource() == enter) 
         {
-            //System.out.println(">>>>>>>>>>>>>>>>>>" + display.getText());
             this.bmsSettings.setSetting(index, Integer.parseInt(display.getText()));
             this.bmsSettings.update();
 	    this.settingsPage.updateLabels();

@@ -7,86 +7,86 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eaics.UI.FXMLNumpadController">
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLNumpadController">
    <children>
-      <TextField fx:id="display" alignment="CENTER_RIGHT" editable="false" layoutX="191.0" layoutY="46.0" prefHeight="96.0" prefWidth="419.0">
+      <TextField fx:id="display" alignment="CENTER_RIGHT" editable="false" layoutX="191.0" layoutY="17.0" prefHeight="96.0" prefWidth="419.0">
          <font>
             <Font size="41.0" />
          </font>
       </TextField>
-      <GridPane layoutX="191.0" layoutY="138.0" prefHeight="297.0" prefWidth="419.0">
+      <GridPane layoutX="128.0" layoutY="133.0" prefHeight="343.0" prefWidth="579.0">
          <children>
-            <Button fx:id="five" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button fx:id="five" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="two" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="2" GridPane.columnIndex="1">
+            <Button fx:id="two" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="110.0" prefWidth="116.0" text="2" GridPane.columnIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="1" GridPane.rowIndex="1">
+            <Button mnemonicParsing="false" prefHeight="77.0" prefWidth="116.0" text="1" GridPane.rowIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="four" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="4" GridPane.rowIndex="1">
+            <Button fx:id="four" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="4" GridPane.rowIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="three" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="3" GridPane.columnIndex="2">
+            <Button fx:id="three" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="3" GridPane.columnIndex="2">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="six" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button fx:id="six" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="seven" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="7" GridPane.rowIndex="2">
+            <Button fx:id="seven" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="7" GridPane.rowIndex="2">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="eight" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="eight" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="8" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="nine" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="9" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Button fx:id="nine" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="9" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="zero" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="0" GridPane.rowIndex="3">
+            <Button fx:id="zero" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="0" GridPane.rowIndex="3">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="decimal" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="." GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Button fx:id="decimal" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="." GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="clear" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="CL" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Button fx:id="clear" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="CL" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="enter" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="297.0" prefWidth="104.0" stylesheets="@../numpadCSS.css" text="E" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <Button fx:id="enter" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="78.0" prefWidth="252.0" text="E" GridPane.columnIndex="3" GridPane.rowIndex="3">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="one" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" stylesheets="@../numpadCSS.css" text="1">
+            <Button fx:id="one" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="1">
                <font>
                   <Font size="30.0" />
                </font>
             </Button>
+            <Button fx:id="backspace" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="190.0" prefWidth="267.0" text="&lt;--" GridPane.columnIndex="3" />
          </children>
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -96,9 +96,9 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="92.5" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="93.5" minHeight="10.0" prefHeight="76.5" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="61.5" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
       <Label fx:id="label" layoutX="317.0" layoutY="166.0" minHeight="16" minWidth="69" />
