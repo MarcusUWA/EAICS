@@ -54,6 +54,7 @@ public class BMSSettings
         this.evmsTempWarning = new ConfigData("degrees C", 0, 151, 151);    //Over temp (degC)
         this.minAuxVoltage = new ConfigData("V", 8, 15, 10);
         this.minIsolation = new ConfigData("%", 0, 99, 50);
+	
         this.tachoPPR = new ConfigData("", 1, 6, 2);
         this.fuelGaugeFull = new ConfigData("%", 0, 100, 80);
         this.fuelGaugeEmpty = new ConfigData("%", 0, 100, 20);
@@ -62,6 +63,7 @@ public class BMSSettings
         this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 0, 250, 100);
         this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 0, 250, 180);
         this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 0, 252, 251);
+	
         this.bmsHysteresis = new ConfigData("x0.01V", 0, 50, 20);
         this.bmsMinTemp = new ConfigData("n-40 degrees C", 0, 141, 0);
         this.bmsMaxTemp = new ConfigData("n-40 degrees C", 0, 141, 141);
@@ -286,6 +288,113 @@ public class BMSSettings
         }
         
         return unit;
+    }
+    
+    public int getSetting(int index)
+    {
+        int setting = 0;
+        
+        switch(index)
+        {
+            case 0:
+                setting = this.packCapacity.getSetting();
+                break;
+            case 1:
+                setting = this.socWarning.getSetting();
+                break;
+            case 2:
+                setting = this.fullVoltage.getSetting();
+                break;
+            case 3:
+                setting = this.warnCurrent.getSetting();
+                break;
+            case 4:
+                setting = this.tripCurrent.getSetting();
+                break;
+            case 5:
+                setting = this.evmsTempWarning.getSetting();
+                break;
+            case 6:
+                setting = this.minAuxVoltage.getSetting();
+                break;
+            case 7:
+                setting = this.minIsolation.getSetting();
+                break;
+            case 8:
+                setting = this.tachoPPR.getSetting();
+                break;
+            case 9:
+                setting = this.fuelGaugeFull.getSetting();
+                break;
+            case 10:
+                setting = this.fuelGaugeEmpty.getSetting();
+                break;
+            case 11:
+                setting = this.tempGaugeHot.getSetting();
+                break;
+            case 12:
+                setting = this.tempGaugeCold.getSetting();
+                break;
+            case 13:
+                setting = this.bmsMinVoltage.getSetting();
+                break;
+            case 14:
+                setting = this.bmsMaxVoltage.getSetting();
+                break;
+            case 15:
+                setting = this.balanceVoltage.getSetting();
+                break;
+            case 16:
+                setting = this.bmsHysteresis.getSetting();
+                break;
+            case 17:
+                setting = this.bmsMinTemp.getSetting();
+                break;
+            case 18:
+                setting = this.bmsMaxTemp.getSetting();
+                break;
+            case 19:
+                setting = this.maxChargeVoltage.getSetting();
+                break;
+            case 20:
+                setting = this.maxChargeCurrent.getSetting();
+                break;
+            case 21:
+                setting = this.altChargeVoltage.getSetting();
+                break;
+            case 22:
+                setting = this.altChargeCurrent.getSetting();
+                break;
+            case 23:
+                setting = this.sleepDelay.getSetting();
+                break;
+            case 24:
+                setting = this.mpiFunction.getSetting();
+                break;
+            case 25:
+                setting = this.mpo1Function.getSetting();
+                break;
+            case 26:
+                setting = this.mpo2Function.getSetting();
+                break;
+            case 27:
+                setting = this.parallelStrings.getSetting();
+                break;
+            case 28:
+                setting = this.enablePrecharge.getSetting();
+                break;
+            case 29:
+                setting = this.stationaryMode.getSetting();
+                break;
+            case 30:
+                //reserved
+                break;
+            case 31:
+                //reserved
+                break;
+        }
+        
+        return setting;
     }
     
     public void update()

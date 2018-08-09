@@ -40,11 +40,19 @@ import javafx.util.Duration;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    FXMLSetupController setup;
+    FXMLGeneralSettingsPage1 generalSettingsPage1;
+    FXMLGeneralSettingsPage2 generalSettingsPage2;
+    //FXMLGeneralSettingsPage3 generalSettingsPage3;
     FXMLConnectWifiController wifiConnectController;
     
     @FXML
-    Button buttonSetup;
+    Button buttonGeneralSettingsPage1;
+    
+    @FXML
+    Button buttonGeneralSettingsPage2;
+    
+    @FXML
+    Button buttonGeneralSettingsPage3;
     
     @FXML 
     Button wifiConnect;
@@ -58,9 +66,6 @@ public class FXMLSettingsController implements Initializable
     private LoadCell loadCell;
     
     private String msg;
-    
-    //@FXML
-    //private Label label1;
     
     @FXML
     private Label labelLAN;
@@ -88,37 +93,106 @@ public class FXMLSettingsController implements Initializable
     }
 
     @FXML   
-    private void handleEnterSetup(ActionEvent event)
+    private void handleEnterGeneralSettingsPage1(ActionEvent event)
     {   
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSetup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLGeneralSettingsPage1.fxml"));
         
         try 
         {
             Pane pane = loader.load();
 
-            setup = loader.getController();
-            setup.initSettings(gui);
-            setup.initData(filter, loadCell);
+            generalSettingsPage1 = loader.getController();
+            generalSettingsPage1.initSettings(gui);
+            generalSettingsPage1.initData(filter, loadCell);
+	    generalSettingsPage1.updateLabels();
         
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonSetup.getScene().getWindow());
+            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
         
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Battery Management Setup!!");
+            stage.setTitle("General Settings Page 1!");
             
             stage.show();
         }
         
         catch (Exception e) 
         {
-            System.out.println("Failed to open Setup Window");
+            System.out.println("Failed to open General Settings Page 1 Window");
             e.printStackTrace();
         }
-    }    
+    }
+    
+    @FXML   
+    private void handleEnterGeneralSettingsPage2(ActionEvent event)
+    {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLGeneralSettingsPage2.fxml"));
+        
+        try 
+        {
+            Pane pane = loader.load();
+
+            generalSettingsPage2 = loader.getController();
+            generalSettingsPage2.initSettings(gui);
+            generalSettingsPage2.initData(filter, loadCell);
+	    generalSettingsPage2.updateLabels();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonGeneralSettingsPage2.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("General Settings Page 2!");
+            
+            stage.show();
+        }
+        
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open General Settings Page 2 Window");
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML   
+    private void handleEnterGeneralSettingsPage3(ActionEvent event)
+    {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLGeneralSettingsPage1.fxml"));
+        
+        try 
+        {
+            Pane pane = loader.load();
+
+            generalSettingsPage1 = loader.getController();
+            generalSettingsPage1.initSettings(gui);
+            generalSettingsPage1.initData(filter, loadCell);
+	    generalSettingsPage1.updateLabels();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("General Settings Page 3!");
+            
+            stage.show();
+        }
+        
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open General Settings Page 3 Window");
+            e.printStackTrace();
+        }
+    }
     
     @FXML
     private void handleSendBMSCANMsg(ActionEvent event) throws IOException
@@ -309,7 +383,7 @@ public class FXMLSettingsController implements Initializable
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonSetup.getScene().getWindow());
+            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
         
             Scene scene = new Scene(pane);
         

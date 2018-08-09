@@ -83,27 +83,27 @@ public class EAICS extends Application
 
         Thread t1 = new Thread(new Runnable()
         {
-                public void run()
-                {
-                        BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
-                        String rawCANmsg = null;
+	    public void run()
+	    {
+		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
+		String rawCANmsg = null;
 
-                        try
-                        {
-                                while((rawCANmsg = input.readLine()) != null)
-                                {
-                                        //System.out.println("Raw CAN Msg: " + rawCANmsg);
-                                        //canRawStringMessage.setMsg(rawCANmsg);
-					
-					canMessage.newMessage(rawCANmsg);
-					filter.run(canMessage);
-                                }
-                        }
-                        catch(IOException e)
-                        {
-                                e.printStackTrace();
-                        }
-                }
+		try
+		{
+		    while((rawCANmsg = input.readLine()) != null)
+		    {
+			//System.out.println("Raw CAN Msg: " + rawCANmsg);
+			//canRawStringMessage.setMsg(rawCANmsg);
+
+			canMessage.newMessage(rawCANmsg);
+			filter.run(canMessage);
+		    }
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	    }
         });
 
         t1.start();

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -10,30 +11,37 @@
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettingsController">
    <children>
       <Button fx:id="closeButton" layoutX="533.0" layoutY="432.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Main Menu" />
-      <Button layoutX="459.0" layoutY="241.0" mnemonicParsing="false" onAction="#handleSendBMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send BMS CAN Message" />
+      <Button layoutX="44.0" layoutY="240.0" mnemonicParsing="false" onAction="#handleSendBMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send BMS CAN Message" />
       <Label fx:id="labelWiFi" layoutX="34.0" layoutY="89.0" />
-      <Button layoutX="459.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleSendEVMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send EVMS CAN Message" />
-      <Button layoutX="459.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleSendGenericCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send Generic CAN Message" />
-      <Label fx:id="label11" layoutX="507.0" layoutY="161.0" text="Press Here" />
+      <Button layoutX="248.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleSendEVMSCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send EVMS CAN Message" />
+      <Button layoutX="215.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleSendGenericCANMsg" prefHeight="25.0" prefWidth="164.0" text="Send Generic CAN Message" />
       <Label fx:id="label_IPaddress1" layoutX="34.0" layoutY="90.0" prefHeight="17.0" prefWidth="224.0" />
       <Button layoutX="34.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleRefreshIP" prefHeight="25.0" prefWidth="164.0" text="Refresh IP Address" />
       <Label fx:id="label_IPaddress2" layoutX="34.0" layoutY="108.0" prefHeight="17.0" prefWidth="224.0" />
       <Label fx:id="labelLAN" layoutX="34.0" layoutY="107.0" />
-      <Button fx:id="buttonSetup" layoutX="486.0" layoutY="124.0" mnemonicParsing="false" onAction="#handleEnterSetup" prefHeight="39.0" prefWidth="178.0" text="Enter Setup" />
+      <Button fx:id="buttonGeneralSettingsPage1" layoutX="485.0" layoutY="125.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage1" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 1" />
       <Button fx:id="wifiConnect" layoutX="34.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleWifiSetup" prefHeight="27.0" prefWidth="164.0" text="Setup Wifi" />
-      <Label layoutX="236.0" layoutY="11.0" text="EAICS Settings">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="451.0" layoutY="14.0" text="Software Version: " />
-      <Label layoutX="596.0" layoutY="14.0" text="--" />
-      <Button fx:id="buttonUpdateSoftware" layoutX="451.0" layoutY="44.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
+      <Label layoutX="236.0" layoutY="93.0" text="Software Version: " />
+      <Label layoutX="381.0" layoutY="93.0" text="--" />
+      <Button fx:id="buttonUpdateSoftware" layoutX="236.0" layoutY="123.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
       <Button layoutX="47.0" layoutY="295.0" mnemonicParsing="false" onAction="#handleSendInd0" prefHeight="25.0" prefWidth="164.0" text="Send Ind:0 +16" />
       <Button layoutX="224.0" layoutY="296.0" mnemonicParsing="false" onAction="#handleSendInd1" prefHeight="25.0" prefWidth="164.0" text="Send Ind:1 +16" />
       <Button layoutX="35.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC1" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 1" />
       <Button layoutX="215.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC2" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 2" />
       <Button layoutX="395.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC3" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 3" />
       <Button layoutX="585.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleSendESC4" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 4" />
+      <Button fx:id="buttonGeneralSettingsPage2" layoutX="485.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage2" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 2" />
+      <Button fx:id="buttonGeneralSettingsPage3" layoutX="485.0" layoutY="225.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage3" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 3" />
+      <Label layoutX="560.0" layoutY="94.0" text="General Settings">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="310.0" layoutY="25.0" text="Settings Home Page">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Line endX="395.0" layoutX="400.0" layoutY="57.0" startX="-395.0" />
    </children>
 </AnchorPane>

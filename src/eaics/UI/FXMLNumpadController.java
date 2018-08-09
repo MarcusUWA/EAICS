@@ -27,11 +27,13 @@ public class FXMLNumpadController implements Initializable
     private BMSSettings bmsSettings;
     private int index;
     private boolean first;
+    private FXMLGeneralSettingsPage settingsPage;
     
-    public void initSettings(MainUIController settingsGui, BMSSettings bmsSettings, int index) 
+    public void initSettings(MainUIController settingsGui, int index, FXMLGeneralSettingsPage settingsPage) 
     {
         gui = settingsGui;
-        this.bmsSettings = bmsSettings;
+	this.settingsPage = settingsPage;
+        this.bmsSettings = settingsPage.getBMSSettings();
         this.index = index;
         display.setText(display.getText() + bmsSettings.getUnit(index));
         first = true;
@@ -44,7 +46,6 @@ public class FXMLNumpadController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         // TODO
-        System.out.println("hello in Numpad");
     }
     
     @FXML
@@ -154,6 +155,7 @@ public class FXMLNumpadController implements Initializable
             //System.out.println(">>>>>>>>>>>>>>>>>>" + display.getText());
             this.bmsSettings.setSetting(index, Integer.parseInt(display.getText()));
             this.bmsSettings.update();
+	    this.settingsPage.updateLabels();
             Stage stage = (Stage) enter.getScene().getWindow();
             stage.close();
         }

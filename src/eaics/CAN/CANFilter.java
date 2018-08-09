@@ -5,6 +5,8 @@
  */
 package eaics.CAN;
 
+import eaics.BMSSettings;
+
 /**
  *
  * @author Troy
@@ -15,6 +17,7 @@ public class CANFilter
 	private EVMS_v3 evms_v3;
 	private ESC[] esc;
 	private BMS[] bms;
+	private BMSSettings bmsSettings;
 	
 	public CANFilter()
 	{
@@ -30,6 +33,7 @@ public class CANFilter
 		{
 		    this.bms[ii] = new BMS(ii);
 		}
+		this.bmsSettings = new BMSSettings();
 	}
 	
 	public void run(CANMessage message)
@@ -149,5 +153,10 @@ public class CANFilter
 	public BMS[] getBMS()
 	{
 	    return this.bms;
+	}
+	
+	public BMSSettings getBMSSettings()
+	{
+	    return this.bmsSettings;
 	}
 }
