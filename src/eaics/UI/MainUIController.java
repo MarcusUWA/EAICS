@@ -85,8 +85,10 @@ public class MainUIController implements Initializable
     
     @FXML
     private Label capacityLabel;
+    
     @FXML
     private Label timeLabel;
+    
     @FXML
     private Label thrustLabel; 
     

@@ -37,7 +37,7 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     MainUIController gui;
     
     //refresh rate in ms
-    int refreshFrequency = 10;
+    int refreshFrequency = 1000;
     
     private CANFilter filter;
     private LoadCell loadCell;

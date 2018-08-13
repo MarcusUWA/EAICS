@@ -37,7 +37,7 @@ public class FXMLBatteryCellPage2Controller implements Initializable
     MainUIController gui;
     
     //refresh rate in ms
-    int refreshFrequency = 100;
+    int timeToRefresh = 1000;
     
     private CANFilter filter;
     private LoadCell loadCell;
@@ -372,7 +372,7 @@ public class FXMLBatteryCellPage2Controller implements Initializable
         this.loadCell = cell;
 	
 	Timeline refreshUI;
-        refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
+        refreshUI = new Timeline(new KeyFrame(Duration.millis(timeToRefresh), new EventHandler<ActionEvent>() 
 	{
             int count = 0;
             @Override

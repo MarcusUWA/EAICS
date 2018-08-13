@@ -10,15 +10,100 @@
 
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLBatteryPageController">
    <children>
-      <Button fx:id="buttonCellPage1" layoutX="10.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleCellPage1" prefHeight="78.0" prefWidth="212.0" text="Cell Page 1" />
-      <Button fx:id="buttonCellPage2" layoutX="293.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleCellPage2" prefHeight="78.0" prefWidth="212.0" text="Cell Page 2" />
-      <Button fx:id="buttonCellPage3" layoutX="580.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleCellPage3" prefHeight="78.0" prefWidth="212.0" text="Cell Page 3" />
-      <Button fx:id="closeButton" layoutX="297.0" layoutY="390.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="75.0" prefWidth="200.0" text="Main Menu" />
+      <Button fx:id="buttonCellPage1" layoutX="10.0" layoutY="395.0" mnemonicParsing="false" onAction="#handleCellPage1" prefHeight="78.0" prefWidth="212.0" text="Cell Page 1" />
+      <Button fx:id="buttonCellPage2" layoutX="293.0" layoutY="395.0" mnemonicParsing="false" onAction="#handleCellPage2" prefHeight="78.0" prefWidth="212.0" text="Cell Page 2" />
+      <Button fx:id="buttonCellPage3" layoutX="580.0" layoutY="395.0" mnemonicParsing="false" onAction="#handleCellPage3" prefHeight="78.0" prefWidth="212.0" text="Cell Page 3" />
+      <Button fx:id="closeButton" layoutX="10.0" layoutY="60.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="75.0" prefWidth="200.0" text="Main Menu" />
       <Label layoutX="343.0" layoutY="25.0" text="Battery Page">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Line endX="395.0" layoutX="401.0" layoutY="57.0" startX="-395.0" />
+      <Label alignment="TOP_CENTER" layoutX="366.0" layoutY="333.0" prefHeight="33.0" prefWidth="66.0" text="Low Cell &#10;(Volts)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="81.0" layoutY="333.0" prefHeight="36.0" prefWidth="66.0" text="High Cell&#10;(Volts)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="highCellLabel" alignment="TOP_CENTER" layoutX="85.0" layoutY="308.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="ampsLabel" alignment="TOP_CENTER" layoutX="87.0" layoutY="218.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="voltsLabel" alignment="TOP_CENTER" layoutX="372.0" layoutY="218.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="83.0" layoutY="245.0" prefHeight="17.0" prefWidth="66.0" text="Amps" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="368.0" layoutY="245.0" prefHeight="17.0" prefWidth="66.0" text="Volts" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lowCellLabel" alignment="TOP_CENTER" layoutX="372.0" layoutY="308.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="369.0" layoutY="69.0" text="Power">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="powerLabel" alignment="TOP_CENTER" layoutX="311.0" layoutY="78.0" prefHeight="86.0" prefWidth="175.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="60.0" />
+         </font>
+      </Label>
+      <Label layoutX="388.0" layoutY="151.0" text="kW">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="655.0" layoutY="245.0" prefHeight="36.0" prefWidth="66.0" text="Time Rem&#10;(mins)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="655.0" layoutY="333.0" prefHeight="36.0" prefWidth="66.0" text="Capacity &#10;(Ah)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="timeLabel" alignment="TOP_CENTER" layoutX="660.0" layoutY="218.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="capacityLabel" alignment="TOP_CENTER" layoutX="660.0" layoutY="308.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="665.0" layoutY="70.0" text="SoC">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="socLabel" alignment="TOP_CENTER" layoutX="613.0" layoutY="88.0" prefHeight="63.0" prefWidth="153.0" text="100%" textAlignment="CENTER">
+         <font>
+            <Font size="50.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
