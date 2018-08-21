@@ -232,6 +232,8 @@ public class MainUIController implements Initializable
 		leftControllerTempLabel.setText("" + esc[0].getControllerTemp());
 		
 		leftMotorTempLabel.setText("" + esc[0].getMotorTemp());
+                
+                leftRPM.setValue((double)esc[0].getRpm());
 		
 		
                 //+------------------------------------------------------------+
@@ -243,6 +245,8 @@ public class MainUIController implements Initializable
 		bottomControllerTempLabel.setText("" + esc[1].getControllerTemp());
 		
 		bottomMotorTempLabel.setText("" + esc[1].getMotorTemp());
+                
+                bottomRPM.setValue((double)esc[1].getRpm());
 		
 		
                 //+------------------------------------------------------------+
@@ -254,6 +258,8 @@ public class MainUIController implements Initializable
 		topControllerTempLabel.setText("" + esc[2].getControllerTemp());
 		
 		topMotorTempLabel.setText("" + esc[2].getMotorTemp());
+                
+                topRPM.setValue((double)esc[2].getRpm());
 		
 		
                 //+------------------------------------------------------------+
@@ -265,6 +271,8 @@ public class MainUIController implements Initializable
 		rightControllerTempLabel.setText("" + esc[3].getControllerTemp());
 		
 		rightMotorTempLabel.setText("" + esc[3].getMotorTemp());
+                
+                rightRPM.setValue((double)esc[3].getRpm());
 		
 		
 		//+------------------------------------------------------------+
