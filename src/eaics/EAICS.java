@@ -64,7 +64,10 @@ public class EAICS extends Application
 	String ipAddressString = "192.168.1.6";
 	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
 	
-	final CANMessage canMessage = new CANMessage();
+	final CANMessage canMessageCAN0 = new CANMessage();
+        final CANMessage canMessageCAN1 = new CANMessage();
+        
+        
         final CANRawStringMessages canRawStringMessage = new CANRawStringMessages();
         
         Runnable Logger = new Runnable() 
@@ -95,8 +98,35 @@ public class EAICS extends Application
 			//System.out.println("Raw CAN Msg: " + rawCANmsg);
 			//canRawStringMessage.setMsg(rawCANmsg);
 
-			canMessage.newMessage(rawCANmsg);
-			filter.run(canMessage);
+			canMessageCAN0.newMessage(rawCANmsg);
+			filter.run(canMessageCAN0);
+		    }
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	    }
+        });
+        
+        final Process candumpProgram2 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can1 -tz");
+
+        Thread t1_2 = new Thread(new Runnable()
+        {
+	    public void run()
+	    {
+		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
+		String rawCANmsg = null;
+
+		try
+		{
+		    while((rawCANmsg = input.readLine()) != null)
+		    {
+			//System.out.println("Raw CAN Msg: " + rawCANmsg);
+			//canRawStringMessage.setMsg(rawCANmsg);
+
+			canMessageCAN1.newMessage(rawCANmsg);
+			filter.run(canMessageCAN0);
 		    }
 		}
 		catch(IOException e)
@@ -106,7 +136,7 @@ public class EAICS extends Application
 	    }
         });
 
-        t1.start();
+        t1_2.start();
 
         final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
 
