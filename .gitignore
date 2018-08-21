@@ -6,3 +6,15 @@
 Thumbs.db
 nbproject/private/*
 *.properties
+
+*.properties
+
+dist/EAICS.html
+
+dist/EAICS.jar
+
+*.properties
+
+*.html
+
+*.jar

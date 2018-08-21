@@ -69,6 +69,7 @@ public class FXMLConnectWifiController implements Initializable {
         // TODO
     }    
     
+    //TODO: remove keyboard?
     public void test() throws IOException {
                 
         VirtualKeyboard vkb = new VirtualKeyboard();
@@ -106,6 +107,7 @@ public class FXMLConnectWifiController implements Initializable {
         stage.close();
     }
     
+    //TODO: instead of overwriting wifi file, append if not already there, rpelace if already there
     @FXML
     private void okButtonAction(ActionEvent event) throws FileNotFoundException, IOException
     {
@@ -147,8 +149,8 @@ public class FXMLConnectWifiController implements Initializable {
         }
         
         Runtime.getRuntime().exec("sudo cp /home/pi/opt/wpa_supplicant-new /etc/wpa_supplicant/wpa_supplicant.conf");
-        Runtime.getRuntime().exec("sudo ifdown wlan0");
-        Runtime.getRuntime().exec("sudo ifup wlan0");
+        Runtime.getRuntime().exec("sudo ifconfig wlan0 down");
+        Runtime.getRuntime().exec("sudo ifconfig wlan0 up");
         
     }
 
