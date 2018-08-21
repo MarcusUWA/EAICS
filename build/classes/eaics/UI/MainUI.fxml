@@ -16,147 +16,67 @@
    <children>
       <Button layoutX="45.0" layoutY="421.0" mnemonicParsing="false" onAction="#handleTelemetryPressed" prefHeight="45.0" prefWidth="183.0" text="Telemetry" />
       <Button layoutX="561.0" layoutY="421.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="45.0" prefWidth="183.0" text="Battery" />
-      <Label fx:id="tachoLabel" alignment="TOP_CENTER" layoutX="315.0" layoutY="70.0" prefHeight="86.0" prefWidth="175.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="60.0" />
-         </font>
-      </Label>
       <Label layoutX="171.0" layoutY="14.0" text="ElectroAero Instrumentation and Control System">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="384.0" layoutY="135.0" text="RPM">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="367.0" layoutY="198.0" prefHeight="33.0" prefWidth="66.0" text="RPM&#10;Top" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="455.0" layoutY="211.0" prefHeight="33.0" prefWidth="66.0" text="RPM&#10;Top" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="366.0" layoutY="271.0" prefHeight="36.0" prefWidth="66.0" text="RPM&#10;Bottom" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="255.0" layoutY="211.0" prefHeight="36.0" prefWidth="66.0" text="RPM&#10;Bottom" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
       </Label>
-      <Label fx:id="topRPMLabel" alignment="TOP_CENTER" layoutX="372.0" layoutY="172.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="topRPMLabel" alignment="TOP_CENTER" layoutX="460.0" layoutY="186.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="bottomRPMLabel" alignment="TOP_CENTER" layoutX="371.0" layoutY="242.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="bottomRPMLabel" alignment="TOP_CENTER" layoutX="260.0" layoutY="186.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="rightRPMLabel" alignment="TOP_CENTER" layoutX="463.0" layoutY="207.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="rightRPMLabel" alignment="TOP_CENTER" layoutX="620.0" layoutY="186.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="leftRPMLabel" alignment="TOP_CENTER" layoutX="280.0" layoutY="207.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="leftRPMLabel" alignment="TOP_CENTER" layoutX="115.0" layoutY="186.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="458.0" layoutY="232.0" prefHeight="36.0" prefWidth="66.0" text="RPM&#10;Right Wing" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="615.0" layoutY="211.0" prefHeight="36.0" prefWidth="66.0" text="RPM&#10;Right Wing" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="275.0" layoutY="232.0" prefHeight="33.0" prefWidth="66.0" text="RPM&#10;Left Wing" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="110.0" layoutY="211.0" prefHeight="33.0" prefWidth="66.0" text="RPM&#10;Left Wing" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
       </Label>
-      <Label layoutX="638.0" layoutY="143.0" text="kW">
+      <Label layoutX="510.0" layoutY="135.0" text="kW">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="powerLabel" alignment="TOP_CENTER" layoutX="561.0" layoutY="70.0" prefHeight="86.0" prefWidth="175.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="powerLabel" alignment="TOP_CENTER" layoutX="440.0" layoutY="70.0" prefHeight="86.0" prefWidth="175.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="60.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="624.0" layoutY="260.0" prefHeight="17.0" prefWidth="66.0" text="Volts" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="624.0" layoutY="198.0" prefHeight="17.0" prefWidth="66.0" text="Amps" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="voltsLabel" alignment="TOP_CENTER" layoutX="628.0" layoutY="233.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label layoutX="190.0" layoutY="61.0" text="Time Remaining">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="ampsLabel" alignment="TOP_CENTER" layoutX="628.0" layoutY="172.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="highCellLabel" alignment="TOP_CENTER" layoutX="628.0" layoutY="284.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="lowCellLabel" alignment="TOP_CENTER" layoutX="628.0" layoutY="357.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="624.0" layoutY="309.0" prefHeight="36.0" prefWidth="66.0" text="High Cell&#10;(Volts)" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="624.0" layoutY="381.0" prefHeight="33.0" prefWidth="66.0" text="Low Cell &#10;(Volts)" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="socLabel" alignment="TOP_CENTER" layoutX="67.0" layoutY="79.0" prefHeight="63.0" prefWidth="153.0" text="100%" textAlignment="CENTER">
-         <font>
-            <Font size="50.0" />
-         </font>
-      </Label>
-      <Label layoutX="119.0" layoutY="61.0" text="SoC">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="capacityLabel" alignment="TOP_CENTER" layoutX="110.0" layoutY="256.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="timeLabel" alignment="TOP_CENTER" layoutX="114.0" layoutY="172.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="104.0" layoutY="281.0" prefHeight="36.0" prefWidth="66.0" text="Capacity &#10;(Ah)" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="104.0" layoutY="198.0" prefHeight="36.0" prefWidth="66.0" text="Time Rem&#10;(mins)" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label layoutX="351.0" layoutY="61.0" text="Tachometer">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="619.0" layoutY="61.0" text="Power">
+      <Label layoutX="500.0" layoutY="61.0" text="Power">
          <font>
             <Font size="20.0" />
          </font>
@@ -172,46 +92,100 @@
          </font>
       </Label>
       <Button fx:id="buttonSettings" layoutX="309.0" layoutY="421.0" mnemonicParsing="false" onAction="#handleSettingsPressed" prefHeight="45.0" prefWidth="183.0" text="Settings" />
-      <Label fx:id="battTempLabel" alignment="TOP_CENTER" layoutX="473.0" layoutY="310.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label alignment="TOP_CENTER" layoutX="451.0" layoutY="337.0" prefHeight="17.0" prefWidth="100.0" text="Battery Temp (C)" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="95.0" layoutY="322.0" prefHeight="17.0" prefWidth="99.0" text="Motor Temp (C)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="351.0" layoutY="337.0" prefHeight="17.0" prefWidth="99.0" text="Motor Temp (C)" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="motorTempLabel" alignment="TOP_CENTER" layoutX="375.0" layoutY="310.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="leftMotorTempLabel" alignment="TOP_CENTER" layoutX="115.0" layoutY="295.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="51.0" layoutY="374.0" prefHeight="17.0" prefWidth="175.0" text="Aux Voltage" textAlignment="CENTER">
-         <font>
-            <Font size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="controllerTempLabel" alignment="TOP_CENTER" layoutX="259.0" layoutY="310.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="leftControllerTempLabel" alignment="TOP_CENTER" layoutX="115.0" layoutY="251.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="227.0" layoutY="337.0" prefHeight="17.0" prefWidth="133.0" text="Controller Temp (C)" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="75.0" layoutY="279.0" prefHeight="17.0" prefWidth="133.0" text="Controller Temp (C)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
-         </font>
-      </Label>
-      <Label fx:id="auxVoltageLabel" alignment="TOP_CENTER" layoutX="111.0" layoutY="349.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
-         <font>
-            <Font size="20.0" />
          </font>
       </Label>
       <Line endX="395.0" layoutX="400.0" layoutY="47.0" startX="-395.0" />
+      <Label fx:id="tachoLabel1" alignment="TOP_CENTER" layoutX="175.0" layoutY="70.0" prefHeight="86.0" prefWidth="175.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="60.0" />
+         </font>
+      </Label>
+      <Label layoutX="225.0" layoutY="135.0" text="Minutes">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="220.0" layoutY="279.0" prefHeight="17.0" prefWidth="133.0" text="Controller Temp (C)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="bottomControllerTempLabel" alignment="TOP_CENTER" layoutX="260.0" layoutY="251.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="bottomMotorTempLabel" alignment="TOP_CENTER" layoutX="260.0" layoutY="295.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="240.0" layoutY="322.0" prefHeight="17.0" prefWidth="99.0" text="Motor Temp (C)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="420.0" layoutY="279.0" prefHeight="17.0" prefWidth="133.0" text="Controller Temp (C)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="topControllerTempLabel" alignment="TOP_CENTER" layoutX="460.0" layoutY="251.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="topMotorTempLabel" alignment="TOP_CENTER" layoutX="460.0" layoutY="295.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="440.0" layoutY="322.0" prefHeight="17.0" prefWidth="99.0" text="Motor Temp (C)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="580.0" layoutY="279.0" prefHeight="17.0" prefWidth="133.0" text="Controller Temp (C)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="rightControllerTempLabel" alignment="TOP_CENTER" layoutX="620.0" layoutY="251.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="rightMotorTempLabel" alignment="TOP_CENTER" layoutX="620.0" layoutY="295.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="600.0" layoutY="322.0" prefHeight="17.0" prefWidth="99.0" text="Motor Temp (C)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Slider fx:id="leftRPM" layoutX="201.0" layoutY="196.0" majorTickUnit="200.0" max="1000.0" minorTickCount="100" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
+      <Slider fx:id="bottomRPM" layoutX="360.0" layoutY="196.0" majorTickUnit="200.0" max="1000.0" minorTickCount="100" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
+      <Slider fx:id="topRPM" layoutX="413.0" layoutY="196.0" majorTickUnit="200.0" max="1000.0" minorTickCount="100" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
+      <Slider fx:id="rightRPM" layoutX="573.0" layoutY="196.0" majorTickUnit="200.0" max="1000.0" minorTickCount="100" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
    </children>
 </AnchorPane>

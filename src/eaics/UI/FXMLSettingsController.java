@@ -79,9 +79,6 @@ public class FXMLSettingsController implements Initializable
     private Label labelLAN;
     
     @FXML
-    private Label labelWiFi;
-    
-    @FXML
     private Label label_IPaddress1;
     
     @FXML
@@ -407,12 +404,11 @@ public class FXMLSettingsController implements Initializable
         
         if (splited.length == 1)
         {
-            labelWiFi.setText("WiFi");
-            label_IPaddress1.setText(splited[0]);            
+            label_IPaddress1.setText("WiFi");
+            label_IPaddress2.setText(splited[0]);            
         }
         else if(splited.length == 2)
         {
-            labelWiFi.setText("WiFi");
             label_IPaddress1.setText(splited[1]);
             labelLAN.setText("LAN");
             label_IPaddress2.setText(splited[0]);

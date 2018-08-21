@@ -27,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -49,51 +50,75 @@ public class MainUIController implements Initializable
     private CANFilter filter;
     private LoadCell loadCell;
     
-    @FXML
-    private Label tachoLabel;
-    @FXML
-    private Label socLabel;
+    // Big Labels - Top of Page ----------------------------------------------
+    
     @FXML
     private Label powerLabel;
     
     @FXML
-    private Label voltsLabel;
-    @FXML
-    private Label ampsLabel;
-    @FXML
-    private Label lowCellLabel;
-    @FXML
-    private Label highCellLabel;
+    private Label timeLabel;
     
-    @FXML
-    private Label battTempLabel; 
+    // ESC (Left Wing) ---------------------------------------------------------
     
     @FXML
     private Label leftRPMLabel;
+    
     @FXML
-    private Label rightRPMLabel;
+    private Label leftControllerTempLabel;
+    
     @FXML
-    private Label topRPMLabel;
+    private Label leftMotorTempLabel;
+    
+    @FXML
+    private Slider leftRPM;
+    
+    // ESC (Bottom Wing) -------------------------------------------------------
+    
     @FXML
     private Label bottomRPMLabel;
     
     @FXML
-    private Label motorTempLabel;
+    private Label bottomControllerTempLabel;
     
     @FXML
-    private Label controllerTempLabel;
+    private Label bottomMotorTempLabel;
     
     @FXML
-    private Label capacityLabel;
+    private Slider bottomRPM;
+    
+    // ESC (Top Wing) ----------------------------------------------------------
     
     @FXML
-    private Label timeLabel;
+    private Label topRPMLabel;
+    
+    @FXML
+    private Label topControllerTempLabel;
+    
+    @FXML
+    private Label topMotorTempLabel;
+    
+    @FXML
+    private Slider topRPM;
+    
+    // ESC (Right Wing) --------------------------------------------------------
+    
+    @FXML
+    private Label rightRPMLabel;
+    
+    @FXML
+    private Label rightControllerTempLabel;
+    
+    @FXML
+    private Label rightMotorTempLabel;
+    
+    @FXML
+    private Slider rightRPM;
+    
+    // Thrust Label - Bottom of Page -------------------------------------------
     
     @FXML
     private Label thrustLabel; 
-    
-    @FXML
-    private Label auxVoltageLabel;     
+
     
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
@@ -177,15 +202,6 @@ public class MainUIController implements Initializable
     {
         this.filter = fil;
         this.loadCell = cell;
-    }
-    
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) 
-    {
-        // TODO
        
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
@@ -202,45 +218,53 @@ public class MainUIController implements Initializable
 		//EVMS - Electric Vehicle Management System
 		//+------------------------------------------------------------+
 		
-		//socLabel.setText("!" + evmsV3.getCharge() + "%"); // evmsV2 only
-		socLabel.setText("FIX");
-			
-		voltsLabel.setText("" + evmsV3.getVoltage());
-		
-		//ampsLabel.setText("!" + evmsV3.getCurrent());	    // evmsV2 only
-		ampsLabel.setText("");
-		
-		auxVoltageLabel.setText("" + evmsV3.getAuxVoltage());
-		
-		//Leakage???
-		
-		battTempLabel.setText("" + evmsV3.getTemp());
-		
 		//Calculation variable
 		//powerLabel.setText("!" + (evmsV3.getVoltage() * evmsV3.getCurrent() / 1000));	//evmsV2 only
-		powerLabel.setText("FIX");
+		powerLabel.setText("1000");
                 
 		
 		//+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller
+		//ESC - Electronic Speed Controller - Left Wing
 		//+------------------------------------------------------------+
 		
-		topRPMLabel.setText("" + esc[0].getRpm());
+		leftRPMLabel.setText("" + esc[0].getRpm());
 		
-		ampsLabel.setText("" + esc[0].getBatteryCurrent());
-                
-                voltsLabel.setText("" + esc[0].getBatteryVoltage());
-                
-                capacityLabel.setText("" + esc[0].getRemainingBatteryCapacity());
+		leftControllerTempLabel.setText("" + esc[0].getControllerTemp());
 		
-		tachoLabel.setText("" + esc[0].getRpm());
+		leftMotorTempLabel.setText("" + esc[0].getMotorTemp());
 		
-		//Odometer???
 		
-		controllerTempLabel.setText("" + esc[0].getControllerTemp());
+                //+------------------------------------------------------------+
+		//ESC - Electronic Speed Controller - Bottom
+		//+------------------------------------------------------------+
 		
-		motorTempLabel.setText("" + esc[0].getMotorTemp());
-		//Battery Temperature???
+		bottomRPMLabel.setText("" + esc[1].getRpm());
+		
+		bottomControllerTempLabel.setText("" + esc[1].getControllerTemp());
+		
+		bottomMotorTempLabel.setText("" + esc[1].getMotorTemp());
+		
+		
+                //+------------------------------------------------------------+
+		//ESC - Electronic Speed Controller - Top
+		//+------------------------------------------------------------+
+		
+		topRPMLabel.setText("" + esc[2].getRpm());
+		
+		topControllerTempLabel.setText("" + esc[2].getControllerTemp());
+		
+		topMotorTempLabel.setText("" + esc[2].getMotorTemp());
+		
+		
+                //+------------------------------------------------------------+
+		//ESC - Electronic Speed Controller - Right Wing
+		//+------------------------------------------------------------+
+		
+		rightRPMLabel.setText("" + esc[3].getRpm());
+		
+		rightControllerTempLabel.setText("" + esc[3].getControllerTemp());
+		
+		rightMotorTempLabel.setText("" + esc[3].getMotorTemp());
 		
 		
 		//+------------------------------------------------------------+
@@ -248,20 +272,7 @@ public class MainUIController implements Initializable
 		//+------------------------------------------------------------+
 		
 		thrustLabel.setText("" + loadCell.getWeight());
-
-		
-		//+------------------------------------------------------------+
-		//BMS - Battery Managment System
-		//+------------------------------------------------------------+
-		
-		//Get low Cell Voltage
-                //lowCellLabel.setText("FIX" + bms.getMinVoltage());
-		lowCellLabel.setText("FIX");
-		
-                //Get high Cell Voltage
-                //highCellLabel.setText("FIX"+ bms.getMaxVoltage());
-		highCellLabel.setText("FIX");
-		
+                
 		
 		//+------------------------------------------------------------+
             }
@@ -269,5 +280,14 @@ public class MainUIController implements Initializable
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
+    }
+    
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) 
+    {
+        
     }
 }
