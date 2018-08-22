@@ -3,10 +3,12 @@
  */
 package eaics;
 
+import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.SER.SERMessage;
 import eaics.CAN.CANMessage;
 import eaics.CAN.CANRawStringMessages;
+import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
 import eaics.UI.MainUIController;
 import java.io.BufferedReader;
@@ -18,11 +20,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -103,7 +109,15 @@ public class EAICS extends Application
 			//canRawStringMessage.setMsg(rawCANmsg);
 
 			canMessageCAN0.newMessage(rawCANmsg);
-			filter.run(canMessageCAN0);
+			
+			if(canMessageCAN0.getFrameID() != 461 && canMessageCAN0.getFrameID() != 462 && canMessageCAN0.getFrameID() != 463 && canMessageCAN0.getFrameID() != 464)
+			{
+			    filter.run(canMessageCAN0);
+			}
+			else
+			{
+			    //System.out.println("Raw CAN Msg: " + rawCANmsg + " >> " + canMessageCAN0.getFrameID());
+			}
 		    }
 		}
 		catch(IOException e)
@@ -132,9 +146,15 @@ public class EAICS extends Application
 		{
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
-			System.out.println("Raw CAN Msg: " + rawCANmsg);
                         canMessageCAN1.newMessage(rawCANmsg);
-			filter.run(canMessageCAN1);
+			//if(canMessageCAN1.getFrameID() != 461 && canMessageCAN1.getFrameID() != 462 && canMessageCAN1.getFrameID() != 463 && canMessageCAN1.getFrameID() != 464)
+			//{
+			    filter.run(canMessageCAN1);
+			//}
+			//else
+			//{
+			    //System.out.println("Raw CAN Msg: " + rawCANmsg + " >> " + canMessageCAN1.getFrameID());
+			//}
 		    }
 		}
 		catch(IOException e)
@@ -190,66 +210,95 @@ public class EAICS extends Application
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
-	/*
-	Thread t3 = new Thread(new Runnable()
+	
+	Thread threadLoggingCSV = new Thread(new Runnable()
         {
-                @Override
-                public void run()
-                {
-                    Writer writer = null;
-                    int count = 0;
+	    @Override
+	    public void run()
+	    {
+		SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm:ss");
+		Writer writer = null;
+		//String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
+		String filename = "testCSV.csv";
+		
+		int countLines = 0;
 
-                    try
-                    {
-                            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("log.txt"), "utf-8"));	
+		try
+		{
+		    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"));
 
-                            while(true)
-                            {
-                                    //if(canRawStringMessage.isUnread())
-                                    //String temp = canRawStringMessage.getMsg();
-                                    //if(!temp.equals("") && canRawStringMessage.isUnread())
-                                    //{
-                                            //message.newMessage(temp);
-                                            //filter.run(canMessage);
-                                            //System.out.println(filter.toString() + " " + loadCell.toString());
-					    
-					    //if(canRawStringMessage.isTimeToLog())
-					    //{
-					//	writer.write(filter.toString() + " " + loadCell.toString() + "\n");
-					//	writer.flush();	//flush the writer
-					   // }
-                                   // }
-				    
-                                    if(canRawStringMessage.isTimeToLog())
-                                    {
-                                        System.out.println("test: " + count++);
-                                    }
-				    
-                            }
+		    String columnNames = "";
+		    columnNames += "Date, Time, ";
+		    columnNames += "Auxillary Voltage, Leakage, EVMS Temperature, EVMS Voltage, ";
+		    for(int ii = 1; ii <= 24; ii++)
+		    {
+			for(int jj = 1; jj <= 12; jj++)
+			{
+			    columnNames += "BMS " + ii + " Cell " + jj + " Voltage, ";			    
+			}
+			columnNames += "BMS " + ii + " Temp 1, ";
+			columnNames += "BMS " + ii + " Temp 2, ";
+		    }
+		    columnNames += "Load Cell\n";
+		    writer.write(columnNames);
 
-                    }
-                    catch(IOException e)
-                    {
-                            e.printStackTrace();
-                    }
-                    finally
-                    {
-                            try
-                            {
-                                    writer.close();
-                            }
-                            catch(Exception e)
-                            {
-                            }
-                    }
-                }
+		    while(true)
+		    {
+			if(canRawStringMessage.isTimeToLog() && countLines < 100)
+			{
+			    String columnData = "";
+			    Date date = new Date();
+			    columnData += formatterDate.format(date) + ", " + formatterTime.format(date) + ", ";
+			    
+			    //EVMS
+			    EVMS_v3 evms = (EVMS_v3)filter.getEVMS_v3();
+			    columnData += evms.getAuxVoltage() + ", " + evms.getLeakage() + ", " + evms.getTemp() + ", " + evms.getVoltage() + ", ";
+			    
+			    //BMS
+			    BMS bms[] = filter.getBMS();
+			    for(int ii = 0; ii < bms.length; ii++)
+			    {
+				columnData += bms[ii].getVoltagesString();
+				columnData += bms[ii].getTemperatureString();
+			    }
+			    
+			    //EVMS
+			    
+			    
+			    
+			    
+			    //Load Cell
+			    columnData += loadCell.getWeight() + "\n";
+			    
+			    // -------------------------------------------------
+			    
+			    writer.write(columnData);
+			    writer.flush();	//flush the writer
+			    
+			    
+			    countLines++;   //Delete this after testing
+			}
+		    }
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				writer.close();
+			}
+			catch(Exception e)
+			{
+			}
+		}
+	    }
         });
 
-        t3.start();
-	*/
-
-        //TimeUnit.SECONDS.sleep(1);
-	
+        threadLoggingCSV.start();	
 	
 	// Launch the User Interface (UI) --------------------------------------
         launch(args);

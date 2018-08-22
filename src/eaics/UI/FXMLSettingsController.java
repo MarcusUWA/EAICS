@@ -272,6 +272,7 @@ public class FXMLSettingsController implements Initializable
         String temp = "";
         int exampleVoltage = 3600; // millivolts
         int moduleID = 0 + 16;
+	//int moduleID = 13;
         msg = "00000";
         msg += Integer.toHexString(300 + 10*moduleID);
 	
@@ -304,7 +305,8 @@ public class FXMLSettingsController implements Initializable
 	
         String temp = "";
         int exampleVoltage = 3600; // millivolts
-        int moduleID = 1 + 16;
+        int moduleID = 2 + 16;
+	//int moduleID = 14;
         msg = "00000";
         msg += Integer.toHexString(300 + 10*moduleID);
 	
