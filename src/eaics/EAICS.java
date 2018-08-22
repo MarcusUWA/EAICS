@@ -132,7 +132,8 @@ public class EAICS extends Application
 		{
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
-			canMessageCAN1.newMessage(rawCANmsg);
+			System.out.println("Raw CAN Msg: " + rawCANmsg);
+                        canMessageCAN1.newMessage(rawCANmsg);
 			filter.run(canMessageCAN1);
 		    }
 		}
