@@ -60,13 +60,13 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
-        //final Process pixHawkProgram = Runtime.getRuntime().exec("/home/pi/bin/runPixHawkWiFi2");   //start the pixHawkProgram
+	// Pix Hawk Code -------------------------------------------------------
+	
 	String ipAddressString = "192.168.1.6";
 	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
 	
-	final CANMessage canMessageCAN0 = new CANMessage();
-        final CANMessage canMessageCAN1 = new CANMessage();
-        
+	
+        // Logging Every 1 Second Code -----------------------------------------	
         
         final CANRawStringMessages canRawStringMessage = new CANRawStringMessages();
         
@@ -81,14 +81,18 @@ public class EAICS extends Application
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
+	
+	
+	// Read the CAN 0 interface (CAN B on the Hardware) --------------------
         
-        final Process candumpProgram = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
+	final CANMessage canMessageCAN0 = new CANMessage();
+        final Process candumpProgramCAN0 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
 
-        Thread t1 = new Thread(new Runnable()
+        Thread threadReadCAN0 = new Thread(new Runnable()
         {
 	    public void run()
 	    {
-		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
+		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgramCAN0.getInputStream()));
 		String rawCANmsg = null;
 
 		try
@@ -108,25 +112,28 @@ public class EAICS extends Application
 		}
 	    }
         });
+	
+	threadReadCAN0.start();
+	
+	
+	// Read the CAN 1 interface (CAN A on the Hardware) --------------------
         
-        final Process candumpProgram2 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can1 -tz");
+	final CANMessage canMessageCAN1 = new CANMessage();
+        final Process candumpProgramCAN1 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can1 -tz");
 
-        Thread t1_2 = new Thread(new Runnable()
+        Thread threadReadCAN1 = new Thread(new Runnable()
         {
 	    public void run()
 	    {
-		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgram.getInputStream()));
+		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgramCAN1.getInputStream()));
 		String rawCANmsg = null;
 
 		try
 		{
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
-			//System.out.println("Raw CAN Msg: " + rawCANmsg);
-			//canRawStringMessage.setMsg(rawCANmsg);
-
 			canMessageCAN1.newMessage(rawCANmsg);
-			filter.run(canMessageCAN0);
+			filter.run(canMessageCAN1);
 		    }
 		}
 		catch(IOException e)
@@ -136,11 +143,14 @@ public class EAICS extends Application
 	    }
         });
 
-        t1_2.start();
+        threadReadCAN1.start();
+	
+	
+	// Load Cell Code ------------------------------------------------------
 
         final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
 
-        Thread t2 = new Thread(new Runnable()
+        Thread threadLoadCell = new Thread(new Runnable()
         {
                 public void run()
                 {
@@ -174,7 +184,11 @@ public class EAICS extends Application
                 }
         });
 
-        t2.start();
+        threadLoadCell.start();
+	
+	
+	// Logging to a CSV File Code ------------------------------------------
+	
 	/*
 	Thread t3 = new Thread(new Runnable()
         {
@@ -235,31 +249,8 @@ public class EAICS extends Application
 
         //TimeUnit.SECONDS.sleep(1);
 	
-	// UI stuff here please
-        launch(args);
-    }
-    
-    /**
-     * Initialises the CAN Connection for reading only!
-     * @throws InterruptedException
-     * @throws IOException 
-     */
-    private static void initCAN() throws InterruptedException, IOException
-    {
-        
-    }
-    
-    /**
-     * Initialises the Serial console for reading
-     * @throws IOException 
-     */
-    private static void initSER() throws IOException 
-    {
 	
-    }
-    
-    private static void writeLogFile() throws FileNotFoundException, UnsupportedEncodingException 
-    {
-        
+	// Launch the User Interface (UI) --------------------------------------
+        launch(args);
     }
 }
