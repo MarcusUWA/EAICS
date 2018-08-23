@@ -25,7 +25,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
@@ -206,13 +209,28 @@ public class MainUIController implements Initializable
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
 	{
-            int count = 0;
+            //Warnings
+	    boolean hasWarnedAuxVoltageLow = false;
+	    
+	    //int count = 0;
+	    
             @Override
             public void handle(ActionEvent event) 
 	    {
                 EVMS evmsV3 = filter.getEVMS_v3();
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
+		
+		// Warnings ----------------------------------------------------		
+		if(filter.getEVMS_v3().getAuxVoltage() < 11.0 && !hasWarnedAuxVoltageLow)
+		{
+		    Alert alert = new Alert(AlertType.INFORMATION);
+		    alert.setHeaderText("WARNING");
+		    alert.setContentText("Auxillary voltage is low");
+		    alert.show();
+		    hasWarnedAuxVoltageLow = true;		    
+		}
+		
                 
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
