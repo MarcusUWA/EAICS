@@ -158,4 +158,25 @@ public class ESC
     {
 	return this.throttleCommand;
     }
+    
+    public String getLoggingString()
+    {
+	String outString = "";
+	
+	outString += batteryVoltage + ", ";
+	outString += batteryCurrent + ", ";
+	outString += rpm + ", ";
+	outString += odometer + ", ";
+	outString += controllerTemp + ", ";
+	outString += motorTemp + ", ";
+	outString += battTemp + ", ";
+	outString += requestedOutputPWM + ", ";
+	outString += realOutputPWM + ", ";
+	outString += warnings + ", ";
+	outString += failures + ", ";
+	outString += remainingBatteryCapacity + ", ";
+	outString += throttleCommand + ", ";
+	
+	return outString;
+    }
 }

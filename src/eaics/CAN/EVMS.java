@@ -26,6 +26,20 @@ public abstract class EVMS
 	
 	public abstract void setAll(CANMessage message);
 	
+	public static String getLoggingHeadings()
+	{
+	    return "Auxillary Voltage, Leakage, EVMS Temperature, EVMS Voltage, ";
+	}
+	
+	public String getLoggingString()
+	{
+	    String outString = "";
+	    
+	    outString += auxVoltage + ", " + leakage + ", " + temp + ", " + voltage + ", ";
+	    
+	    return outString;
+	}
+	
 	public int getVoltage()
 	{
 		return voltage;

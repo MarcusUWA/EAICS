@@ -59,4 +59,20 @@ public class EVMS_v3 extends EVMS
 	{
 	    return "AmpHours: " + ampHours + " Headlights " + headlights + super.toString();
 	}
+	
+	@Override
+	public String getLoggingString()
+	{
+	    String outString = "";
+	    outString += super.getLoggingString();
+	    outString += headlights + ", " + ampHours + ", ";
+	    return outString;
+	}
+	
+	public static String getLoggingHeadings()
+	{
+	    String outString = "";
+	    outString = "Headlights, Amp Hours, ";
+	    return outString;
+	}
 }

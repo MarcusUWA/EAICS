@@ -8,6 +8,8 @@ import eaics.CAN.CANFilter;
 import eaics.SER.SERMessage;
 import eaics.CAN.CANMessage;
 import eaics.CAN.CANRawStringMessages;
+import eaics.CAN.ESC;
+import eaics.CAN.EVMS;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
 import eaics.UI.MainUIController;
@@ -230,7 +232,8 @@ public class EAICS extends Application
 
 		    String columnNames = "";
 		    columnNames += "Date, Time, ";
-		    columnNames += "Auxillary Voltage, Leakage, EVMS Temperature, EVMS Voltage, ";
+		    columnNames += EVMS.getLoggingHeadings();
+		    columnNames += EVMS_v3.getLoggingHeadings();
 		    for(int ii = 1; ii <= 24; ii++)
 		    {
 			for(int jj = 1; jj <= 12; jj++)
@@ -239,6 +242,22 @@ public class EAICS extends Application
 			}
 			columnNames += "BMS " + ii + " Temp 1, ";
 			columnNames += "BMS " + ii + " Temp 2, ";
+		    }
+		    for(int ii = 1; ii <= 4; ii++)
+		    {
+			columnNames += "ESC " + ii + " Battery Voltage, ";
+			columnNames += "ESC " + ii + " Battery Current, ";
+			columnNames += "ESC " + ii + " RPM, ";
+			columnNames += "ESC " + ii + " Odometer, ";
+			columnNames += "ESC " + ii + " Controller Temperature, ";
+			columnNames += "ESC " + ii + " Motor Temperature, ";
+			columnNames += "ESC " + ii + " Battery Temperature, ";
+			columnNames += "ESC " + ii + " Requested Output PWM, ";
+			columnNames += "ESC " + ii + " Real Output PWM, ";
+			columnNames += "ESC " + ii + " Warnings, ";
+			columnNames += "ESC " + ii + " Failures, ";
+			columnNames += "ESC " + ii + " Remaining Battery Capacity, ";
+			columnNames += "ESC " + ii + " Throttle Command, ";			
 		    }
 		    columnNames += "Load Cell\n";
 		    writer.write(columnNames);
@@ -253,7 +272,7 @@ public class EAICS extends Application
 			    
 			    //EVMS
 			    EVMS_v3 evms = (EVMS_v3)filter.getEVMS_v3();
-			    columnData += evms.getAuxVoltage() + ", " + evms.getLeakage() + ", " + evms.getTemp() + ", " + evms.getVoltage() + ", ";
+			    columnData += evms.getLoggingString();
 			    
 			    //BMS
 			    BMS bms[] = filter.getBMS();
@@ -264,9 +283,11 @@ public class EAICS extends Application
 			    }
 			    
 			    //EVMS
-			    
-			    
-			    
+			    ESC esc[] = filter.getESC();
+			    for(int ii = 0; ii < esc.length; ii++)
+			    {
+				columnData += esc[ii].getLoggingString();
+			    }
 			    
 			    //Load Cell
 			    columnData += loadCell.getWeight() + "\n";
