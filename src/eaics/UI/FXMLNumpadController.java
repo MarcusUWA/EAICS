@@ -27,15 +27,15 @@ public class FXMLNumpadController implements Initializable
     private BMSSettings bmsSettings;
     private int index;
     private boolean first;
-    private FXMLGeneralSettingsPage settingsPage;
+    private FXMLBMSsettingsPage settingsPage;
     
-    public void initSettings(MainUIController settingsGui, int index, FXMLGeneralSettingsPage settingsPage) 
+    public void initSettings(MainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
     {
         gui = settingsGui;
 	this.settingsPage = settingsPage;
         this.bmsSettings = settingsPage.getBMSSettings();
         this.index = index;
-        display.setText(display.getText() + bmsSettings.getUnit(index));
+        display.setText(display.getText() + bmsSettings.getDisplayUnits(index));
         first = true;
     }
 
@@ -161,7 +161,7 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == enter) 
         {
-            this.bmsSettings.setSetting(index, Integer.parseInt(display.getText()));
+	    this.bmsSettings.setSetting(index,  Integer.parseInt(display.getText()));
             this.bmsSettings.update();
 	    this.settingsPage.updateLabels();
             Stage stage = (Stage) enter.getScene().getWindow();
