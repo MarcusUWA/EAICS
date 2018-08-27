@@ -5,14 +5,9 @@
  */
 package eaics;
 
-import static eaics.EAICS.ipAddress;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Enumeration;
 

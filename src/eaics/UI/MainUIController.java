@@ -5,11 +5,11 @@
  */
 package eaics.UI;
 
+import eaics.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
-import eaics.IPaddress;
+import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
 import java.io.IOException;
 import java.net.URL;
@@ -22,15 +22,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -73,7 +71,7 @@ public class MainUIController implements Initializable
     private Label leftMotorTempLabel;
     
     @FXML
-    private Slider leftRPM;
+    private ProgressBar leftRPM;
     
     // ESC (Bottom Wing) -------------------------------------------------------
     
@@ -87,7 +85,7 @@ public class MainUIController implements Initializable
     private Label bottomMotorTempLabel;
     
     @FXML
-    private Slider bottomRPM;
+    private ProgressBar bottomRPM;
     
     // ESC (Top Wing) ----------------------------------------------------------
     
@@ -101,7 +99,7 @@ public class MainUIController implements Initializable
     private Label topMotorTempLabel;
     
     @FXML
-    private Slider topRPM;
+    private ProgressBar topRPM;
     
     // ESC (Right Wing) --------------------------------------------------------
     
@@ -115,13 +113,18 @@ public class MainUIController implements Initializable
     private Label rightMotorTempLabel;
     
     @FXML
-    private Slider rightRPM;
+    private ProgressBar rightRPM;
     
     // Thrust Label - Bottom of Page -------------------------------------------
     
     @FXML
-    private Label thrustLabel; 
+    private Label thrustLabel;
+    
+    @FXML
+    private ProgressIndicator timeIndicator;
 
+    @FXML
+    private ProgressIndicator powerIndicator;
     
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
@@ -205,30 +208,47 @@ public class MainUIController implements Initializable
     {
         this.filter = fil;
         this.loadCell = cell;
+	
+	int maxProgress = 10000;
+	int maxTime = 1000;
        
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
 	{
             //Warnings
 	    boolean hasWarnedAuxVoltageLow = false;
+	    boolean hasWarnedChargerOn = false;
 	    
 	    //int count = 0;
 	    
             @Override
             public void handle(ActionEvent event) 
 	    {
-                EVMS evmsV3 = filter.getEVMS_v3();
+                EVMS_v3 evmsV3 = (EVMS_v3) filter.getEVMS_v3();
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
+		BMSSettings bmsSettings = filter.getBMSSettings();
 		
-		// Warnings ----------------------------------------------------		
-		if(filter.getEVMS_v3().getAuxVoltage() < 11.0 && !hasWarnedAuxVoltageLow)
+		// Warnings ----------------------------------------------------
+		
+		// Minimum Auxillary Voltage
+		if(filter.getEVMS_v3().getAuxVoltage() < bmsSettings.getDisplaySetting(6) && !hasWarnedAuxVoltageLow)
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("Auxillary voltage is low");
 		    alert.show();
 		    hasWarnedAuxVoltageLow = true;		    
+		}
+		
+		// Check if the charger is on
+		if(evmsV3.getHeadlights() == 1 && !hasWarnedChargerOn)
+		{
+		    Alert alert = new Alert(AlertType.INFORMATION);
+		    alert.setHeaderText("WARNING");
+		    alert.setContentText("Charger is on");
+		    alert.show();
+		    hasWarnedChargerOn = true;		    
 		}
 		
                 
@@ -238,7 +258,11 @@ public class MainUIController implements Initializable
 		
 		//Calculation variable
 		//powerLabel.setText("!" + (evmsV3.getVoltage() * evmsV3.getCurrent() / 1000));	//evmsV2 only
-		powerLabel.setText("1000");
+		powerLabel.setText("?");
+		powerIndicator.setProgress(0.75);
+		
+		timeLabel.setText("" + evmsV3.getAmpHours());
+		timeIndicator.setProgress(evmsV3.getAmpHours() / maxTime);
                 
 		
 		//+------------------------------------------------------------+
@@ -251,7 +275,7 @@ public class MainUIController implements Initializable
 		
 		leftMotorTempLabel.setText("" + esc[0].getMotorTemp());
                 
-                leftRPM.setValue((double)esc[0].getRpm());
+                leftRPM.setProgress((double)esc[0].getRpm() / maxProgress);
 		
 		
                 //+------------------------------------------------------------+
@@ -264,7 +288,7 @@ public class MainUIController implements Initializable
 		
 		bottomMotorTempLabel.setText("" + esc[1].getMotorTemp());
                 
-                bottomRPM.setValue((double)esc[1].getRpm());
+                bottomRPM.setProgress((double)esc[1].getRpm() / maxProgress);
 		
 		
                 //+------------------------------------------------------------+
@@ -277,7 +301,7 @@ public class MainUIController implements Initializable
 		
 		topMotorTempLabel.setText("" + esc[2].getMotorTemp());
                 
-                topRPM.setValue((double)esc[2].getRpm());
+                topRPM.setProgress((double)esc[2].getRpm() / maxProgress);
 		
 		
                 //+------------------------------------------------------------+
@@ -290,7 +314,7 @@ public class MainUIController implements Initializable
 		
 		rightMotorTempLabel.setText("" + esc[3].getMotorTemp());
                 
-                rightRPM.setValue((double)esc[3].getRpm());
+                rightRPM.setProgress((double)esc[3].getRpm() / maxProgress);
 		
 		
 		//+------------------------------------------------------------+
