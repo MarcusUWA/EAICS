@@ -5,7 +5,21 @@
  */
 package eaics;
 
+import eaics.CAN.BMS;
+import eaics.CAN.ESC;
+import eaics.CAN.EVMS;
+import eaics.CAN.EVMS_v3;
+import static eaics.EAICS.filter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Date;
 
 /**
  *
@@ -79,6 +93,91 @@ public class BMSSettings
         this.parallelStrings = new ConfigData("", 1, 20, 1, "", 1);
         this.enablePrecharge = new ConfigData("", 0, 1, 1, "", 1);
         this.stationaryMode = new ConfigData("", 0, 1, 0, "", 1);
+	
+	loadSettings();
+    }
+    
+    public void writeSettings()
+    {
+	Writer writer = null;
+	try
+	{
+	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("bmsSettingsFile"), "utf-8"));
+	    
+	    writer.write("" + this.packCapacity.getDisplaySetting() + "\n");
+	    writer.write("" + this.socWarning.getDisplaySetting() + "\n");
+	    writer.write("" + this.fullVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.warnCurrent.getDisplaySetting() + "\n");
+	    writer.write("" + this.tripCurrent.getDisplaySetting() + "\n");
+	    writer.write("" + this.evmsTempWarning.getDisplaySetting() + "\n");
+	    writer.write("" + this.minAuxVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.minIsolation.getDisplaySetting() + "\n");
+	    
+	    writer.write("" + this.tachoPPR.getDisplaySetting() + "\n");
+	    writer.write("" + this.fuelGaugeFull.getDisplaySetting() + "\n");
+	    writer.write("" + this.fuelGaugeEmpty.getDisplaySetting() + "\n");
+	    writer.write("" + this.tempGaugeHot.getDisplaySetting() + "\n");
+	    writer.write("" + this.tempGaugeCold.getDisplaySetting() + "\n");
+	    writer.write("" + this.bmsMinVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.bmsMaxVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.balanceVoltage.getDisplaySetting() + "\n");
+	    
+	    writer.write("" + this.bmsHysteresis.getDisplaySetting() + "\n");
+	    writer.write("" + this.bmsMinTemp.getDisplaySetting() + "\n");
+	    writer.write("" + this.bmsMaxTemp.getDisplaySetting() + "\n");
+	    writer.write("" + this.maxChargeVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.maxChargeCurrent.getDisplaySetting() + "\n");
+	    writer.write("" + this.altChargeVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.altChargeCurrent.getDisplaySetting() + "\n");
+	    writer.write("" + this.sleepDelay.getDisplaySetting() + "\n");
+	    
+	    writer.write("" + this.mpiFunction.getDisplaySetting() + "\n");
+	    writer.write("" + this.mpo1Function.getDisplaySetting() + "\n");
+	    writer.write("" + this.mpo2Function.getDisplaySetting() + "\n");
+	    writer.write("" + this.parallelStrings.getDisplaySetting() + "\n");
+	    writer.write("" + this.enablePrecharge.getDisplaySetting() + "\n");
+	    writer.write("" + this.stationaryMode.getDisplaySetting());
+	    //blank1
+	    //blank2
+	    
+	    writer.flush();
+	    writer.close();
+	}
+	catch(IOException e)
+	{
+		e.printStackTrace();
+	}
+	finally
+	{
+		try
+		{
+			writer.close();
+		}
+		catch(Exception e)
+		{
+		}
+	}
+    }
+    
+    public void loadSettings()
+    {
+	BufferedReader reader;
+		
+	try
+	{
+	    reader = new BufferedReader(new InputStreamReader(new FileInputStream("bmsSettingsFile"), "utf-8"));
+	    String st;
+	    int ii = 0;
+	    while ((st = reader.readLine()) != null)
+	    {
+		this.setSetting(ii, Integer.parseInt(st));
+		ii++;
+	    }
+	}
+	catch(Exception e)
+	{
+	    e.printStackTrace();
+	}
     }
     
     public double getMultiplier(int index)
@@ -289,6 +388,8 @@ public class BMSSettings
                 //reserved
                 break;
         }
+	
+	writeSettings();
     }
     
     public int getSetting(int index)
