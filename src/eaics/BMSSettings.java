@@ -13,6 +13,7 @@ import static eaics.EAICS.filter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -60,6 +61,7 @@ public class BMSSettings
     
     public BMSSettings()
     {
+        //ConfigData(unit, min, max, initial, displayUnit, multiplier)
         this.packCapacity = new ConfigData("Ah x5", 1, 250, 20, "Ah", 5);
         this.socWarning = new ConfigData("%", 0, 99, 20, "%", 1);
         this.fullVoltage = new ConfigData("V x2", 5, 251, 80, "V", 2);
@@ -174,6 +176,10 @@ public class BMSSettings
 		ii++;
 	    }
 	}
+        catch(FileNotFoundException e)
+        {
+            writeSettings();
+        }
 	catch(Exception e)
 	{
 	    e.printStackTrace();

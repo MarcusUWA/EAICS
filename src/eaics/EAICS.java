@@ -5,9 +5,9 @@ package eaics;
 
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
-import eaics.SER.SERMessage;
 import eaics.CAN.CANMessage;
 import eaics.CAN.CANRawStringMessages;
+import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
 import eaics.CAN.EVMS_v3;
@@ -15,25 +15,18 @@ import eaics.SER.LoadCell;
 import eaics.UI.MainUIController;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -112,14 +105,15 @@ public class EAICS extends Application
 
 			canMessageCAN0.newMessage(rawCANmsg);
 			
-			if(canMessageCAN0.getFrameID() != 461 && canMessageCAN0.getFrameID() != 462 && canMessageCAN0.getFrameID() != 463 && canMessageCAN0.getFrameID() != 464)
-			{
+			//if(canMessageCAN0.getFrameID() != 461 && canMessageCAN0.getFrameID() != 462 && canMessageCAN0.getFrameID() != 463 && canMessageCAN0.getFrameID() != 464)
+			//{
 			    filter.run(canMessageCAN0);
-			}
-			else
-			{
+                            //System.out.println("CAN0>> " + rawCANmsg);
+			//}
+			//else
+			//{
 			    //System.out.println("Raw CAN Msg: " + rawCANmsg + " >> " + canMessageCAN0.getFrameID());
-			}
+			//}
 		    }
 		}
 		catch(IOException e)
@@ -152,6 +146,7 @@ public class EAICS extends Application
 			//if(canMessageCAN1.getFrameID() != 461 && canMessageCAN1.getFrameID() != 462 && canMessageCAN1.getFrameID() != 463 && canMessageCAN1.getFrameID() != 464)
 			//{
 			    filter.run(canMessageCAN1);
+                            System.out.println("CAN1>> " + rawCANmsg);
 			//}
 			//else
 			//{
@@ -232,6 +227,7 @@ public class EAICS extends Application
 
 		    String columnNames = "";
 		    columnNames += "Date, Time, ";
+                    columnNames += "Current, ";
 		    columnNames += EVMS.getLoggingHeadings();
 		    columnNames += EVMS_v3.getLoggingHeadings();
 		    for(int ii = 1; ii <= 24; ii++)
@@ -269,6 +265,11 @@ public class EAICS extends Application
 			    String columnData = "";
 			    Date date = new Date();
 			    columnData += formatterDate.format(date) + ", " + formatterTime.format(date) + ", ";
+                            
+                            //Current Sensor
+                            CurrentSensor currentSensor = filter.getCurrentSensor();
+                            columnData += currentSensor.getCurrent();
+                            columnData += ", ";
 			    
 			    //EVMS
 			    EVMS_v3 evms = (EVMS_v3)filter.getEVMS_v3();

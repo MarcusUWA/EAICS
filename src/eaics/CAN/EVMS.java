@@ -11,7 +11,7 @@ package eaics.CAN;
  */
 public abstract class EVMS 
 {
-	private int voltage;
+	private double voltage;
 	private double auxVoltage;	//Auxiliary voltage (tenths of a volt)
 	private int leakage;	//Insulation integrity/leakage (0-100%)
 	private int temp;	//degrees C
@@ -40,12 +40,12 @@ public abstract class EVMS
 	    return outString;
 	}
 	
-	public int getVoltage()
+	public double getVoltage()
 	{
 		return voltage;
 	}
 	
-	public void setVoltage(int voltage)
+	public void setVoltage(double voltage)
 	{
 		this.voltage = voltage;
 	}

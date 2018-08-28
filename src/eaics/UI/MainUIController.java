@@ -8,6 +8,7 @@ package eaics.UI;
 import eaics.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
+import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
@@ -210,14 +211,14 @@ public class MainUIController implements Initializable
         this.loadCell = cell;
 	
 	int maxProgress = 10000;
-	int maxTime = 1000;
+	int maxTime = 2*60; //2 hours
        
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
 	{
             //Warnings
 	    boolean hasWarnedAuxVoltageLow = false;
-	    boolean hasWarnedChargerOn = false;
+	    boolean hasWarnedChargerOff = false;
 	    
 	    //int count = 0;
 	    
@@ -228,6 +229,7 @@ public class MainUIController implements Initializable
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
 		BMSSettings bmsSettings = filter.getBMSSettings();
+                CurrentSensor currentSensor = filter.getCurrentSensor();
 		
 		// Warnings ----------------------------------------------------
 		
@@ -241,14 +243,14 @@ public class MainUIController implements Initializable
 		    hasWarnedAuxVoltageLow = true;		    
 		}
 		
-		// Check if the charger is on
-		if(evmsV3.getHeadlights() == 1 && !hasWarnedChargerOn)
+		// Check if the charger is off
+		if(evmsV3.getHeadlights() == 1 && !hasWarnedChargerOff)
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
-		    alert.setContentText("Charger is on");
+		    alert.setContentText("Charger is off");
 		    alert.show();
-		    hasWarnedChargerOn = true;		    
+		    hasWarnedChargerOff = true;		    
 		}
 		
                 
@@ -257,12 +259,22 @@ public class MainUIController implements Initializable
 		//+------------------------------------------------------------+
 		
 		//Calculation variable
-		//powerLabel.setText("!" + (evmsV3.getVoltage() * evmsV3.getCurrent() / 1000));	//evmsV2 only
-		powerLabel.setText("?");
-		powerIndicator.setProgress(0.75);
+		double power = evmsV3.getVoltage() * currentSensor.getCurrent();
+		powerLabel.setText("" + power);
+		powerIndicator.setProgress((power / (400*500)) / 1000);
 		
-		timeLabel.setText("" + evmsV3.getAmpHours());
-		timeIndicator.setProgress(evmsV3.getAmpHours() / maxTime);
+                double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
+                time *= 60;
+		timeLabel.setText("" + time);
+                if(time > maxTime)
+                {
+                    timeIndicator.setProgress(0.999999);
+                }
+                else
+                {
+                    timeIndicator.setProgress(time / maxTime);
+                }
+		
                 
 		
 		//+------------------------------------------------------------+

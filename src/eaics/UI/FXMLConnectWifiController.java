@@ -152,6 +152,8 @@ public class FXMLConnectWifiController implements Initializable {
         Runtime.getRuntime().exec("sudo ifconfig wlan0 down");
         Runtime.getRuntime().exec("sudo ifconfig wlan0 up");
         
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 
 }

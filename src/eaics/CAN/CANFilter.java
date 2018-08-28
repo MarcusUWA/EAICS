@@ -18,6 +18,7 @@ public class CANFilter
 	private ESC[] esc;
 	private BMS[] bms;
 	private BMSSettings bmsSettings;
+        private CurrentSensor currentSensor;
 	
 	public CANFilter()
 	{
@@ -34,6 +35,7 @@ public class CANFilter
 		    this.bms[ii] = new BMS(ii);
 		}
 		this.bmsSettings = new BMSSettings();
+                this.currentSensor = new CurrentSensor();
 	}
 	
 	public void run(CANMessage message)
@@ -47,17 +49,17 @@ public class CANFilter
 	    	case 30:			  //EVMS_v3 Broadcast Status (Tx)
 		    evms_v3.setAll(message);
 		    break;
-	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Top
+	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
 		    //System.out.println("CANFilter:run Incoming info for ESC[0]");
 		    esc[0].setAll(message);
 		    break;
-		case 2222: case 2223: case 2224: case 2225:	  //MGM ESC module Bottom
+		case 346095621: case 346095622: case 346095623: case 346095624:	  //MGM ESC module Bottom -- offset by 4 in MGM
 		    esc[1].setAll(message);
 		    break;
-		case 3333: case 3334: case 3335: case 3336:	  //MGM ESC module Left
+		case 346095625: case 346095626: case 346095627: case 346095628:	  //MGM ESC module Top -- offset by 8 in MGM
 		    esc[2].setAll(message);
 		    break;
-		case 4444: case 4445: case 4446: case 4447:	  //MGM ESC module Right
+		case 346095629: case 346095630: case 346095631: case 346095632:	  //MGM ESC module Right -- offset by 12 in MGM
 		    esc[3].setAll(message);
 		    break;
 		case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
@@ -132,6 +134,9 @@ public class CANFilter
 		case 531: case 532: case 533: case 534:   //Reply Data - BMS Module 7 + 16
 		    bms[23].setAll(message);
 		    break;
+                case 40:                              // Current Sensor
+                    currentSensor.setAll(message);
+                    break;
 	    }
 	}
 	
@@ -159,4 +164,9 @@ public class CANFilter
 	{
 	    return this.bmsSettings;
 	}
+        
+        public CurrentSensor getCurrentSensor()
+        {
+            return this.currentSensor;
+        }
 }

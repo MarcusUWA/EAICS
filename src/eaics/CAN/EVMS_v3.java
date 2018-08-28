@@ -12,7 +12,7 @@ package eaics.CAN;
 public class EVMS_v3 extends EVMS
 {
 	private int headlights;
-	private int ampHours;
+	private double ampHours;
     
 	public EVMS_v3()
 	{
@@ -24,13 +24,19 @@ public class EVMS_v3 extends EVMS
 	@Override
 	public void setAll(CANMessage message)
 	{
-		//super.setCharge(message.getByte(1));
-		//super.setCurrent( (((message.getByte(3) & 0xF0) >> 4) + (message.getByte(4) << 4)) - 2048 );	//current has 2028 added to it		
 		this.ampHours = message.getByte(2) + (message.getByte(1) << 8);
-		super.setVoltage(message.getByte(4) + (message.getByte(3) << 8));
+                this.ampHours = this.ampHours / 10.0;
+                
+                double batteryVoltage = message.getByte(4) + (message.getByte(3) << 8);
+                
+		super.setVoltage(batteryVoltage / 10.0);
+                
 		super.setAuxVoltage(message.getByte(5) / 10.0);	//tenths of a volt
+                
 		this.headlights = message.getByte(6) & 0x80;
+                
 		super.setLeakage(message.getByte(6) & 0xEF);
+                
 		super.setTemp(message.getByte(7) - 40);	    //40 degree offset
 	}
 	
@@ -44,12 +50,12 @@ public class EVMS_v3 extends EVMS
 	    this.headlights = headlights;
 	}
 	
-	public int getAmpHours()
+	public double getAmpHours()
 	{
 	    return this.ampHours;
 	}
 	
-	public void setAmpHours(int ampHours)
+	public void setAmpHours(double ampHours)
 	{
 	    this.ampHours = ampHours;
 	}

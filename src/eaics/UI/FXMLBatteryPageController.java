@@ -5,8 +5,10 @@
  */
 package eaics.UI;
 
+import eaics.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
+import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
 import eaics.CAN.EVMS_v3;
@@ -41,7 +43,7 @@ public class FXMLBatteryPageController implements Initializable
     private CANFilter filter;
     private LoadCell loadCell;
     
-    private int timeToRefresh = 1000;
+    private int timeToRefresh = 5000;
     
     FXMLBatteryCellPage1Controller cellPage1;
     FXMLBatteryCellPage2Controller cellPage2;
@@ -97,54 +99,67 @@ public class FXMLBatteryPageController implements Initializable
         this.filter = fil;
         this.loadCell = cell;
         
+        updateScreen();
+        
         Timeline refreshUI;
-        refreshUI = new Timeline(new KeyFrame(Duration.millis(timeToRefresh), new EventHandler<ActionEvent>() 
+        refreshUI = new Timeline(new KeyFrame(Duration.millis(timeToRefresh), new EventHandler<ActionEvent>()
 	{
             @Override
             public void handle(ActionEvent event) 
 	    {
-		
-		EVMS_v3 evmsV3 = (EVMS_v3)filter.getEVMS_v3();
-		ESC[] esc = filter.getESC();
-		BMS[] bms = filter.getBMS();
-		
-		//+------------------------------------------------------------+
-		//BMS Module 8 (switch set to 8): 1 - 12 Cells
-		//+------------------------------------------------------------+
-		
-		ampsLabel.setText("" + (evmsV3.getAmpHours() / (24*60*60) ));
-                
-                voltsLabel.setText("" + evmsV3.getVoltage());
-                
-                timeLabel.setText("" + evmsV3.getAmpHours());
-                
-                capacityLabel.setText("" + evmsV3.getAmpHours());
-                
-                socLabel.setText("" + evmsV3.getLeakage());
-                
-                powerLabel.setText("?");
-                
-                int maxV = 0;
-                for(int ii = 0; ii < bms.length; ii++)
-                {
-                    if(bms[ii].getMaxVoltage() > maxV)
-                    {
-                        maxV = bms[ii].getMaxVoltage();
-                    }
-                }
-                highCellLabel.setText("" + maxV);
-                
-                int lowV = 0;
-                for(int ii = 0; ii<bms.length; ii++)
-                {
-                    if(bms[ii].getMinVoltage() < maxV)
-                    {
-                        maxV = bms[ii].getMinVoltage();
-                    }
-                }
-                lowCellLabel.setText("" + lowV);
+		updateScreen();
             }
         }));
+        refreshUI.setCycleCount(Timeline.INDEFINITE);
+        refreshUI.play();
+    }
+    
+    public void updateScreen()
+    {
+        EVMS_v3 evmsV3 = (EVMS_v3)filter.getEVMS_v3();
+        ESC[] esc = filter.getESC();
+        BMS[] bms = filter.getBMS();
+        CurrentSensor currentSensor = filter.getCurrentSensor();
+        BMSSettings bmsSettings = filter.getBMSSettings();
+
+        //+------------------------------------------------------------+
+        //BMS Module 8 (switch set to 8): 1 - 12 Cells
+        //+------------------------------------------------------------+
+
+        ampsLabel.setText("" + currentSensor.getCurrent());
+
+        voltsLabel.setText("" + evmsV3.getVoltage() / 3.0); //How many packs are connected, i.e. 3
+
+        double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
+        time *= 60;
+        timeLabel.setText("" + time);
+
+        capacityLabel.setText("" + evmsV3.getAmpHours());
+
+        socLabel.setText("" + (evmsV3.getAmpHours() / bmsSettings.getDisplaySetting(0)) * 100);
+
+        powerLabel.setText("" + evmsV3.getVoltage() * currentSensor.getCurrent());
+
+        int maxV = 0;
+        for(int ii = 0; ii < bms.length; ii++)
+        {
+            if(bms[ii].getMaxVoltage() > maxV)
+            {
+                maxV = bms[ii].getMaxVoltage();
+            }
+        }
+        highCellLabel.setText("" + maxV / 1000.0);
+
+        int lowV = 100000;
+        for(int ii = 0; ii < bms.length; ii++)
+        {
+            if(bms[ii].getMinVoltage() < lowV)
+            {
+                lowV = bms[ii].getMinVoltage();
+            }
+        }
+        lowCellLabel.setText("" + lowV / 1000.0);
+        
     }
 
     public void initSettings(MainUIController mainGui) 
