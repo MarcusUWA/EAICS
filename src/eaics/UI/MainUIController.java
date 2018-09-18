@@ -194,16 +194,7 @@ public class MainUIController implements Initializable
             System.out.println("Failed to open Battery Window");
 	    e.printStackTrace();
         }
-    }
-    
-    
-    @FXML
-    private void handleTelemetryPressed(ActionEvent event) 
-    {
-        System.out.println("You clicked me! - Telemetry");
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLTelemetry.fxml"));
-    }
-    
+    }    
     
     public void initData(CANFilter fil, LoadCell cell) 
     {
