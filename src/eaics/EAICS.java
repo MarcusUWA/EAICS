@@ -217,10 +217,10 @@ public class EAICS extends Application
 		SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 		SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm:ss");
 		Writer writer = null;
-		//String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
-		String filename = "testCSV.csv";
+		String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
+		//String filename = "testCSV.csv";
 		
-		int countLines = 0;
+		//int countLines = 0;
 
 		try
 		{
@@ -261,7 +261,7 @@ public class EAICS extends Application
 
 		    while(true)
 		    {
-			if(canRawStringMessage.isTimeToLog() && countLines < 100)
+			if(canRawStringMessage.isTimeToLog())
 			{
 			    String columnData = "";
 			    Date date = new Date();
@@ -300,7 +300,7 @@ public class EAICS extends Application
 			    writer.flush();	//flush the writer
 			    
 			    
-			    countLines++;   //Delete this after testing
+			    //countLines++;   //Delete this after testing
 			}
 		    }
 		}
