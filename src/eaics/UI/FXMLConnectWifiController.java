@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import com.sun.javafx.scene.control.skin.FXVK;
 import eaics.VirtualKeyboard;
 import java.awt.Checkbox;
 import java.io.BufferedReader;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,13 +26,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * FXML Controller class
@@ -67,16 +76,81 @@ public class FXMLConnectWifiController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+    }
+
+    public void start(Scene scene) 
+    {
+        textField = new TextField();
+        textField.setPromptText("Enter WiFi password");
+        
+        
+        Button closeButton = new Button();
+        //btn.setText("Say 'Hello World'");
+
+        StackPane root = new StackPane();
+        root.getChildren().add(closeButton);
+        
+        //root.getChildren().addAll(vkb.view());
+
+        //Scene scene = new Scene(root, 1280, 600);
+
+        //primaryStage.setTitle("Hello World!");
+        //primaryStage.setScene(scene);
+        //primaryStage.show();
+
+        Node first = scene.getRoot().getChildrenUnmodifiable().get(0);
+        if (first != null) 
+        {
+            FXVK.init(first);
+            FXVK.attach(first);
+            getPopupWindow();
+        }
+    }
+
+    public PopupWindow getPopupWindow() {
+
+        @SuppressWarnings("deprecation") 
+        final Iterator<Window> windows = Window.impl_getWindows();
+
+        while (windows.hasNext()) {
+            final Window window = windows.next();
+            if (window instanceof PopupWindow) {
+                if (window.getScene() != null && window.getScene().getRoot() != null) { 
+                    Parent root = window.getScene().getRoot();
+                    if (root.getChildrenUnmodifiable().size() > 0) {
+                        Node popup = root.getChildrenUnmodifiable().get(0);
+                        if (popup.lookup(".fxvk") != null) {
+                            FXVK vk = (FXVK) popup.lookup(".fxvk");
+                            // hide the key:
+                            vk.lookup(".hide").setVisible(false);
+                            return (PopupWindow) window;
+                        }
+                    }
+                }
+                return null;
+            }
+        }
+        return null;
     }    
     
+    /*
     //TODO: remove keyboard?
-    public void test() throws IOException {
+    public void test() throws IOException 
+    {
+        Scene scene = closeButton.getScene();
+        // attach keyboard to first node on scene:
+        Node first = scene.getRoot().getChildrenUnmodifiable().get(0);
+        if (first != null) 
+        {
+            FXVK.init(first);
+            FXVK.attach(first);
+        }
                 
-        VirtualKeyboard vkb = new VirtualKeyboard();
+        //VirtualKeyboard vkb = new VirtualKeyboard();
     
-        vkb.view().setStyle("-fx-border-color: darkblue; -fx-border-radius: 5;");
+        //vkb.view().setStyle("-fx-border-color: darkblue; -fx-border-radius: 5;");
         
-        root.getChildren().addAll(vkb.view());
+        //root.getChildren().addAll(vkb.view());
         
         Runtime rt = Runtime.getRuntime();
         Process proc = rt.exec("sudo iwlist wlan0 scan");// | grep -w 'ESSID'");//| cut -d ':' -f2");
@@ -99,6 +173,7 @@ public class FXMLConnectWifiController implements Initializable {
         
         ssidBox.getChildren().add(choiceBox);
     }
+    */
     
      @FXML
     private void closeButtonAction(ActionEvent event)

@@ -282,19 +282,21 @@ public class FXMLSettingsController implements Initializable
             Pane pane = loader.load();
 
             wifiConnectController = loader.getController();
-            wifiConnectController.test();
+            //wifiConnectController.test();
         
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
-        
+
             Scene scene = new Scene(pane);
-        
+
             stage.setScene(scene);
             stage.setTitle("Wifi Setup!!");
-            
+
             stage.show();
+            
+            wifiConnectController.start(scene);
         }
         
         catch (Exception e) 
