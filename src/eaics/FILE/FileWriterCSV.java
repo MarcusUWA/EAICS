@@ -23,7 +23,10 @@ public class FileWriterCSV implements FileWriter
     private OutputStreamWriter writer;
     private BufferedWriter bufWriter;
     
-    public FileWriterCSV(String fileName)
+    // type = 0: log all
+    // type = 1: rpm logger
+    
+    public FileWriterCSV(String fileName, int type)
     {	
 	try
 	{
@@ -31,7 +34,14 @@ public class FileWriterCSV implements FileWriter
 	    writer = new OutputStreamWriter(fileStrm, "utf-8");		//Create writer to write stream
 	    bufWriter = new BufferedWriter(writer);		//To write the stream one line at a time
 	    
-	    writeHeadings();
+	    if(type == 0)
+	    {
+		writeHeadings();
+	    }
+	    else if(type == 1)
+	    {
+		writeRPMHeadings();
+	    }
 	}
 	catch(IOException e)
 	{
@@ -74,6 +84,36 @@ public class FileWriterCSV implements FileWriter
 	    columnNames += "ESC " + ii + " Throttle Command, ";			
 	}
 	columnNames += "Load Cell\n";
+
+	write(columnNames);
+    }
+    
+    private void writeRPMHeadings()
+    {
+	String columnNames = "";
+	
+	columnNames += "Date, Time, ";
+	columnNames += "Current, ";
+	columnNames += EVMS.getLoggingHeadings();
+	columnNames += EVMS_v3.getLoggingHeadings();
+	
+	for(int ii = 1; ii <= 1; ii++)
+	{
+	    columnNames += "ESC " + ii + " Battery Voltage, ";
+	    columnNames += "ESC " + ii + " Battery Current, ";
+	    columnNames += "ESC " + ii + " RPM, ";
+	    columnNames += "ESC " + ii + " Odometer, ";
+	    columnNames += "ESC " + ii + " Controller Temperature, ";
+	    columnNames += "ESC " + ii + " Motor Temperature, ";
+	    columnNames += "ESC " + ii + " Battery Temperature, ";
+	    columnNames += "ESC " + ii + " Requested Output PWM, ";
+	    columnNames += "ESC " + ii + " Real Output PWM, ";
+	    columnNames += "ESC " + ii + " Warnings, ";
+	    columnNames += "ESC " + ii + " Failures, ";
+	    columnNames += "ESC " + ii + " Remaining Battery Capacity, ";
+	    columnNames += "ESC " + ii + " Throttle Command, ";			
+	}
+	columnNames += "Power\n";
 
 	write(columnNames);
     }

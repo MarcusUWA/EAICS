@@ -21,7 +21,7 @@
       <Label layoutX="381.0" layoutY="93.0" text="--" />
       <Button fx:id="buttonUpdateSoftware" layoutX="236.0" layoutY="137.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
       <Button layoutX="200.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSendInd0" prefHeight="25.0" prefWidth="164.0" text="Send Ind:0 +16" />
-      <Button layoutX="200.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSendInd1" prefHeight="25.0" prefWidth="164.0" text="Send Ind:1 +16" />
+      <Button layoutX="200.0" layoutY="335.0" mnemonicParsing="false" onAction="#handleSendInd1" prefHeight="25.0" prefWidth="164.0" text="Send Ind:1 +16" />
       <Button layoutX="20.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSendESC1" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 1" />
       <Button layoutX="20.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSendESC2" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 2" />
       <Button layoutX="20.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleSendESC3" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 3" />

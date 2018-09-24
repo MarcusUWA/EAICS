@@ -6,6 +6,6 @@ package eaics.FILE;
  */
 public interface FileWriter 
 {
-    public void write(String filename);
+    public void write(String data);
     public void close();
 }

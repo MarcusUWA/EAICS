@@ -10,7 +10,6 @@ import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
 import java.io.IOException;
@@ -132,7 +131,14 @@ public class FXMLBatteryPageController implements Initializable
 
         double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
         time *= 60;
-        timeLabel.setText("" + time);
+	if(Double.isNaN(time))
+	{
+	    timeLabel.setText("" + 0.0);
+	}
+	else
+	{
+	    timeLabel.setText("" + time);
+	}
 
         capacityLabel.setText("" + evmsV3.getAmpHours());
 

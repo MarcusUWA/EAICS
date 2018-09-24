@@ -256,7 +256,14 @@ public class MainUIController implements Initializable
 		
                 double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
                 time *= 60;
-		timeLabel.setText("" + time);
+		if(Double.isNaN(time))
+		{
+		    timeLabel.setText("" + 0.0);
+		}
+		else
+		{
+		    timeLabel.setText("" + time);
+		}
                 if(time > maxTime)
                 {
                     timeIndicator.setProgress(0.999999);

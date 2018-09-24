@@ -5,11 +5,6 @@
  */
 package eaics;
 
-import eaics.CAN.BMS;
-import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
-import eaics.CAN.EVMS_v3;
-import static eaics.EAICS.filter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -18,9 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.io.Writer;
-import java.util.Date;
 
 /**
  *

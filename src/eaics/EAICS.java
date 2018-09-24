@@ -163,9 +163,12 @@ public class EAICS extends Application
 	SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm:ss");
 	String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
-	//String filename = "testCSV.csv";
 	
-	FileWriterCSV fileWriterCSV = new FileWriterCSV(filename);
+	String rpmFile = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
+	rpmFile = "rpm-" + rpmFile;
+	
+	FileWriterCSV fileWriterCSV = new FileWriterCSV(filename, 0);
+	FileWriterCSV rpmFileWriterCSV = new FileWriterCSV(rpmFile, 1);
 	    
 	Runnable Logger = new Runnable() 
 	{
@@ -193,7 +196,7 @@ public class EAICS extends Application
 		    columnData += bms[ii].getTemperatureString();
 		}
 
-		//EVMS
+		//ESC
 		ESC esc[] = filter.getESC();
 		for(int ii = 0; ii < esc.length; ii++)
 		{
@@ -206,6 +209,30 @@ public class EAICS extends Application
 		// -------------------------------------------------
 
 		fileWriterCSV.write(columnData);
+		
+		////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////
+		
+		String rpmColumnData = "";
+
+		rpmColumnData += formatterDate.format(date) + ", " + formatterTime.format(date) + ", ";
+
+		//Current Sensor
+		rpmColumnData += currentSensor.getCurrent();
+		rpmColumnData += ", ";
+
+		//EVMS
+		rpmColumnData += evms.getLoggingString();
+
+		//ESC
+		rpmColumnData += esc[0].getLoggingString();
+		
+		//Power
+		rpmColumnData += evms.getVoltage() * currentSensor.getCurrent() + "\n";
+
+		// -------------------------------------------------
+
+		rpmFileWriterCSV.write(rpmColumnData);
 	    }
 	};
 

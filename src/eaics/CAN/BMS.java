@@ -5,9 +5,6 @@
  */
 package eaics.CAN;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  *
  * @author Troy
