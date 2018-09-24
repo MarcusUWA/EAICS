@@ -25,10 +25,6 @@
                <children>
                   <Label text="Password:" />
                   <TextField fx:id="textField" prefHeight="27.0" prefWidth="274.0" />
-               </children>
-            </HBox>
-            <HBox fx:id="buttons" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
                   <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
                   <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeButtonAction" text="Back" />
                </children>

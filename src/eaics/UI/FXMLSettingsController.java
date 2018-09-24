@@ -282,7 +282,7 @@ public class FXMLSettingsController implements Initializable
             Pane pane = loader.load();
 
             wifiConnectController = loader.getController();
-            //wifiConnectController.test();
+            wifiConnectController.test();
         
             Stage stage = new Stage();
         
@@ -295,8 +295,6 @@ public class FXMLSettingsController implements Initializable
             stage.setTitle("Wifi Setup!!");
 
             stage.show();
-            
-            wifiConnectController.start(scene);
         }
         
         catch (Exception e) 
