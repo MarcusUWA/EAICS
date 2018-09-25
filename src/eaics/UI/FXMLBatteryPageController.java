@@ -127,14 +127,18 @@ public class FXMLBatteryPageController implements Initializable
 
         ampsLabel.setText("" + currentSensor.getCurrent());
 
-        voltsLabel.setText("" + evmsV3.getVoltage() / 3.0); //How many packs are connected, i.e. 3
+        voltsLabel.setText("" + evmsV3.getVoltage()); //How many packs are connected, i.e. 3
 
         double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
         time *= 60;
 	if(Double.isNaN(time))
 	{
-	    timeLabel.setText("" + 0.0);
+	    timeLabel.setText("--");
 	}
+        else if(Double.isInfinite(time))
+        {
+            timeLabel.setText("--");
+        }
 	else
 	{
 	    timeLabel.setText("" + time);
@@ -142,9 +146,11 @@ public class FXMLBatteryPageController implements Initializable
 
         capacityLabel.setText("" + evmsV3.getAmpHours());
 
-        socLabel.setText("" + (evmsV3.getAmpHours() / bmsSettings.getDisplaySetting(0)) * 100);
+        socLabel.setText("" + Math.round((evmsV3.getAmpHours() / bmsSettings.getDisplaySetting(0)) * 100));
+        
+        double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000));
 
-        powerLabel.setText("" + evmsV3.getVoltage() * currentSensor.getCurrent());
+        powerLabel.setText("" + kwPower);
 
         int maxV = 0;
         for(int ii = 0; ii < bms.length; ii++)

@@ -228,7 +228,7 @@ public class EAICS extends Application
 		rpmColumnData += esc[0].getLoggingString();
 		
 		//Power
-		rpmColumnData += evms.getVoltage() * currentSensor.getCurrent() + "\n";
+		rpmColumnData += (evms.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000 + "\n";
 
 		// -------------------------------------------------
 
@@ -237,7 +237,7 @@ public class EAICS extends Application
 	};
 
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
+	executor.scheduleAtFixedRate(Logger, 0, 20, TimeUnit.MILLISECONDS);   // Run every second
 	
 	    
 	// Launch the User Interface (UI) --------------------------------------

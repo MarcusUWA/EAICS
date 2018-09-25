@@ -113,7 +113,7 @@ public class FileWriterCSV implements FileWriter
 	    columnNames += "ESC " + ii + " Remaining Battery Capacity, ";
 	    columnNames += "ESC " + ii + " Throttle Command, ";			
 	}
-	columnNames += "Power\n";
+	columnNames += "Power (kw)\n";
 
 	write(columnNames);
     }

@@ -211,8 +211,6 @@ public class MainUIController implements Initializable
 	    boolean hasWarnedAuxVoltageLow = false;
 	    boolean hasWarnedChargerOff = false;
 	    
-	    //int count = 0;
-	    
             @Override
             public void handle(ActionEvent event) 
 	    {
@@ -250,20 +248,26 @@ public class MainUIController implements Initializable
 		//+------------------------------------------------------------+
 		
 		//Calculation variable
-		double power = evmsV3.getVoltage() * currentSensor.getCurrent();
-		powerLabel.setText("" + power);
-		powerIndicator.setProgress((power / (400*500)) / 1000);
+		double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
+                
+		powerLabel.setText("" + kwPower);
+		powerIndicator.setProgress((kwPower / (400*500)));
 		
                 double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
                 time *= 60;
 		if(Double.isNaN(time))
-		{
-		    timeLabel.setText("" + 0.0);
-		}
-		else
-		{
-		    timeLabel.setText("" + time);
-		}
+                {
+                    timeLabel.setText("--");
+                }
+                else if(Double.isInfinite(time))
+                {
+                    timeLabel.setText("--");
+                }
+                else
+                {
+                    timeLabel.setText("" + time);
+                }
+                
                 if(time > maxTime)
                 {
                     timeIndicator.setProgress(0.999999);
