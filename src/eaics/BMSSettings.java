@@ -177,6 +177,10 @@ public class BMSSettings
 	{
 	    e.printStackTrace();
 	}
+        finally
+        {
+            update();
+        }
     }
     
     public double getMultiplier(int index)
@@ -1077,12 +1081,7 @@ public class BMSSettings
         msg4 = addToMsg(msg4, this.enablePrecharge.getSetting());
         msg4 = addToMsg(msg4, this.stationaryMode.getSetting());
         //reserved
-        //reserved        
-        
-        System.out.println("Message>>"+msg1+"<<");
-        System.out.println("Message>>"+msg2+"<<");
-        System.out.println("Message>>"+msg3+"<<");
-        System.out.println("Message>>"+msg4+"<<");
+        //reserved
         
         try
         {

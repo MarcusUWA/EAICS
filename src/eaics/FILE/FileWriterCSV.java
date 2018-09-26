@@ -53,7 +53,7 @@ public class FileWriterCSV implements FileWriter
     {
 	String columnNames = "";
 	
-	columnNames += "Date, Time, ";
+	columnNames += "Date & Time, ";
 	columnNames += "Current, ";
 	columnNames += EVMS.getLoggingHeadings();
 	columnNames += EVMS_v3.getLoggingHeadings();
@@ -92,7 +92,7 @@ public class FileWriterCSV implements FileWriter
     {
 	String columnNames = "";
 	
-	columnNames += "Date, Time, ";
+	columnNames += "Date & Time, ";
 	columnNames += "Current, ";
 	columnNames += EVMS.getLoggingHeadings();
 	columnNames += EVMS_v3.getLoggingHeadings();

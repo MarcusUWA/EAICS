@@ -177,7 +177,7 @@ public class EAICS extends Application
 	    {
 		String columnData = "";
 		Date date = new Date();
-		columnData += formatterDate.format(date) + ", " + formatterTime.format(date) + ", ";
+		columnData += formatterDate.format(date) + " " + formatterTime.format(date) + ", ";
 
 		//Current Sensor
 		CurrentSensor currentSensor = filter.getCurrentSensor();
@@ -215,7 +215,7 @@ public class EAICS extends Application
 		
 		String rpmColumnData = "";
 
-		rpmColumnData += formatterDate.format(date) + ", " + formatterTime.format(date) + ", ";
+		rpmColumnData += formatterDate.format(date) + " " + formatterTime.format(date) + ", ";
 
 		//Current Sensor
 		rpmColumnData += currentSensor.getCurrent();
