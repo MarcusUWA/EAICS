@@ -150,7 +150,7 @@ public class FXMLBatteryPageController implements Initializable
         
         double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000));
 
-        powerLabel.setText("" + kwPower);
+        powerLabel.setText("" + String.format("%.2f", kwPower));
 
         int maxV = 0;
         for(int ii = 0; ii < bms.length; ii++)

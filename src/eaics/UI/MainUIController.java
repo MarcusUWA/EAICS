@@ -250,7 +250,7 @@ public class MainUIController implements Initializable
 		//Calculation variable
 		double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
                 
-		powerLabel.setText("" + kwPower);
+		powerLabel.setText("" + String.format("%.2f", kwPower));
 		powerIndicator.setProgress((kwPower / (400*500)));
 		
                 double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
@@ -265,7 +265,7 @@ public class MainUIController implements Initializable
                 }
                 else
                 {
-                    timeLabel.setText("" + time);
+                    timeLabel.setText("" + String.format("%.2f", time));
                 }
                 
                 if(time > maxTime)
