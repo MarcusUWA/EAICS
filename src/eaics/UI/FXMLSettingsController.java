@@ -71,6 +71,9 @@ public class FXMLSettingsController implements Initializable
     private Label label_IPaddress2;
     
     @FXML
+    private Label softwareVersionLabel;
+    
+    @FXML
     private Button buttonUpdateSoftware;
     
     @FXML
@@ -313,6 +316,7 @@ public class FXMLSettingsController implements Initializable
     {
         this.filter = filter;
         this.loadCell = loadCell;
+	softwareVersionLabel.setText("2.8.0.7");
     }
 
     /**
