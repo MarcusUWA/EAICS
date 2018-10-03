@@ -33,7 +33,7 @@ public class EVMS_v3 extends EVMS
                 
 		super.setAuxVoltage(message.getByte(5) / 10.0);	//tenths of a volt
                 
-		this.headlights = message.getByte(6) & 0x80;
+		this.headlights = (message.getByte(6) & 0x80) >> 7;
                 
 		super.setLeakage(message.getByte(6) & 0xEF);
                 

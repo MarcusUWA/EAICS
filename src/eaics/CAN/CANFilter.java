@@ -35,12 +35,11 @@ public class CANFilter
 		    this.bms[ii] = new BMS(ii);
 		}
 		this.bmsSettings = new BMSSettings();
-                this.currentSensor = new CurrentSensor();
+		this.currentSensor = new CurrentSensor();
 	}
 	
 	public void run(CANMessage message)
 	{
-	    //System.out.println("CANFilter:run: FrameID: " + message.getFrameID());
 	    switch (message.getFrameID()) 
 	    {
 	    	case 10:			  //EVMS_v2 Broadcast Status (Tx)
@@ -50,7 +49,6 @@ public class CANFilter
 		    evms_v3.setAll(message);
 		    break;
 	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
-		    //System.out.println("CANFilter:run Incoming info for ESC[0]");
 		    esc[0].setAll(message);
 		    break;
 		case 346095621: case 346095622: case 346095623: case 346095624:	  //MGM ESC module Bottom -- offset by 4 in MGM

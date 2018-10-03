@@ -83,10 +83,10 @@ public class BMS
 	    int max = voltage[0];
 	    for(int ii = 1; ii < voltage.length; ii++)
 	    {
-		if(voltage[ii] > max)
-		{
-		    max = voltage[ii];
-		}
+			if(voltage[ii] > max)
+			{
+				max = voltage[ii];
+			}
 	    }
 	    return max;
 	}
@@ -96,10 +96,10 @@ public class BMS
 	    int min = voltage[0];
 	    for(int ii = 1; ii < voltage.length; ii++)
 	    {
-		if(voltage[ii] < min)
-		{
-		    min = voltage[ii];
-		}
+			if(voltage[ii] < min)
+			{
+				min = voltage[ii];
+			}
 	    }
 	    return min;
 	}
@@ -109,11 +109,11 @@ public class BMS
 	    int max;
 	    if(temp[0] > temp[1])
 	    {
-		max = temp[0];
+			max = temp[0];
 	    }
 	    else
 	    {
-		max = temp[1];
+			max = temp[1];
 	    }
 	    return max;
 	}
@@ -123,11 +123,11 @@ public class BMS
 	    int min;
 	    if(temp[0] < temp[1])
 	    {
-		min = temp[0];
+			min = temp[0];
 	    }
 	    else
 	    {
-		min = temp[1];
+			min = temp[1];
 	    }
 	    return min;
 	}
@@ -138,8 +138,8 @@ public class BMS
 	    
 	    for(int ii = 0; ii < voltage.length; ii++)
 	    {
-		outString += voltage[ii] / 1000.0;
-		outString += ", ";
+			outString += voltage[ii] / 1000.0;
+			outString += ", ";
 	    }
 	    
 	    return outString;
@@ -151,8 +151,8 @@ public class BMS
 	    
 	    for(int ii = 0; ii < temp.length; ii++)
 	    {
-		outString += temp[ii];
-		outString += ", ";
+			outString += temp[ii];
+			outString += ", ";
 	    }
 	    
 	    return outString;

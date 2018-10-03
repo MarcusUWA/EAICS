@@ -54,8 +54,6 @@ public class IPaddress
 
     private void updateInterfaceInformation(NetworkInterface netint) throws SocketException 
     {
-        //out.printf("Display name: %s\n", netint.getDisplayName());
-        //out.printf("Name: %s\n", netint.getName());
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
         for (InetAddress inetAddress : Collections.list(inetAddresses)) 
         {
