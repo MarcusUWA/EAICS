@@ -93,8 +93,9 @@ public class FXMLSettingsController implements Initializable
     private void handleKillProgram(ActionEvent event) throws IOException
     {
         filter.stopLogging();
-        final Process killCAN_Program = Runtime.getRuntime().exec("sudo killall ReadCAN");
-        final Process killLoadCell_Program = Runtime.getRuntime().exec("sudo pkill LoadCell");
+        //final Process killPIXHAWK_Program = Runtime.getRuntime().exec("sudo pkill mavproxy.py");
+        //final Process killCAN_Program = Runtime.getRuntime().exec("sudo killall ReadCAN");
+        //final Process killLoadCell_Program = Runtime.getRuntime().exec("sudo pkill LoadCell");
         final Process killEAICS_Program = Runtime.getRuntime().exec("sudo pkill java");
     }
     
@@ -341,7 +342,7 @@ public class FXMLSettingsController implements Initializable
     {
         this.filter = filter;
         this.loadCell = loadCell;
-	softwareVersionLabel.setText("2.8.0.7");
+	softwareVersionLabel.setText("2.8.0.9");
     }
 
     /**
@@ -375,5 +376,9 @@ public class FXMLSettingsController implements Initializable
     private void handleStopLogging(ActionEvent event)
     {
         filter.stopLogging();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("LOGGING");
+        alert.setContentText("Logging has been stopped");
+        alert.show();
     }
 }

@@ -203,7 +203,7 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <Label fx:id="bottomMotorPowerLabel" alignment="TOP_CENTER" layoutX="245.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="bottomMotorPowerLabel" alignment="TOP_CENTER" layoutX="245.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="0.00" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -213,7 +213,7 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <Label fx:id="topMotorPowerLabel" alignment="TOP_CENTER" layoutX="501.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="topMotorPowerLabel" alignment="TOP_CENTER" layoutX="501.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="0.00" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -223,7 +223,7 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <Label fx:id="rightMotorPowerLabel" alignment="TOP_CENTER" layoutX="698.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="rightMotorPowerLabel" alignment="TOP_CENTER" layoutX="698.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="0.00" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>

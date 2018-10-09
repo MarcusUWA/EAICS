@@ -69,9 +69,9 @@ public class BMSSettings
         this.fuelGaugeEmpty = new ConfigData("%", 0, 100, 20, "%", 1);
         this.tempGaugeHot = new ConfigData("%", 0, 100, 80, "%", 1);
         this.tempGaugeCold = new ConfigData("%", 0, 100, 20, "%", 1);
-        this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 0, 250, 100, "?", 1);
-        this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 0, 250, 180, "?", 1);
-        this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 0, 252, 251, "?", 1);
+        this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 150, 400, 300, "cV", 1);//0,250,100
+        this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 200, 450, 420, "cV", 1);//0,250,180
+        this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 200, 452, 418, "cV", 1);//0,252,251
 	
         this.bmsHysteresis = new ConfigData("x0.01V", 0, 50, 20, "V", 0.01);
         this.bmsMinTemp = new ConfigData("n-40 degrees C", 0, 141, 0, "?", 1);
@@ -160,7 +160,7 @@ public class BMSSettings
 		
 	try
 	{
-	    reader = new BufferedReader(new InputStreamReader(new FileInputStream("bmsSettingsFile"), "utf-8"));
+	    reader = new BufferedReader(new InputStreamReader(new FileInputStream("/home/pi/EAICS/bmsSettingsFile"), "utf-8"));
 	    String st;
 	    int ii = 0;
 	    while ((st = reader.readLine()) != null)
@@ -1057,10 +1057,9 @@ public class BMSSettings
         msg2 = addToMsg(msg2, this.fuelGaugeEmpty.getSetting());
         msg2 = addToMsg(msg2, this.tempGaugeHot.getSetting());
         msg2 = addToMsg(msg2, this.tempGaugeCold.getSetting());
-        msg2 = addToMsg(msg2, this.bmsMinVoltage.getSetting());
-        msg2 = addToMsg(msg2, this.bmsMaxVoltage.getSetting());
-        msg2 = addToMsg(msg2, this.balanceVoltage.getSetting());
-        
+        msg2 = addToMsg(msg2, this.bmsMinVoltage.getSetting() - 150);
+        msg2 = addToMsg(msg2, this.bmsMaxVoltage.getSetting() - 200);
+        msg2 = addToMsg(msg2, this.balanceVoltage.getSetting() - 200);
         String msg3 = "00000022#";
         
         msg3 = addToMsg(msg3, this.bmsHysteresis.getSetting());
@@ -1083,6 +1082,11 @@ public class BMSSettings
         //reserved
         //reserved
         
+        System.out.println(msg1);
+        System.out.println(msg2);
+        System.out.println(msg3);
+        System.out.println(msg4);
+        
         try
         {
             final Process runMsg1 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg1);
@@ -1094,6 +1098,8 @@ public class BMSSettings
         {
             e.printStackTrace();
         }
+        
+        writeSettings();
     }
     
     private String addToMsg(String msg, int setting)

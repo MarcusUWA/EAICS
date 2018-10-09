@@ -25,7 +25,7 @@ public class FileWriterCSV implements FileWriter
     {	
 		try
 		{
-			fileStrm = new FileOutputStream(fileName);		//Open the file
+			fileStrm = new FileOutputStream("/home/pi/Logging/"+ fileName);		//Open the file
 			writer = new OutputStreamWriter(fileStrm, "utf-8");		//Create writer to write stream
 			bufWriter = new BufferedWriter(writer);		//To write the stream one line at a time
 			

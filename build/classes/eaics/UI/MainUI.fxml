@@ -188,5 +188,45 @@
       <ProgressBar fx:id="rightRPM" layoutX="540.0" layoutY="255.0" prefWidth="200.0" progress="0.0" rotate="-90.0" />
       <ProgressIndicator fx:id="timeIndicator" layoutX="55.0" layoutY="85.0" progress="0.0" />
       <ProgressIndicator fx:id="powerIndicator" layoutX="715.0" layoutY="85.0" progress="0.0" />
+      <Label fx:id="leftMotorPowerLabel" alignment="TOP_CENTER" layoutX="52.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="32.0" layoutY="370.0" prefHeight="17.0" prefWidth="99.0" text="Power (kW)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="226.0" layoutY="370.0" prefHeight="17.0" prefWidth="99.0" text="Power (kW)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="bottomMotorPowerLabel" alignment="TOP_CENTER" layoutX="245.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="0.00" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="482.0" layoutY="370.0" prefHeight="17.0" prefWidth="99.0" text="Power (kW)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="topMotorPowerLabel" alignment="TOP_CENTER" layoutX="501.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="0.00" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="680.0" layoutY="370.0" prefHeight="17.0" prefWidth="99.0" text="Power (kW)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="rightMotorPowerLabel" alignment="TOP_CENTER" layoutX="698.0" layoutY="343.0" prefHeight="26.0" prefWidth="53.0" text="0.00" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
