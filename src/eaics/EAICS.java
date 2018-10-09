@@ -237,8 +237,8 @@ public class EAICS extends Application
 	};
 
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(Logger, 0, 20, TimeUnit.MILLISECONDS);   // Run every second
-	
+	executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
+	filter.setLoggingExecutor(executor);
 	    
 	// Launch the User Interface (UI) --------------------------------------
         launch(args);

@@ -40,7 +40,6 @@ import javafx.stage.Stage;
 public class MainUIController implements Initializable 
 {    
     FXMLBatteryPageController batterys;
-    //FXMLBatteryCellPage1Controller batterys;
     FXMLSettingsController settings;
     
     @FXML
@@ -72,6 +71,9 @@ public class MainUIController implements Initializable
     private Label leftMotorTempLabel;
     
     @FXML
+    private Label leftMotorPowerLabel;
+    
+    @FXML
     private ProgressBar leftRPM;
     
     // ESC (Bottom Wing) -------------------------------------------------------
@@ -84,6 +86,9 @@ public class MainUIController implements Initializable
     
     @FXML
     private Label bottomMotorTempLabel;
+    
+    @FXML
+    private Label bottomMotorPowerLabel;
     
     @FXML
     private ProgressBar bottomRPM;
@@ -100,6 +105,9 @@ public class MainUIController implements Initializable
     private Label topMotorTempLabel;
     
     @FXML
+    private Label topMotorPowerLabel;
+    
+    @FXML
     private ProgressBar topRPM;
     
     // ESC (Right Wing) --------------------------------------------------------
@@ -112,6 +120,9 @@ public class MainUIController implements Initializable
     
     @FXML
     private Label rightMotorTempLabel;
+    
+    @FXML
+    private Label rightMotorPowerLabel;
     
     @FXML
     private ProgressBar rightRPM;
@@ -206,11 +217,7 @@ public class MainUIController implements Initializable
        
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
-	{
-            //Warnings
-	    boolean hasWarnedAuxVoltageLow = false;
-	    boolean hasWarnedChargerOff = false;
-	    
+	{	    
             @Override
             public void handle(ActionEvent event) 
 	    {
@@ -223,23 +230,23 @@ public class MainUIController implements Initializable
 		// Warnings ----------------------------------------------------
 		
 		// Minimum Auxillary Voltage
-		if(filter.getEVMS_v3().getAuxVoltage() < bmsSettings.getDisplaySetting(6) && !hasWarnedAuxVoltageLow)
+		if(filter.getEVMS_v3().getAuxVoltage() < bmsSettings.getDisplaySetting(6) && !filter.getHasWarnedAuxVoltageLow())
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("Auxillary voltage is low");
 		    alert.show();
-		    hasWarnedAuxVoltageLow = true;		    
+                    filter.setHasWarnedAuxVoltageLow(true);	    
 		}
 		
 		// Check if the charger is off
-		if(evmsV3.getHeadlights() == 1 && !hasWarnedChargerOff)
+		if(evmsV3.getHeadlights() == 1 && !filter.getHasWarnedChargerOff())
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("Charger is off");
 		    alert.show();
-		    hasWarnedChargerOff = true;		    
+                    filter.setHasWarnedChargerOff(true);    
 		}
 		
                 
@@ -289,6 +296,9 @@ public class MainUIController implements Initializable
 		
 		leftMotorTempLabel.setText("" + esc[0].getMotorTemp());
                 
+                double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
+                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
+                
                 leftRPM.setProgress((double)esc[0].getRpm() / maxProgress);
 		
 		
@@ -301,6 +311,9 @@ public class MainUIController implements Initializable
 		bottomControllerTempLabel.setText("" + esc[1].getControllerTemp());
 		
 		bottomMotorTempLabel.setText("" + esc[1].getMotorTemp());
+                
+                double kwBottomRightMotor = esc[1].getBatteryVoltage() * esc[1].getBatteryCurrent() / 1000;
+                leftMotorPowerLabel.setText("" + String.format("%.2f", kwBottomRightMotor));
                 
                 bottomRPM.setProgress((double)esc[1].getRpm() / maxProgress);
 		
@@ -315,6 +328,9 @@ public class MainUIController implements Initializable
 		
 		topMotorTempLabel.setText("" + esc[2].getMotorTemp());
                 
+                double kwPowerTopMotor = esc[2].getBatteryVoltage() * esc[2].getBatteryCurrent() / 1000;
+                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerTopMotor));
+                
                 topRPM.setProgress((double)esc[2].getRpm() / maxProgress);
 		
 		
@@ -327,6 +343,9 @@ public class MainUIController implements Initializable
 		rightControllerTempLabel.setText("" + esc[3].getControllerTemp());
 		
 		rightMotorTempLabel.setText("" + esc[3].getMotorTemp());
+                
+                double kwPowerRightMotor = esc[3].getBatteryVoltage() * esc[3].getBatteryCurrent() / 1000;
+                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerRightMotor));
                 
                 rightRPM.setProgress((double)esc[3].getRpm() / maxProgress);
 		

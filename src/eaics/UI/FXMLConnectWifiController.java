@@ -15,13 +15,16 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -148,10 +151,31 @@ public class FXMLConnectWifiController implements Initializable
         }
         
         Runtime.getRuntime().exec("sudo cp /home/pi/opt/wpa_supplicant-new /etc/wpa_supplicant/wpa_supplicant.conf");
+        /*
         Runtime.getRuntime().exec("sudo ifconfig wlan0 down");
+        Runtime.getRuntime().exec("sudo service dhcpcd restart");
+        Runtime.getRuntime().exec("sudo service hostapd restart");
         Runtime.getRuntime().exec("sudo ifconfig wlan0 up");
+        */
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("WiFi Update");
+        alert.setResizable(false);
+        alert.setContentText("Select okay to restart");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        ButtonType button = result.orElse(ButtonType.CANCEL);
+
+        if (button == ButtonType.OK) 
+        {
+            Runtime.getRuntime().exec("sudo reboot");
+        } 
+        else
+        {
+            
+        }
         
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+        //alert.show();
+        //Stage stage = (Stage) closeButton.getScene().getWindow();
+        //stage.close();
     }
 }
