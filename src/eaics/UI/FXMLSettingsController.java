@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -32,6 +33,15 @@ public class FXMLSettingsController implements Initializable
     FXMLBMSsettingsPage bmsSettingsPage;
     
     FXMLConnectWifiController wifiConnectController;
+    
+    @FXML
+    Button buttonStopLogging;
+    
+    @FXML
+    Button buttonKillProgram;
+    
+    @FXML
+    Button buttonResetWarnings;
     
     @FXML
     Button buttonGeneralSettingsPage1;
@@ -78,6 +88,21 @@ public class FXMLSettingsController implements Initializable
     
     @FXML
     private javafx.scene.control.Button closeButton;
+    
+    @FXML
+    private void handleKillProgram(ActionEvent event) throws IOException
+    {
+        filter.stopLogging();
+        final Process killCAN_Program = Runtime.getRuntime().exec("sudo killall ReadCAN");
+        final Process killLoadCell_Program = Runtime.getRuntime().exec("sudo pkill LoadCell");
+        final Process killEAICS_Program = Runtime.getRuntime().exec("sudo pkill java");
+    }
+    
+    @FXML
+    private void handleResetWarnings(ActionEvent event)
+    {
+        filter.resetAllWarnings();
+    }
     
     @FXML
     private void closeButtonAction(ActionEvent event)
@@ -340,5 +365,15 @@ public class FXMLSettingsController implements Initializable
     {
         Runtime.getRuntime().exec("sudo wget http://robotics.ee.uwa.edu.au/courses/des/rasp/images-pi1/EAICS.jar");
         Runtime.getRuntime().exec("cp EAICS.jar /home/pi/EAICS/dist/EAICS.jar");
-    }    
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("UPDATING");
+        alert.setContentText("Update complete");
+        alert.show();
+    }
+
+    @FXML
+    private void handleStopLogging(ActionEvent event)
+    {
+        filter.stopLogging();
+    }
 }

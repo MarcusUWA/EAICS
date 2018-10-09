@@ -17,15 +17,9 @@
       <Label fx:id="labelLAN" layoutX="34.0" layoutY="107.0" />
       <Button fx:id="buttonGeneralSettingsPage1" layoutX="485.0" layoutY="125.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage1" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 1" />
       <Button fx:id="wifiConnect" layoutX="34.0" layoutY="177.0" mnemonicParsing="false" onAction="#handleWifiSetup" prefHeight="27.0" prefWidth="164.0" text="Setup Wifi" />
-      <Label layoutX="236.0" layoutY="93.0" text="Software Version: " />
-      <Label fx:id="softwareVersionLabel" layoutX="381.0" layoutY="93.0" text="--" />
-      <Button fx:id="buttonUpdateSoftware" layoutX="236.0" layoutY="137.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
-      <Button layoutX="200.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSendInd0" prefHeight="25.0" prefWidth="164.0" text="Send Ind:0 +16" />
-      <Button layoutX="200.0" layoutY="335.0" mnemonicParsing="false" onAction="#handleSendInd1" prefHeight="25.0" prefWidth="164.0" text="Send Ind:1 +16" />
-      <Button layoutX="20.0" layoutY="290.0" mnemonicParsing="false" onAction="#handleSendESC1" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 1" />
-      <Button layoutX="20.0" layoutY="320.0" mnemonicParsing="false" onAction="#handleSendESC2" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 2" />
-      <Button layoutX="20.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleSendESC3" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 3" />
-      <Button layoutX="20.0" layoutY="380.0" mnemonicParsing="false" onAction="#handleSendESC4" prefHeight="25.0" prefWidth="164.0" text="ESC Packet 4" />
+      <Label layoutX="259.0" layoutY="93.0" text="Software Version: " />
+      <Label fx:id="softwareVersionLabel" layoutX="404.0" layoutY="93.0" text="--" />
+      <Button fx:id="buttonUpdateSoftware" layoutX="259.0" layoutY="137.0" mnemonicParsing="false" onAction="#updateButtonAction" prefHeight="27.0" prefWidth="164.0" text="Update Software" />
       <Button fx:id="buttonGeneralSettingsPage2" layoutX="485.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage2" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 2" />
       <Button fx:id="buttonGeneralSettingsPage3" layoutX="485.0" layoutY="225.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage3" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 3" />
       <Label layoutX="560.0" layoutY="94.0" text="General Settings">
@@ -41,10 +35,8 @@
       <Line endX="395.0" layoutX="400.0" layoutY="57.0" startX="-395.0" />
       <Button fx:id="buttonGeneralSettingsPage4" layoutX="485.0" layoutY="275.0" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage4" prefHeight="39.0" prefWidth="288.0" text="General Settings Page 4" />
       <Button fx:id="buttonResetSOC" layoutX="485.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleResetSOC" prefHeight="39.0" prefWidth="288.0" text="Reset State of Charge" />
-      <Label layoutX="153.0" layoutY="251.0" text="Testing">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
+      <Button fx:id="buttonResetWarnings" layoutX="30.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleResetWarnings" prefHeight="39.0" prefWidth="164.0" text="Reset Warnings" />
+      <Button fx:id="buttonKillProgram" layoutX="30.0" layoutY="264.0" mnemonicParsing="false" onAction="#handleKillProgram" prefHeight="39.0" prefWidth="164.0" text="!!! KILL EAICS !!!" />
+      <Button fx:id="buttonStopLogging" layoutX="30.0" layoutY="381.0" mnemonicParsing="false" onAction="#handleStopLogging" prefHeight="39.0" prefWidth="164.0" text="Stop Logging" />
    </children>
 </AnchorPane>

@@ -6,6 +6,7 @@
 package eaics.CAN;
 
 import eaics.BMSSettings;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  *
@@ -19,6 +20,13 @@ public class CANFilter
 	private BMS[] bms;
 	private BMSSettings bmsSettings;
         private CurrentSensor currentSensor;
+        
+        //Warnings
+        private boolean hasWarnedAuxVoltageLow;
+        private boolean hasWarnedChargerOff;
+        
+        //Logging
+        ScheduledExecutorService executor;
 	
 	public CANFilter()
 	{
@@ -36,6 +44,8 @@ public class CANFilter
 		}
 		this.bmsSettings = new BMSSettings();
 		this.currentSensor = new CurrentSensor();
+                this.hasWarnedAuxVoltageLow = false;
+                this.hasWarnedChargerOff = false;
 	}
 	
 	public void run(CANMessage message)
@@ -137,6 +147,32 @@ public class CANFilter
                     break;
 	    }
 	}
+        
+        public boolean getHasWarnedAuxVoltageLow()
+        {
+            return hasWarnedAuxVoltageLow;
+        }
+        
+        public void setHasWarnedAuxVoltageLow(boolean hasWarnedAuxVoltageLow)
+        {
+            this.hasWarnedAuxVoltageLow = hasWarnedAuxVoltageLow;
+        }
+        
+        public boolean getHasWarnedChargerOff()
+        {
+            return hasWarnedChargerOff;
+        }
+        
+        public void setHasWarnedChargerOff(boolean hasWarnedChargerOff)
+        {
+            this.hasWarnedChargerOff = hasWarnedChargerOff;
+        }
+        
+        public void resetAllWarnings()
+        {
+            this.hasWarnedAuxVoltageLow = false;
+            this.hasWarnedChargerOff = false;
+        }
 	
 	public EVMS getEVMS_v2()
 	{
@@ -166,5 +202,15 @@ public class CANFilter
         public CurrentSensor getCurrentSensor()
         {
             return this.currentSensor;
+        }
+        
+        public void setLoggingExecutor(ScheduledExecutorService executor)
+        {
+            this.executor = executor;
+        }
+        
+        public void stopLogging()
+        {
+            this.executor.shutdown();
         }
 }
