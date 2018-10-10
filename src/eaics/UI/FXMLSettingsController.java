@@ -342,7 +342,7 @@ public class FXMLSettingsController implements Initializable
     {
         this.filter = filter;
         this.loadCell = loadCell;
-	softwareVersionLabel.setText("3.0.0.0");
+	softwareVersionLabel.setText("3.0.0.1");
     }
 
     /**
@@ -364,8 +364,8 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void updateButtonAction(ActionEvent event) throws IOException
     {
-        Runtime.getRuntime().exec("sudo wget http://robotics.ee.uwa.edu.au/courses/des/rasp/images-pi1/EAICS.jar");
-        Runtime.getRuntime().exec("cp EAICS.jar /home/pi/EAICS/dist/EAICS.jar");
+        Runtime.getRuntime().exec("sudo wget http://robotics.ee.uwa.edu.au/courses/des/rasp/images-pi1/EAICS.jar -o /home/pi/EAICS/dist/download/newEAICS.jar");
+        Runtime.getRuntime().exec("sudo cp /home/pi/EAICS/dist/download/newEAICS.jar /home/pi/EAICS/dist/EAICS.jar");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("UPDATING");
         alert.setContentText("Update complete");
