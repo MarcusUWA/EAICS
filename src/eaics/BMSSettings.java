@@ -69,13 +69,13 @@ public class BMSSettings
         this.fuelGaugeEmpty = new ConfigData("%", 0, 100, 20, "%", 1);
         this.tempGaugeHot = new ConfigData("%", 0, 100, 80, "%", 1);
         this.tempGaugeCold = new ConfigData("%", 0, 100, 20, "%", 1);
-        this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 150, 400, 300, "cV", 1);//0,250,100
-        this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 200, 450, 420, "cV", 1);//0,250,180
-        this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 200, 452, 418, "cV", 1);//0,252,251
+        this.bmsMinVoltage = new ConfigData("1.50 + 0.01nV", 1500, 4000, 3000, "mV", 1);//0,250,100
+        this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 2000, 4500, 4200, "mV", 1);//0,250,180
+        this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 2000, 4520, 4180, "mV", 1);//0,252,251
 	
         this.bmsHysteresis = new ConfigData("x0.01V", 0, 50, 20, "V", 0.01);
-        this.bmsMinTemp = new ConfigData("n-40 degrees C", 0, 141, 0, "?", 1);
-        this.bmsMaxTemp = new ConfigData("n-40 degrees C", 0, 141, 141, "?", 1);
+        this.bmsMinTemp = new ConfigData("n-40 degrees C1", -40, 101, -40, "degrees C", 1);//0,141,0
+        this.bmsMaxTemp = new ConfigData("n-40 degrees C", -40, 101, 101, "degrees C", 1);//0,141,141
         this.maxChargeVoltage = new ConfigData("V", 0, 255, 100, "V", 1);
         this.maxChargeCurrent = new ConfigData("A", 0, 255, 10, "A", 1);
         this.altChargeVoltage = new ConfigData("V", 0, 255, 100, "V", 1);
@@ -86,10 +86,10 @@ public class BMSSettings
         this.mpo1Function = new ConfigData("", 0, 6, 0, "", 1);
         this.mpo2Function = new ConfigData("", 0, 6, 0, "", 1);
         this.parallelStrings = new ConfigData("", 1, 20, 1, "", 1);
-        this.enablePrecharge = new ConfigData("", 0, 1, 1, "", 1);
-        this.stationaryMode = new ConfigData("", 0, 1, 0, "", 1);
+        this.enablePrecharge = new ConfigData("", 0, 1, 1, "Yes(1)/No(0)", 1);
+        this.stationaryMode = new ConfigData("", 0, 1, 0, "Yes(1)/No(0)", 1);
 	
-	loadSettings();
+	//loadSettings();
     }
     
     public void writeSettings()
@@ -1057,14 +1057,14 @@ public class BMSSettings
         msg2 = addToMsg(msg2, this.fuelGaugeEmpty.getSetting());
         msg2 = addToMsg(msg2, this.tempGaugeHot.getSetting());
         msg2 = addToMsg(msg2, this.tempGaugeCold.getSetting());
-        msg2 = addToMsg(msg2, this.bmsMinVoltage.getSetting() - 150);
-        msg2 = addToMsg(msg2, this.bmsMaxVoltage.getSetting() - 200);
-        msg2 = addToMsg(msg2, this.balanceVoltage.getSetting() - 200);
+        msg2 = addToMsg(msg2, (int)Math.round(this.bmsMinVoltage.getSetting()/10.0) - 150);
+        msg2 = addToMsg(msg2, (int)Math.round(this.bmsMaxVoltage.getSetting()/10.0) - 200);
+        msg2 = addToMsg(msg2, (int)Math.round(this.balanceVoltage.getSetting()/10.0) - 200);
         String msg3 = "00000022#";
         
         msg3 = addToMsg(msg3, this.bmsHysteresis.getSetting());
-        msg3 = addToMsg(msg3, this.bmsMinTemp.getSetting());
-        msg3 = addToMsg(msg3, this.bmsMaxTemp.getSetting());
+        msg3 = addToMsg(msg3, this.bmsMinTemp.getSetting() + 40);
+        msg3 = addToMsg(msg3, this.bmsMaxTemp.getSetting() + 40);
         msg3 = addToMsg(msg3, this.maxChargeVoltage.getSetting());
         msg3 = addToMsg(msg3, this.maxChargeCurrent.getSetting());
         msg3 = addToMsg(msg3, this.altChargeVoltage.getSetting());
@@ -1081,11 +1081,6 @@ public class BMSSettings
         msg4 = addToMsg(msg4, this.stationaryMode.getSetting());
         //reserved
         //reserved
-        
-        System.out.println(msg1);
-        System.out.println(msg2);
-        System.out.println(msg3);
-        System.out.println(msg4);
         
         try
         {

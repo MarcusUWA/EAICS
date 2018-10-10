@@ -147,7 +147,7 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == decimal) 
         {
-            display.setText(display.getText() + ".");
+            display.setText(display.getText() + "-");
         }
         else if (event.getSource() == clear) 
         {

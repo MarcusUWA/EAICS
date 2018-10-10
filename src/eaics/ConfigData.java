@@ -40,11 +40,12 @@ public class ConfigData
     
     public void setSetting(int setting)
     {
-        setting = (int)Math.round(setting / this.multiplier);
+        //setting = (int)Math.round(setting / this.multiplier);
 	
 	if(setting <= max && setting >= min)
         {
-            this.setting = setting;
+            //this.setting = setting;
+	    this.setting = (int)Math.round(setting / this.multiplier);
         }
     }
     
