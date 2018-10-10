@@ -55,14 +55,14 @@ public class BMSSettings
     public BMSSettings()
     {
         //ConfigData(unit, min, max, initial, displayUnit, multiplier)
-        this.packCapacity = new ConfigData("Ah x5", 1, 250, 20, "Ah", 5);
+        this.packCapacity = new ConfigData("Ah x5", 5, 1250, 100, "Ah", 5);
         this.socWarning = new ConfigData("%", 0, 99, 20, "%", 1);
-        this.fullVoltage = new ConfigData("V x2", 5, 251, 80, "V", 2);
-        this.warnCurrent = new ConfigData("A x10", 1, 121, 121, "A", 10);
-        this.tripCurrent = new ConfigData("A x10", 1, 121, 121, "A", 10);
-        this.evmsTempWarning = new ConfigData("degrees C", 0, 151, 151, "degrees C", 1);    //Over temp (degC)
+        this.fullVoltage = new ConfigData("V x2", 10, 502, 402, "V", 2);
+        this.warnCurrent = new ConfigData("A x10", 10, 1210, 500, "A", 10);
+        this.tripCurrent = new ConfigData("A x10", 10, 1210, 500, "A", 10);
+        this.evmsTempWarning = new ConfigData("degrees C", 0, 151, 100, "degrees C", 1);    //Over temp (degC)
         this.minAuxVoltage = new ConfigData("V", 8, 15, 10, "V", 1);
-        this.minIsolation = new ConfigData("%", 0, 99, 50, "%", 1);
+        this.minIsolation = new ConfigData("%", 0, 99, 20, "%", 1);
 	
         this.tachoPPR = new ConfigData("", 1, 6, 2, "", 1);
         this.fuelGaugeFull = new ConfigData("%", 0, 100, 80, "%", 1);
@@ -73,23 +73,23 @@ public class BMSSettings
         this.bmsMaxVoltage = new ConfigData("2.00 + 0.01nV", 2000, 4500, 4200, "mV", 1);//0,250,180
         this.balanceVoltage = new ConfigData("2.00 + 0.01nV", 2000, 4520, 4180, "mV", 1);//0,252,251
 	
-        this.bmsHysteresis = new ConfigData("x0.01V", 0, 50, 20, "V", 0.01);
+        this.bmsHysteresis = new ConfigData("x0.01V", 0, 500, 100, "mV", 1);//divide!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         this.bmsMinTemp = new ConfigData("n-40 degrees C1", -40, 101, -40, "degrees C", 1);//0,141,0
         this.bmsMaxTemp = new ConfigData("n-40 degrees C", -40, 101, 101, "degrees C", 1);//0,141,141
-        this.maxChargeVoltage = new ConfigData("V", 0, 255, 100, "V", 1);
-        this.maxChargeCurrent = new ConfigData("A", 0, 255, 10, "A", 1);
-        this.altChargeVoltage = new ConfigData("V", 0, 255, 100, "V", 1);
-        this.altChargeCurrent = new ConfigData("A", 0, 255, 20, "A", 1);
+        this.maxChargeVoltage = new ConfigData("V", 0, 511, 400, "V", 1);//0,255,100
+        this.maxChargeCurrent = new ConfigData("A", 0, 127, 10, "A", 1);//0,255,10
+        this.altChargeVoltage = new ConfigData("V", 0, 511, 400, "V", 1);//0,255,100
+        this.altChargeCurrent = new ConfigData("A", 0, 127, 10, "A", 1);//0,255,20
         this.sleepDelay = new ConfigData("minutes", 1, 6, 5, "minutes", 1);
 	
         this.mpiFunction = new ConfigData("", 0, 3, 0, "", 1);
         this.mpo1Function = new ConfigData("", 0, 6, 0, "", 1);
         this.mpo2Function = new ConfigData("", 0, 6, 0, "", 1);
-        this.parallelStrings = new ConfigData("", 1, 20, 1, "", 1);
+        this.parallelStrings = new ConfigData("", 1, 20, 3, "", 1);
         this.enablePrecharge = new ConfigData("", 0, 1, 1, "Yes(1)/No(0)", 1);
         this.stationaryMode = new ConfigData("", 0, 1, 0, "Yes(1)/No(0)", 1);
 	
-	//loadSettings();
+	loadSettings();
     }
     
     public void writeSettings()
@@ -99,39 +99,39 @@ public class BMSSettings
 	{
 	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("bmsSettingsFile"), "utf-8"));
 	    
-	    writer.write("" + this.packCapacity.getDisplaySetting() + "\n");
-	    writer.write("" + this.socWarning.getDisplaySetting() + "\n");
-	    writer.write("" + this.fullVoltage.getDisplaySetting() + "\n");
-	    writer.write("" + this.warnCurrent.getDisplaySetting() + "\n");
-	    writer.write("" + this.tripCurrent.getDisplaySetting() + "\n");
-	    writer.write("" + this.evmsTempWarning.getDisplaySetting() + "\n");
-	    writer.write("" + this.minAuxVoltage.getDisplaySetting() + "\n");
-	    writer.write("" + this.minIsolation.getDisplaySetting() + "\n");
+	    writer.write("" + this.packCapacity.getSetting() + "\n");
+	    writer.write("" + this.socWarning.getSetting() + "\n");
+	    writer.write("" + this.fullVoltage.getSetting() + "\n");
+	    writer.write("" + this.warnCurrent.getSetting() + "\n");
+	    writer.write("" + this.tripCurrent.getSetting() + "\n");
+	    writer.write("" + this.evmsTempWarning.getSetting() + "\n");
+	    writer.write("" + this.minAuxVoltage.getSetting() + "\n");
+	    writer.write("" + this.minIsolation.getSetting() + "\n");
 	    
-	    writer.write("" + this.tachoPPR.getDisplaySetting() + "\n");
-	    writer.write("" + this.fuelGaugeFull.getDisplaySetting() + "\n");
-	    writer.write("" + this.fuelGaugeEmpty.getDisplaySetting() + "\n");
-	    writer.write("" + this.tempGaugeHot.getDisplaySetting() + "\n");
-	    writer.write("" + this.tempGaugeCold.getDisplaySetting() + "\n");
-	    writer.write("" + this.bmsMinVoltage.getDisplaySetting() + "\n");
-	    writer.write("" + this.bmsMaxVoltage.getDisplaySetting() + "\n");
-	    writer.write("" + this.balanceVoltage.getDisplaySetting() + "\n");
+	    writer.write("" + this.tachoPPR.getSetting() + "\n");
+	    writer.write("" + this.fuelGaugeFull.getSetting() + "\n");
+	    writer.write("" + this.fuelGaugeEmpty.getSetting() + "\n");
+	    writer.write("" + this.tempGaugeHot.getSetting() + "\n");
+	    writer.write("" + this.tempGaugeCold.getSetting() + "\n");
+	    writer.write("" + this.bmsMinVoltage.getSetting() + "\n");
+	    writer.write("" + this.bmsMaxVoltage.getSetting() + "\n");
+	    writer.write("" + this.balanceVoltage.getSetting() + "\n");
 	    
-	    writer.write("" + this.bmsHysteresis.getDisplaySetting() + "\n");
-	    writer.write("" + this.bmsMinTemp.getDisplaySetting() + "\n");
-	    writer.write("" + this.bmsMaxTemp.getDisplaySetting() + "\n");
-	    writer.write("" + this.maxChargeVoltage.getDisplaySetting() + "\n");
-	    writer.write("" + this.maxChargeCurrent.getDisplaySetting() + "\n");
-	    writer.write("" + this.altChargeVoltage.getDisplaySetting() + "\n");
-	    writer.write("" + this.altChargeCurrent.getDisplaySetting() + "\n");
-	    writer.write("" + this.sleepDelay.getDisplaySetting() + "\n");
+	    writer.write("" + this.bmsHysteresis.getSetting() + "\n");
+	    writer.write("" + (this.bmsMinTemp.getSetting() + 40) + "\n");
+	    writer.write("" + (this.bmsMaxTemp.getSetting() + 40) + "\n");
+	    writer.write("" + this.maxChargeVoltage.getSetting() + "\n");
+	    writer.write("" + this.maxChargeCurrent.getSetting() + "\n");
+	    writer.write("" + this.altChargeVoltage.getSetting() + "\n");
+	    writer.write("" + this.altChargeCurrent.getSetting() + "\n");
+	    writer.write("" + this.sleepDelay.getSetting() + "\n");
 	    
-	    writer.write("" + this.mpiFunction.getDisplaySetting() + "\n");
-	    writer.write("" + this.mpo1Function.getDisplaySetting() + "\n");
-	    writer.write("" + this.mpo2Function.getDisplaySetting() + "\n");
-	    writer.write("" + this.parallelStrings.getDisplaySetting() + "\n");
-	    writer.write("" + this.enablePrecharge.getDisplaySetting() + "\n");
-	    writer.write("" + this.stationaryMode.getDisplaySetting());
+	    writer.write("" + this.mpiFunction.getSetting() + "\n");
+	    writer.write("" + this.mpo1Function.getSetting() + "\n");
+	    writer.write("" + this.mpo2Function.getSetting() + "\n");
+	    writer.write("" + this.parallelStrings.getSetting() + "\n");
+	    writer.write("" + this.enablePrecharge.getSetting() + "\n");
+	    writer.write("" + this.stationaryMode.getSetting());
 	    //blank1
 	    //blank2
 	    
@@ -165,7 +165,14 @@ public class BMSSettings
 	    int ii = 0;
 	    while ((st = reader.readLine()) != null)
 	    {
-		this.setSetting(ii, Integer.parseInt(st));
+                if(ii == 17 || ii == 18)
+                {
+                    this.setSetting(ii, (Integer.parseInt(st) - 40));
+                }
+                else
+                {
+                    this.setSetting(ii, Integer.parseInt(st));
+                }
 		ii++;
 	    }
 	}
@@ -490,113 +497,6 @@ public class BMSSettings
                 break;
             case 29:
                 setting = this.stationaryMode.getSetting();
-                break;
-            case 30:
-                //reserved
-                break;
-            case 31:
-                //reserved
-                break;
-        }
-	
-	return setting;
-    }
-    
-    public int getDisplaySetting(int index)
-    {        
-        int setting = 0;
-	
-	switch(index)
-        {
-            case 0:
-                setting = this.packCapacity.getDisplaySetting();
-                break;
-            case 1:
-                setting = this.socWarning.getDisplaySetting();
-                break;
-            case 2:
-                setting = this.fullVoltage.getDisplaySetting();
-                break;
-            case 3:
-                setting = this.warnCurrent.getDisplaySetting();
-                break;
-            case 4:
-                setting = this.tripCurrent.getDisplaySetting();
-                break;
-            case 5:
-                setting = this.evmsTempWarning.getDisplaySetting();
-                break;
-            case 6:
-                setting = this.minAuxVoltage.getDisplaySetting();
-                break;
-            case 7:
-                setting = this.minIsolation.getDisplaySetting();
-                break;
-            case 8:
-                setting = this.tachoPPR.getDisplaySetting();
-                break;
-            case 9:
-                setting = this.fuelGaugeFull.getDisplaySetting();
-                break;
-            case 10:
-                setting = this.fuelGaugeEmpty.getDisplaySetting();
-                break;
-            case 11:
-                setting = this.tempGaugeHot.getDisplaySetting();
-                break;
-            case 12:
-                setting = this.tempGaugeCold.getDisplaySetting();
-                break;
-            case 13:
-                setting = this.bmsMinVoltage.getDisplaySetting();
-                break;
-            case 14:
-                setting = this.bmsMaxVoltage.getDisplaySetting();
-                break;
-            case 15:
-                setting = this.balanceVoltage.getDisplaySetting();
-                break;
-            case 16:
-                setting = this.bmsHysteresis.getDisplaySetting();
-                break;
-            case 17:
-                setting = this.bmsMinTemp.getDisplaySetting();
-                break;
-            case 18:
-                setting = this.bmsMaxTemp.getDisplaySetting();
-                break;
-            case 19:
-                setting = this.maxChargeVoltage.getDisplaySetting();
-                break;
-            case 20:
-                setting = this.maxChargeCurrent.getDisplaySetting();
-                break;
-            case 21:
-                setting = this.altChargeVoltage.getDisplaySetting();
-                break;
-            case 22:
-                setting = this.altChargeCurrent.getDisplaySetting();
-                break;
-            case 23:
-                setting = this.sleepDelay.getDisplaySetting();
-                break;
-            case 24:
-                setting = this.mpiFunction.getDisplaySetting();
-                break;
-            case 25:
-                setting = this.mpo1Function.getDisplaySetting();
-                break;
-            case 26:
-                setting = this.mpo2Function.getDisplaySetting();
-                break;
-            case 27:
-                setting = this.parallelStrings.getDisplaySetting();
-                break;
-            case 28:
-                setting = this.enablePrecharge.getDisplaySetting();
-                break;
-            case 29:
-                setting = this.stationaryMode.getDisplaySetting();
                 break;
             case 30:
                 //reserved
@@ -1041,44 +941,52 @@ public class BMSSettings
     {
         String msg1 = "00000020#";
         
-        msg1 = addToMsg(msg1, this.packCapacity.getSetting());
-        msg1 = addToMsg(msg1, this.socWarning.getSetting());
-        msg1 = addToMsg(msg1, this.fullVoltage.getSetting());
-        msg1 = addToMsg(msg1, this.warnCurrent.getSetting());
-        msg1 = addToMsg(msg1, this.tripCurrent.getSetting());
-        msg1 = addToMsg(msg1, this.evmsTempWarning.getSetting());
-        msg1 = addToMsg(msg1, this.minAuxVoltage.getSetting());
-        msg1 = addToMsg(msg1, this.minIsolation.getSetting());
+        msg1 = addToMsg(msg1, this.packCapacity.getSetting()/this.packCapacity.getMultiplier());
+        msg1 = addToMsg(msg1, this.socWarning.getSetting()/this.socWarning.getMultiplier());
+        msg1 = addToMsg(msg1, this.fullVoltage.getSetting()/this.fullVoltage.getMultiplier());
+        msg1 = addToMsg(msg1, this.warnCurrent.getSetting()/this.warnCurrent.getMultiplier());
+        msg1 = addToMsg(msg1, this.tripCurrent.getSetting()/this.tripCurrent.getMultiplier());
+        msg1 = addToMsg(msg1, this.evmsTempWarning.getSetting()/this.evmsTempWarning.getMultiplier());
+        msg1 = addToMsg(msg1, this.minAuxVoltage.getSetting()/this.minAuxVoltage.getMultiplier());
+        msg1 = addToMsg(msg1, this.minIsolation.getSetting()/this.minIsolation.getMultiplier());
         
         String msg2 = "00000021#";
         
-        msg2 = addToMsg(msg2, this.tachoPPR.getSetting());
-        msg2 = addToMsg(msg2, this.fuelGaugeFull.getSetting());
-        msg2 = addToMsg(msg2, this.fuelGaugeEmpty.getSetting());
-        msg2 = addToMsg(msg2, this.tempGaugeHot.getSetting());
-        msg2 = addToMsg(msg2, this.tempGaugeCold.getSetting());
-        msg2 = addToMsg(msg2, (int)Math.round(this.bmsMinVoltage.getSetting()/10.0) - 150);
-        msg2 = addToMsg(msg2, (int)Math.round(this.bmsMaxVoltage.getSetting()/10.0) - 200);
-        msg2 = addToMsg(msg2, (int)Math.round(this.balanceVoltage.getSetting()/10.0) - 200);
+        msg2 = addToMsg(msg2, this.tachoPPR.getSetting()/this.tachoPPR.getMultiplier());
+        msg2 = addToMsg(msg2, this.fuelGaugeFull.getSetting()/this.fuelGaugeFull.getMultiplier());
+        msg2 = addToMsg(msg2, this.fuelGaugeEmpty.getSetting()/this.fuelGaugeEmpty.getMultiplier());
+        msg2 = addToMsg(msg2, this.tempGaugeHot.getSetting()/this.tempGaugeHot.getMultiplier());
+        msg2 = addToMsg(msg2, this.tempGaugeCold.getSetting()/this.tempGaugeCold.getMultiplier());
+        msg2 = addToMsg(msg2, this.bmsMinVoltage.getSetting()/10 - 150);
+        msg2 = addToMsg(msg2, this.bmsMaxVoltage.getSetting()/10 - 200);
+        msg2 = addToMsg(msg2, this.balanceVoltage.getSetting()/10 - 200);
         String msg3 = "00000022#";
         
-        msg3 = addToMsg(msg3, this.bmsHysteresis.getSetting());
+        msg3 = addToMsg(msg3, this.bmsHysteresis.getSetting()/10);
         msg3 = addToMsg(msg3, this.bmsMinTemp.getSetting() + 40);
         msg3 = addToMsg(msg3, this.bmsMaxTemp.getSetting() + 40);
-        msg3 = addToMsg(msg3, this.maxChargeVoltage.getSetting());
-        msg3 = addToMsg(msg3, this.maxChargeCurrent.getSetting());
-        msg3 = addToMsg(msg3, this.altChargeVoltage.getSetting());
-        msg3 = addToMsg(msg3, this.altChargeCurrent.getSetting());
+        
+        
+        int sendingByte3 = this.maxChargeVoltage.getSetting()%256;
+        msg3 = addToMsg(msg3, sendingByte3);
+        int sendingByte4 = (this.maxChargeVoltage.getSetting()/256)*128 + this.maxChargeCurrent.getSetting();     
+        msg3 = addToMsg(msg3, sendingByte4);
+        
+        int sendingByte5 = this.altChargeVoltage.getSetting()%256;
+        msg3 = addToMsg(msg3, sendingByte5);
+        int sendingByte6 = (this.altChargeVoltage.getSetting()/256)*128 + this.altChargeCurrent.getSetting();
+        msg3 = addToMsg(msg3, sendingByte6);
+        
         msg3 = addToMsg(msg3, this.sleepDelay.getSetting());
         
         String msg4 = "00000023#";
         
-        msg4 = addToMsg(msg4, this.mpiFunction.getSetting());
-        msg4 = addToMsg(msg4, this.mpo1Function.getSetting());
-        msg4 = addToMsg(msg4, this.mpo2Function.getSetting());
-        msg4 = addToMsg(msg4, this.parallelStrings.getSetting());
-        msg4 = addToMsg(msg4, this.enablePrecharge.getSetting());
-        msg4 = addToMsg(msg4, this.stationaryMode.getSetting());
+        msg4 = addToMsg(msg4, this.mpiFunction.getSetting()/this.mpiFunction.getMultiplier());
+        msg4 = addToMsg(msg4, this.mpo1Function.getSetting()/this.mpo1Function.getMultiplier());
+        msg4 = addToMsg(msg4, this.mpo2Function.getSetting()/this.mpo2Function.getMultiplier());
+        msg4 = addToMsg(msg4, this.parallelStrings.getSetting()/this.parallelStrings.getMultiplier());
+        msg4 = addToMsg(msg4, this.enablePrecharge.getSetting()/this.enablePrecharge.getMultiplier());
+        msg4 = addToMsg(msg4, this.stationaryMode.getSetting()/this.stationaryMode.getMultiplier());
         //reserved
         //reserved
         

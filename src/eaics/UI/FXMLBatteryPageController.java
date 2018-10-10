@@ -146,7 +146,7 @@ public class FXMLBatteryPageController implements Initializable
 
         capacityLabel.setText("" + evmsV3.getAmpHours());
 
-        socLabel.setText("" + Math.round((evmsV3.getAmpHours() / bmsSettings.getDisplaySetting(0)) * 100));
+        socLabel.setText("" + Math.round((evmsV3.getAmpHours() / bmsSettings.getSetting(0)) * 100));
         
         double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000));
 

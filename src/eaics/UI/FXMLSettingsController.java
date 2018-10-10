@@ -342,7 +342,7 @@ public class FXMLSettingsController implements Initializable
     {
         this.filter = filter;
         this.loadCell = loadCell;
-	softwareVersionLabel.setText("2.8.0.9");
+	softwareVersionLabel.setText("3.0.0.0");
     }
 
     /**

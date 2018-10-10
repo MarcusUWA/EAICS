@@ -230,7 +230,7 @@ public class MainUIController implements Initializable
 		// Warnings ----------------------------------------------------
 		
 		// Minimum Auxillary Voltage
-		if(filter.getEVMS_v3().getAuxVoltage() < bmsSettings.getDisplaySetting(6) && !filter.getHasWarnedAuxVoltageLow())
+		if(filter.getEVMS_v3().getAuxVoltage() < bmsSettings.getSetting(6) && !filter.getHasWarnedAuxVoltageLow())
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");

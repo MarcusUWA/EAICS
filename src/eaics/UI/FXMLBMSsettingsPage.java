@@ -205,14 +205,14 @@ public class FXMLBMSsettingsPage implements Initializable
 	maxLabel7.setText("" + this.bmsSettings.getMaxValue(pageNumber + 6));
 	maxLabel8.setText("" + this.bmsSettings.getMaxValue(pageNumber + 7));
 	// Value Labels
-	label1.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 0));
-	label2.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 1));
-	label3.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 2));
-	label4.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 3));
-	label5.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 4));
-	label6.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 5));
-	label7.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 6));
-	label8.setText("" + this.bmsSettings.getDisplaySetting(pageNumber + 7));
+	label1.setText("" + this.bmsSettings.getSetting(pageNumber + 0));
+	label2.setText("" + this.bmsSettings.getSetting(pageNumber + 1));
+	label3.setText("" + this.bmsSettings.getSetting(pageNumber + 2));
+	label4.setText("" + this.bmsSettings.getSetting(pageNumber + 3));
+	label5.setText("" + this.bmsSettings.getSetting(pageNumber + 4));
+	label6.setText("" + this.bmsSettings.getSetting(pageNumber + 5));
+	label7.setText("" + this.bmsSettings.getSetting(pageNumber + 6));
+	label8.setText("" + this.bmsSettings.getSetting(pageNumber + 7));
 	// Unit Label
 	unitLabel1.setText("" + this.bmsSettings.getDisplayUnits(pageNumber + 0));
 	unitLabel2.setText("" + this.bmsSettings.getDisplayUnits(pageNumber + 1));

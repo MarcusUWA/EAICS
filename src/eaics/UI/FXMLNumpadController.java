@@ -88,7 +88,7 @@ public class FXMLNumpadController implements Initializable
     private Button four;
 
     @FXML
-    private Button decimal;
+    private Button negative;
 
     @FXML
     private Button five;
@@ -145,7 +145,7 @@ public class FXMLNumpadController implements Initializable
         {
             display.setText(display.getText() + "0");
         }
-        else if (event.getSource() == decimal) 
+        else if (event.getSource() == negative) 
         {
             display.setText(display.getText() + "-");
         }

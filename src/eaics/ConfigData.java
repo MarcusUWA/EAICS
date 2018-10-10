@@ -16,9 +16,9 @@ public class ConfigData
     private int max;
     private int setting;
     private String displayUnits;
-    private double multiplier;
+    private int multiplier;
     
-    public ConfigData(String unit, int min, int max, int initialSetting, String displayUnits, double multiplier)
+    public ConfigData(String unit, int min, int max, int initialSetting, String displayUnits, int multiplier)
     {
         this.unit = unit;
         this.min = min;
@@ -28,9 +28,9 @@ public class ConfigData
 	this.multiplier = multiplier;
     }
     
-    public int getDisplaySetting()
+    public int getMultiplier()
     {
-	return (int)Math.round(this.setting * this.multiplier);
+        return this.multiplier;
     }
     
     public int getSetting()
@@ -40,12 +40,9 @@ public class ConfigData
     
     public void setSetting(int setting)
     {
-        //setting = (int)Math.round(setting / this.multiplier);
-	
 	if(setting <= max && setting >= min)
         {
-            //this.setting = setting;
-	    this.setting = (int)Math.round(setting / this.multiplier);
+            this.setting = setting;
         }
     }
     
@@ -56,11 +53,11 @@ public class ConfigData
     
     public int getMax()
     {
-	return (int)Math.round(this.max * this.multiplier);
+	return this.max;
     }
     
     public int getMin()
     {
-	return (int)Math.round(this.min * this.multiplier);
+	return this.min;
     }
 }

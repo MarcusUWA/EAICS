@@ -66,7 +66,7 @@
                   <Font size="30.0" />
                </font>
             </Button>
-            <Button fx:id="decimal" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="." GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Button fx:id="negative" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="77.0" prefWidth="116.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font size="30.0" />
                </font>
