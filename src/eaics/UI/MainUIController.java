@@ -12,10 +12,14 @@ import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -30,6 +34,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,6 +56,8 @@ public class MainUIController implements Initializable
     
     private CANFilter filter;
     private LoadCell loadCell;
+    
+    private int status = 0;
     
     // Big Labels - Top of Page ----------------------------------------------
     
@@ -139,6 +147,15 @@ public class MainUIController implements Initializable
     private ProgressIndicator powerIndicator;
     
     @FXML
+    private ImageView wifi_icon;
+    
+    @FXML
+    private ImageView can_icon;
+    
+    @FXML 
+    private ImageView status_icon;
+    
+    @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
     {
         System.out.println("You clicked me! - Settings");        
@@ -226,19 +243,153 @@ public class MainUIController implements Initializable
 		BMS[] bms = filter.getBMS();
 		BMSSettings bmsSettings = filter.getBMSSettings();
                 CurrentSensor currentSensor = filter.getCurrentSensor();
+                
+                FileInputStream input = null;
+                Image image;
 		
 		// Warnings ----------------------------------------------------
-		
-		// Minimum Auxillary Voltage
-		if(filter.getEVMS_v3().getAuxVoltage() < bmsSettings.getSetting(6) && !filter.getHasWarnedAuxVoltageLow())
+                
+                //Status Icon, need to fix this
+                /*
+		if(evmsV3.getStatus()!=status) {
+                    status = evmsV3.getStatus();
+
+                    switch(status) {
+                        //idle state
+                        case 0:
+                            try {
+                                input = new FileInputStream("Resources/idle.png");
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            image = new Image(input);
+                            status_icon.setImage(image);
+                            break;
+                        
+                        //precharging
+                        case 1:
+                            try {
+                                input = new FileInputStream("Resources/pre-charge.png");
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            image = new Image(input);
+                            status_icon.setImage(image);
+                            break;
+                            
+                        case 2:
+                            try {
+                                input = new FileInputStream("Resources/running.png");
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            image = new Image(input);
+                            status_icon.setImage(image);
+                            break;
+                            
+                        case 3:
+                            try {
+                                input = new FileInputStream("Resources/charge.png");
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            image = new Image(input);
+                            status_icon.setImage(image);
+                            break;
+                            
+                        case 4:
+                            try {
+                                input = new FileInputStream("Resources/setup.png");
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            image = new Image(input);
+                            status_icon.setImage(image);
+                            break;
+                            
+                        case 5:
+                            try {
+                                input = new FileInputStream("Resources/stopped.png");
+                            } catch (FileNotFoundException ex) {
+                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                            image = new Image(input);
+                            status_icon.setImage(image);
+                            break;
+                        default:
+                            break;     
+                    }
+                }
+                */
+		// Errors
+		if(evmsV3.getError() != 0 && !filter.getHasWarnedError())
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
-		    alert.setHeaderText("WARNING");
-		    alert.setContentText("Auxillary voltage is low");
+		    alert.setHeaderText("WARNING!!!");
+                    
+                    switch(evmsV3.getError()) {
+                        case 1: 
+                            alert.setContentText("EVMS Error: Corrupt Settings!");
+                            break;
+                        case 2:
+                            alert.setContentText("EVMS Error: Overcurrent Warning!");
+                            break;
+                        case 3:
+                            alert.setContentText("EVMS Error: Overcurrent Shutdown!");
+                            break;
+                        case 4:
+                            alert.setContentText("EVMS Error: Low Cell Warning!");
+                            break;
+                        case 5:
+                            alert.setContentText("EVMS Error: BMS Shutdown!");
+                            break;
+                        case 6:
+                            alert.setContentText("EVMS Error: High Cell Warning!");
+                            break;    
+                        case 7:
+                            alert.setContentText("EVMS Error: Charge Ended!");
+                            break;
+                        case 8:
+                            alert.setContentText("EVMS Error: BMS Over-Temp!");
+                            break;
+                        case 9:
+                            alert.setContentText("EVMS Error: BMS Under-Temp!");
+                            break;
+                        case 10:
+                            alert.setContentText("EVMS Error: Low SoC!");
+                            break;
+                        case 11:
+                            alert.setContentText("EVMS Error: EVMS Over Temperature!");
+                            break;
+                        case 12:
+                            alert.setContentText("EVMS Error: Isolation Error!");
+                            break;
+                        case 13:
+                            alert.setContentText("EVMS Error: Low 12V!");
+                            break;
+                        case 14:
+                            alert.setContentText("EVMS Error: Precharge Failed!");
+                            break;
+                        case 16:
+                            alert.setContentText("EVMS Error: Contactor Switch Error!");
+                            break;
+                        case 17:
+                            alert.setContentText("EVMS Error: CAN Error!");
+                            break;
+                        default:
+                            break;
+                        
+                    }
 		    alert.show();
-                    filter.setHasWarnedAuxVoltageLow(true);	    
+                    filter.setHasWarnedError(true);	    
 		}
-		
+                
 		// Check if the charger is off
 		if(evmsV3.getHeadlights() == 1 && !filter.getHasWarnedChargerOff())
 		{

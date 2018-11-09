@@ -24,6 +24,11 @@ public class EVMS_v3 extends EVMS
 	@Override
 	public void setAll(CANMessage message)
 	{
+                
+                this.setError((message.getByte(0) & 0xF8) >>3);
+                
+                this.setStatus(message.getByte(0) & 0x07);
+                        
 		this.ampHours = message.getByte(2) + (message.getByte(1) << 8);
                 this.ampHours = this.ampHours / 10.0;
                 

@@ -22,7 +22,7 @@ public class CANFilter
         private CurrentSensor currentSensor;
         
         //Warnings
-        private boolean hasWarnedAuxVoltageLow;
+        private boolean hasWarnedError;
         private boolean hasWarnedChargerOff;
         
         //Logging
@@ -44,7 +44,7 @@ public class CANFilter
 		}
 		this.bmsSettings = new BMSSettings();
 		this.currentSensor = new CurrentSensor();
-                this.hasWarnedAuxVoltageLow = false;
+                this.hasWarnedError = false;
                 this.hasWarnedChargerOff = false;
 	}
 	
@@ -58,6 +58,10 @@ public class CANFilter
 	    	case 30:			  //EVMS_v3 Broadcast Status (Tx)
 		    evms_v3.setAll(message);
 		    break;
+                    
+                    
+                    
+                    //Begin ESC CAN Messages
 	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
 		    esc[0].setAll(message);
 		    break;
@@ -70,6 +74,8 @@ public class CANFilter
 		case 346095629: case 346095630: case 346095631: case 346095632:	  //MGM ESC module Right -- offset by 12 in MGM
 		    esc[3].setAll(message);
 		    break;
+                    
+                    //Begin BMS Module Information
 		case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
 		    bms[0].setAll(message);
 		    break;
@@ -142,20 +148,23 @@ public class CANFilter
 		case 531: case 532: case 533: case 534:   //Reply Data - BMS Module 7 + 16
 		    bms[23].setAll(message);
 		    break;
+                    
+                //EVMS Current Sense
                 case 40:                              // Current Sensor
                     currentSensor.setAll(message);
                     break;
+                    
 	    }
 	}
         
-        public boolean getHasWarnedAuxVoltageLow()
+        public boolean getHasWarnedError()
         {
-            return hasWarnedAuxVoltageLow;
+            return hasWarnedError;
         }
         
-        public void setHasWarnedAuxVoltageLow(boolean hasWarnedAuxVoltageLow)
+        public void setHasWarnedError(boolean hasWarnedError)
         {
-            this.hasWarnedAuxVoltageLow = hasWarnedAuxVoltageLow;
+            this.hasWarnedError = hasWarnedError;
         }
         
         public boolean getHasWarnedChargerOff()
@@ -170,7 +179,7 @@ public class CANFilter
         
         public void resetAllWarnings()
         {
-            this.hasWarnedAuxVoltageLow = false;
+            this.hasWarnedError = false;
             this.hasWarnedChargerOff = false;
         }
 	

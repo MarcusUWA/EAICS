@@ -15,6 +15,10 @@ public abstract class EVMS
 	private double auxVoltage;	//Auxiliary voltage (tenths of a volt)
 	private int leakage;	//Insulation integrity/leakage (0-100%)
 	private int temp;	//degrees C
+        
+        private int error;
+        
+        private int status;
 	
 	public EVMS()
 	{
@@ -79,7 +83,23 @@ public abstract class EVMS
 	{
 		this.temp = temp;
 	}
-	
+        
+        public void setStatus(int status) {
+            this.status = status;
+        }
+        
+        public int getStatus() {
+            return status;
+        }
+        
+        public void setError(int error) {
+            this.error = error;
+        }
+        
+        public int getError() {
+            return error;
+        }
+ 	
 	@Override
 	public String toString()
 	{
