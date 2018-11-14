@@ -11,10 +11,14 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
+import eaics.IPaddress;
 import eaics.SER.LoadCell;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
@@ -53,6 +57,8 @@ public class MainUIController implements Initializable
     
     //refresh rate in ms
     int refreshFrequency = 10;
+    
+    int timeout = 2000;
     
     private CANFilter filter;
     private LoadCell loadCell;
@@ -248,9 +254,61 @@ public class MainUIController implements Initializable
                 Image image;
 		
 		// Warnings ----------------------------------------------------
-                
-                //Status Icon, need to fix this
+             /*
+                //Wifi connection icon
+                IPaddress ipAddress = new IPaddress();
+        
+                String[] splited = ipAddress.getIPaddress().split("\\s+");
+        
+                if (splited.length == 1){   
+                    
+                    try {
+                        input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                            
+                    image = new Image(input);
+                    wifi_icon.setImage(image);
+                }
+                else {
+                    try {
+                        input = new FileInputStream("/home/pi/EAICS/images/wifi-off.png");
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                            
+                    image = new Image(input);
+                    wifi_icon.setImage(image);
+                 
+                }
+                */
+                //TODO: Need to conenct this properly...
+                //CAN-Bus connections Icon
                 /*
+                if(counter<timeout) {
+                    try {
+                        input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                            
+                    image = new Image(input);
+                    can_icon.setImage(image);
+                }
+                else {
+                    try {
+                        input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                            
+                    image = new Image(input);
+                    can_icon.setImage(image);
+                }
+                */
+                
+                //EVMS Status Icons
 		if(evmsV3.getStatus()!=status) {
                     status = evmsV3.getStatus();
 
@@ -258,7 +316,7 @@ public class MainUIController implements Initializable
                         //idle state
                         case 0:
                             try {
-                                input = new FileInputStream("Resources/idle.png");
+                                input = new FileInputStream("/home/pi/EAICS/images/idle.png");
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -270,7 +328,7 @@ public class MainUIController implements Initializable
                         //precharging
                         case 1:
                             try {
-                                input = new FileInputStream("Resources/pre-charge.png");
+                                input = new FileInputStream("/home/pi/EAICS/images/pre-charge.png");
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -281,7 +339,7 @@ public class MainUIController implements Initializable
                             
                         case 2:
                             try {
-                                input = new FileInputStream("Resources/running.png");
+                                input = new FileInputStream("/home/pi/EAICS/images/running.png");
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -292,7 +350,7 @@ public class MainUIController implements Initializable
                             
                         case 3:
                             try {
-                                input = new FileInputStream("Resources/charge.png");
+                                input = new FileInputStream("/home/pi/EAICS/images/charge.png");
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -303,7 +361,7 @@ public class MainUIController implements Initializable
                             
                         case 4:
                             try {
-                                input = new FileInputStream("Resources/setup.png");
+                                input = new FileInputStream("/home/pi/EAICS/images/setup.png");
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -314,7 +372,7 @@ public class MainUIController implements Initializable
                             
                         case 5:
                             try {
-                                input = new FileInputStream("Resources/stopped.png");
+                                input = new FileInputStream("/home/pi/EAICS/images/stopped.png");
                             } catch (FileNotFoundException ex) {
                                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -326,7 +384,7 @@ public class MainUIController implements Initializable
                             break;     
                     }
                 }
-                */
+                
 		// Errors
 		if(evmsV3.getError() != 0 && !filter.getHasWarnedError())
 		{
@@ -435,7 +493,6 @@ public class MainUIController implements Initializable
                     timeIndicator.setProgress(time / maxTime);
                 }
 		
-                
 		
 		//+------------------------------------------------------------+
 		//ESC - Electronic Speed Controller - Left Wing
