@@ -215,7 +215,6 @@ public class FXMLBatteryPageController implements Initializable
         catch (Exception e) 
         {
             System.out.println("Failed to open Battery Cell Page 1");
-            e.printStackTrace();
         }
     }
     
@@ -248,7 +247,6 @@ public class FXMLBatteryPageController implements Initializable
         catch (Exception e) 
         {
             System.out.println("Failed to open Battery Cell Page 2");
-            e.printStackTrace();
         }
     }
     
@@ -281,7 +279,6 @@ public class FXMLBatteryPageController implements Initializable
         catch (Exception e) 
         {
             System.out.println("Failed to open Battery Cell Page 3");
-            e.printStackTrace();
         }
     }
     

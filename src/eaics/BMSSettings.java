@@ -996,6 +996,11 @@ public class BMSSettings
             final Process runMsg2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg2);
             final Process runMsg3 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg3);
             final Process runMsg4 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg4);
+            
+            final Process runMsg12 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg1);
+            final Process runMsg22 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg2);
+            final Process runMsg32 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg3);
+            final Process runMsg42 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg4);
         }
 	catch(IOException e)
         {

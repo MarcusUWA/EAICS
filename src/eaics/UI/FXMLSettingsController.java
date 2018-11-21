@@ -6,7 +6,7 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
-import eaics.IPaddress;
+import eaics.IPAddress;
 import eaics.SER.LoadCell;
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,6 +31,8 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
+    String version = "3.2.0.0";
+    
     FXMLBMSsettingsPage bmsSettingsPage;
     
     FXMLConnectWifiController wifiConnectController;
@@ -72,19 +75,22 @@ public class FXMLSettingsController implements Initializable
     private String msg;
     
     @FXML
-    private Label labelLAN;
+    private Label labelLANIP;
     
     @FXML
-    private Label label_IPaddress1;
+    private Label labelWifiIP;
     
     @FXML
-    private Label label_IPaddress2;
+    private Label labelWifiSSID;
     
     @FXML
     private Label softwareVersionLabel;
     
     @FXML
-    private Button buttonUpdateSoftware;
+    private TextField pixhawkTextField;
+    
+    @FXML
+    private Button pixhawkButton;
     
     @FXML
     private javafx.scene.control.Button closeButton;
@@ -171,134 +177,22 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleResetSOC(ActionEvent event) throws IOException
     {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "00000026#64"; //message to test ESC 1st packet
-        System.out.println("Message>>"+msg+"<<");
+        msg = "00000026#64"; 
 	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+        final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);
     }
-    
-    @FXML
-    private void handleSendInd0(ActionEvent event) throws IOException
-    {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-	
-        String temp = "";
-        int exampleVoltage = 3600; // millivolts
-        int moduleID = 0 + 16;
-	//int moduleID = 13;
-        msg = "00000";
-        msg += Integer.toHexString(300 + 10*moduleID);
-	
-        msg += "#";
-	
-        temp += Integer.toHexString(exampleVoltage >> 8);
-	if(temp.length() == 1)
-	{
-	    msg += "0";
-	}
-	msg += temp;
-	temp = "";
-	
-	temp += Integer.toHexString(exampleVoltage & 0xFF);
-	if(temp.length() == 1)
-	{
-	    msg += "0";
-	}
-	msg += temp;
-	temp = "";
-	
-        System.out.println("Message>>"+msg+"<<");
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-    }
-    
-    @FXML
-    private void handleSendInd1(ActionEvent event) throws IOException
-    {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-	
-        String temp = "";
-        int exampleVoltage = 3600; // millivolts
-        int moduleID = 2 + 16;
-	//int moduleID = 14;
-        msg = "00000";
-        msg += Integer.toHexString(300 + 10*moduleID);
-	
-        msg += "#";
-	
-        temp += Integer.toHexString(exampleVoltage >> 8);
-	if(temp.length() == 1)
-	{
-	    msg += "0";
-	}
-	msg += temp;
-	temp = "";
-	
-	temp += Integer.toHexString(exampleVoltage & 0xFF);
-	if(temp.length() == 1)
-	{
-	    msg += "0";
-	}
-	msg += temp;
-	temp = "";
-	
-        System.out.println("Message>>"+msg+"<<");
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-    }
-    
-    @FXML
-    private void handleSendESC1(ActionEvent event) throws IOException
-    {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10001#39178b00be0000"; //message to test ESC 1st packet
-        System.out.println("Message>>"+msg+"<<");
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-    }
-    
-    @FXML
-    private void handleSendESC2(ActionEvent event) throws IOException
-    {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10002#bdc8ffff1b0000"; //message to test ESC 2nd packet
-        System.out.println("Message>>"+msg+"<<");
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-    }
-    
-    @FXML
-    private void handleSendESC3(ActionEvent event) throws IOException
-    {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10003#a701a70100000000"; //message to test ESC 3rd packet
-        System.out.println("Message>>"+msg+"<<");
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-    }
-    
-    @FXML
-    private void handleSendESC4(ActionEvent event) throws IOException
-    {
-        System.out.println("Sending a CAN msg!"); //delete this after testing please.
-        msg = "14a10004#6426010000000100"; //message to test ESC 4th packet
-        System.out.println("Message>>"+msg+"<<");
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-    }
-    
+
     @FXML
     private void handleRefreshIP(ActionEvent event) throws IOException
     {
-        IPaddress ipAddress = new IPaddress();
+        IPAddress ipAddress = new IPAddress();
         
-        String[] splited = ipAddress.getIPaddress().split("\\s+");
+        ipAddress.updateIPAddress();
         
-        if (splited.length == 1)
-        {
-            label_IPaddress1.setText("WiFi");
-            label_IPaddress2.setText(splited[0]);            
-        }
-        else if(splited.length == 2)
-        {
-            label_IPaddress1.setText(splited[1]);
-            labelLAN.setText("LAN");
-            label_IPaddress2.setText(splited[0]);
-        }
+        labelWifiIP.setText(ipAddress.getWifiIP());
+        labelWifiSSID.setText(ipAddress.getWifiSSID());
+        labelLANIP.setText(ipAddress.getLANIP());
+        
     }
     
     @FXML   
@@ -342,7 +236,7 @@ public class FXMLSettingsController implements Initializable
     {
         this.filter = filter;
         this.loadCell = loadCell;
-	softwareVersionLabel.setText("3.0.0.1");
+	softwareVersionLabel.setText(version);
     }
 
     /**
@@ -351,27 +245,25 @@ public class FXMLSettingsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {   
-        try
-        {
+        try {
             handleRefreshIP(new ActionEvent());
         }
-        catch(IOException e)
-        {
+        catch(IOException e) {
             e.printStackTrace();
         }
     }  
     
     @FXML
-    private void updateButtonAction(ActionEvent event) throws IOException
-    {
-        Runtime.getRuntime().exec("sudo wget http://robotics.ee.uwa.edu.au/courses/des/rasp/images-pi1/EAICS.jar -o /home/pi/EAICS/dist/download/newEAICS.jar");
-        Runtime.getRuntime().exec("sudo cp /home/pi/EAICS/dist/download/newEAICS.jar /home/pi/EAICS/dist/EAICS.jar");
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("UPDATING");
-        alert.setContentText("Update complete");
-        alert.show();
+    private void handleUpdatePixhawk(ActionEvent event) throws IOException {
+        
+        String newIP = pixhawkTextField.getText();
+        
+        final Process pixHawkKill = Runtime.getRuntime().exec("pkill mavproxy.py");
+	
+        final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + "--aircraft MyCopter");
+	
     }
-
+    
     @FXML
     private void handleStopLogging(ActionEvent event)
     {

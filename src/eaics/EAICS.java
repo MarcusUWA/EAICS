@@ -27,22 +27,31 @@ import javafx.stage.Stage;
 
 public class EAICS extends Application 
 {
+    private static final boolean DEBUG = false;
+    
     static CANFilter filter = new CANFilter();
     static LoadCell loadCell = new LoadCell();
-    static IPaddress ipAddress = new IPaddress();
+    static IPAddress ipAddress = new IPAddress();
+    
+    //Serial comms = new Serial("/dev/ttyUSB0");
     
     @Override
     public void start(Stage stage) throws Exception 
     {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
-        
         Scene scene = new Scene(loader.load());
-        
         stage.setScene(scene);
-
+        
         stage.setTitle("ElectroAero Instrumentation and Control System");
         
+        //initialising main UI controller
         MainUIController controller = loader.getController();
+        
+        /*
+        startSerComms();
+        controller.initData(filter, comms);
+        */
+        
         controller.initData(filter, loadCell);
         stage.show();
     }
@@ -52,17 +61,14 @@ public class EAICS extends Application
      * @throws java.lang.InterruptedException
      * @throws java.io.IOException
      */
-    public static void main(String[] args) throws InterruptedException, IOException 
-    {
-	// Pix Hawk Code -------------------------------------------------------
-	
-	//String ipAddressString = "192.168.1.6";
+    public static void main(String[] args) throws InterruptedException, IOException {
+       
+	// Pix Hawk Code ------------------------------------------------------
         String ipAddressString = "192.168.201.113";
-	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
-	
+	//final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
+	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + "--aircraft MyCopter");
 	
 	// Read the CAN 0 interface (CAN B on the Hardware) --------------------
-        
 	final CANMessage canMessageCAN0 = new CANMessage();
         final Process candumpProgramCAN0 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
 
@@ -78,6 +84,9 @@ public class EAICS extends Application
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
 			canMessageCAN0.newMessage(rawCANmsg);
+                        if(DEBUG) {
+                            System.out.println(rawCANmsg);
+                        }
 			filter.run(canMessageCAN0);
 		    }
 		}
@@ -87,9 +96,7 @@ public class EAICS extends Application
 		}
 	    }
         });
-	
 	threadReadCAN0.start();
-	
 	
 	// Read the CAN 1 interface (CAN A on the Hardware) --------------------
         
@@ -108,6 +115,9 @@ public class EAICS extends Application
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
                         canMessageCAN1.newMessage(rawCANmsg);
+                        if(DEBUG) {
+                            System.out.println(rawCANmsg);
+                        }
 			filter.run(canMessageCAN1);
 		    }
 		}
@@ -154,7 +164,6 @@ public class EAICS extends Application
 		}
 	    }
         });
-
         threadLoadCell.start();
 	
 	
@@ -210,9 +219,6 @@ public class EAICS extends Application
 
 		fileWriterCSV.write(columnData);
 		
-		////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////
-		
 		String rpmColumnData = "";
 
 		rpmColumnData += formatterDate.format(date) + " " + formatterTime.format(date) + ", ";
@@ -243,4 +249,23 @@ public class EAICS extends Application
 	// Launch the User Interface (UI) --------------------------------------
         launch(args);
     }
+    
+    /*
+    
+    private void startSerComms() {
+        comms.connect();
+        if (comms.getConnected() == true) {
+            if (comms.initIOStream() == true) {
+                comms.initListener();
+            }
+        }
+    }
+        
+    private void stopSerComms() {
+        comms.disconnect();
+    }
+*/
+    
+    
+    
 }

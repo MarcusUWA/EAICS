@@ -43,26 +43,39 @@ public class LoadCell
 	public void setMsg(String msg)
 	{
 		String[] msgArray = msg.split(",");
-		//System.out.println(">>" + msg + "<<");
-		this.time =  Long.parseLong(msgArray[0]);
-		this.weight = Double.parseDouble(msgArray[1]);
-		this.units = msgArray[2];
-		//this.unknownInt = Integer.parseInt(msgArray[3]);
-		//this.unknownDouble = Double.parseDouble(msgArray[4]);
-		this.isUnread = true;
+                
+                if(msgArray.length > 2) {
+                    try {
+                        this.time =  Long.parseLong(msgArray[0]);
+                    }
+                    catch (NumberFormatException e) {
+                        this.time = 0;
+                    }
+                    try {
+                        this.weight = Double.parseDouble(msgArray[1]);
+                    }
+                    catch (NumberFormatException e) {
+                        this.weight = 0;
+                    }
+                    this.units = msgArray[2];
+                    //this.unknownInt = Integer.parseInt(msgArray[3]);
+                    //this.unknownDouble = Double.parseDouble(msgArray[4]);
+                    this.isUnread = true;
 
-		if(count > 6)
-		{
-			if(isCal == false)
-			{
-				this.calibration = this.weight;
-				isCal = true;
-			}
-		}
-		else
-		{
-			count++;
-		}
+                    if(count > 6)
+                    {
+                            if(isCal == false)
+                            {
+                                    this.calibration = this.weight;
+                                    isCal = true;
+                            }
+                    }
+
+                    else
+                    {
+                            count++;
+                    }
+                }
 	}
 
 	public boolean isUnread()

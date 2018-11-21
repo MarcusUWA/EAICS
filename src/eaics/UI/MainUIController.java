@@ -11,14 +11,11 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
-import eaics.IPaddress;
+import eaics.IPAddress;
 import eaics.SER.LoadCell;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
@@ -55,6 +52,11 @@ public class MainUIController implements Initializable
     @FXML
     Button buttonSettings;
     
+    @FXML
+    Button buttonTare;
+    
+
+    
     //refresh rate in ms
     int refreshFrequency = 10;
     
@@ -72,6 +74,12 @@ public class MainUIController implements Initializable
     
     @FXML
     private Label timeLabel;
+    
+    @FXML
+    private Label voltageLabel;
+    
+    @FXML
+    private Label currentLabel;
     
     // ESC (Left Wing) ---------------------------------------------------------
     
@@ -161,10 +169,15 @@ public class MainUIController implements Initializable
     @FXML 
     private ImageView status_icon;
     
+    @FXML 
+    private Label ipLabel;
+    
+    @FXML 
+    private Label auxLabel;
+    
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
-    {
-        System.out.println("You clicked me! - Settings");        
+    {        
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
         
@@ -198,7 +211,6 @@ public class MainUIController implements Initializable
     @FXML
     private void handleBatteryPressed(ActionEvent event) 
     {
-        System.out.println("You clicked me! - Battery");
         
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryPage.fxml"));
         
@@ -228,16 +240,36 @@ public class MainUIController implements Initializable
             System.out.println("Failed to open Battery Window");
 	    e.printStackTrace();
         }
-    }    
+    } 
     
-    public void initData(CANFilter fil, LoadCell cell) 
+    @FXML
+    private void handleTarePressed(ActionEvent event) 
+    {
+        //send
+    }
+    
+    public void initData(CANFilter fil, LoadCell cell) throws IOException 
     {
         this.filter = fil;
         this.loadCell = cell;
 	
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours
-       
+        
+        IPAddress ip = new IPAddress();
+        ip.updateIPAddress();
+        
+        if(ip.getLANIP().length()>5) {
+            ipLabel.setText(ip.getLANIP());
+        }
+        else if(ip.getWifiIP().length()>5) {
+            ipLabel.setText(ip.getWifiIP());
+        }
+        else {
+            ipLabel.setText("Not Connected");
+        }
+        
+        
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
 	{	    
@@ -493,6 +525,8 @@ public class MainUIController implements Initializable
                     timeIndicator.setProgress(time / maxTime);
                 }
 		
+                voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
+                currentLabel.setText(Integer.toString(currentSensor.getCurrent()));
 		
 		//+------------------------------------------------------------+
 		//ESC - Electronic Speed Controller - Left Wing
@@ -562,10 +596,13 @@ public class MainUIController implements Initializable
 		//LC - Load Cell
 		//+------------------------------------------------------------+
 		
-		thrustLabel.setText("" + loadCell.getWeight());
+		thrustLabel.setText("" + String.format("%.2f", loadCell.getWeight()));
                 
 		
 		//+------------------------------------------------------------+
+                
+                
+                auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
             }
             
         }));

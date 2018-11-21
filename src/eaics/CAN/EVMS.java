@@ -23,7 +23,7 @@ public abstract class EVMS
 	public EVMS()
 	{
 		this.voltage = 0;
-		this.auxVoltage = 0;
+		this.auxVoltage = 0.0;
 		this.leakage = 0;
 		this.temp = 0;
 	}

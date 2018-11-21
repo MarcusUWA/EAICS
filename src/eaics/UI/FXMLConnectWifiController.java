@@ -85,14 +85,11 @@ public class FXMLConnectWifiController implements Initializable
            
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         
-        
         String s = null;
         while (((s = stdInput.readLine()) != null)) {
             if(s.contains("ESSID")) {
                 s = s.trim();
                 s = s.substring(6);
-    
-                System.out.println(s);
                 ssidList.add(s);
             }
         }
@@ -151,12 +148,10 @@ public class FXMLConnectWifiController implements Initializable
         }
         
         Runtime.getRuntime().exec("sudo cp /home/pi/opt/wpa_supplicant-new /etc/wpa_supplicant/wpa_supplicant.conf");
+        
+        Runtime.getRuntime().exec("sudo wpa_cli -i wlan0 reconfigure");
+
         /*
-        Runtime.getRuntime().exec("sudo ifconfig wlan0 down");
-        Runtime.getRuntime().exec("sudo service dhcpcd restart");
-        Runtime.getRuntime().exec("sudo service hostapd restart");
-        Runtime.getRuntime().exec("sudo ifconfig wlan0 up");
-        */
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("WiFi Update");
         alert.setResizable(false);
@@ -173,7 +168,7 @@ public class FXMLConnectWifiController implements Initializable
         {
             
         }
-        
+        */
         //alert.show();
         //Stage stage = (Stage) closeButton.getScene().getWindow();
         //stage.close();

@@ -60,7 +60,6 @@ public class CANFilter
 		    break;
                     
                     
-                    
                     //Begin ESC CAN Messages
 	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
 		    esc[0].setAll(message);
