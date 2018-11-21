@@ -31,7 +31,7 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.2.0.0";
+    String version = "3.3.0.0";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     
@@ -94,6 +94,9 @@ public class FXMLSettingsController implements Initializable
     
     @FXML
     private javafx.scene.control.Button closeButton;
+    
+    @FXML 
+    private Label pixhawkIPLabel;
     
     @FXML
     private void handleKillProgram(ActionEvent event) throws IOException
@@ -193,6 +196,7 @@ public class FXMLSettingsController implements Initializable
         labelWifiSSID.setText(ipAddress.getWifiSSID());
         labelLANIP.setText(ipAddress.getLANIP());
         
+        //gui.refreshIP();
     }
     
     @FXML   
@@ -261,7 +265,8 @@ public class FXMLSettingsController implements Initializable
         final Process pixHawkKill = Runtime.getRuntime().exec("pkill mavproxy.py");
 	
         final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + "--aircraft MyCopter");
-	
+        
+        pixhawkIPLabel.setText(newIP);
     }
     
     @FXML

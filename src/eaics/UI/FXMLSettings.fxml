@@ -47,7 +47,7 @@
          </font>
       </Label>
       <Label alignment="CENTER_RIGHT" layoutX="203.0" layoutY="306.0" prefHeight="17.0" prefWidth="106.0" text="Pixhawk IP:" />
-      <Label fx:id="labelLANIP1" layoutX="331.0" layoutY="306.0" prefHeight="17.0" prefWidth="205.0" text="192.168.201.113" />
+      <Label fx:id="pixhawkIPLabel" layoutX="331.0" layoutY="306.0" prefHeight="17.0" prefWidth="205.0" text="192.168.201.113" />
       <Button fx:id="pixhawkButton" layoutX="379.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleUpdatePixhawk" prefHeight="27.0" prefWidth="141.0" text="Set Pixhawk IP" />
       <TextField fx:id="pixhawkTextField" layoutX="223.0" layoutY="337.0" prefHeight="27.0" prefWidth="141.0" promptText="Pixhawk IP" />
    </children>

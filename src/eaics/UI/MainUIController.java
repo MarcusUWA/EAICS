@@ -175,6 +175,8 @@ public class MainUIController implements Initializable
     @FXML 
     private Label auxLabel;
     
+    public IPAddress ip = new IPAddress();
+    
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
     {        
@@ -243,20 +245,11 @@ public class MainUIController implements Initializable
     } 
     
     @FXML
-    private void handleTarePressed(ActionEvent event) 
-    {
+    private void handleTarePressed(ActionEvent event) {
         //send
     }
     
-    public void initData(CANFilter fil, LoadCell cell) throws IOException 
-    {
-        this.filter = fil;
-        this.loadCell = cell;
-	
-	int maxProgress = 10000;
-	int maxTime = 2*60; //2 hours
-        
-        IPAddress ip = new IPAddress();
+    public void refreshIP() throws IOException {
         ip.updateIPAddress();
         
         if(ip.getLANIP().length()>5) {
@@ -268,7 +261,16 @@ public class MainUIController implements Initializable
         else {
             ipLabel.setText("Not Connected");
         }
+    }
+    
+    public void initData(CANFilter fil, LoadCell cell) throws IOException {
+        this.filter = fil;
+        this.loadCell = cell;
+	
+	int maxProgress = 10000;
+	int maxTime = 2*60; //2 hours
         
+        refreshIP();
         
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
@@ -285,14 +287,20 @@ public class MainUIController implements Initializable
                 FileInputStream input = null;
                 Image image;
 		
-		// Warnings ----------------------------------------------------
-             /*
+                // Warnings ----------------------------------------------------
+                    
                 //Wifi connection icon
-                IPaddress ipAddress = new IPaddress();
-        
-                String[] splited = ipAddress.getIPaddress().split("\\s+");
-        
-                if (splited.length == 1){   
+                /*    
+                try {
+  
+                    ip.updateIPAddress();
+                } 
+                catch (IOException ex) {
+                    Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                if(ip.getLANIP().length()>5) {
+                    ipLabel.setText(ip.getLANIP());
                     
                     try {
                         input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
@@ -302,8 +310,24 @@ public class MainUIController implements Initializable
                             
                     image = new Image(input);
                     wifi_icon.setImage(image);
+                    
+                }
+                else if(ip.getWifiIP().length()>5) {
+                    ipLabel.setText(ip.getWifiIP());
+                    
+                    try {
+                        input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                            
+                    image = new Image(input);
+                    wifi_icon.setImage(image);
+                    
                 }
                 else {
+                    ipLabel.setText("Not Connected");
+                    
                     try {
                         input = new FileInputStream("/home/pi/EAICS/images/wifi-off.png");
                     } catch (FileNotFoundException ex) {
@@ -312,8 +336,7 @@ public class MainUIController implements Initializable
                             
                     image = new Image(input);
                     wifi_icon.setImage(image);
-                 
-                }
+                }  
                 */
                 //TODO: Need to conenct this properly...
                 //CAN-Bus connections Icon
@@ -485,7 +508,7 @@ public class MainUIController implements Initializable
 		{
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
-		    alert.setContentText("Charger is off");
+		    alert.setContentText("DC-DC is off");
 		    alert.show();
                     filter.setHasWarnedChargerOff(true);    
 		}
