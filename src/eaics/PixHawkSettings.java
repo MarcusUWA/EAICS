@@ -26,7 +26,6 @@ public class PixHawkSettings
     public PixHawkSettings()
     {
         this.ipAddress = "192.168.201.113"; //default ip address
-        loadSettings();
     }
     
     public String getIpAddress()
@@ -34,60 +33,24 @@ public class PixHawkSettings
         return ipAddress;
     }
     
-    public void writeSettings()
+    public String getSettingsFileString()
     {
-	Writer writer = null;
-	try
-	{
-	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/pi/EAICS/pixHawkSettingsFile"), "utf-8"));
-	    
-	    writer.write("" + this.ipAddress + "\n");
-	    
-	    writer.flush();
-	    writer.close();
-	}
-	catch(IOException e)
-	{
-		e.printStackTrace();
-	}
-	finally
-	{
-		try
-		{
-			writer.close();
-		}
-		catch(Exception e)
-		{
-		}
-	}
+        String settingsFileString = "";
+        
+        settingsFileString += this.ipAddress + "\n";
+        
+        return settingsFileString;
     }
     
-    public void loadSettings()
+    public void setSettings(String fileString)
     {
-	BufferedReader reader;
-		
-	try
-	{
-	    reader = new BufferedReader(new InputStreamReader(new FileInputStream("/home/pi/EAICS/pixHawkSettingsFile"), "utf-8"));
-	    String st;
-	    int ii = 0;
-	    while ((st = reader.readLine()) != null)
-	    {
-                this.ipAddress = st;
-		ii++;
-	    }
-	}
-        catch(FileNotFoundException e)
+        int ii = 0;
+        String[] lines = fileString.split("\\r?\\n");
+        for (String line : lines) 
         {
-            writeSettings();
-        }
-	catch(Exception e)
-	{
-	    e.printStackTrace();
-	}
-        finally
-        {
-            //update();
-        }
-    }    
+            System.out.println(line);
+            this.ipAddress = line;
+            ii++;
+        }        
+    }
 }

@@ -89,9 +89,264 @@ public class BMSSettings
         this.enablePrecharge = new ConfigData("", 0, 1, 1, "Yes(1)/No(0)", 1);
         this.stationaryMode = new ConfigData("", 0, 1, 0, "Yes(1)/No(0)", 1);
 	
-	loadSettings();
+	//loadSettings();
     }
     
+    public String getSettingsFileString()
+    {
+        String settingsFileString = "";
+        
+        settingsFileString += this.packCapacity.getSetting() + "\n";
+        settingsFileString += this.socWarning.getSetting() + "\n";
+        settingsFileString += this.fullVoltage.getSetting() + "\n";
+        settingsFileString += this.warnCurrent.getSetting() + "\n";
+        settingsFileString += this.tripCurrent.getSetting() + "\n";
+        settingsFileString += this.evmsTempWarning.getSetting() + "\n";
+        settingsFileString += this.minAuxVoltage.getSetting() + "\n";
+        settingsFileString += this.minIsolation.getSetting() + "\n";
+        
+        settingsFileString += this.tachoPPR.getSetting() + "\n";
+        settingsFileString += this.fuelGaugeFull.getSetting() + "\n";
+        settingsFileString += this.fuelGaugeEmpty.getSetting() + "\n";
+        settingsFileString += this.tempGaugeHot.getSetting() + "\n";
+        settingsFileString += this.tempGaugeCold.getSetting() + "\n";
+        settingsFileString += this.bmsMinVoltage.getSetting() + "\n";
+        settingsFileString += this.bmsMaxVoltage.getSetting() + "\n";
+        settingsFileString += this.balanceVoltage.getSetting() + "\n";
+  
+        settingsFileString += this.bmsHysteresis.getSetting() + "\n";
+        settingsFileString += (this.bmsMinTemp.getSetting() + 40) + "\n";
+        settingsFileString += (this.bmsMaxTemp.getSetting() + 40) + "\n";
+        settingsFileString += this.maxChargeVoltage.getSetting() + "\n";
+        settingsFileString += this.maxChargeCurrent.getSetting() + "\n";
+        settingsFileString += this.altChargeVoltage.getSetting() + "\n";
+        settingsFileString += this.altChargeCurrent.getSetting() + "\n";
+        settingsFileString += this.sleepDelay.getSetting() + "\n";
+        
+        settingsFileString += this.mpiFunction.getSetting() + "\n";
+        settingsFileString += this.mpo1Function.getSetting() + "\n";
+        settingsFileString += this.mpo2Function.getSetting() + "\n";
+        settingsFileString += this.parallelStrings.getSetting() + "\n";
+        settingsFileString += this.enablePrecharge.getSetting() + "\n";
+        settingsFileString += this.stationaryMode.getSetting() + "\n";
+        
+        return settingsFileString;
+    }
+    
+    public void setSettings(String fileString)
+    {
+        int ii = 0;
+        String[] lines = fileString.split("\\r?\\n");
+        for (String line : lines) 
+        {
+            System.out.println(line);
+            if(ii == 17 || ii == 18)
+            {
+                this.setSetting(ii, (Integer.parseInt(line) - 40));
+            }
+            else
+            {
+                this.setSetting(ii, Integer.parseInt(line));
+            }
+            ii++;
+        }
+        
+        update();
+    }
+    
+    public void update()
+    {
+        String msg1 = "00000020#";
+        
+        msg1 = addToMsg(msg1, this.packCapacity.getSetting()/this.packCapacity.getMultiplier());
+        msg1 = addToMsg(msg1, this.socWarning.getSetting()/this.socWarning.getMultiplier());
+        msg1 = addToMsg(msg1, this.fullVoltage.getSetting()/this.fullVoltage.getMultiplier());
+        msg1 = addToMsg(msg1, this.warnCurrent.getSetting()/this.warnCurrent.getMultiplier());
+        msg1 = addToMsg(msg1, this.tripCurrent.getSetting()/this.tripCurrent.getMultiplier());
+        msg1 = addToMsg(msg1, this.evmsTempWarning.getSetting()/this.evmsTempWarning.getMultiplier());
+        msg1 = addToMsg(msg1, this.minAuxVoltage.getSetting()/this.minAuxVoltage.getMultiplier());
+        msg1 = addToMsg(msg1, this.minIsolation.getSetting()/this.minIsolation.getMultiplier());
+        
+        String msg2 = "00000021#";
+        
+        msg2 = addToMsg(msg2, this.tachoPPR.getSetting()/this.tachoPPR.getMultiplier());
+        msg2 = addToMsg(msg2, this.fuelGaugeFull.getSetting()/this.fuelGaugeFull.getMultiplier());
+        msg2 = addToMsg(msg2, this.fuelGaugeEmpty.getSetting()/this.fuelGaugeEmpty.getMultiplier());
+        msg2 = addToMsg(msg2, this.tempGaugeHot.getSetting()/this.tempGaugeHot.getMultiplier());
+        msg2 = addToMsg(msg2, this.tempGaugeCold.getSetting()/this.tempGaugeCold.getMultiplier());
+        msg2 = addToMsg(msg2, this.bmsMinVoltage.getSetting()/10 - 150);
+        msg2 = addToMsg(msg2, this.bmsMaxVoltage.getSetting()/10 - 200);
+        msg2 = addToMsg(msg2, this.balanceVoltage.getSetting()/10 - 200);
+        String msg3 = "00000022#";
+        
+        msg3 = addToMsg(msg3, this.bmsHysteresis.getSetting()/10);
+        msg3 = addToMsg(msg3, this.bmsMinTemp.getSetting() + 40);
+        msg3 = addToMsg(msg3, this.bmsMaxTemp.getSetting() + 40);
+        
+        
+        int sendingByte3 = this.maxChargeVoltage.getSetting()%256;
+        msg3 = addToMsg(msg3, sendingByte3);
+        int sendingByte4 = (this.maxChargeVoltage.getSetting()/256)*128 + this.maxChargeCurrent.getSetting();     
+        msg3 = addToMsg(msg3, sendingByte4);
+        
+        int sendingByte5 = this.altChargeVoltage.getSetting()%256;
+        msg3 = addToMsg(msg3, sendingByte5);
+        int sendingByte6 = (this.altChargeVoltage.getSetting()/256)*128 + this.altChargeCurrent.getSetting();
+        msg3 = addToMsg(msg3, sendingByte6);
+        
+        msg3 = addToMsg(msg3, this.sleepDelay.getSetting());
+        
+        String msg4 = "00000023#";
+        
+        msg4 = addToMsg(msg4, this.mpiFunction.getSetting()/this.mpiFunction.getMultiplier());
+        msg4 = addToMsg(msg4, this.mpo1Function.getSetting()/this.mpo1Function.getMultiplier());
+        msg4 = addToMsg(msg4, this.mpo2Function.getSetting()/this.mpo2Function.getMultiplier());
+        msg4 = addToMsg(msg4, this.parallelStrings.getSetting()/this.parallelStrings.getMultiplier());
+        msg4 = addToMsg(msg4, this.enablePrecharge.getSetting()/this.enablePrecharge.getMultiplier());
+        msg4 = addToMsg(msg4, this.stationaryMode.getSetting()/this.stationaryMode.getMultiplier());
+        //reserved
+        //reserved
+        
+        try
+        {
+            final Process runMsg1 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg1);
+            final Process runMsg2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg2);
+            final Process runMsg3 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg3);
+            final Process runMsg4 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg4);
+            
+            final Process runMsg12 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg1);
+            final Process runMsg22 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg2);
+            final Process runMsg32 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg3);
+            final Process runMsg42 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg4);
+        }
+	catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        
+        //writeSettings();
+    }
+    
+    private String addToMsg(String msg, int setting)
+    {
+        String temp = "";
+        
+        temp += Integer.toHexString(setting);
+	if(temp.length() == 1)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+        
+        return msg;
+    }
+    
+    public void setSetting(int index, int setting)
+    {        
+        switch(index)
+        {
+            case 0:
+                this.packCapacity.setSetting(setting);
+                break;
+            case 1:
+                this.socWarning.setSetting(setting);
+                break;
+            case 2:
+                this.fullVoltage.setSetting(setting);
+                break;
+            case 3:
+                this.warnCurrent.setSetting(setting);
+                break;
+            case 4:
+                this.tripCurrent.setSetting(setting);
+                break;
+            case 5:
+                this.evmsTempWarning.setSetting(setting);
+                break;
+            case 6:
+                this.minAuxVoltage.setSetting(setting);
+                break;
+            case 7:
+                this.minIsolation.setSetting(setting);
+                break;
+            case 8:
+                this.tachoPPR.setSetting(setting);
+                break;
+            case 9:
+                this.fuelGaugeFull.setSetting(setting);
+                break;
+            case 10:
+                this.fuelGaugeEmpty.setSetting(setting);
+                break;
+            case 11:
+                this.tempGaugeHot.setSetting(setting);
+                break;
+            case 12:
+                this.tempGaugeCold.setSetting(setting);
+                break;
+            case 13:
+                this.bmsMinVoltage.setSetting(setting);
+                break;
+            case 14:
+                this.bmsMaxVoltage.setSetting(setting);
+                break;
+            case 15:
+                this.balanceVoltage.setSetting(setting);
+                break;
+            case 16:
+                this.bmsHysteresis.setSetting(setting);
+                break;
+            case 17:
+                this.bmsMinTemp.setSetting(setting);
+                break;
+            case 18:
+                this.bmsMaxTemp.setSetting(setting);
+                break;
+            case 19:
+                this.maxChargeVoltage.setSetting(setting);
+                break;
+            case 20:
+                this.maxChargeCurrent.setSetting(setting);
+                break;
+            case 21:
+                this.altChargeVoltage.setSetting(setting);
+                break;
+            case 22:
+                this.altChargeCurrent.setSetting(setting);
+                break;
+            case 23:
+                this.sleepDelay.setSetting(setting);
+                break;
+            case 24:
+                this.mpiFunction.setSetting(setting);
+                break;
+            case 25:
+                this.mpo1Function.setSetting(setting);
+                break;
+            case 26:
+                this.mpo2Function.setSetting(setting);
+                break;
+            case 27:
+                this.parallelStrings.setSetting(setting);
+                break;
+            case 28:
+                this.enablePrecharge.setSetting(setting);
+                break;
+            case 29:
+                this.stationaryMode.setSetting(setting);
+                break;
+            case 30:
+                //reserved
+                break;
+            case 31:
+                //reserved
+                break;
+        }
+	
+	//writeSettings();
+    }
+    
+    /*
     public void writeSettings()
     {
 	Writer writer = null;
@@ -153,7 +408,8 @@ public class BMSSettings
 		}
 	}
     }
-    
+*/
+  /*  
     public void loadSettings()
     {
 	BufferedReader reader;
@@ -189,7 +445,7 @@ public class BMSSettings
             update();
         }
     }
-    
+    */
     public double getMultiplier(int index)
     {
 	double multiplier = 1;
@@ -295,111 +551,6 @@ public class BMSSettings
         }
 	
 	return multiplier;
-    }
-    
-    public void setSetting(int index, int setting)
-    {        
-        switch(index)
-        {
-            case 0:
-                this.packCapacity.setSetting(setting);
-                break;
-            case 1:
-                this.socWarning.setSetting(setting);
-                break;
-            case 2:
-                this.fullVoltage.setSetting(setting);
-                break;
-            case 3:
-                this.warnCurrent.setSetting(setting);
-                break;
-            case 4:
-                this.tripCurrent.setSetting(setting);
-                break;
-            case 5:
-                this.evmsTempWarning.setSetting(setting);
-                break;
-            case 6:
-                this.minAuxVoltage.setSetting(setting);
-                break;
-            case 7:
-                this.minIsolation.setSetting(setting);
-                break;
-            case 8:
-                this.tachoPPR.setSetting(setting);
-                break;
-            case 9:
-                this.fuelGaugeFull.setSetting(setting);
-                break;
-            case 10:
-                this.fuelGaugeEmpty.setSetting(setting);
-                break;
-            case 11:
-                this.tempGaugeHot.setSetting(setting);
-                break;
-            case 12:
-                this.tempGaugeCold.setSetting(setting);
-                break;
-            case 13:
-                this.bmsMinVoltage.setSetting(setting);
-                break;
-            case 14:
-                this.bmsMaxVoltage.setSetting(setting);
-                break;
-            case 15:
-                this.balanceVoltage.setSetting(setting);
-                break;
-            case 16:
-                this.bmsHysteresis.setSetting(setting);
-                break;
-            case 17:
-                this.bmsMinTemp.setSetting(setting);
-                break;
-            case 18:
-                this.bmsMaxTemp.setSetting(setting);
-                break;
-            case 19:
-                this.maxChargeVoltage.setSetting(setting);
-                break;
-            case 20:
-                this.maxChargeCurrent.setSetting(setting);
-                break;
-            case 21:
-                this.altChargeVoltage.setSetting(setting);
-                break;
-            case 22:
-                this.altChargeCurrent.setSetting(setting);
-                break;
-            case 23:
-                this.sleepDelay.setSetting(setting);
-                break;
-            case 24:
-                this.mpiFunction.setSetting(setting);
-                break;
-            case 25:
-                this.mpo1Function.setSetting(setting);
-                break;
-            case 26:
-                this.mpo2Function.setSetting(setting);
-                break;
-            case 27:
-                this.parallelStrings.setSetting(setting);
-                break;
-            case 28:
-                this.enablePrecharge.setSetting(setting);
-                break;
-            case 29:
-                this.stationaryMode.setSetting(setting);
-                break;
-            case 30:
-                //reserved
-                break;
-            case 31:
-                //reserved
-                break;
-        }
-	
-	writeSettings();
     }
     
     public int getSetting(int index)
@@ -935,92 +1086,5 @@ public class BMSSettings
         }
         
         return minValue;
-    }
-    
-    public void update()
-    {
-        String msg1 = "00000020#";
-        
-        msg1 = addToMsg(msg1, this.packCapacity.getSetting()/this.packCapacity.getMultiplier());
-        msg1 = addToMsg(msg1, this.socWarning.getSetting()/this.socWarning.getMultiplier());
-        msg1 = addToMsg(msg1, this.fullVoltage.getSetting()/this.fullVoltage.getMultiplier());
-        msg1 = addToMsg(msg1, this.warnCurrent.getSetting()/this.warnCurrent.getMultiplier());
-        msg1 = addToMsg(msg1, this.tripCurrent.getSetting()/this.tripCurrent.getMultiplier());
-        msg1 = addToMsg(msg1, this.evmsTempWarning.getSetting()/this.evmsTempWarning.getMultiplier());
-        msg1 = addToMsg(msg1, this.minAuxVoltage.getSetting()/this.minAuxVoltage.getMultiplier());
-        msg1 = addToMsg(msg1, this.minIsolation.getSetting()/this.minIsolation.getMultiplier());
-        
-        String msg2 = "00000021#";
-        
-        msg2 = addToMsg(msg2, this.tachoPPR.getSetting()/this.tachoPPR.getMultiplier());
-        msg2 = addToMsg(msg2, this.fuelGaugeFull.getSetting()/this.fuelGaugeFull.getMultiplier());
-        msg2 = addToMsg(msg2, this.fuelGaugeEmpty.getSetting()/this.fuelGaugeEmpty.getMultiplier());
-        msg2 = addToMsg(msg2, this.tempGaugeHot.getSetting()/this.tempGaugeHot.getMultiplier());
-        msg2 = addToMsg(msg2, this.tempGaugeCold.getSetting()/this.tempGaugeCold.getMultiplier());
-        msg2 = addToMsg(msg2, this.bmsMinVoltage.getSetting()/10 - 150);
-        msg2 = addToMsg(msg2, this.bmsMaxVoltage.getSetting()/10 - 200);
-        msg2 = addToMsg(msg2, this.balanceVoltage.getSetting()/10 - 200);
-        String msg3 = "00000022#";
-        
-        msg3 = addToMsg(msg3, this.bmsHysteresis.getSetting()/10);
-        msg3 = addToMsg(msg3, this.bmsMinTemp.getSetting() + 40);
-        msg3 = addToMsg(msg3, this.bmsMaxTemp.getSetting() + 40);
-        
-        
-        int sendingByte3 = this.maxChargeVoltage.getSetting()%256;
-        msg3 = addToMsg(msg3, sendingByte3);
-        int sendingByte4 = (this.maxChargeVoltage.getSetting()/256)*128 + this.maxChargeCurrent.getSetting();     
-        msg3 = addToMsg(msg3, sendingByte4);
-        
-        int sendingByte5 = this.altChargeVoltage.getSetting()%256;
-        msg3 = addToMsg(msg3, sendingByte5);
-        int sendingByte6 = (this.altChargeVoltage.getSetting()/256)*128 + this.altChargeCurrent.getSetting();
-        msg3 = addToMsg(msg3, sendingByte6);
-        
-        msg3 = addToMsg(msg3, this.sleepDelay.getSetting());
-        
-        String msg4 = "00000023#";
-        
-        msg4 = addToMsg(msg4, this.mpiFunction.getSetting()/this.mpiFunction.getMultiplier());
-        msg4 = addToMsg(msg4, this.mpo1Function.getSetting()/this.mpo1Function.getMultiplier());
-        msg4 = addToMsg(msg4, this.mpo2Function.getSetting()/this.mpo2Function.getMultiplier());
-        msg4 = addToMsg(msg4, this.parallelStrings.getSetting()/this.parallelStrings.getMultiplier());
-        msg4 = addToMsg(msg4, this.enablePrecharge.getSetting()/this.enablePrecharge.getMultiplier());
-        msg4 = addToMsg(msg4, this.stationaryMode.getSetting()/this.stationaryMode.getMultiplier());
-        //reserved
-        //reserved
-        
-        try
-        {
-            final Process runMsg1 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg1);
-            final Process runMsg2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg2);
-            final Process runMsg3 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg3);
-            final Process runMsg4 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg4);
-            
-            final Process runMsg12 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg1);
-            final Process runMsg22 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg2);
-            final Process runMsg32 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg3);
-            final Process runMsg42 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg4);
-        }
-	catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-        
-        writeSettings();
-    }
-    
-    private String addToMsg(String msg, int setting)
-    {
-        String temp = "";
-        
-        temp += Integer.toHexString(setting);
-	if(temp.length() == 1)
-	{
-	    msg += "0";
-	}
-	msg += temp;
-        
-        return msg;
     }
 }
