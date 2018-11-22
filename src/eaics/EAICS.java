@@ -61,12 +61,14 @@ public class EAICS extends Application
      * @throws java.lang.InterruptedException
      * @throws java.io.IOException
      */
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException, IOException 
+    {
        
 	// Pix Hawk Code ------------------------------------------------------
-        String ipAddressString = "192.168.201.113";
-	//final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
-	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + "--aircraft MyCopter");
+        PixHawkSettings pixHawkSettings = new PixHawkSettings();
+        String ipAddressString = pixHawkSettings.getIpAddress();
+	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
+	//final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + "--aircraft MyCopter");
 	
 	// Read the CAN 0 interface (CAN B on the Hardware) --------------------
 	final CANMessage canMessageCAN0 = new CANMessage();
