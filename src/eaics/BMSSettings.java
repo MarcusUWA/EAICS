@@ -97,7 +97,7 @@ public class BMSSettings
 	Writer writer = null;
 	try
 	{
-	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("bmsSettingsFile"), "utf-8"));
+	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/pi/EAICS/bmsSettingsFile"), "utf-8"));
 	    
 	    writer.write("" + this.packCapacity.getSetting() + "\n");
 	    writer.write("" + this.socWarning.getSetting() + "\n");

@@ -39,7 +39,7 @@ public class PixHawkSettings
 	Writer writer = null;
 	try
 	{
-	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("pixHawkSettingsFile"), "utf-8"));
+	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("/home/pi/EAICS/pixHawkSettingsFile"), "utf-8"));
 	    
 	    writer.write("" + this.ipAddress + "\n");
 	    
