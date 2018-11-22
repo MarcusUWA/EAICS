@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/*
 package eaics.SER;
 
 import gnu.io.CommPort;
@@ -18,11 +19,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.TooManyListenersException;
 
-
-/**
- *
- * @author Markcuz
- */
 public class Serial implements SerialPortEventListener {
     
     private String path = "/dev/ttyUSB0";
@@ -228,3 +224,4 @@ public class Serial implements SerialPortEventListener {
         }
     }
 }
+*/
