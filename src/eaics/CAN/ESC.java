@@ -12,6 +12,7 @@ package eaics.CAN;
 public class ESC 
 {
     private int escID;
+    private int offset;
     
     private double batteryVoltage;
     private double batteryCurrent;
@@ -30,6 +31,7 @@ public class ESC
     public ESC(int escID)
     {
 		this.escID = escID;
+                this.offset = 5;
 		
 		//Packet 1 - 7 data bytes
 		this.batteryVoltage = 0.0;
@@ -47,20 +49,21 @@ public class ESC
 		this.failures = 0;
 		//Packet 4 - 8 bytes
 		this.remainingBatteryCapacity = 0;
+                
 		//Incoming Packet
 		this.throttleCommand = 0;
     }
     
     public void setAll(CANMessage message)
     {
-		switch(message.getFrameID() - (346095617 + 4 * this.escID))
+		switch(message.getFrameID() - (346095616 + this.offset * this.escID))
 		{
-			case 0:
+			case 1:
 				this.batteryVoltage = (message.getByte(0) + 256*message.getByte(1))/57.45;
 				this.batteryCurrent = (message.getByte(2) + 256*message.getByte(3))/10.0;
 				this.rpm = (message.getByte(4) + 256*message.getByte(5) + 65536*message.getByte(6))*10;
 				break;
-			case 1:
+			case 2:
 				this.odometer = (message.getByte(0) + 256*message.getByte(1) + 65536*message.getByte(2) + 16777216*message.getByte(3));
 				this.controllerTemp = message.getByte(4);
 				this.motorTemp = message.getByte(5);

@@ -31,7 +31,7 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.4.0.0";
+    String version = "3.4.1.0";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     

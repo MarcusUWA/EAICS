@@ -71,13 +71,13 @@ public class CANFilter
 	    	case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
 		    esc[0].setAll(message);
 		    break;
-		case 346095621: case 346095622: case 346095623: case 346095624:	  //MGM ESC module Bottom -- offset by 4 in MGM
+		case 346095622: case 346095623: case 346095624: case 346095625:	  //MGM ESC module Bottom -- offset by 4 in MGM
 		    esc[1].setAll(message);
 		    break;
-		case 346095625: case 346095626: case 346095627: case 346095628:	  //MGM ESC module Top -- offset by 8 in MGM
+		case 346095627: case 346095628: case 346095629: case 346095630:	  //MGM ESC module Top -- offset by 8 in MGM
 		    esc[2].setAll(message);
 		    break;
-		case 346095629: case 346095630: case 346095631: case 346095632:	  //MGM ESC module Right -- offset by 12 in MGM
+		case 346095632: case 346095633: case 346095634: case 346095635:	  //MGM ESC module Right -- offset by 12 in MGM
 		    esc[3].setAll(message);
 		    break;
                     
