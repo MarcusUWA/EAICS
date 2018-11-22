@@ -14,12 +14,16 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class CANFilter 
 {
+        private boolean DEBUG = true;
+        
 	private EVMS_v2 evms_v2;
 	private EVMS_v3 evms_v3;
 	private ESC[] esc;
 	private BMS[] bms;
 	private BMSSettings bmsSettings;
         private CurrentSensor currentSensor;
+        
+        private CCB ccb;
         
         //Warnings
         private boolean hasWarnedError;
@@ -44,8 +48,11 @@ public class CANFilter
 		}
 		this.bmsSettings = new BMSSettings();
 		this.currentSensor = new CurrentSensor();
+                
                 this.hasWarnedError = false;
                 this.hasWarnedChargerOff = false;
+                
+                this.ccb = new CCB(3);
 	}
 	
 	public void run(CANMessage message)
@@ -152,6 +159,34 @@ public class CANFilter
                 case 40:                              // Current Sensor
                     currentSensor.setAll(message);
                     break;
+                  
+                //EVMS -> CCB1
+                case 80:
+                    break;
+                    
+                //CCB1 -> EVMS
+                case 81:
+                    ccb.setAll(81, message);
+                    break;
+                    
+                //EVMS -> CCB2
+                case 82:
+                    break;
+                //CCB2 -> EVMS
+                case 83:
+                    ccb.setAll(83, message);
+                    break;    
+                    
+                //EVMS -> CCB3
+                case 84:
+                    break;
+                //CCB3 -> EVMS
+                case 85:
+                    ccb.setAll(85, message);
+                    break; 
+                
+                default:
+                    break;
                     
 	    }
 	}
@@ -201,6 +236,10 @@ public class CANFilter
 	{
 	    return this.bms;
 	}
+        
+        public CCB getCCB() {
+            return this.ccb;
+        }
 	
 	public BMSSettings getBMSSettings()
 	{

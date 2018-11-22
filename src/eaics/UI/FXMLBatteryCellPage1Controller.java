@@ -7,11 +7,16 @@ package eaics.UI;
 
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
+import eaics.CAN.CCB;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
 import eaics.SER.LoadCell;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -19,6 +24,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -351,6 +358,9 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     @FXML
     private javafx.scene.control.Button closeButton;
     
+    @FXML 
+    private ImageView switchImage;
+    
     public void initData(CANFilter fil, LoadCell cell) 
     {
         this.filter = fil;
@@ -378,6 +388,31 @@ public class FXMLBatteryCellPage1Controller implements Initializable
         EVMS evmsV3 = filter.getEVMS_v3();
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
+        CCB ccb = filter.getCCB();
+        
+        //CCB
+        FileInputStream input = null;
+        Image image;
+        if(ccb.getCCB1() == true) {
+            try {
+                input = new FileInputStream("/home/pi/EAICS/images/switch_on.jpg");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                            
+            image = new Image(input);
+            switchImage.setImage(image);
+        }
+        else {
+            try {
+                input = new FileInputStream("/home/pi/EAICS/images/switch_off.jpg");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                            
+            image = new Image(input);
+            switchImage.setImage(image);
+        }
 
         //+------------------------------------------------------------+
         //BMS Module 0 (switch set to 0): 1 - 12 Cells

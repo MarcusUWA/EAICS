@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -212,11 +213,16 @@
          </font>
       </Label>
       <Line endX="395.0" layoutX="400.0" layoutY="57.0" startX="-395.0" />
-      <Label layoutX="353.0" layoutY="25.0" text="Cell Page 1">
+      <Label alignment="CENTER" layoutX="300.0" layoutY="19.0" prefHeight="26.0" prefWidth="176.0" text="Battery Box 1">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
       <Button fx:id="closeButton" layoutX="337.0" layoutY="432.0" mnemonicParsing="false" onAction="#closeButtonAction" text="Battery Menu" />
+      <ImageView fx:id="switchImage" fitHeight="48.0" fitWidth="101.0" layoutX="689.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/switch_off.jpg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

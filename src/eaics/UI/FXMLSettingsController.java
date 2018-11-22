@@ -31,11 +31,14 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.3.0.0";
+    String version = "3.4.0.0";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     
     FXMLConnectWifiController wifiConnectController;
+    
+            
+    FXMLNumpadController numpad;
     
     @FXML
     Button buttonStopLogging;
@@ -85,12 +88,6 @@ public class FXMLSettingsController implements Initializable
     
     @FXML
     private Label softwareVersionLabel;
-    
-    @FXML
-    private TextField pixhawkTextField;
-    
-    @FXML
-    private Button pixhawkButton;
     
     @FXML
     private javafx.scene.control.Button closeButton;
@@ -147,6 +144,7 @@ public class FXMLSettingsController implements Initializable
     
     private void openSettingsPage(int pageNumber)
     {
+        
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBMSsettingsPage.fxml"));
 	
         try 
@@ -260,12 +258,46 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleUpdatePixhawk(ActionEvent event) throws IOException {
         
-        String newIP = pixhawkTextField.getText();
+        numpad = new FXMLNumpadController();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLNumpad.fxml"));
+        
+        try {
+            Pane pane = loader.load();
+            numpad = loader.getController();
+            bmsSettingsPage = new FXMLBMSsettingsPage();
+            numpad.initSettings(gui, -1, bmsSettingsPage);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(closeButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Numpad!!!");
+            
+            stage.show();
+        }        
+        catch (Exception e) {
+            System.out.println("Failed to open Numpad Window");
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public void completeUpdatePixhawk() throws IOException {
         
         final Process pixHawkKill = Runtime.getRuntime().exec("pkill mavproxy.py");
-	
-        final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + "--aircraft MyCopter");
+
+        String newIP = "";
+        //insert open window here...
         
+        newIP = numpad.getString();
+        System.out.println("newIP: "+newIP);
+        
+        final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + ":14550 --aircraft MyCopter");
         pixhawkIPLabel.setText(newIP);
     }
     

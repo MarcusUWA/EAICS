@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import eaics.BMSSettings;
+import java.io.IOException;
 
 /**
  * FXML Controller class
@@ -29,14 +30,24 @@ public class FXMLNumpadController implements Initializable
     private boolean first;
     private FXMLBMSsettingsPage settingsPage;
     
+    private String value;
+    
     public void initSettings(MainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
     {
         gui = settingsGui;
 	this.settingsPage = settingsPage;
         this.bmsSettings = settingsPage.getBMSSettings();
         this.index = index;
-        display.setText(display.getText() + bmsSettings.getDisplayUnits(index));
+        if(index!=-1) {
+            display.setText(display.getText() + bmsSettings.getDisplayUnits(index));
+        }
+        
         first = true;
+        value = "";
+        
+        if(index == -1) {
+            negative.setText(".");
+        }
     }
 
     /**
@@ -95,9 +106,13 @@ public class FXMLNumpadController implements Initializable
     
     @FXML
     private Button backspace;
+    
+    public String getString() {
+        return value;
+    }
 
     @FXML
-    void handleButtonAction(ActionEvent event) 
+    void handleButtonAction(ActionEvent event) throws IOException 
     {
         if(first)
         {
@@ -147,7 +162,12 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == negative) 
         {
-            display.setText(display.getText() + "-");
+            if(index==-1) {
+                display.setText(display.getText() + ".");
+            }
+            else {
+                display.setText(display.getText() + "-");
+            }
         }
         else if (event.getSource() == clear) 
         {
@@ -161,9 +181,15 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == enter) 
         {
-	    this.bmsSettings.setSetting(index,  Integer.parseInt(display.getText()));
-            this.bmsSettings.update();
-	    this.settingsPage.updateLabels();
+            if(index== -1) {
+                value = display.getText();
+                gui.settings.completeUpdatePixhawk();
+            }
+            else {
+                this.bmsSettings.setSetting(index,  Integer.parseInt(display.getText()));
+                this.bmsSettings.update();
+                this.settingsPage.updateLabels();
+            }
             Stage stage = (Stage) enter.getScene().getWindow();
             stage.close();
         }
