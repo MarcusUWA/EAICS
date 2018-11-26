@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import eaics.Settings.BMSSettings;
 import eaics.CAN.CANFilter;
 import eaics.SER.LoadCell;
+import eaics.Settings.EAICS_Settings;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -245,7 +246,7 @@ public class FXMLBMSsettingsPage implements Initializable
     {
         this.filter = filter;
         this.loadCell = loadCell;
-	this.bmsSettings = filter.getBMSSettings();
+	this.bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
 	this.pageNumber = (pageNumber - 1) * 8;
 	updateLabels();
     }

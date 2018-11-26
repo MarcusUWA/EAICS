@@ -22,6 +22,8 @@ import java.io.Writer;
  */
 public class EAICS_Settings 
 {
+    private static EAICS_Settings instance;
+    
     private String filePath;
     private BMSSettings bmsSettings;
     private PixHawkSettings pixHawkSettings;
@@ -30,12 +32,25 @@ public class EAICS_Settings
     private static final String SETTINGS_BMS = "BMS_SETTINGS";
     private static final String SETTINGS_PIXHAWK = "PIXHAWK_SETTINGS";
     
-    public EAICS_Settings()
+    private EAICS_Settings()
     {
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
         this.bmsSettings = new BMSSettings();
         this.pixHawkSettings = new PixHawkSettings();
         loadSettings();
+    }
+    
+    public static EAICS_Settings getInstance()
+    {	
+	if(instance == null)
+	{
+	    synchronized(EAICS_Settings.class)
+	    {
+		instance = new EAICS_Settings();
+	    }
+	}
+	
+	return instance;
     }
     
     public BMSSettings getBmsSettings()
@@ -46,6 +61,13 @@ public class EAICS_Settings
     public PixHawkSettings getPixHawkSettings()
     {
         return pixHawkSettings;
+    }
+    
+    public void update()
+    {
+	bmsSettings.update();
+	pixHawkSettings.update();
+	writeSettings();	
     }
     
     public void loadSettings()
@@ -142,7 +164,7 @@ public class EAICS_Settings
 	}
         finally
         {
-            //update();
+            update();
         }
     }
     

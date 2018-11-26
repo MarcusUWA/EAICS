@@ -13,14 +13,11 @@ import java.util.concurrent.ScheduledExecutorService;
  * @author Troy
  */
 public class CANFilter 
-{
-        private boolean DEBUG = true;
-        
+{        
 	private EVMS_v2 evms_v2;
 	private EVMS_v3 evms_v3;
 	private ESC[] esc;
 	private BMS[] bms;
-	private BMSSettings bmsSettings;
         private CurrentSensor currentSensor;
         
         private CCB ccb;
@@ -46,7 +43,6 @@ public class CANFilter
 		{
 		    this.bms[ii] = new BMS(ii);
 		}
-		this.bmsSettings = new BMSSettings();
 		this.currentSensor = new CurrentSensor();
                 
                 this.hasWarnedError = false;
@@ -237,14 +233,10 @@ public class CANFilter
 	    return this.bms;
 	}
         
-        public CCB getCCB() {
+        public CCB getCCB() 
+	{
             return this.ccb;
         }
-	
-	public BMSSettings getBMSSettings()
-	{
-	    return this.bmsSettings;
-	}
         
         public CurrentSensor getCurrentSensor()
         {

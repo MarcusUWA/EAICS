@@ -12,6 +12,7 @@ import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
+import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -119,7 +120,7 @@ public class FXMLBatteryPageController implements Initializable
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
         CurrentSensor currentSensor = filter.getCurrentSensor();
-        BMSSettings bmsSettings = filter.getBMSSettings();
+        BMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
 
         //+------------------------------------------------------------+
         //BMS Module 8 (switch set to 8): 1 - 12 Cells

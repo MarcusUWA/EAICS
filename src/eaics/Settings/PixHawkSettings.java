@@ -43,4 +43,9 @@ public class PixHawkSettings
             ii++;
         }        
     }
+    
+    public void update()
+    {
+	//Nothing to update yet
+    }
 }

@@ -67,7 +67,7 @@ public class EAICS extends Application
     {
        
 	// Pix Hawk Code ------------------------------------------------------
-        EAICS_Settings settings = new EAICS_Settings();
+        EAICS_Settings settings = EAICS_Settings.getInstance();
         String ipAddressString = settings.getPixHawkSettings().getIpAddress();
 	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
 	//final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + "--aircraft MyCopter");

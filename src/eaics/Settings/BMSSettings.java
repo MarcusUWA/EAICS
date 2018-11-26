@@ -80,8 +80,6 @@ public class BMSSettings
         this.parallelStrings = new ConfigData("", 1, 20, 3, "", 1);
         this.enablePrecharge = new ConfigData("", 0, 1, 1, "Yes(1)/No(0)", 1);
         this.stationaryMode = new ConfigData("", 0, 1, 0, "Yes(1)/No(0)", 1);
-	
-	//loadSettings();
     }
     
     public String getSettingsFileString()
@@ -244,8 +242,6 @@ public class BMSSettings
         {
             e.printStackTrace();
         }
-        
-        //writeSettings();
     }
     
     private String addToMsg(String msg, int setting)
@@ -363,8 +359,6 @@ public class BMSSettings
                 //reserved
                 break;
         }
-	
-	//writeSettings();
     }
     
     /*

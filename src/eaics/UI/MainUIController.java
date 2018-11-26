@@ -5,7 +5,6 @@
  */
 package eaics.UI;
 
-import eaics.Settings.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
@@ -281,7 +280,6 @@ public class MainUIController implements Initializable
                 EVMS_v3 evmsV3 = (EVMS_v3) filter.getEVMS_v3();
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
-		BMSSettings bmsSettings = filter.getBMSSettings();
                 CurrentSensor currentSensor = filter.getCurrentSensor();
                 
                 FileInputStream input = null;
