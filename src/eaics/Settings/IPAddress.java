@@ -16,11 +16,8 @@ import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Markcuz
- */
-public class IPAddress  {
+public class IPAddress  
+{
     
     private static final boolean DEBUG = false;
     
@@ -28,31 +25,38 @@ public class IPAddress  {
     private String WifiIP;
     private String WifiSSID;
     
-    public IPAddress() {
+    public IPAddress() 
+    {
         this.LANIP = "";
         this.WifiIP = "";
         this.WifiSSID = "";
     }
     
-    public String getLANIP() {
+    public String getLANIP() 
+    {
         return this.LANIP;
     }
-    public String getWifiIP() {
+    public String getWifiIP() 
+    {
         return this.WifiIP;
     }
-    public String getWifiSSID() {
+    public String getWifiSSID() 
+    {
         return this.WifiSSID;
     }
     
-    public void updateIPAddress() throws SocketException, IOException {
+    public void updateIPAddress() throws SocketException, IOException 
+    {
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
         
         Pattern ethPattern = Pattern.compile("eth");   // the pattern to search for
         Pattern wifiPattern = Pattern.compile("wlan");   // the pattern to search for
         
-        for (NetworkInterface netint : Collections.list(nets)) {
+        for (NetworkInterface netint : Collections.list(nets)) 
+	{
             
-            if(DEBUG) {
+            if(DEBUG) 
+	    {
                 System.out.println("Display name: "+ netint.getDisplayName());
                 System.out.println("Name: "+ netint.getName());
             }
@@ -60,14 +64,19 @@ public class IPAddress  {
             Matcher ethMatch = ethPattern.matcher(netint.getDisplayName());
             Matcher wifiMatch = wifiPattern.matcher(netint.getDisplayName());
             
-            if (ethMatch.find()) {
-                if(DEBUG) {
+            if (ethMatch.find()) 
+	    {
+                if(DEBUG) 
+		{
                     System.out.println("Found ETH match");
                 }
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-                for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
-                        if(DEBUG) {
+                for (InetAddress inetAddress : Collections.list(inetAddresses)) 
+		{
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) 
+		    {
+                        if(DEBUG) 
+			{
                             System.out.println("InetAddress: " + inetAddress);
                         }
                         LANIP = inetAddress.toString().substring(1);
@@ -75,14 +84,19 @@ public class IPAddress  {
                 }
             }
             
-            if (wifiMatch.find()) {
-                if(DEBUG) {
+            if (wifiMatch.find()) 
+	    {
+                if(DEBUG) 
+		{
                     System.out.println("Found WLAN match");
                 }
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-                for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) {
-                        if(DEBUG) {
+                for (InetAddress inetAddress : Collections.list(inetAddresses)) 
+		{
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.isLinkLocalAddress()) 
+		    {
+                        if(DEBUG) 
+			{
                             System.out.println("InetAddress: " + inetAddress);
                         }
                         WifiIP = inetAddress.toString().substring(1);
@@ -95,8 +109,10 @@ public class IPAddress  {
                 BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         
                 String s = null;
-                while (((s = stdInput.readLine()) != null)) {
-                    if(s.contains("ESSID")) {
+                while (((s = stdInput.readLine()) != null)) 
+		{
+                    if(s.contains("ESSID")) 
+		    {
                         s = s.trim();
                         s = s.substring(16);
                         WifiSSID = s;

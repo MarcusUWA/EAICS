@@ -5,15 +5,7 @@
  */
 package eaics.Settings;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 /**
  *
@@ -96,38 +88,68 @@ public class BMSSettings
     {
         String settingsFileString = "";
         
+	settingsFileString += "Pack Capacity:" + "\t\t\t\t#";
         settingsFileString += this.packCapacity.getSetting() + "\n";
+	settingsFileString += "SOC Warning:" + "\t\t\t\t#";
         settingsFileString += this.socWarning.getSetting() + "\n";
+	settingsFileString += "Full Voltage:" + "\t\t\t\t#";
         settingsFileString += this.fullVoltage.getSetting() + "\n";
+	settingsFileString += "Warning Current:" + "\t\t\t#";
         settingsFileString += this.warnCurrent.getSetting() + "\n";
+	settingsFileString += "Trip Current:" + "\t\t\t\t#";
         settingsFileString += this.tripCurrent.getSetting() + "\n";
+	settingsFileString += "EVMS Temperature Warning:" + "\t\t#";
         settingsFileString += this.evmsTempWarning.getSetting() + "\n";
+	settingsFileString += "Minimum Auxillary Voltage:" + "\t\t#";
         settingsFileString += this.minAuxVoltage.getSetting() + "\n";
+	settingsFileString += "Minimum Isolation:" + "\t\t\t#";
         settingsFileString += this.minIsolation.getSetting() + "\n";
         
+	settingsFileString += "Tacho PPR:" + "\t\t\t\t#";
         settingsFileString += this.tachoPPR.getSetting() + "\n";
+	settingsFileString += "Fuel Gauge Full:" + "\t\t\t#";
         settingsFileString += this.fuelGaugeFull.getSetting() + "\n";
+	settingsFileString += "Fuel Gauge Empty:" + "\t\t\t#";
         settingsFileString += this.fuelGaugeEmpty.getSetting() + "\n";
+	settingsFileString += "Temperature Gauge Hot:" + "\t\t\t#";
         settingsFileString += this.tempGaugeHot.getSetting() + "\n";
+	settingsFileString += "Temperature Gauge Cold:" + "\t\t\t#";
         settingsFileString += this.tempGaugeCold.getSetting() + "\n";
+	settingsFileString += "BMS Minimum Voltage:" + "\t\t\t#";
         settingsFileString += this.bmsMinVoltage.getSetting() + "\n";
+	settingsFileString += "BMS Maximum Voltage:" + "\t\t\t#";
         settingsFileString += this.bmsMaxVoltage.getSetting() + "\n";
+	settingsFileString += "Balance Voltage:" + "\t\t\t#";
         settingsFileString += this.balanceVoltage.getSetting() + "\n";
   
+	settingsFileString += "BMS Hysteresis:" + "\t\t\t\t#";
         settingsFileString += this.bmsHysteresis.getSetting() + "\n";
+	settingsFileString += "BMS Minimum Temperature:" + "\t\t#";
         settingsFileString += (this.bmsMinTemp.getSetting() + 40) + "\n";
+	settingsFileString += "BMS Maximum Temperature:" + "\t\t#";
         settingsFileString += (this.bmsMaxTemp.getSetting() + 40) + "\n";
+	settingsFileString += "Maximum Charge Voltage:" + "\t\t\t#";
         settingsFileString += this.maxChargeVoltage.getSetting() + "\n";
+	settingsFileString += "Maximum Charge Current:" + "\t\t\t#";
         settingsFileString += this.maxChargeCurrent.getSetting() + "\n";
+	settingsFileString += "Alt Charge Voltage:" + "\t\t\t#";
         settingsFileString += this.altChargeVoltage.getSetting() + "\n";
+	settingsFileString += "Alt Charge Current:" + "\t\t\t#";
         settingsFileString += this.altChargeCurrent.getSetting() + "\n";
+	settingsFileString += "Sleep Delay:" + "\t\t\t\t#";
         settingsFileString += this.sleepDelay.getSetting() + "\n";
         
+	settingsFileString += "MPI Function:" + "\t\t\t\t#";
         settingsFileString += this.mpiFunction.getSetting() + "\n";
+	settingsFileString += "MPO1 Function:" + "\t\t\t\t#";
         settingsFileString += this.mpo1Function.getSetting() + "\n";
+	settingsFileString += "MPO2 Function:" + "\t\t\t\t#";
         settingsFileString += this.mpo2Function.getSetting() + "\n";
+	settingsFileString += "Parallel Strings:" + "\t\t\t#";
         settingsFileString += this.parallelStrings.getSetting() + "\n";
+	settingsFileString += "Enable Precharge:" + "\t\t\t#";
         settingsFileString += this.enablePrecharge.getSetting() + "\n";
+	settingsFileString += "Stationary Mode:" + "\t\t\t#";
         settingsFileString += this.stationaryMode.getSetting() + "\n";
         
         return settingsFileString;
@@ -139,7 +161,6 @@ public class BMSSettings
         String[] lines = fileString.split("\\r?\\n");
         for (String line : lines) 
         {
-            System.out.println(line);
             if(ii == 17 || ii == 18)
             {
                 this.setSetting(ii, (Integer.parseInt(line) - 40));

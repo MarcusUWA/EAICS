@@ -18,7 +18,7 @@ import java.io.Writer;
 
 /**
  *
- * @author troy
+ * @author Troy
  */
 public class EAICS_Settings 
 {
@@ -26,6 +26,7 @@ public class EAICS_Settings
     private BMSSettings bmsSettings;
     private PixHawkSettings pixHawkSettings;
     
+    private static final String SETTINGS_HEADING = "+-----------------------------------------------+\n";
     private static final String SETTINGS_BMS = "BMS_SETTINGS";
     private static final String SETTINGS_PIXHAWK = "PIXHAWK_SETTINGS";
     
@@ -34,7 +35,7 @@ public class EAICS_Settings
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
         this.bmsSettings = new BMSSettings();
         this.pixHawkSettings = new PixHawkSettings();
-        writeSettings();
+        loadSettings();
     }
     
     public BMSSettings getBmsSettings()
@@ -54,7 +55,7 @@ public class EAICS_Settings
 	try
 	{
 	    reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "utf-8"));
-	    String st;
+	    String inFileString;
 	    int count = 0;
             
             boolean readingBMS = false;
@@ -63,39 +64,63 @@ public class EAICS_Settings
             boolean readingPixHawk = false;
             String pixHawkFileString = "";
             
-	    while ((st = reader.readLine()) != null)
+	    while ((inFileString = reader.readLine()) != null)
 	    {
-                if(st.equals(SETTINGS_BMS))
-                {
-                    readingBMS = true;
-                    count = 0;
-                }
+		if(inFileString.contains("+---"))
+		{
+		    inFileString = reader.readLine();	// skip heading lines
+		}
+		
+		if(inFileString.contains(SETTINGS_BMS))
+		{
+		    readingBMS = true;
+		    count = 0;
+		}
+
+		if(inFileString.contains(SETTINGS_PIXHAWK))
+		{
+		    readingPixHawk = true;
+		    count = 0;
+		}
                 
                 if(readingBMS)
                 {
+		    String[] line = inFileString.split("\\s+");
+		    
                     if(count < 30)
                     {
-                        bmsFileString += st;
-                        count++;
+			for(int ii = 0; ii < line.length; ii++)
+			{
+			    if(line[ii].startsWith("#"))
+			    {
+				String temp = line[ii].substring(1);
+				bmsFileString += temp + "\n";
+				count++;
+			    }
+			}
                     }
                     else
                     {
                         readingBMS = false;
                     }
-                }
-                
-                if(st.equals(SETTINGS_PIXHAWK))
-                {
-                    readingPixHawk = true;
-                    count = 0;
+		    
                 }
                 
                 if(readingPixHawk)
                 {
+		    String[] line = inFileString.split("\\s+");
+		    
                     if(count < 1)
                     {
-                        pixHawkFileString += st;
-                        count++;
+			for(int ii = 0; ii < line.length; ii++)
+			{
+			    if(line[ii].startsWith("#"))
+			    {
+				String temp = line[ii].substring(1);
+				pixHawkFileString += temp + "\n";
+				count++;
+			    }
+			}
                     }
                     else
                     {
@@ -128,14 +153,16 @@ public class EAICS_Settings
 	{
 	    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "utf-8"));
 	    
-	    writer.write(SETTINGS_BMS);
-            writer.write("\n");
+	    writer.write(SETTINGS_HEADING);
+	    writer.write("\t\t" + SETTINGS_BMS + "\n");
+	    writer.write(SETTINGS_HEADING);
             writer.write(bmsSettings.getSettingsFileString());
             
             writer.write("\n\n");
             
-            writer.write(SETTINGS_PIXHAWK);
-            writer.write("\n");
+	    writer.write(SETTINGS_HEADING);
+	    writer.write("\t\t" + SETTINGS_PIXHAWK + "\n");
+	    writer.write(SETTINGS_HEADING);
             writer.write(pixHawkSettings.getSettingsFileString());
 	    
 	    writer.flush();

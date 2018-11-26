@@ -5,19 +5,9 @@
  */
 package eaics.Settings;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-
 /**
  *
- * @author troyg
+ * @author troy
  */
 public class PixHawkSettings 
 {
@@ -37,6 +27,7 @@ public class PixHawkSettings
     {
         String settingsFileString = "";
         
+	settingsFileString += "IP Address:" + "\t\t\t" + "#";
         settingsFileString += this.ipAddress + "\n";
         
         return settingsFileString;
@@ -48,7 +39,6 @@ public class PixHawkSettings
         String[] lines = fileString.split("\\r?\\n");
         for (String line : lines) 
         {
-            System.out.println(line);
             this.ipAddress = line;
             ii++;
         }        
