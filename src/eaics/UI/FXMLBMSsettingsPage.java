@@ -207,13 +207,21 @@ public class FXMLBMSsettingsPage implements Initializable
 	maxLabel8.setText("" + this.bmsSettings.getMaxValue(pageNumber + 7));
 	// Value Labels
 	label1.setText("" + this.bmsSettings.getSetting(pageNumber + 0));
+	label1.setStyle("-fx-font-weight: bold;");
 	label2.setText("" + this.bmsSettings.getSetting(pageNumber + 1));
+	label2.setStyle("-fx-font-weight: bold;");
 	label3.setText("" + this.bmsSettings.getSetting(pageNumber + 2));
+	label3.setStyle("-fx-font-weight: bold;");
 	label4.setText("" + this.bmsSettings.getSetting(pageNumber + 3));
+	label4.setStyle("-fx-font-weight: bold;");
 	label5.setText("" + this.bmsSettings.getSetting(pageNumber + 4));
+	label5.setStyle("-fx-font-weight: bold;");
 	label6.setText("" + this.bmsSettings.getSetting(pageNumber + 5));
+	label6.setStyle("-fx-font-weight: bold;");
 	label7.setText("" + this.bmsSettings.getSetting(pageNumber + 6));
+	label7.setStyle("-fx-font-weight: bold;");
 	label8.setText("" + this.bmsSettings.getSetting(pageNumber + 7));
+	label8.setStyle("-fx-font-weight: bold;");
 	// Unit Label
 	unitLabel1.setText("" + this.bmsSettings.getDisplayUnits(pageNumber + 0));
 	unitLabel2.setText("" + this.bmsSettings.getDisplayUnits(pageNumber + 1));
