@@ -33,8 +33,10 @@ import javafx.util.Duration;
  * FXML Controller class
  *
  */
-public class FXMLBatteryCellPage1Controller implements Initializable 
+public class FXMLBatteryCellPageController implements Initializable 
 {
+    private int pageNumber;
+    
     MainUIController gui;
     
     //refresh rate in ms
@@ -42,6 +44,33 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     
     private CANFilter filter;
     private LoadCell loadCell;
+    
+    @FXML
+    private Label title;
+    
+    @FXML
+    private Label bms0;
+    
+    @FXML
+    private Label bms1;
+    
+    @FXML
+    private Label bms2;
+    
+    @FXML
+    private Label bms3;
+    
+    @FXML
+    private Label bms4;
+    
+    @FXML
+    private Label bms5;
+    
+    @FXML
+    private Label bms6;
+    
+    @FXML
+    private Label bms7;
     
     @FXML
     private Label cellVoltage_0_0;
@@ -361,8 +390,9 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     @FXML 
     private ImageView switchImage;
     
-    public void initData(LoadCell cell) 
+    public void initData(LoadCell cell, int pageNumber) 
     {
+	this.pageNumber = (pageNumber) * 8;
         this.filter = CANFilter.getInstance();
         this.loadCell = cell;
         
@@ -393,7 +423,8 @@ public class FXMLBatteryCellPage1Controller implements Initializable
         //CCB
         FileInputStream input = null;
         Image image;
-        if(ccb.getCCB1() == true) {
+        if(ccb.isCCB_On(0)) //CCB1
+	{
             try {
                 input = new FileInputStream("/home/pi/EAICS/images/switch_on.jpg");
             } catch (FileNotFoundException ex) {
@@ -403,240 +434,259 @@ public class FXMLBatteryCellPage1Controller implements Initializable
             image = new Image(input);
             switchImage.setImage(image);
         }
-        else {
-            try {
+        else 
+	{
+            try 
+	    {
                 input = new FileInputStream("/home/pi/EAICS/images/switch_off.jpg");
-            } catch (FileNotFoundException ex) {
+            } 
+	    catch (FileNotFoundException ex) 
+	    {
                 Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
                             
             image = new Image(input);
             switchImage.setImage(image);
         }
+	
+	title.setText("Battery Box " + (pageNumber/8 + 1));
+	
+	//+------------------------------------------------------------+
+        //BMS Module Titles
+        //+------------------------------------------------------------+
+	
+	bms0.setText("" + (pageNumber + 0));
+	bms1.setText("" + (pageNumber + 1));
+	bms2.setText("" + (pageNumber + 2));
+	bms3.setText("" + (pageNumber + 3));
+	bms4.setText("" + (pageNumber + 4));
+	bms5.setText("" + (pageNumber + 5));
+	bms6.setText("" + (pageNumber + 6));
+	bms7.setText("" + (pageNumber + 7));
 
         //+------------------------------------------------------------+
         //BMS Module 0 (switch set to 0): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_0.setText((bms[0].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_0.setText((bms[pageNumber].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_0.setText((bms[0].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_0.setText((bms[pageNumber].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_0.setText((bms[0].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_0.setText((bms[pageNumber].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_0.setText((bms[0].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_0.setText((bms[pageNumber].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_0.setText((bms[0].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_0.setText((bms[pageNumber].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_0.setText((bms[0].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_0.setText((bms[pageNumber].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_0.setText((bms[0].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_0.setText((bms[pageNumber].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_0.setText((bms[0].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_0.setText((bms[pageNumber].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_0.setText((bms[0].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_0.setText((bms[pageNumber].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_0.setText((bms[0].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_0.setText((bms[pageNumber].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_0.setText((bms[0].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_0.setText((bms[pageNumber].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_0.setText((bms[0].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_0.setText((bms[pageNumber].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 1 (switch set to 1): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_1.setText((bms[1].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_1.setText((bms[pageNumber + 1].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_1.setText((bms[1].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_1.setText((bms[pageNumber + 1].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_1.setText((bms[1].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_1.setText((bms[pageNumber + 1].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_1.setText((bms[1].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_1.setText((bms[pageNumber + 1].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_1.setText((bms[1].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_1.setText((bms[pageNumber + 1].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_1.setText((bms[1].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_1.setText((bms[pageNumber + 1].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_1.setText((bms[1].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_1.setText((bms[pageNumber + 1].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_1.setText((bms[1].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_1.setText((bms[pageNumber + 1].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_1.setText((bms[1].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_1.setText((bms[pageNumber + 1].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_1.setText((bms[1].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_1.setText((bms[pageNumber + 1].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_1.setText((bms[1].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_1.setText((bms[pageNumber + 1].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_1.setText((bms[1].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_1.setText((bms[pageNumber + 1].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 2 (switch set to 2): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_2.setText((bms[2].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_2.setText((bms[pageNumber + 2].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_2.setText((bms[2].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_2.setText((bms[pageNumber + 2].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_2.setText((bms[2].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_2.setText((bms[pageNumber + 2].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_2.setText((bms[2].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_2.setText((bms[pageNumber + 2].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_2.setText((bms[2].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_2.setText((bms[pageNumber + 2].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_2.setText((bms[2].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_2.setText((bms[pageNumber + 2].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_2.setText((bms[2].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_2.setText((bms[pageNumber + 2].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_2.setText((bms[2].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_2.setText((bms[pageNumber + 2].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_2.setText((bms[2].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_2.setText((bms[pageNumber + 2].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_2.setText((bms[2].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_2.setText((bms[pageNumber + 2].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_2.setText((bms[2].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_2.setText((bms[pageNumber + 2].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_2.setText((bms[2].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_2.setText((bms[pageNumber + 2].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 3 (switch set to 3): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_3.setText((bms[3].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_3.setText((bms[pageNumber + 3].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_3.setText((bms[3].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_3.setText((bms[pageNumber + 3].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_3.setText((bms[3].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_3.setText((bms[pageNumber + 3].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_3.setText((bms[3].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_3.setText((bms[pageNumber + 3].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_3.setText((bms[3].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_3.setText((bms[pageNumber + 3].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_3.setText((bms[3].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_3.setText((bms[pageNumber + 3].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_3.setText((bms[3].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_3.setText((bms[pageNumber + 3].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_3.setText((bms[3].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_3.setText((bms[pageNumber + 3].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_3.setText((bms[3].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_3.setText((bms[pageNumber + 3].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_3.setText((bms[3].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_3.setText((bms[pageNumber + 3].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_3.setText((bms[3].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_3.setText((bms[pageNumber + 3].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_3.setText((bms[3].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_3.setText((bms[pageNumber + 3].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 4 (switch set to 4): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_4.setText((bms[4].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_4.setText((bms[pageNumber + 4].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_4.setText((bms[4].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_4.setText((bms[pageNumber + 4].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_4.setText((bms[4].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_4.setText((bms[pageNumber + 4].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_4.setText((bms[4].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_4.setText((bms[pageNumber + 4].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_4.setText((bms[4].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_4.setText((bms[pageNumber + 4].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_4.setText((bms[4].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_4.setText((bms[pageNumber + 4].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_4.setText((bms[4].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_4.setText((bms[pageNumber + 4].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_4.setText((bms[4].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_4.setText((bms[pageNumber + 4].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_4.setText((bms[4].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_4.setText((bms[pageNumber + 4].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_4.setText((bms[4].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_4.setText((bms[pageNumber + 4].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_4.setText((bms[4].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_4.setText((bms[pageNumber + 4].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_4.setText((bms[4].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_4.setText((bms[pageNumber + 4].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 5 (switch set to 5): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_5.setText((bms[5].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_5.setText((bms[pageNumber + 5].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_5.setText((bms[5].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_5.setText((bms[pageNumber + 5].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_5.setText((bms[5].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_5.setText((bms[pageNumber + 5].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_5.setText((bms[5].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_5.setText((bms[pageNumber + 5].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_5.setText((bms[5].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_5.setText((bms[pageNumber + 5].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_5.setText((bms[5].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_5.setText((bms[pageNumber + 5].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_5.setText((bms[5].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_5.setText((bms[pageNumber + 5].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_5.setText((bms[5].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_5.setText((bms[pageNumber + 5].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_5.setText((bms[5].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_5.setText((bms[pageNumber + 5].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_5.setText((bms[5].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_5.setText((bms[pageNumber + 5].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_5.setText((bms[5].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_5.setText((bms[pageNumber + 5].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_5.setText((bms[5].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_5.setText((bms[pageNumber + 5].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 6 (switch set to 6): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_6.setText((bms[6].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_6.setText((bms[pageNumber + 6].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_6.setText((bms[6].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_6.setText((bms[pageNumber + 6].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_6.setText((bms[6].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_6.setText((bms[pageNumber + 6].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_6.setText((bms[6].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_6.setText((bms[pageNumber + 6].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_6.setText((bms[6].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_6.setText((bms[pageNumber + 6].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_6.setText((bms[6].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_6.setText((bms[pageNumber + 6].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_6.setText((bms[6].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_6.setText((bms[pageNumber + 6].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_6.setText((bms[6].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_6.setText((bms[pageNumber + 6].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_6.setText((bms[6].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_6.setText((bms[pageNumber + 6].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_6.setText((bms[6].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_6.setText((bms[pageNumber + 6].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_6.setText((bms[6].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_6.setText((bms[pageNumber + 6].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_6.setText((bms[6].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_6.setText((bms[pageNumber + 6].getVoltage(11) / 1000.0) + "V");
 
         //+------------------------------------------------------------+
         //BMS Module 7 (switch set to 7): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        cellVoltage_0_7.setText((bms[7].getVoltage(0) / 1000.0) + "V");
+        cellVoltage_0_7.setText((bms[pageNumber + 7].getVoltage(0) / 1000.0) + "V");
 
-        cellVoltage_1_7.setText((bms[7].getVoltage(1) / 1000.0) + "V");
+        cellVoltage_1_7.setText((bms[pageNumber + 7].getVoltage(1) / 1000.0) + "V");
 
-        cellVoltage_2_7.setText((bms[7].getVoltage(2) / 1000.0) + "V");
+        cellVoltage_2_7.setText((bms[pageNumber + 7].getVoltage(2) / 1000.0) + "V");
 
-        cellVoltage_3_7.setText((bms[7].getVoltage(3) / 1000.0) + "V");
+        cellVoltage_3_7.setText((bms[pageNumber + 7].getVoltage(3) / 1000.0) + "V");
 
-        cellVoltage_4_7.setText((bms[7].getVoltage(4) / 1000.0) + "V");
+        cellVoltage_4_7.setText((bms[pageNumber + 7].getVoltage(4) / 1000.0) + "V");
 
-        cellVoltage_5_7.setText((bms[7].getVoltage(5) / 1000.0) + "V");
+        cellVoltage_5_7.setText((bms[pageNumber + 7].getVoltage(5) / 1000.0) + "V");
 
-        cellVoltage_6_7.setText((bms[7].getVoltage(6) / 1000.0) + "V");
+        cellVoltage_6_7.setText((bms[pageNumber + 7].getVoltage(6) / 1000.0) + "V");
 
-        cellVoltage_7_7.setText((bms[7].getVoltage(7) / 1000.0) + "V");
+        cellVoltage_7_7.setText((bms[pageNumber + 7].getVoltage(7) / 1000.0) + "V");
 
-        cellVoltage_8_7.setText((bms[7].getVoltage(8) / 1000.0) + "V");
+        cellVoltage_8_7.setText((bms[pageNumber + 7].getVoltage(8) / 1000.0) + "V");
 
-        cellVoltage_9_7.setText((bms[7].getVoltage(9) / 1000.0) + "V");
+        cellVoltage_9_7.setText((bms[pageNumber + 7].getVoltage(9) / 1000.0) + "V");
 
-        cellVoltage_10_7.setText((bms[7].getVoltage(10) / 1000.0) + "V");
+        cellVoltage_10_7.setText((bms[pageNumber + 7].getVoltage(10) / 1000.0) + "V");
 
-        cellVoltage_11_7.setText((bms[7].getVoltage(11) / 1000.0) + "V");
+        cellVoltage_11_7.setText((bms[pageNumber + 7].getVoltage(11) / 1000.0) + "V");
         
     }
 

@@ -9,38 +9,48 @@ package eaics.CAN;
  *
  * @author Markcuz
  */
-public class CCB {
-    
+public class CCB 
+{
+    private int size;
     private boolean[] ccb;
 
-    public CCB(int size) {
+    public CCB(int size) 
+    {
+	this.size = size;
         ccb = new boolean[size];
     }
     
-    public void setAll(int ID, CANMessage message){
-        switch (ID) {
+    public void setAll(int ID, CANMessage message)
+    {
+        switch (ID) 
+	{
             case 81:
-                ccb[0] = ((message.getByte(0)&0x01)==1);
+                ccb[0] = ((message.getByte(0)&0x01) == 1);
                 break;
             case 83:
-                ccb[1] = ((message.getByte(0)&0x01)==1);
+                ccb[1] = ((message.getByte(0)&0x01) == 1);
                 break;
             case 85:
-                ccb[2] = ((message.getByte(0)&0x01)==1);
+                ccb[2] = ((message.getByte(0)&0x01) == 1);
                 break;
             default:
                 break;
         } 
     }
-    public boolean getCCB1() {
-        return ccb[0];
-    }
     
-    public boolean getCCB2() {
-        return ccb[1];
-    }
-    
-    public boolean getCCB3() {
-        return ccb[2];
+    public boolean isCCB_On(int index)
+    {
+	boolean isCCB_On = false;
+	
+	if(index >= 0 && index < size)
+	{
+	    isCCB_On = ccb[index];
+	}
+	else
+	{
+	    throw new IllegalArgumentException("There are only 3 CCBs");
+	}
+	
+	return isCCB_On;
     }
 }

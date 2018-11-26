@@ -45,9 +45,8 @@ public class FXMLBatteryPageController implements Initializable
     
     private int timeToRefresh = 5000;
     
-    FXMLBatteryCellPage1Controller cellPage1;
-    FXMLBatteryCellPage2Controller cellPage2;
-    FXMLBatteryCellPage3Controller cellPage3;
+    private static final int numberOfCellPages = 3;
+    FXMLBatteryCellPageController[] cellPage = new FXMLBatteryCellPageController[numberOfCellPages];
     
     @FXML
     Button buttonCellPage1;
@@ -98,6 +97,10 @@ public class FXMLBatteryPageController implements Initializable
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = cell;
+	for(int ii = 0; ii < numberOfCellPages; ii++)
+	{
+	    this.cellPage[ii] = new FXMLBatteryCellPageController();
+	}
         
         updateScreen();
         
@@ -190,15 +193,32 @@ public class FXMLBatteryPageController implements Initializable
     @FXML
     private void handleCellPage1(ActionEvent event) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage1.fxml"));
+        openCellPage(0);
+    }
+    
+    @FXML
+    private void handleCellPage2(ActionEvent event) throws IOException
+    {
+	openCellPage(1);        
+    }
+    
+    @FXML
+    private void handleCellPage3(ActionEvent event) throws IOException
+    {
+        openCellPage(2);
+    }
+    
+    private void openCellPage(int pageNumber)
+    {
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage.fxml"));
         
         try 
         {
             Pane pane = loader.load();
-
-            cellPage1 = loader.getController();
-            cellPage1.initSettings(gui);
-	    cellPage1.initData(loadCell);
+	    
+            cellPage[pageNumber] = loader.getController();
+            cellPage[pageNumber].initSettings(gui);
+	    cellPage[pageNumber].initData(loadCell, pageNumber);
         
             Stage stage = new Stage();
         
@@ -208,79 +228,13 @@ public class FXMLBatteryPageController implements Initializable
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Battery Cell Page 1");
+            stage.setTitle("Battery Cell Page " + (pageNumber + 1));
             
             stage.show();
         }
-        
         catch (Exception e) 
         {
-            System.out.println("Failed to open Battery Cell Page 1");
-        }
+            System.out.println("Failed to open Battery Cell Page " + (pageNumber + 1));
+        }	
     }
-    
-    @FXML
-    private void handleCellPage2(ActionEvent event) throws IOException
-    {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage2.fxml"));
-        
-        try 
-        {
-            Pane pane = loader.load();
-
-            cellPage2 = loader.getController();
-            cellPage2.initSettings(gui);
-	    cellPage2.initData(loadCell);
-        
-            Stage stage = new Stage();
-        
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonCellPage2.getScene().getWindow());
-        
-            Scene scene = new Scene(pane);
-        
-            stage.setScene(scene);
-            stage.setTitle("Battery Cell Page 2");
-            
-            stage.show();
-        }
-        
-        catch (Exception e) 
-        {
-            System.out.println("Failed to open Battery Cell Page 2");
-        }
-    }
-    
-    @FXML
-    private void handleCellPage3(ActionEvent event) throws IOException
-    {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage3.fxml"));
-        
-        try 
-        {
-            Pane pane = loader.load();
-	    
-            cellPage3 = loader.getController();
-            cellPage3.initSettings(gui);
-	    cellPage3.initData(loadCell);
-        
-            Stage stage = new Stage();
-        
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonCellPage3.getScene().getWindow());
-        
-            Scene scene = new Scene(pane);
-        
-            stage.setScene(scene);
-            stage.setTitle("Battery Cell Page 3");
-            
-            stage.show();
-        }
-        
-        catch (Exception e) 
-        {
-            System.out.println("Failed to open Battery Cell Page 3");
-        }
-    }
-    
 }
