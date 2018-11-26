@@ -375,9 +375,9 @@ public class FXMLBatteryCellPage3Controller implements Initializable
         
     }
     
-    public void initData(CANFilter fil, LoadCell cell) 
+    public void initData(LoadCell cell) 
     {
-        this.filter = fil;
+        this.filter = CANFilter.getInstance();
         this.loadCell = cell;
         
         updateScreen();

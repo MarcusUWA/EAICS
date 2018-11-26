@@ -94,9 +94,9 @@ public class FXMLBatteryPageController implements Initializable
 	// TODO
     }
     
-    public void initData(CANFilter fil, LoadCell cell) 
+    public void initData(LoadCell cell) 
     {
-        this.filter = fil;
+        this.filter = CANFilter.getInstance();
         this.loadCell = cell;
         
         updateScreen();
@@ -198,7 +198,7 @@ public class FXMLBatteryPageController implements Initializable
 
             cellPage1 = loader.getController();
             cellPage1.initSettings(gui);
-	    cellPage1.initData(filter, loadCell);
+	    cellPage1.initData(loadCell);
         
             Stage stage = new Stage();
         
@@ -230,7 +230,7 @@ public class FXMLBatteryPageController implements Initializable
 
             cellPage2 = loader.getController();
             cellPage2.initSettings(gui);
-	    cellPage2.initData(filter, loadCell);
+	    cellPage2.initData(loadCell);
         
             Stage stage = new Stage();
         
@@ -262,7 +262,7 @@ public class FXMLBatteryPageController implements Initializable
 	    
             cellPage3 = loader.getController();
             cellPage3.initSettings(gui);
-	    cellPage3.initData(filter, loadCell);
+	    cellPage3.initData(loadCell);
         
             Stage stage = new Stage();
         

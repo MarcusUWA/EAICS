@@ -153,7 +153,7 @@ public class FXMLSettingsController implements Initializable
 
             bmsSettingsPage = loader.getController();
             bmsSettingsPage.initSettings(gui);
-            bmsSettingsPage.initData(filter, loadCell, pageNumber);
+            bmsSettingsPage.initData(loadCell, pageNumber);
 	    bmsSettingsPage.updateLabels();
         
             Stage stage = new Stage();
@@ -234,9 +234,9 @@ public class FXMLSettingsController implements Initializable
         gui = mainGui;
     }
     
-    public void initData(CANFilter filter, LoadCell loadCell)
+    public void initData(LoadCell loadCell)
     {
-        this.filter = filter;
+        this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
 	softwareVersionLabel.setText(version);
     }

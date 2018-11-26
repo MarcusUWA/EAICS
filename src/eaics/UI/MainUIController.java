@@ -188,7 +188,7 @@ public class MainUIController implements Initializable
 
             settings = loader.getController();
             settings.initSettings(this);
-            settings.initData(filter, loadCell);
+            settings.initData(loadCell);
         
             Stage stage = new Stage();
         
@@ -221,7 +221,7 @@ public class MainUIController implements Initializable
 
             batterys = loader.getController();
             batterys.initSettings(this);
-	    batterys.initData(filter, loadCell);
+	    batterys.initData(loadCell);
    
             Stage stage = new Stage();
  
@@ -262,8 +262,9 @@ public class MainUIController implements Initializable
         }
     }
     
-    public void initData(CANFilter fil, LoadCell cell) throws IOException {
-        this.filter = fil;
+    public void initData(LoadCell cell) throws IOException 
+    {
+	this.filter = CANFilter.getInstance();
         this.loadCell = cell;
 	
 	int maxProgress = 10000;

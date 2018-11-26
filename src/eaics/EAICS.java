@@ -28,10 +28,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class EAICS extends Application 
-{
-    private static final boolean DEBUG = false;
-    
-    static CANFilter filter = new CANFilter();
+{    
     static LoadCell loadCell = new LoadCell();
     static IPAddress ipAddress = new IPAddress();
     
@@ -54,7 +51,7 @@ public class EAICS extends Application
         controller.initData(filter, comms);
         */
         
-        controller.initData(filter, loadCell);
+        controller.initData(loadCell);
         stage.show();
     }
 
@@ -85,13 +82,11 @@ public class EAICS extends Application
 
 		try
 		{
+		    CANFilter filter = CANFilter.getInstance();
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
 			canMessageCAN0.newMessage(rawCANmsg);
-                        if(DEBUG) {
-                            System.out.println(rawCANmsg);
-                        }
-			filter.run(canMessageCAN0);
+                        filter.run(canMessageCAN0);
 		    }
 		}
 		catch(IOException e)
@@ -116,12 +111,10 @@ public class EAICS extends Application
 
 		try
 		{
+		    CANFilter filter = CANFilter.getInstance();
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
                         canMessageCAN1.newMessage(rawCANmsg);
-                        if(DEBUG) {
-                            System.out.println(rawCANmsg);
-                        }
 			filter.run(canMessageCAN1);
 		    }
 		}
@@ -188,6 +181,7 @@ public class EAICS extends Application
 	    @Override
 	    public void run() 
 	    {
+		CANFilter filter = CANFilter.getInstance();
 		String columnData = "";
 		Date date = new Date();
 		columnData += formatterDate.format(date) + " " + formatterTime.format(date) + ", ";
@@ -248,7 +242,7 @@ public class EAICS extends Application
 
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
-	filter.setLoggingExecutor(executor);
+	CANFilter.getInstance().setLoggingExecutor(executor);
 	    
 	// Launch the User Interface (UI) --------------------------------------
         launch(args);

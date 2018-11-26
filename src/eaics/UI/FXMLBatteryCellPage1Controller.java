@@ -361,9 +361,9 @@ public class FXMLBatteryCellPage1Controller implements Initializable
     @FXML 
     private ImageView switchImage;
     
-    public void initData(CANFilter fil, LoadCell cell) 
+    public void initData(LoadCell cell) 
     {
-        this.filter = fil;
+        this.filter = CANFilter.getInstance();
         this.loadCell = cell;
         
         updateScreen();

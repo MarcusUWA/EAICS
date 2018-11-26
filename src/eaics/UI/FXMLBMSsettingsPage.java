@@ -242,9 +242,9 @@ public class FXMLBMSsettingsPage implements Initializable
         gui = settingsGui;
     }
     
-    public void initData(CANFilter filter, LoadCell loadCell, int pageNumber)
+    public void initData(LoadCell loadCell, int pageNumber)
     {
-        this.filter = filter;
+        this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
 	this.bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
 	this.pageNumber = (pageNumber - 1) * 8;
