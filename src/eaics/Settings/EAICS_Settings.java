@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics;
+package eaics.Settings;
 
+import eaics.Settings.BMSSettings;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ import java.io.Writer;
  *
  * @author troy
  */
-public class Settings 
+public class EAICS_Settings 
 {
     private String filePath;
     private BMSSettings bmsSettings;
@@ -28,7 +29,7 @@ public class Settings
     private static final String SETTINGS_BMS = "BMS_SETTINGS";
     private static final String SETTINGS_PIXHAWK = "PIXHAWK_SETTINGS";
     
-    public Settings()
+    public EAICS_Settings()
     {
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
         this.bmsSettings = new BMSSettings();

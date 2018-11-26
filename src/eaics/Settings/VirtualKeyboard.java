@@ -1,4 +1,4 @@
-package eaics;
+package eaics.Settings;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;

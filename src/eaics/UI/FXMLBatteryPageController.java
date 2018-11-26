@@ -5,7 +5,7 @@
  */
 package eaics.UI;
 
-import eaics.BMSSettings;
+import eaics.Settings.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;

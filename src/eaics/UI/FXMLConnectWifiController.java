@@ -5,7 +5,7 @@
  */
 package eaics.UI;
 
-import eaics.VirtualKeyboard;
+import eaics.Settings.VirtualKeyboard;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

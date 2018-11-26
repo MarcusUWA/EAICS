@@ -6,7 +6,7 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
-import eaics.IPAddress;
+import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import java.io.IOException;
 import java.net.URL;

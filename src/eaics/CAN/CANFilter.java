@@ -5,7 +5,7 @@
  */
 package eaics.CAN;
 
-import eaics.BMSSettings;
+import eaics.Settings.BMSSettings;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**

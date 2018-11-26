@@ -5,13 +5,13 @@
  */
 package eaics.UI;
 
-import eaics.BMSSettings;
+import eaics.Settings.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
-import eaics.IPAddress;
+import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
