@@ -14,7 +14,7 @@ import eaics.CAN.EVMS_v3;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.UI.MainUI;
+import eaics.UI.MainUIController;
 import eaics.UI.Trifan.TrifanMainUIController;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class EAICS extends Application
     public static final String TRIFAN = "xti trifan 600";
     public static final String TRIKE = "ABM4-Y1";
     
-    public static String CURRENT_AIRCRAFT;
+    public static String currentAircraft;
     
     static LoadCell loadCell = new LoadCell();
     static IPAddress ipAddress = new IPAddress();
@@ -46,13 +46,17 @@ public class EAICS extends Application
     {
         FXMLLoader loader;
                 
-        if(CURRENT_AIRCRAFT.equals(TRIKE))
+        switch (currentAircraft) 
         {
-            loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
-        }
-        else
-        {
-            loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
+            case TRIKE:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLTrikeMainUI.fxml"));
+                break;
+            case TRIFAN:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                break;
+            default:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                break;
         }
         
         Scene scene = new Scene(loader.load());
@@ -62,11 +66,11 @@ public class EAICS extends Application
         
         //initialising main UI controller
         
-        MainUI mainUIcontroller = loader.getController();
+        MainUIController mainUIcontroller = loader.getController();
         
         startSerComms();
         
-     //   mainUIcontroller.initData(loadCell);
+        mainUIcontroller.initData(loadCell);
         stage.show();
     }
 
@@ -261,6 +265,7 @@ public class EAICS extends Application
 	CANFilter.getInstance().setLoggingExecutor(executor);
 	    
 	// Launch the User Interface (UI) --------------------------------------
+        currentAircraft = TRIFAN;
         launch(args);
     }
     

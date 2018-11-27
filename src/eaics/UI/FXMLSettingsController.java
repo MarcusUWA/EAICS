@@ -68,7 +68,7 @@ public class FXMLSettingsController implements Initializable
     @FXML 
     Button wifiConnect;
     
-    TrifanMainUIController gui;
+    MainUIController gui;
     
     //refresh rate in ms
     int refreshFrequency = 10;
@@ -230,7 +230,7 @@ public class FXMLSettingsController implements Initializable
         }
     }    
     
-    public void initSettings(TrifanMainUIController mainGui) 
+    public void initSettings(MainUIController mainGui) 
     {
         gui = mainGui;
     }

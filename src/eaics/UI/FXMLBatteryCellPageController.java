@@ -38,7 +38,7 @@ public class FXMLBatteryCellPageController implements Initializable
 {
     private int pageNumber;
     
-    TrifanMainUIController gui;
+    MainUIController gui;
     
     //refresh rate in ms
     int refreshFrequency = 1000;
@@ -691,7 +691,7 @@ public class FXMLBatteryCellPageController implements Initializable
         
     }
 
-    public void initSettings(TrifanMainUIController mainGui) 
+    public void initSettings(MainUIController mainGui) 
     {
         gui = mainGui;
     }

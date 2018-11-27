@@ -14,7 +14,7 @@ import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import eaics.UI.FXMLBatteryPageController;
 import eaics.UI.FXMLSettingsController;
-import eaics.UI.MainUI;
+import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,7 +46,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  */
-public class TrifanMainUIController extends MainUI implements Initializable
+public class TrifanMainUIController extends MainUIController implements Initializable
 {    
     @FXML
     Button buttonSettings;   
@@ -156,7 +156,7 @@ public class TrifanMainUIController extends MainUI implements Initializable
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings.fxml"));
         
         try 
 	{
@@ -189,7 +189,7 @@ public class TrifanMainUIController extends MainUI implements Initializable
     private void handleBatteryPressed(ActionEvent event) 
     {
         
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryPage.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLBatteryPage.fxml"));
         
         try 
 	{
@@ -220,7 +220,8 @@ public class TrifanMainUIController extends MainUI implements Initializable
     } 
     
     @FXML
-    private void handleTarePressed(ActionEvent event) {
+    private void handleTarePressed(ActionEvent event) 
+    {
         //send
     }
     

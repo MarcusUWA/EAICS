@@ -10,11 +10,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="480.0" maxWidth="800.0" minHeight="480.0" minWidth="800.0" prefHeight="480.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.MainUIController">
+<AnchorPane id="AnchorPane" maxHeight="480.0" maxWidth="800.0" minHeight="480.0" minWidth="800.0" prefHeight="480.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.Trifan.TrifanMainUIController">
    <children>
       <ImageView fitHeight="305.0" fitWidth="305.0" layoutX="239.0" layoutY="103.0" opacity="0.18" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/plane.png" />
+            <Image url="@../../Resources/plane.png" />
          </image>
       </ImageView>
       <Button layoutX="595.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="45.0" prefWidth="183.0" text="Battery" />
@@ -233,33 +233,33 @@
       </Label>
       <ImageView fx:id="wifi_icon" fitHeight="36.0" fitWidth="33.0" layoutX="664.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/wifi-on.jpg" />
+            <Image url="@../../Resources/wifi-on.jpg" />
          </image>
       </ImageView>
       <ImageView fx:id="can_icon" fitHeight="33.0" fitWidth="33.0" layoutX="710.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/CAN-disconn.png" />
+            <Image url="@../../Resources/CAN-disconn.png" />
          </image>
       </ImageView>
       <ImageView fx:id="status_icon" fitHeight="33.0" fitWidth="33.0" layoutX="753.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/idle.png" />
+            <Image url="@../../Resources/idle.png" />
          </image>
       </ImageView>
       <Button fx:id="buttonTare" layoutX="368.0" layoutY="435.0" mnemonicParsing="false" text="Tare" />
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="304.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/fan.png" />
+            <Image url="@../../Resources/fan.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="428.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/fan.png" />
+            <Image url="@../../Resources/fan.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="364.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/fan.png" />
+            <Image url="@../../Resources/fan.png" />
          </image>
       </ImageView>
       <Text layoutX="28.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voltage" />

@@ -19,7 +19,7 @@ import javafx.scene.control.Label;
  *
  * @author troyg
  */
-public abstract class MainUI implements Initializable
+public abstract class MainUIController implements Initializable
 {
     public static final int refreshFrequency = 10;    //refresh rate in ms
     public static final int timeout = 2000;
@@ -44,4 +44,6 @@ public abstract class MainUI implements Initializable
     }
     
     public abstract void refreshIP() throws IOException;
+    
+    public abstract void initData(LoadCell loadCell) throws IOException ;
 }

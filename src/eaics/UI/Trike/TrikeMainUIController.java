@@ -15,7 +15,7 @@ import eaics.SER.LoadCell;
 import eaics.Settings.IPAddress;
 import eaics.UI.FXMLBatteryPageController;
 import eaics.UI.FXMLSettingsController;
-import eaics.UI.MainUI;
+import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,7 +48,7 @@ import javafx.util.Duration;
  *
  * @author Troy
  */
-public class TrikeMainUIController extends MainUI
+public class TrikeMainUIController extends MainUIController
 {
     @FXML
     Button buttonSettings;
@@ -114,7 +114,7 @@ public class TrikeMainUIController extends MainUI
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings.fxml"));
         
         try 
 	{
@@ -146,7 +146,7 @@ public class TrikeMainUIController extends MainUI
     @FXML
     private void handleBatteryPressed(ActionEvent event) 
     {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryPage.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLBatteryPage.fxml"));
         
         try 
 	{

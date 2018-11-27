@@ -39,7 +39,7 @@ import javafx.util.Duration;
  */
 public class FXMLBatteryPageController implements Initializable 
 {
-    TrifanMainUIController gui;
+    MainUIController gui;
     
     private CANFilter filter;
     private LoadCell loadCell;
@@ -179,7 +179,7 @@ public class FXMLBatteryPageController implements Initializable
         
     }
 
-    public void initSettings(TrifanMainUIController mainGui) 
+    public void initSettings(MainUIController mainGui) 
     {
         gui = mainGui;
     }

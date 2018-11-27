@@ -26,7 +26,7 @@ import java.io.IOException;
  */
 public class FXMLNumpadController implements Initializable 
 {
-    TrifanMainUIController gui;
+    MainUIController gui;
     private BMSSettings bmsSettings;
     private int index;
     private boolean first;
@@ -34,7 +34,7 @@ public class FXMLNumpadController implements Initializable
     
     private String value;
     
-    public void initSettings(TrifanMainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
+    public void initSettings(MainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
     {
         gui = settingsGui;
 	this.settingsPage = settingsPage;

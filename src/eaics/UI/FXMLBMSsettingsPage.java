@@ -29,7 +29,7 @@ import javafx.scene.control.Label;
  */
 public class FXMLBMSsettingsPage implements Initializable
 {
-    TrifanMainUIController gui;
+    MainUIController gui;
     
     private CANFilter filter;
     private LoadCell loadCell;
@@ -246,7 +246,7 @@ public class FXMLBMSsettingsPage implements Initializable
         // TODO
     }    
     
-    public void initSettings(TrifanMainUIController settingsGui) 
+    public void initSettings(MainUIController settingsGui) 
     {
         gui = settingsGui;
     }

@@ -10,11 +10,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eaics.UI.FXMLTrikeMainUIController">
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.Trike.TrikeMainUIController">
    <children>
       <ImageView fitHeight="305.0" fitWidth="305.0" layoutX="239.0" layoutY="103.0" opacity="0.18" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/plane.png" />
+            <Image url="@../../Resources/plane.png" />
          </image>
       </ImageView>
       <Button fx:id="buttonBattery" layoutX="595.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="45.0" prefWidth="183.0" text="Battery" />
@@ -48,7 +48,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="348.0" layoutY="416.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="400.0" layoutY="397.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
@@ -65,7 +65,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="206.0" layoutY="358.0" prefHeight="17.0" prefWidth="99.0" text="ESC Temp (C)" textAlignment="CENTER">
+      <Label layoutX="189.0" layoutY="358.0" prefHeight="17.0" prefWidth="99.0" text="ESC Temp (C)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
@@ -75,7 +75,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="motorTempLabel" alignment="TOP_CENTER" layoutX="554.0" layoutY="358.0" prefHeight="17.0" prefWidth="60.0" text="0" textAlignment="CENTER">
+      <Label fx:id="motorTempLabel" alignment="TOP_CENTER" layoutX="561.0" layoutY="358.0" prefHeight="17.0" prefWidth="60.0" text="0" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -88,23 +88,23 @@
       <ProgressBar fx:id="rpmPB" layoutX="474.0" layoutY="244.0" prefHeight="27.0" prefWidth="129.0" progress="0.0" rotate="-90.0" />
       <ImageView fx:id="wifi_icon" fitHeight="36.0" fitWidth="33.0" layoutX="664.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/wifi-on.jpg" />
+            <Image url="@../../Resources/wifi-on.jpg" />
          </image>
       </ImageView>
       <ImageView fx:id="can_icon" fitHeight="33.0" fitWidth="33.0" layoutX="710.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/CAN-disconn.png" />
+            <Image url="@../../Resources/CAN-disconn.png" />
          </image>
       </ImageView>
       <ImageView fx:id="status_icon" fitHeight="33.0" fitWidth="33.0" layoutX="753.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/idle.png" />
+            <Image url="@../../Resources/idle.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonTare" layoutX="362.0" layoutY="417.0" mnemonicParsing="false" text="Tare" />
+      <Button fx:id="buttonTare" layoutX="362.0" layoutY="420.0" mnemonicParsing="false" text="Tare" />
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="364.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Resources/fan.png" />
+            <Image url="@../../Resources/fan.png" />
          </image>
       </ImageView>
       <Text layoutX="26.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voltage" />
