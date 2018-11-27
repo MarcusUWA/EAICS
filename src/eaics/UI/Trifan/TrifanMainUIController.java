@@ -46,7 +46,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  */
-public class TrifanMainUIController extends MainUIController implements Initializable
+public class TrifanMainUIController extends MainUIController
 {    
     @FXML
     Button buttonSettings;   

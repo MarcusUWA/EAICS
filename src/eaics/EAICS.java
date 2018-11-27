@@ -265,7 +265,7 @@ public class EAICS extends Application
 	CANFilter.getInstance().setLoggingExecutor(executor);
 	    
 	// Launch the User Interface (UI) --------------------------------------
-        currentAircraft = TRIFAN;
+        currentAircraft = TRIKE;
         launch(args);
     }
     

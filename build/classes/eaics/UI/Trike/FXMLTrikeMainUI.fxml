@@ -48,7 +48,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="348.0" layoutY="416.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="400.0" layoutY="397.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
@@ -65,7 +65,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="206.0" layoutY="358.0" prefHeight="17.0" prefWidth="99.0" text="ESC Temp (C)" textAlignment="CENTER">
+      <Label layoutX="189.0" layoutY="358.0" prefHeight="17.0" prefWidth="99.0" text="ESC Temp (C)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
@@ -75,7 +75,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label fx:id="motorTempLabel" alignment="TOP_CENTER" layoutX="554.0" layoutY="358.0" prefHeight="17.0" prefWidth="60.0" text="0" textAlignment="CENTER">
+      <Label fx:id="motorTempLabel" alignment="TOP_CENTER" layoutX="561.0" layoutY="358.0" prefHeight="17.0" prefWidth="60.0" text="0" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -101,7 +101,7 @@
             <Image url="@../../Resources/idle.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonTare" layoutX="362.0" layoutY="417.0" mnemonicParsing="false" text="Tare" />
+      <Button fx:id="buttonTare" layoutX="362.0" layoutY="420.0" mnemonicParsing="false" text="Tare" />
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="364.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Resources/fan.png" />
@@ -152,5 +152,12 @@
             <Font size="60.0" />
          </font>
       </Label>
+      <Button layoutX="335.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle30" text="30%" />
+      <Button layoutX="485.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle50" text="50%" />
+      <Button layoutX="185.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle10" text="10%" />
+      <Button layoutX="260.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle20" text="20%" />
+      <Button layoutX="410.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle40" text="40%" />
+      <Button layoutX="560.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle60" text="60%" />
+      <Button defaultButton="true" layoutX="312.0" layoutY="181.0" mnemonicParsing="false" onAction="#handle0" prefHeight="88.0" prefWidth="160.0" text="!!! STOP !!!" />
    </children>
 </AnchorPane>

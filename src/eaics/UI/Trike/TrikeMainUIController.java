@@ -81,7 +81,7 @@ public class TrikeMainUIController extends MainUIController
     private Label thrustLabel;
     
     @FXML
-    private Slider thottleSlider;
+    private Slider throttleSlider;
     
     @FXML
     private ProgressBar rpmPB;
@@ -109,6 +109,109 @@ public class TrikeMainUIController extends MainUIController
         {
             ipLabel.setText("Not Connected");
         }
+    }
+    
+    private void handleThrottle(int setting) throws IOException
+    {
+        String msg = "14A10000#";
+        //setting = 1024 * Math.Round(setting / 100.0) + 1024;
+        
+        switch(setting)
+        {
+            case 0:
+                break;
+            case 10:
+                setting = -1024;
+                msg = addToMsg(msg, setting);
+                break;
+            case 20:
+                setting = -512;
+                msg = addToMsg(msg, setting);
+                break;
+            case 30:
+                setting = 0;
+                msg = addToMsg(msg, setting);
+                break;
+            case 40:
+                setting = 512;
+                msg = addToMsg(msg, setting);
+                break;
+            case 50:
+                setting = 1024;
+                msg = addToMsg(msg, setting);
+                break;
+            case 60:
+                setting = 1536;
+                msg = addToMsg(msg, setting);
+                break;
+        }
+        System.out.println(msg);
+	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+        final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);        
+    }
+    
+    private String addToMsg(String msg, int setting)
+    {
+        String temp = "";
+        
+        temp += Integer.toHexString(setting);
+        int len = temp.length();
+	if(len == 1 || len == 3 || len == 5 || len == 7)
+	{
+	    msg += "0";
+	}
+	msg += temp;
+        
+        return msg;
+    }
+    
+    @FXML
+    private void handle0(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(0.0);
+        handleThrottle(0);
+    }
+    
+    @FXML
+    private void handle10(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(10.0);
+        handleThrottle(10);
+    }
+    
+    @FXML
+    private void handle20(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(20.0);
+        handleThrottle(20);
+    }
+    
+    @FXML
+    private void handle30(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(30.0);
+        handleThrottle(30);
+    }
+    
+    @FXML
+    private void handle40(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(40.0);
+        handleThrottle(40);
+    }
+    
+    @FXML
+    private void handle50(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(50.0);
+        handleThrottle(50);
+    }
+    
+    @FXML
+    private void handle60(ActionEvent event) throws IOException
+    {
+        throttleSlider.setValue(60.0);
+        handleThrottle(60);
     }
     
     @FXML
