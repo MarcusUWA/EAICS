@@ -72,7 +72,7 @@ public class BMSSettings
         this.maxChargeCurrent = new ConfigData("A", 0, 127, 10, "A", 1);//0,255,10
         this.altChargeVoltage = new ConfigData("V", 0, 511, 400, "V", 1);//0,255,100
         this.altChargeCurrent = new ConfigData("A", 0, 127, 10, "A", 1);//0,255,20
-        this.sleepDelay = new ConfigData("minutes", 1, 6, 5, "minutes", 1);
+        this.sleepDelay = new ConfigData("minutes", 1, 6, 6, "minutes", 1);
 	
         this.mpiFunction = new ConfigData("", 0, 3, 0, "", 1);
         this.mpo1Function = new ConfigData("", 0, 6, 0, "", 1);

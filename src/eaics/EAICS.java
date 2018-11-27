@@ -62,6 +62,7 @@ public class EAICS extends Application
      */
     public static void main(String[] args) throws InterruptedException, IOException 
     {
+        final Process vncServerProgram = Runtime.getRuntime().exec("sudo dispmanx_vncserver rfcbport 5900");
        
 	// Pix Hawk Code ------------------------------------------------------
         EAICS_Settings settings = EAICS_Settings.getInstance();
