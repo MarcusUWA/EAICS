@@ -13,6 +13,7 @@ import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
+import eaics.SER.Serial;
 import eaics.UI.MainUI;
 import eaics.UI.Trifan.TrifanMainUIController;
 import java.io.BufferedReader;
@@ -65,7 +66,7 @@ public class EAICS extends Application
         
         startSerComms();
         
-        mainUIcontroller.initData(loadCell);
+     //   mainUIcontroller.initData(loadCell);
         stage.show();
     }
 
