@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.UI.Trifan.TrifanMainUIController;
 import eaics.Settings.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
@@ -38,7 +39,7 @@ import javafx.util.Duration;
  */
 public class FXMLBatteryPageController implements Initializable 
 {
-    MainUIController gui;
+    TrifanMainUIController gui;
     
     private CANFilter filter;
     private LoadCell loadCell;
@@ -178,7 +179,7 @@ public class FXMLBatteryPageController implements Initializable
         
     }
 
-    public void initSettings(MainUIController mainGui) 
+    public void initSettings(TrifanMainUIController mainGui) 
     {
         gui = mainGui;
     }

@@ -13,7 +13,8 @@ import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
-import eaics.UI.MainUIController;
+import eaics.UI.MainUI;
+import eaics.UI.Trifan.TrifanMainUIController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,29 +30,42 @@ import javafx.stage.Stage;
 
 public class EAICS extends Application 
 {    
+    public static final String TRIFAN = "xti trifan 600";
+    public static final String TRIKE = "ABM4-Y1";
+    
+    public static String CURRENT_AIRCRAFT;
+    
     static LoadCell loadCell = new LoadCell();
     static IPAddress ipAddress = new IPAddress();
     
-    //Serial comms = new Serial("/dev/ttyUSB0");
+    static Serial comms = new Serial("/dev/ttyUSB0", loadCell);
     
     @Override
     public void start(Stage stage) throws Exception 
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
+        FXMLLoader loader;
+                
+        if(CURRENT_AIRCRAFT.equals(TRIKE))
+        {
+            loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
+        }
+        else
+        {
+            loader = new FXMLLoader(getClass().getResource("/eaics/UI/MainUI.fxml"));
+        }
+        
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         
         stage.setTitle("ElectroAero Instrumentation and Control System");
         
         //initialising main UI controller
-        MainUIController controller = loader.getController();
         
-        /*
+        MainUI mainUIcontroller = loader.getController();
+        
         startSerComms();
-        controller.initData(filter, comms);
-        */
         
-        controller.initData(loadCell);
+        mainUIcontroller.initData(loadCell);
         stage.show();
     }
 
@@ -130,7 +144,7 @@ public class EAICS extends Application
 	
 	
 	// Load Cell Code ------------------------------------------------------
-
+        /*
         final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
 
         Thread threadLoadCell = new Thread(new Runnable()
@@ -163,7 +177,7 @@ public class EAICS extends Application
 	    }
         });
         threadLoadCell.start();
-	
+	*/
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
@@ -249,22 +263,13 @@ public class EAICS extends Application
         launch(args);
     }
     
-    /*
-    
-    private void startSerComms() {
+    private void startSerComms() 
+    {
         comms.connect();
-        if (comms.getConnected() == true) {
-            if (comms.initIOStream() == true) {
-                comms.initListener();
-            }
-        }
     }
         
-    private void stopSerComms() {
+    private void stopSerComms() 
+    {
         comms.disconnect();
     }
-*/
-    
-    
-    
 }

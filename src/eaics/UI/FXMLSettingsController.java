@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.UI.Trifan.TrifanMainUIController;
 import eaics.CAN.CANFilter;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
@@ -67,7 +68,7 @@ public class FXMLSettingsController implements Initializable
     @FXML 
     Button wifiConnect;
     
-    MainUIController gui;
+    TrifanMainUIController gui;
     
     //refresh rate in ms
     int refreshFrequency = 10;
@@ -229,7 +230,7 @@ public class FXMLSettingsController implements Initializable
         }
     }    
     
-    public void initSettings(MainUIController mainGui) 
+    public void initSettings(TrifanMainUIController mainGui) 
     {
         gui = mainGui;
     }

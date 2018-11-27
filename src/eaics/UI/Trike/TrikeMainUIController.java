@@ -3,20 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics.UI;
+package eaics.UI.Trike;
 
+import eaics.UI.Trifan.TrifanMainUIController;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
-import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
+import eaics.Settings.IPAddress;
+import eaics.UI.FXMLBatteryPageController;
+import eaics.UI.FXMLSettingsController;
+import eaics.UI.MainUI;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import javafx.util.Duration;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,157 +32,88 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
+ *
+ * @author Troy
  */
-public class MainUIController implements Initializable 
-{    
-    FXMLBatteryPageController batterys;
-    FXMLSettingsController settings;
-    
+public class TrikeMainUIController extends MainUI
+{
     @FXML
     Button buttonSettings;
-    
     @FXML
     Button buttonTare;
-    
-
-    
-    //refresh rate in ms
-    int refreshFrequency = 10;
-    
-    int timeout = 2000;
-    
-    private CANFilter filter;
-    private LoadCell loadCell;
-    
-    private int status = 0;
-    
-    // Big Labels - Top of Page ----------------------------------------------
-    
     @FXML
-    private Label powerLabel;
+    Button buttonBattery;
     
     @FXML
     private Label timeLabel;
-    
+    @FXML
+    private Label powerLabel;
     @FXML
     private Label voltageLabel;
-    
+    @FXML
+    private Label throttleLabel;
+    @FXML
+    private Label rpmLabel;
     @FXML
     private Label currentLabel;
-    
-    // ESC (Left Wing) ---------------------------------------------------------
-    
     @FXML
-    private Label leftRPMLabel;
-    
+    private Label ipLabel;
     @FXML
-    private Label leftControllerTempLabel;
-    
+    private Label controllerTempLabel;
     @FXML
-    private Label leftMotorTempLabel;
-    
+    private Label motorTempLabel;
     @FXML
-    private Label leftMotorPowerLabel;
-    
-    @FXML
-    private ProgressBar leftRPM;
-    
-    // ESC (Bottom Wing) -------------------------------------------------------
-    
-    @FXML
-    private Label bottomRPMLabel;
-    
-    @FXML
-    private Label bottomControllerTempLabel;
-    
-    @FXML
-    private Label bottomMotorTempLabel;
-    
-    @FXML
-    private Label bottomMotorPowerLabel;
-    
-    @FXML
-    private ProgressBar bottomRPM;
-    
-    // ESC (Top Wing) ----------------------------------------------------------
-    
-    @FXML
-    private Label topRPMLabel;
-    
-    @FXML
-    private Label topControllerTempLabel;
-    
-    @FXML
-    private Label topMotorTempLabel;
-    
-    @FXML
-    private Label topMotorPowerLabel;
-    
-    @FXML
-    private ProgressBar topRPM;
-    
-    // ESC (Right Wing) --------------------------------------------------------
-    
-    @FXML
-    private Label rightRPMLabel;
-    
-    @FXML
-    private Label rightControllerTempLabel;
-    
-    @FXML
-    private Label rightMotorTempLabel;
-    
-    @FXML
-    private Label rightMotorPowerLabel;
-    
-    @FXML
-    private ProgressBar rightRPM;
-    
-    // Thrust Label - Bottom of Page -------------------------------------------
-    
+    private Label auxLabel;
     @FXML
     private Label thrustLabel;
     
     @FXML
-    private ProgressIndicator timeIndicator;
-
+    private Slider thottleSlider;
+    
     @FXML
-    private ProgressIndicator powerIndicator;
+    private ProgressBar rpmPB;
     
     @FXML
     private ImageView wifi_icon;
-    
     @FXML
     private ImageView can_icon;
-    
     @FXML 
     private ImageView status_icon;
     
-    @FXML 
-    private Label ipLabel;
-    
-    @FXML 
-    private Label auxLabel;
-    
-    public IPAddress ip = new IPAddress();
+    public void refreshIP() throws IOException 
+    {
+        ip.updateIPAddress();
+        
+        if(ip.getLANIP().length()>5) 
+        {
+            ipLabel.setText(ip.getLANIP());
+        }
+        else if(ip.getWifiIP().length()>5) 
+        {
+            ipLabel.setText(ip.getWifiIP());
+        }
+        else 
+        {
+            ipLabel.setText("Not Connected");
+        }
+    }
     
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException
-    {        
-        
+    {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings.fxml"));
         
         try 
@@ -187,7 +121,7 @@ public class MainUIController implements Initializable
             Pane pane = loader.load();
 
             settings = loader.getController();
-            settings.initSettings(this);
+            //settings.initSettings(this);
             settings.initData(loadCell);
         
             Stage stage = new Stage();
@@ -212,7 +146,6 @@ public class MainUIController implements Initializable
     @FXML
     private void handleBatteryPressed(ActionEvent event) 
     {
-        
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryPage.fxml"));
         
         try 
@@ -220,7 +153,7 @@ public class MainUIController implements Initializable
             Pane pane = loader.load();
 
             batterys = loader.getController();
-            batterys.initSettings(this);
+            //batterys.initSettings(this);
 	    batterys.initData(loadCell);
    
             Stage stage = new Stage();
@@ -244,22 +177,9 @@ public class MainUIController implements Initializable
     } 
     
     @FXML
-    private void handleTarePressed(ActionEvent event) {
+    private void handleTarePressed(ActionEvent event) 
+    {
         //send
-    }
-    
-    public void refreshIP() throws IOException {
-        ip.updateIPAddress();
-        
-        if(ip.getLANIP().length()>5) {
-            ipLabel.setText(ip.getLANIP());
-        }
-        else if(ip.getWifiIP().length()>5) {
-            ipLabel.setText(ip.getWifiIP());
-        }
-        else {
-            ipLabel.setText("Not Connected");
-        }
     }
     
     public void initData(LoadCell cell) throws IOException 
@@ -285,94 +205,23 @@ public class MainUIController implements Initializable
                 
                 FileInputStream input = null;
                 Image image;
-		
-                // Warnings ----------------------------------------------------
-                    
-                //Wifi connection icon
-                /*    
-                try {
-  
-                    ip.updateIPAddress();
-                } 
-                catch (IOException ex) {
-                    Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                if(ip.getLANIP().length()>5) {
-                    ipLabel.setText(ip.getLANIP());
-                    
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    wifi_icon.setImage(image);
-                    
-                }
-                else if(ip.getWifiIP().length()>5) {
-                    ipLabel.setText(ip.getWifiIP());
-                    
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    wifi_icon.setImage(image);
-                    
-                }
-                else {
-                    ipLabel.setText("Not Connected");
-                    
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/wifi-off.png");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    wifi_icon.setImage(image);
-                }  
-                */
-                //TODO: Need to conenct this properly...
-                //CAN-Bus connections Icon
-                /*
-                if(counter<timeout) {
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    can_icon.setImage(image);
-                }
-                else {
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    can_icon.setImage(image);
-                }
-                */
                 
                 //EVMS Status Icons
-		if(evmsV3.getStatus()!=status) {
+		if(evmsV3.getStatus() != status) 
+                {
                     status = evmsV3.getStatus();
 
-                    switch(status) {
+                    switch(status) 
+                    {
                         //idle state
                         case 0:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/idle.png");
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
+                                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
                             image = new Image(input);
@@ -381,10 +230,13 @@ public class MainUIController implements Initializable
                         
                         //precharging
                         case 1:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/pre-charge.png");
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
+                                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
                             image = new Image(input);
@@ -392,10 +244,13 @@ public class MainUIController implements Initializable
                             break;
                             
                         case 2:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/running.png");
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
+                                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
                             image = new Image(input);
@@ -403,10 +258,13 @@ public class MainUIController implements Initializable
                             break;
                             
                         case 3:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/charge.png");
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
+                                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
                             image = new Image(input);
@@ -414,10 +272,13 @@ public class MainUIController implements Initializable
                             break;
                             
                         case 4:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/setup.png");
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
+                                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
                             image = new Image(input);
@@ -425,10 +286,13 @@ public class MainUIController implements Initializable
                             break;
                             
                         case 5:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/stopped.png");
-                            } catch (FileNotFoundException ex) {
-                                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
+                                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
                             image = new Image(input);
@@ -442,10 +306,11 @@ public class MainUIController implements Initializable
 		// Errors
 		if(evmsV3.getError() != 0 && !filter.getHasWarnedError())
 		{
-		    Alert alert = new Alert(AlertType.INFORMATION);
+		    Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING!!!");
                     
-                    switch(evmsV3.getError()) {
+                    switch(evmsV3.getError()) 
+                    {
                         case 1: 
                             alert.setContentText("EVMS Error: Corrupt Settings!");
                             break;
@@ -505,7 +370,7 @@ public class MainUIController implements Initializable
 		// Check if the charger is off
 		if(evmsV3.getHeadlights() == 1 && !filter.getHasWarnedChargerOff())
 		{
-		    Alert alert = new Alert(AlertType.INFORMATION);
+		    Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("DC-DC is off");
 		    alert.show();
@@ -521,7 +386,6 @@ public class MainUIController implements Initializable
 		double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
                 
 		powerLabel.setText("" + String.format("%.2f", kwPower));
-		powerIndicator.setProgress((kwPower / (400*500)));
 		
                 double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
                 time *= 60;
@@ -537,81 +401,24 @@ public class MainUIController implements Initializable
                 {
                     timeLabel.setText("" + String.format("%.2f", time));
                 }
-                
-                if(time > maxTime)
-                {
-                    timeIndicator.setProgress(0.999999);
-                }
-                else
-                {
-                    timeIndicator.setProgress(time / maxTime);
-                }
 		
                 voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
                 currentLabel.setText(Integer.toString(currentSensor.getCurrent()));
 		
 		//+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Left Wing
+		//ESC - Electronic Speed Controller
 		//+------------------------------------------------------------+
 		
-		leftRPMLabel.setText("" + esc[0].getRpm());
+		rpmLabel.setText("" + esc[0].getRpm());
 		
-		leftControllerTempLabel.setText("" + esc[0].getControllerTemp());
+		controllerTempLabel.setText("" + esc[0].getControllerTemp());
 		
-		leftMotorTempLabel.setText("" + esc[0].getMotorTemp());
+		motorTempLabel.setText("" + esc[0].getMotorTemp());
                 
                 double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
-                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
+                powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
                 
-                leftRPM.setProgress((double)esc[0].getRpm() / maxProgress);
-		
-		
-                //+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Bottom
-		//+------------------------------------------------------------+
-		
-		bottomRPMLabel.setText("" + esc[1].getRpm());
-		
-		bottomControllerTempLabel.setText("" + esc[1].getControllerTemp());
-		
-		bottomMotorTempLabel.setText("" + esc[1].getMotorTemp());
-                
-                double kwBottomRightMotor = esc[1].getBatteryVoltage() * esc[1].getBatteryCurrent() / 1000;
-                leftMotorPowerLabel.setText("" + String.format("%.2f", kwBottomRightMotor));
-                
-                bottomRPM.setProgress((double)esc[1].getRpm() / maxProgress);
-		
-		
-                //+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Top
-		//+------------------------------------------------------------+
-		
-		topRPMLabel.setText("" + esc[2].getRpm());
-		
-		topControllerTempLabel.setText("" + esc[2].getControllerTemp());
-		
-		topMotorTempLabel.setText("" + esc[2].getMotorTemp());
-                
-                double kwPowerTopMotor = esc[2].getBatteryVoltage() * esc[2].getBatteryCurrent() / 1000;
-                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerTopMotor));
-                
-                topRPM.setProgress((double)esc[2].getRpm() / maxProgress);
-		
-		
-                //+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Right Wing
-		//+------------------------------------------------------------+
-		
-		rightRPMLabel.setText("" + esc[3].getRpm());
-		
-		rightControllerTempLabel.setText("" + esc[3].getControllerTemp());
-		
-		rightMotorTempLabel.setText("" + esc[3].getMotorTemp());
-                
-                double kwPowerRightMotor = esc[3].getBatteryVoltage() * esc[3].getBatteryCurrent() / 1000;
-                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerRightMotor));
-                
-                rightRPM.setProgress((double)esc[3].getRpm() / maxProgress);
+                rpmPB.setProgress((double)esc[0].getRpm() / maxProgress);
 		
 		
 		//+------------------------------------------------------------+
@@ -630,14 +437,5 @@ public class MainUIController implements Initializable
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
-    }
-    
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) 
-    {
-        
     }
 }

@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.UI.Trifan.TrifanMainUIController;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CCB;
@@ -37,7 +38,7 @@ public class FXMLBatteryCellPageController implements Initializable
 {
     private int pageNumber;
     
-    MainUIController gui;
+    TrifanMainUIController gui;
     
     //refresh rate in ms
     int refreshFrequency = 1000;
@@ -428,7 +429,7 @@ public class FXMLBatteryCellPageController implements Initializable
             try {
                 input = new FileInputStream("/home/pi/EAICS/images/switch_on.jpg");
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
                             
             image = new Image(input);
@@ -442,7 +443,7 @@ public class FXMLBatteryCellPageController implements Initializable
             } 
 	    catch (FileNotFoundException ex) 
 	    {
-                Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
             }
                             
             image = new Image(input);
@@ -690,7 +691,7 @@ public class FXMLBatteryCellPageController implements Initializable
         
     }
 
-    public void initSettings(MainUIController mainGui) 
+    public void initSettings(TrifanMainUIController mainGui) 
     {
         gui = mainGui;
     }

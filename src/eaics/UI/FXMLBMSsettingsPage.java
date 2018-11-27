@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package eaics.UI;
+import eaics.UI.Trifan.TrifanMainUIController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ import javafx.scene.control.Label;
  */
 public class FXMLBMSsettingsPage implements Initializable
 {
-    MainUIController gui;
+    TrifanMainUIController gui;
     
     private CANFilter filter;
     private LoadCell loadCell;
@@ -245,7 +246,7 @@ public class FXMLBMSsettingsPage implements Initializable
         // TODO
     }    
     
-    public void initSettings(MainUIController settingsGui) 
+    public void initSettings(TrifanMainUIController settingsGui) 
     {
         gui = settingsGui;
     }

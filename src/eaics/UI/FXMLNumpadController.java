@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.UI.Trifan.TrifanMainUIController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -25,7 +26,7 @@ import java.io.IOException;
  */
 public class FXMLNumpadController implements Initializable 
 {
-    MainUIController gui;
+    TrifanMainUIController gui;
     private BMSSettings bmsSettings;
     private int index;
     private boolean first;
@@ -33,7 +34,7 @@ public class FXMLNumpadController implements Initializable
     
     private String value;
     
-    public void initSettings(MainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
+    public void initSettings(TrifanMainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
     {
         gui = settingsGui;
 	this.settingsPage = settingsPage;
