@@ -6,6 +6,7 @@
 package eaics.CAN;
 
 import eaics.Settings.BMSSettings;
+import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -15,14 +16,21 @@ import java.util.concurrent.ScheduledExecutorService;
 public class CANFilter 
 {
     private static CANFilter instance;
+    
+    public static final int numOfESC = 4;
+    public static final int numOfBMS = 24;
+    public static final int numOfCCB = 3;
 
     private EVMS_v2 evms_v2;
     private EVMS_v3 evms_v3;
     private ESC[] esc;
     private BMS[] bms;
     private CurrentSensor currentSensor;
-
-    private CCB ccb;
+    private CCB[] ccb;
+    
+    private boolean canHasTimedOut;
+    private Date dateTime;
+    private long lastCANpacketRecieved;
 
     //Warnings
     private boolean hasWarnedError;
@@ -48,26 +56,39 @@ public class CANFilter
     {
 	    this.evms_v2 = new EVMS_v2();
 	    this.evms_v3 = new EVMS_v3();
-	    this.esc = new ESC[4];
-	    for(int ii = 0; ii < 4; ii++)
+	    
+	    this.esc = new ESC[numOfESC];
+	    for(int ii = 0; ii < numOfESC; ii++)
 	    {
 		this.esc[ii] = new ESC(ii);
 	    }
-	    this.bms = new BMS[24];
+	    
+	    this.bms = new BMS[numOfBMS];
 	    for(int ii = 0; ii < 24; ii++)
 	    {
 		this.bms[ii] = new BMS(ii);
 	    }
+	    
 	    this.currentSensor = new CurrentSensor();
+	    
+	    this.ccb = new CCB[numOfCCB];
+	    for(int ii = 0; ii < numOfCCB; ii++)
+	    {
+		this.ccb[ii] = new CCB();
+	    }
 
 	    this.hasWarnedError = false;
 	    this.hasWarnedChargerOff = false;
-
-	    this.ccb = new CCB(3);
+	    
+	    this.canHasTimedOut = false;
+	    this.dateTime = new Date();
+	    this.lastCANpacketRecieved = dateTime.getTime();
     }
 
     public void run(CANMessage message)
     {
+	this.lastCANpacketRecieved = this.dateTime.getTime();
+	
 	switch (message.getFrameID()) 
 	{
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
@@ -165,39 +186,30 @@ public class CANFilter
 		bms[23].setAll(message);
 		break;
 
-	    //EVMS Current Sense
-	    case 40:                              // Current Sensor
+	    case 40:                              //EVMS Current Sensor
 		currentSensor.setAll(message);
 		break;
 
-	    //EVMS -> CCB1
-	    case 80:
+	    case 80://EVMS -> CCB1
+		break;
+	    case 81://CCB1 -> EVMS
+		ccb[0].setAll(message);
 		break;
 
-	    //CCB1 -> EVMS
-	    case 81:
-		ccb.setAll(81, message);
+	    case 82://EVMS -> CCB2
 		break;
-
-	    //EVMS -> CCB2
-	    case 82:
-		break;
-	    //CCB2 -> EVMS
-	    case 83:
-		ccb.setAll(83, message);
+	    case 83://CCB2 -> EVMS
+		ccb[1].setAll(message);
 		break;    
 
-	    //EVMS -> CCB3
-	    case 84:
+	    case 84://EVMS -> CCB3
 		break;
-	    //CCB3 -> EVMS
-	    case 85:
-		ccb.setAll(85, message);
+	    case 85://CCB3 -> EVMS
+		ccb[2].setAll(message);
 		break; 
 
 	    default:
 		break;
-
 	}
     }
 
@@ -247,7 +259,7 @@ public class CANFilter
 	return this.bms;
     }
 
-    public CCB getCCB() 
+    public CCB[] getCCB() 
     {
 	return this.ccb;
     }
