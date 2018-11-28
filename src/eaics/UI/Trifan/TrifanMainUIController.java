@@ -474,6 +474,27 @@ public class TrifanMainUIController extends MainUIController
                     filter.setHasWarnedChargerOff(true);    
 		}
 		
+		// Check if CAN Bus 0 has timed out
+		if(filter.hasCANBus0TimedOut() && !filter.hasWarnedCAN0Timeout())
+		{
+		    System.out.println("CAN bus 0 timeout");
+		    Alert alert = new Alert(AlertType.INFORMATION);
+		    alert.setHeaderText("WARNING");
+		    alert.setContentText("CAN Bus 0 has timed out");
+		    alert.show();
+                    filter.hasWarnedCAN0Timeout(true);    
+		}
+		
+		// Check if CAN Bus 1 has timed out
+		if(filter.hasCANBus1TimedOut() && !filter.hasWarnedCAN1Timeout())
+		{
+		    System.out.println("CAN bus 1 timeout");
+		    Alert alert = new Alert(AlertType.INFORMATION);
+		    alert.setHeaderText("WARNING");
+		    alert.setContentText("CAN Bus 1 has timed out");
+		    alert.show();
+                    filter.hasWarnedCAN1Timeout(true);    
+		}
                 
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System

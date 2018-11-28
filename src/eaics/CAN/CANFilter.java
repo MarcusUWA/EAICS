@@ -28,8 +28,16 @@ public class CANFilter
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     
-    private Date dateTime;
-    private long lastCANpacketRecieved;
+    private Date dateTimeCAN0;
+    private long lastPacketRecievedCANbus0;
+    private Date dateTimeCAN1;
+    private long lastPacketRecievedCANbus1;
+    
+    private boolean hasCANBus0TimedOut;
+    private boolean hasCANBus1TimedOut;
+    
+    private boolean hasWarnedCAN0Timeout;
+    private boolean hasWarnedCAN1Timeout;
 
     //Warnings
     private boolean hasWarnedError;
@@ -79,13 +87,28 @@ public class CANFilter
 	    this.hasWarnedError = false;
 	    this.hasWarnedChargerOff = false;
 	    
-	    this.dateTime = new Date();
-	    this.lastCANpacketRecieved = dateTime.getTime();
+	    this.dateTimeCAN0 = new Date();
+	    this.lastPacketRecievedCANbus0 = dateTimeCAN0.getTime();
+	    this.dateTimeCAN1 = new Date();
+	    this.lastPacketRecievedCANbus1 = dateTimeCAN1.getTime();
+	    this.hasCANBus0TimedOut = false;
+	    this.hasCANBus0TimedOut = false;
+	    this.hasWarnedCAN0Timeout = false;
+	    this.hasWarnedCAN1Timeout = false;
     }
 
-    public void run(CANMessage message)
+    public void run(int bus, CANMessage message)
     {
-	this.lastCANpacketRecieved = this.dateTime.getTime();
+	if(bus == 0)
+	{
+	    hasCANBus0TimedOut = false;	    
+	    this.lastPacketRecievedCANbus0 = this.dateTimeCAN0.getTime();
+	}
+	else if(bus == 1)
+	{
+	    hasCANBus1TimedOut = false;
+	    this.lastPacketRecievedCANbus1 = this.dateTimeCAN1.getTime();
+	}
 	
 	switch (message.getFrameID()) 
 	{
@@ -210,6 +233,56 @@ public class CANFilter
 		break;
 	}
     }
+    
+    public long getLastPacketRecievedCANbus0()
+    {
+	return this.lastPacketRecievedCANbus0;
+    }
+    
+    public long getLastPacketRecievedCANbus1()
+    {
+	return this.lastPacketRecievedCANbus1;
+    }
+    
+    public boolean hasCANBus0TimedOut()
+    {
+	return this.hasCANBus0TimedOut;
+    }
+    
+    public void can0Timeout()
+    {
+	this.hasCANBus0TimedOut = true;
+    }
+    
+    public boolean hasCANBus1TimedOut()
+    {
+	return this.hasCANBus1TimedOut;
+    }
+    
+    public void can1Timeout()
+    {
+	this.hasCANBus1TimedOut = true;
+    }
+    
+    public boolean hasWarnedCAN0Timeout()
+    {
+	return this.hasWarnedCAN0Timeout;
+    }
+    
+    public void hasWarnedCAN0Timeout(boolean hasWarnedCAN0Timeout)
+    {
+	this.hasWarnedCAN0Timeout = hasWarnedCAN0Timeout;
+    }
+    
+    public boolean hasWarnedCAN1Timeout()
+    {
+	return this.hasWarnedCAN1Timeout;
+    }
+    
+    public void hasWarnedCAN1Timeout(boolean hasWarnedCAN1Timeout)
+    {
+	this.hasWarnedCAN1Timeout = hasWarnedCAN1Timeout;
+    }
 
     public boolean getHasWarnedError()
     {
@@ -235,6 +308,8 @@ public class CANFilter
     {
 	this.hasWarnedError = false;
 	this.hasWarnedChargerOff = false;
+	this.hasWarnedCAN0Timeout = false;
+	this.hasWarnedCAN1Timeout = false;
     }
 
     public EVMS getEVMS_v2()

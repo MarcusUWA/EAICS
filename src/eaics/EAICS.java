@@ -106,7 +106,7 @@ public class EAICS extends Application
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
 			canMessageCAN0.newMessage(rawCANmsg);
-                        filter.run(canMessageCAN0);
+                        filter.run(0, canMessageCAN0);
 		    }
 		}
 		catch(IOException e)
@@ -135,7 +135,7 @@ public class EAICS extends Application
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
                         canMessageCAN1.newMessage(rawCANmsg);
-			filter.run(canMessageCAN1);
+			filter.run(1, canMessageCAN1);
 		    }
 		}
 		catch(IOException e)
@@ -198,10 +198,29 @@ public class EAICS extends Application
 	    
 	Runnable Logger = new Runnable() 
 	{
+	    private Date date = new Date();
+	    
 	    @Override
 	    public void run() 
 	    {
 		CANFilter filter = CANFilter.getInstance();
+		
+		if(!filter.hasCANBus0TimedOut())    //CAN Bus 0 hasn't timed out yet so check if it has
+		{
+		    if((date.getTime() - filter.getLastPacketRecievedCANbus0()) > 3)	//CAN Bus 0 timed out?
+		    {
+			filter.can0Timeout();	//If yes then set CAN Bus 0 has timed out
+		    }
+		}
+		
+		if(!filter.hasCANBus1TimedOut())    //CAN Bus 1 hasn't timed out yet so check if it has
+		{
+		    if((date.getTime() - filter.getLastPacketRecievedCANbus1()) > 3)	//CAN Bus 1 timed out?
+		    {
+			filter.can1Timeout();	//If yes then set CAN Bus 1 has timed out
+		    }
+		}
+		
 		String columnData = "";
 		Date date = new Date();
 		columnData += formatterDate.format(date) + " " + formatterTime.format(date) + ", ";
