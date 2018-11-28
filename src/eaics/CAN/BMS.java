@@ -16,11 +16,14 @@ public class BMS
 	private int[] voltage;
 	private int[] temp;
 	
+	public static final int NUMBER_OF_CELLS = 12;
+	public static final int NUMBER_OF_TEMP_SENSORS = 2;
+	
 	public BMS(int inID)
 	{
 	    this.MODULE_ID = inID;
-	    this.voltage = new int[12];
-	    this.temp = new int[2];
+	    this.voltage = new int[NUMBER_OF_CELLS];
+	    this.temp = new int[NUMBER_OF_TEMP_SENSORS];
 	}
 	
 	public void setAll(CANMessage message)
@@ -56,11 +59,11 @@ public class BMS
 	public String toString()
 	{
 	    String outstring = "";
-	    for(int ii = 0; ii < 12; ii++)
+	    for(int ii = 0; ii < voltage.length; ii++)
 	    {
 		outstring += " V" + (ii + 1) + ": " + this.voltage[ii];
 	    }
-	    for(int ii = 0; ii < 2; ii++)
+	    for(int ii = 0; ii < temp.length; ii++)
 	    {
 		outstring += " T" + (ii + 1) + ": " + this.temp[ii];
 	    }
@@ -78,6 +81,7 @@ public class BMS
 	    return this.temp[ii];
 	}
 	
+	/*
 	public int getMaxVoltage()
 	{
 	    int max = voltage[0];
@@ -131,7 +135,7 @@ public class BMS
 	    }
 	    return min;
 	}
-	
+	*/
 	public String getVoltagesString()
 	{
 	    String outString = "";

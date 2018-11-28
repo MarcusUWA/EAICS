@@ -5,7 +5,6 @@
  */
 package eaics.UI;
 
-import eaics.UI.Trifan.TrifanMainUIController;
 import eaics.Settings.BMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
@@ -83,6 +82,16 @@ public class FXMLBatteryPageController implements Initializable
     private Label socLabel;
     
     @FXML
+    private Label theHighBMSLabel;    
+    @FXML
+    private Label theHighCellLabel;
+    
+    @FXML
+    private Label theLowBMSLabel;    
+    @FXML
+    private Label theLowCellLabel;
+    
+    @FXML
     private javafx.scene.control.Button closeButton;
 
     /**
@@ -157,26 +166,49 @@ public class FXMLBatteryPageController implements Initializable
 
         powerLabel.setText("" + String.format("%.2f", kwPower));
 
-        int maxV = 0;
-        for(int ii = 0; ii < bms.length; ii++)
-        {
-            if(bms[ii].getMaxVoltage() > maxV)
-            {
-                maxV = bms[ii].getMaxVoltage();
-            }
-        }
-        highCellLabel.setText("" + maxV / 1000.0);
+	int maxVoltage = -1;
+	int maxCellNumber = -1;
+	int maxBmsNumber = -1;
+	
+	for(int ii = 0; ii < bms.length; ii++)
+	{
+	    for(int jj = 0; jj < BMS.NUMBER_OF_CELLS; jj++)
+	    {
+		int tempVoltage = bms[ii].getVoltage(jj);
+		if(tempVoltage > maxVoltage)
+	        {
+	    	    maxVoltage = tempVoltage;
+		    maxCellNumber = jj;
+		    maxBmsNumber = ii;
+		}
+	    }
+	}
+	
+        highCellLabel.setText("" + maxVoltage / 1000.0);
+	theHighBMSLabel.setText("" + maxBmsNumber);
+	theHighCellLabel.setText("" + maxCellNumber);
+	
+	int minVoltage = 10000;
+	int minCellNumber = -1;
+	int minBmsNumber = -1;
+	
+	for(int ii = 0; ii < bms.length; ii++)
+	{
+	    for(int jj = 0; jj < BMS.NUMBER_OF_CELLS; jj++)
+	    {
+		int tempVoltage = bms[ii].getVoltage(jj);
+		if(tempVoltage < minVoltage)
+	        {
+	    	    minVoltage = tempVoltage;
+		    minCellNumber = jj;
+		    minBmsNumber = ii;
+		}
+	    }
+	}
 
-        int lowV = 100000;
-        for(int ii = 0; ii < bms.length; ii++)
-        {
-            if(bms[ii].getMinVoltage() < lowV)
-            {
-                lowV = bms[ii].getMinVoltage();
-            }
-        }
-        lowCellLabel.setText("" + lowV / 1000.0);
-        
+        lowCellLabel.setText("" + minVoltage / 1000.0);
+	theLowBMSLabel.setText("" + minBmsNumber);
+	theLowCellLabel.setText("" + minCellNumber);        
     }
 
     public void initSettings(MainUIController mainGui) 
