@@ -189,8 +189,6 @@ public class TrifanMainUIController extends MainUIController
     private void handleBatteryPressed(ActionEvent event) 
     {
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLBatteryPage.fxml"));
-	
-	//FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/LabelListTest.fxml"));
         
         try 
 	{
@@ -198,10 +196,7 @@ public class TrifanMainUIController extends MainUIController
 
             batterys = loader.getController();
             batterys.initSettings(this);
-	    batterys.initData(loadCell);
-	    //labelListC = loader.getController();
-	    //labelListC.initData();
-	    
+	    batterys.initData(loadCell);	    
    
             Stage stage = new Stage();
  

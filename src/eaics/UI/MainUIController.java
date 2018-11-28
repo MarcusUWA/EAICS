@@ -29,7 +29,6 @@ public abstract class MainUIController implements Initializable
     
     protected FXMLBatteryPageController batterys;
     protected FXMLSettingsController settings;
-    protected LabelListController labelListC;
     
     protected int status = 0;
     protected IPAddress ip;
