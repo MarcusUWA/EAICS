@@ -9,8 +9,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import java.util.ArrayList?>
+<?import javafx.scene.control.Label?>
+
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLBatteryCellPageController">
-   <children>
+   <children>       
       <Label fx:id="cellVoltage_0_7" layoutX="724.0" layoutY="102.0" text="0.00V" />
       <Label fx:id="bms7" layoutX="739.0" layoutY="60.0" text="8">
          <font>
@@ -224,5 +227,113 @@
             <Image url="@../Resources/switch_off.jpg" />
          </image>
       </ImageView>
+      
+      <fx:define>
+            <ArrayList fx:id="cellLabelList" >
+                <fx:reference source="cellVoltage_0_0"/>
+                <fx:reference source="cellVoltage_1_0"/>
+                <fx:reference source="cellVoltage_2_0"/>
+                <fx:reference source="cellVoltage_3_0"/>
+                <fx:reference source="cellVoltage_4_0"/>
+                <fx:reference source="cellVoltage_5_0"/>
+                <fx:reference source="cellVoltage_6_0"/>
+                <fx:reference source="cellVoltage_7_0"/>
+                <fx:reference source="cellVoltage_8_0"/>
+                <fx:reference source="cellVoltage_9_0"/>
+                <fx:reference source="cellVoltage_10_0"/>
+                <fx:reference source="cellVoltage_11_0"/>
+                
+                <fx:reference source="cellVoltage_0_1"/>
+                <fx:reference source="cellVoltage_1_1"/>
+                <fx:reference source="cellVoltage_2_1"/>
+                <fx:reference source="cellVoltage_3_1"/>
+                <fx:reference source="cellVoltage_4_1"/>
+                <fx:reference source="cellVoltage_5_1"/>
+                <fx:reference source="cellVoltage_6_1"/>
+                <fx:reference source="cellVoltage_7_1"/>
+                <fx:reference source="cellVoltage_8_1"/>
+                <fx:reference source="cellVoltage_9_1"/>
+                <fx:reference source="cellVoltage_10_1"/>
+                <fx:reference source="cellVoltage_11_1"/>
+                
+                <fx:reference source="cellVoltage_0_2"/>
+                <fx:reference source="cellVoltage_1_2"/>
+                <fx:reference source="cellVoltage_2_2"/>
+                <fx:reference source="cellVoltage_3_2"/>
+                <fx:reference source="cellVoltage_4_2"/>
+                <fx:reference source="cellVoltage_5_2"/>
+                <fx:reference source="cellVoltage_6_2"/>
+                <fx:reference source="cellVoltage_7_2"/>
+                <fx:reference source="cellVoltage_8_2"/>
+                <fx:reference source="cellVoltage_9_2"/>
+                <fx:reference source="cellVoltage_10_2"/>
+                <fx:reference source="cellVoltage_11_2"/>
+                
+                <fx:reference source="cellVoltage_0_3"/>
+                <fx:reference source="cellVoltage_1_3"/>
+                <fx:reference source="cellVoltage_2_3"/>
+                <fx:reference source="cellVoltage_3_3"/>
+                <fx:reference source="cellVoltage_4_3"/>
+                <fx:reference source="cellVoltage_5_3"/>
+                <fx:reference source="cellVoltage_6_3"/>
+                <fx:reference source="cellVoltage_7_3"/>
+                <fx:reference source="cellVoltage_8_3"/>
+                <fx:reference source="cellVoltage_9_3"/>
+                <fx:reference source="cellVoltage_10_3"/>
+                <fx:reference source="cellVoltage_11_3"/>
+                
+                <fx:reference source="cellVoltage_0_4"/>
+                <fx:reference source="cellVoltage_1_4"/>
+                <fx:reference source="cellVoltage_2_4"/>
+                <fx:reference source="cellVoltage_3_4"/>
+                <fx:reference source="cellVoltage_4_4"/>
+                <fx:reference source="cellVoltage_5_4"/>
+                <fx:reference source="cellVoltage_6_4"/>
+                <fx:reference source="cellVoltage_7_4"/>
+                <fx:reference source="cellVoltage_8_4"/>
+                <fx:reference source="cellVoltage_9_4"/>
+                <fx:reference source="cellVoltage_10_4"/>
+                <fx:reference source="cellVoltage_11_4"/>
+                
+                <fx:reference source="cellVoltage_0_5"/>
+                <fx:reference source="cellVoltage_1_5"/>
+                <fx:reference source="cellVoltage_2_5"/>
+                <fx:reference source="cellVoltage_3_5"/>
+                <fx:reference source="cellVoltage_4_5"/>
+                <fx:reference source="cellVoltage_5_5"/>
+                <fx:reference source="cellVoltage_6_5"/>
+                <fx:reference source="cellVoltage_7_5"/>
+                <fx:reference source="cellVoltage_8_5"/>
+                <fx:reference source="cellVoltage_9_5"/>
+                <fx:reference source="cellVoltage_10_5"/>
+                <fx:reference source="cellVoltage_11_5"/>
+                
+                <fx:reference source="cellVoltage_0_6"/>
+                <fx:reference source="cellVoltage_1_6"/>
+                <fx:reference source="cellVoltage_2_6"/>
+                <fx:reference source="cellVoltage_3_6"/>
+                <fx:reference source="cellVoltage_4_6"/>
+                <fx:reference source="cellVoltage_5_6"/>
+                <fx:reference source="cellVoltage_6_6"/>
+                <fx:reference source="cellVoltage_7_6"/>
+                <fx:reference source="cellVoltage_8_6"/>
+                <fx:reference source="cellVoltage_9_6"/>
+                <fx:reference source="cellVoltage_10_6"/>
+                <fx:reference source="cellVoltage_11_6"/>
+                
+                <fx:reference source="cellVoltage_0_7"/>
+                <fx:reference source="cellVoltage_1_7"/>
+                <fx:reference source="cellVoltage_2_7"/>
+                <fx:reference source="cellVoltage_3_7"/>
+                <fx:reference source="cellVoltage_4_7"/>
+                <fx:reference source="cellVoltage_5_7"/>
+                <fx:reference source="cellVoltage_6_7"/>
+                <fx:reference source="cellVoltage_7_7"/>
+                <fx:reference source="cellVoltage_8_7"/>
+                <fx:reference source="cellVoltage_9_7"/>
+                <fx:reference source="cellVoltage_10_7"/>
+                <fx:reference source="cellVoltage_11_7"/>
+            </ArrayList>
+        </fx:define>
    </children>
 </AnchorPane>
