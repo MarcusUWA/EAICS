@@ -482,7 +482,20 @@ public class TrifanMainUIController extends MainUIController
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("CAN Bus 0 has timed out");
 		    alert.show();
-                    filter.hasWarnedCAN0Timeout(true);    
+		    
+		    try 
+		    {
+			input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
+		    } 
+		    catch (FileNotFoundException ex) 
+		    {
+			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+		    }
+                            
+		    image = new Image(input);
+		    can_icon.setImage(image);
+		    
+                    filter.hasWarnedCAN0Timeout(true);  
 		}
 		
 		// Check if CAN Bus 1 has timed out
@@ -493,7 +506,50 @@ public class TrifanMainUIController extends MainUIController
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("CAN Bus 1 has timed out");
 		    alert.show();
+		    
+		    try 
+		    {
+			input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
+		    } 
+		    catch (FileNotFoundException ex) 
+		    {
+			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+		    }
+                            
+		    image = new Image(input);
+		    can_icon.setImage(image);
+		    
                     filter.hasWarnedCAN1Timeout(true);    
+		}
+		
+		if(!filter.hasCANBus0TimedOut())
+		{
+		    try 
+		    {
+			input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+		    } 
+		    catch (FileNotFoundException ex) 
+		    {
+			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+		    }
+                            
+		    image = new Image(input);
+		    can_icon.setImage(image);
+		}
+		
+		if(!filter.hasCANBus1TimedOut())
+		{
+		    try 
+		    {
+			input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+		    } 
+		    catch (FileNotFoundException ex) 
+		    {
+			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+		    }
+                            
+		    image = new Image(input);
+		    can_icon.setImage(image);
 		}
                 
                 //+------------------------------------------------------------+
