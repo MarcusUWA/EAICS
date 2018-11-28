@@ -92,6 +92,9 @@ public class FXMLBatteryPageController implements Initializable
     private Label theLowCellLabel;
     
     @FXML
+    private Label deltaLabel;
+    
+    @FXML
     private javafx.scene.control.Button closeButton;
 
     /**
@@ -208,7 +211,10 @@ public class FXMLBatteryPageController implements Initializable
 
         lowCellLabel.setText("" + minVoltage / 1000.0);
 	theLowBMSLabel.setText("" + minBmsNumber);
-	theLowCellLabel.setText("" + minCellNumber);        
+	theLowCellLabel.setText("" + minCellNumber);
+	
+	int delta = maxVoltage - minVoltage;
+	deltaLabel.setText("" + delta);
     }
 
     public void initSettings(MainUIController mainGui) 

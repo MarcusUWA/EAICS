@@ -115,12 +115,12 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <Label fx:id="theHighCellLabel" alignment="TOP_CENTER" layoutX="204.0" layoutY="340.0" prefHeight="26.0" prefWidth="100.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="theHighCellLabel" alignment="TOP_CENTER" layoutX="206.0" layoutY="340.0" prefHeight="26.0" prefWidth="100.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="theLowCellLabel" alignment="TOP_CENTER" layoutX="471.0" layoutY="340.0" prefHeight="26.0" prefWidth="100.0" text="1000" textAlignment="CENTER">
+      <Label fx:id="theLowCellLabel" alignment="TOP_CENTER" layoutX="473.0" layoutY="340.0" prefHeight="26.0" prefWidth="100.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
@@ -131,6 +131,16 @@
          </font>
       </Label>
       <Label fx:id="theLowBMSLabel" alignment="TOP_CENTER" layoutX="473.0" layoutY="307.0" prefHeight="26.0" prefWidth="100.0" text="1000" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="226.0" layoutY="244.0" prefHeight="40.0" prefWidth="66.0" text="Delta&#10;(Volts)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="deltaLabel" alignment="TOP_CENTER" layoutX="208.0" layoutY="217.0" prefHeight="26.0" prefWidth="100.0" text="1000" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
