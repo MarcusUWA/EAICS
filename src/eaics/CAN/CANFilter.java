@@ -28,7 +28,6 @@ public class CANFilter
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     
-    private boolean canHasTimedOut;
     private Date dateTime;
     private long lastCANpacketRecieved;
 
@@ -80,7 +79,6 @@ public class CANFilter
 	    this.hasWarnedError = false;
 	    this.hasWarnedChargerOff = false;
 	    
-	    this.canHasTimedOut = false;
 	    this.dateTime = new Date();
 	    this.lastCANpacketRecieved = dateTime.getTime();
     }
