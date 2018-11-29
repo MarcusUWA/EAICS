@@ -170,8 +170,8 @@ public class FXMLBatteryCellPageController implements Initializable
 	count = 0;
         for (Label label : cellLabelList) 
 	{
-	    bmsModuleNum = count / 8;	//integer division
-	    cellNum = count % 8;
+	    bmsModuleNum = count / 12;	//integer division
+	    cellNum = count % 12;
 	    
 	    cellVoltage = (bms[pageNumber + bmsModuleNum].getVoltage(cellNum) / 1000.0);
             

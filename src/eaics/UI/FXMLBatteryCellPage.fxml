@@ -144,62 +144,62 @@
       <Label fx:id="cellVoltage_3_0" layoutX="146.0" layoutY="177.0" text="0.00V" />
       <Label fx:id="cellVoltage_2_0" layoutX="146.0" layoutY="152.0" text="0.00V" />
       <Label fx:id="cellVoltage_1_0" layoutX="146.0" layoutY="127.0" text="0.00V" />
-      <Label layoutX="20.0" layoutY="375.0" text="Cell 12:">
+      <Label layoutX="20.0" layoutY="375.0" text="Cell 11:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="350.0" text="Cell 11:">
+      <Label layoutX="20.0" layoutY="350.0" text="Cell 10:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="325.0" text="Cell 10:">
+      <Label layoutX="20.0" layoutY="325.0" text="Cell 9:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="22.0" layoutY="300.0" text="Cell 9:">
+      <Label layoutX="22.0" layoutY="300.0" text="Cell 8:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="275.0" text="Cell 8:">
+      <Label layoutX="20.0" layoutY="275.0" text="Cell 7:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="250.0" text="Cell 7:">
+      <Label layoutX="20.0" layoutY="250.0" text="Cell 6:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="225.0" text="Cell 6:">
+      <Label layoutX="20.0" layoutY="225.0" text="Cell 5:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="200.0" text="Cell 5:">
+      <Label layoutX="20.0" layoutY="200.0" text="Cell 4:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="175.0" text="Cell 4:">
+      <Label layoutX="20.0" layoutY="175.0" text="Cell 3:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="150.0" text="Cell 3:">
+      <Label layoutX="20.0" layoutY="150.0" text="Cell 2:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="125.0" text="Cell 2:">
+      <Label layoutX="20.0" layoutY="125.0" text="Cell 1:">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="100.0" text="Cell 1:">
+      <Label layoutX="20.0" layoutY="100.0" text="Cell 0:">
          <font>
             <Font size="20.0" />
          </font>
@@ -335,5 +335,6 @@
                 <fx:reference source="cellVoltage_11_7"/>
             </ArrayList>
         </fx:define>
+        
    </children>
 </AnchorPane>

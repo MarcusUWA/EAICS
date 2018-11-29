@@ -141,7 +141,7 @@
             <Font size="60.0" />
          </font>
       </Label>
-      <Slider fx:id="throttleSlider" layoutX="233.0" layoutY="185.0" orientation="VERTICAL" />
+      <Slider fx:id="throttleSlider" blockIncrement="16.0" layoutX="226.0" layoutY="97.0" max="1024.0" orientation="VERTICAL" prefHeight="257.0" prefWidth="79.0" />
       <Label alignment="CENTER" layoutX="141.0" layoutY="210.0" prefHeight="60.0" prefWidth="91.0" text="Throttle &#10;Position">
          <font>
             <Font size="20.0" />

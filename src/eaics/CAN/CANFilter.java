@@ -99,17 +99,20 @@ public class CANFilter
 
     public void run(int bus, CANMessage message)
     {
+        /*
 	if(bus == 0)
 	{
+            System.out.println("CAN Bus 0");
 	    hasCANBus0TimedOut = false;	    
 	    this.lastPacketRecievedCANbus0 = this.dateTimeCAN0.getTime();
 	}
 	else if(bus == 1)
 	{
+            //System.out.println("CAN Bus 1");
 	    hasCANBus1TimedOut = false;
 	    this.lastPacketRecievedCANbus1 = this.dateTimeCAN1.getTime();
 	}
-	
+	*/
 	switch (message.getFrameID()) 
 	{
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
@@ -227,6 +230,9 @@ public class CANFilter
 		break;
 	    case 85://CCB3 -> EVMS
 		ccb[2].setAll(message);
+                
+                
+                
 		break; 
 
 	    default:

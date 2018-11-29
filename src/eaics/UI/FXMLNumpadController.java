@@ -179,7 +179,10 @@ public class FXMLNumpadController implements Initializable
 	else if (event.getSource() == backspace) 
         {
             String str = display.getText();
-	    str = str.substring(0, str.length() - 1);
+            if(str.length() >= 1)
+            {
+                str = str.substring(0, str.length() - 1);
+            }
 	    display.setText(str);
         }
         else if (event.getSource() == enter) 

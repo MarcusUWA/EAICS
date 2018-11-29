@@ -474,11 +474,11 @@ public class TrifanMainUIController extends MainUIController
 		    alert.show();
                     filter.setHasWarnedChargerOff(true);    
 		}
-		
+		//System.out.println("hasCANBus0TimedOut: " + filter.hasCANBus0TimedOut());
 		// Check if CAN Bus 0 has timed out
 		if(filter.hasCANBus0TimedOut() && !filter.hasWarnedCAN0Timeout())
 		{
-		    System.out.println("CAN bus 0 timeout");
+		    System.out.println("CAN bus 0 timeout - pop up message");
 		    Alert alert = new Alert(AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("CAN Bus 0 has timed out");
@@ -498,7 +498,7 @@ public class TrifanMainUIController extends MainUIController
 		    
                     filter.hasWarnedCAN0Timeout(true);  
 		}
-		
+		/*
 		// Check if CAN Bus 1 has timed out
 		if(filter.hasCANBus1TimedOut() && !filter.hasWarnedCAN1Timeout())
 		{
@@ -522,7 +522,7 @@ public class TrifanMainUIController extends MainUIController
 		    
                     filter.hasWarnedCAN1Timeout(true);    
 		}
-		
+		*/
 		if(!filter.hasCANBus0TimedOut())
 		{
 		    try 
