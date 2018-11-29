@@ -246,7 +246,7 @@
             <Image url="@../../Resources/idle.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonTare" layoutX="368.0" layoutY="435.0" mnemonicParsing="false" text="Tare" />
+      <Button fx:id="buttonTare" layoutX="368.0" layoutY="435.0" mnemonicParsing="false" onAction="#handleTarePressed" text="Tare" />
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="304.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Resources/fan.png" />

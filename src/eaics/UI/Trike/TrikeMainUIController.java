@@ -12,15 +12,11 @@ import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
-import eaics.Settings.IPAddress;
-import eaics.UI.FXMLBatteryPageController;
-import eaics.UI.FXMLSettingsController;
+import eaics.SER.Serial;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -29,7 +25,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -225,7 +220,7 @@ public class TrikeMainUIController extends MainUIController
 
             settings = loader.getController();
             //settings.initSettings(this);
-            settings.initData(loadCell);
+            settings.initData(loadCell, serial);
         
             Stage stage = new Stage();
         
@@ -279,16 +274,17 @@ public class TrikeMainUIController extends MainUIController
         }
     } 
     
-    @FXML
-    private void handleTarePressed(ActionEvent event) 
-    {
-        //send
+    @FXML 
+    private void handleTarePressed(ActionEvent event) {
+        serial.writeData("0");
     }
+
     
-    public void initData(LoadCell cell) throws IOException 
+    public void initData(LoadCell cell, Serial serial) throws IOException 
     {
 	this.filter = CANFilter.getInstance();
         this.loadCell = cell;
+        this.serial = serial;
 	
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours

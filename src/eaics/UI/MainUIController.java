@@ -7,13 +7,12 @@ package eaics.UI;
 
 import eaics.CAN.CANFilter;
 import eaics.SER.LoadCell;
+import eaics.SER.Serial;
 import eaics.Settings.IPAddress;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 
 /**
  *
@@ -26,6 +25,7 @@ public abstract class MainUIController implements Initializable
     
     protected CANFilter filter;
     protected LoadCell loadCell;
+    protected Serial serial;
     
     protected FXMLBatteryPageController batterys;
     protected FXMLSettingsController settings;
@@ -45,5 +45,5 @@ public abstract class MainUIController implements Initializable
     
     public abstract void refreshIP() throws IOException;
     
-    public abstract void initData(LoadCell loadCell) throws IOException ;
+    public abstract void initData(LoadCell loadCell, Serial serial) throws IOException ;
 }

@@ -206,8 +206,7 @@ public class FXMLBatteryCellPageController implements Initializable
     }
     
     @FXML
-    private void closeButtonAction(ActionEvent event)
-    {
+    private void closeButtonAction(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
@@ -216,8 +215,7 @@ public class FXMLBatteryCellPageController implements Initializable
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         
     }
 }

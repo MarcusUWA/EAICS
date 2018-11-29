@@ -5,7 +5,6 @@
  */
 package eaics.UI;
 
-import eaics.UI.Trifan.TrifanMainUIController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;

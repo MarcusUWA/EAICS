@@ -10,6 +10,12 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 
+/**
+ * Serial class to handle serial communications
+ * Requires usage of JSerialComm library, obtainable from https://github.com/Fazecast/jSerialComm/wiki
+ * Currently using version 2.3.0
+ * @author Markcuz
+ */
 public class Serial {
     
     private String path;

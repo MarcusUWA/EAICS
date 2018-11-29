@@ -5,10 +5,10 @@
  */
 package eaics.UI;
 
-import eaics.UI.Trifan.TrifanMainUIController;
 import eaics.CAN.CANFilter;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
+import eaics.SER.Serial;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,14 +31,14 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.4.1.0";
+    String version = "3.5.2.0";
     
     FXMLBMSsettingsPage bmsSettingsPage;
-    
     FXMLConnectWifiController wifiConnectController;
-    
-            
     FXMLNumpadController numpad;
+    
+    FXMLCalibrateLoadCellController calib;
+    Serial serial;
     
     @FXML
     Button buttonStopLogging;
@@ -143,13 +142,11 @@ public class FXMLSettingsController implements Initializable
         openSettingsPage(4);
     }
     
-    private void openSettingsPage(int pageNumber)
-    {
+    private void openSettingsPage(int pageNumber) {
         
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBMSsettingsPage.fxml"));
 	
-        try 
-        {
+        try  {
             Pane pane = loader.load();
 
             bmsSettingsPage = loader.getController();
@@ -180,8 +177,8 @@ public class FXMLSettingsController implements Initializable
     private void handleResetSOC(ActionEvent event) throws IOException
     {
         msg = "00000026#64"; 
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-        final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);
+	final Process rstSoC1 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+        final Process rstSOC2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);
     }
 
     @FXML
@@ -194,15 +191,12 @@ public class FXMLSettingsController implements Initializable
         labelWifiIP.setText(ipAddress.getWifiIP());
         labelWifiSSID.setText(ipAddress.getWifiSSID());
         labelLANIP.setText(ipAddress.getLANIP());
-        
-        //gui.refreshIP();
     }
     
     @FXML   
     private void handleWifiSetup(ActionEvent event)
     {   
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLConnectWifi.fxml"));
-        
         try 
         {
             Pane pane = loader.load();
@@ -230,15 +224,15 @@ public class FXMLSettingsController implements Initializable
         }
     }    
     
-    public void initSettings(MainUIController mainGui) 
-    {
+    public void initSettings(MainUIController mainGui) {
         gui = mainGui;
     }
     
-    public void initData(LoadCell loadCell)
+    public void initData(LoadCell loadCell, Serial serial)
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
+        this.serial = serial;
 	softwareVersionLabel.setText(version);
     }
 
@@ -293,7 +287,6 @@ public class FXMLSettingsController implements Initializable
         final Process pixHawkKill = Runtime.getRuntime().exec("pkill mavproxy.py");
 
         String newIP = "";
-        //insert open window here...
         
         newIP = numpad.getString();
         System.out.println("newIP: "+newIP);
@@ -310,5 +303,34 @@ public class FXMLSettingsController implements Initializable
         alert.setHeaderText("LOGGING");
         alert.setContentText("Logging has been stopped");
         alert.show();
+    }
+    
+    @FXML
+    private void handleCalibrateLoadCell(ActionEvent event) {
+        
+        calib = new FXMLCalibrateLoadCellController();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLCalibrateLoadCell.fxml"));
+        try {
+            Pane pane = loader.load();
+            calib = loader.getController();
+            calib.init(serial, loadCell);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(closeButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Calibrate Load Cell");
+            
+            stage.show();
+        }        
+        catch (Exception e) {
+            System.out.println("Failed to open LoadCell Calibrarion Window");
+            e.printStackTrace();
+        }
     }
 }

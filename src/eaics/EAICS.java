@@ -15,7 +15,6 @@ import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.UI.MainUIController;
-import eaics.UI.Trifan.TrifanMainUIController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +38,7 @@ public class EAICS extends Application
     static LoadCell loadCell = new LoadCell();
     static IPAddress ipAddress = new IPAddress();
     
-    static Serial comms = new Serial("/dev/ttyUSB0", loadCell);
+    Serial comms = new Serial("/dev/ttyUSB0", loadCell);
     
     @Override
     public void start(Stage stage) throws Exception 
@@ -70,7 +69,7 @@ public class EAICS extends Application
         
         startSerComms();
         
-        mainUIcontroller.initData(loadCell);
+        mainUIcontroller.initData(loadCell, comms);
         stage.show();
     }
 
