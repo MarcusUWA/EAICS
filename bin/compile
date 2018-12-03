@@ -1,0 +1,5 @@
+#!/bin/bash
+#A script to compile the full program
+gcc lib.c ReadCAN.c -o ReadCAN
+gcc serial.c -o LoadCell
+javac Main.java

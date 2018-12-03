@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# This is a script to run the PixHawk on the Pi (i.e. locally)
+
+sudo mavproxy.py --master=/dev/ttyUSB0 --baudrate 57600 --out 192.168.1.6:14550 --aircraft MyCopter

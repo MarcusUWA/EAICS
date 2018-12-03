@@ -1,0 +1,7 @@
+#!/bin/bash
+#A script for when the PI first starts up.
+sudo /sbin/ip link set can0 up type can bitrate 250000
+sudo /sbin/ip link set can1 up type can bitrate 250000
+
+#starting the  VNC server
+#sudo ./dispmanx_vncserver rfcbport 5900 
