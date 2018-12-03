@@ -78,7 +78,16 @@ public class FileWriterCSV implements FileWriter
 			columnNames += "ESC " + ii + " Remaining Battery Capacity, ";
 			columnNames += "ESC " + ii + " Throttle Command, ";			
 		}
-		columnNames += "Load Cell\n";
+                
+		columnNames += "Load Cell Total, ";
+                
+                columnNames += "Calibration Factor, ";
+                
+                for(int i = 1; i <= 4; i++) {
+                    columnNames += "Load Cell "+i+",";
+		}
+                
+                columnNames += "\n";
 
 		write(columnNames);
     }

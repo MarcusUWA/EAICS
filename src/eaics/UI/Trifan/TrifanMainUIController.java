@@ -12,6 +12,7 @@ import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
+import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -670,5 +671,10 @@ public class TrifanMainUIController extends MainUIController
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
+    }
+
+    @Override
+    public void initData(LoadCell loadCell, Serial serial, Throttle throttle) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

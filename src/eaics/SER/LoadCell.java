@@ -15,53 +15,78 @@ public class LoadCell
 	private double weight;
         private double calibFactor;
         
-	private boolean isUnread;
+        private double loadCells[];
 	
 	public LoadCell() {
 		this.time = 0;
 		this.weight = 0.0;
 		this.calibFactor = 0;
-		this.isUnread = false;
+                loadCells = new double[4];
 	}
 	
 	public void setMsg(String msg) {
-		String[] msgArray = msg.split(",");
-                
-                if(msgArray.length > 2) {
-                    try {
-                        this.time =  Long.parseLong(msgArray[0]);
-                    }
-                    catch (NumberFormatException e) {
-                        this.time = 0;
-                    }
-                    
-                    try {
-                        this.weight = Double.parseDouble(msgArray[1]);
-                    }
-                    catch (NumberFormatException e) {
-                        this.weight = 0;
-                    }
-                    
-                    try {
-                        this.calibFactor = Double.parseDouble(msgArray[2]);
-                    }
-                    catch (NumberFormatException e) {
-                        this.calibFactor = 0;
-                    }
-                    isUnread = true;
+            String[] msgArray = msg.split(",");
+            
+            if(msgArray.length == 8 ) {
+                try {
+                    this.time =  Long.parseLong(msgArray[0]);
                 }
-	}
+                catch (NumberFormatException e) {
+                    this.time = 0;
+                }
 
-	public boolean isUnread(){
-		return this.isUnread;
-	}
+                try {
+                    this.weight = Double.parseDouble(msgArray[1]);
+                }
+                catch (NumberFormatException e) {
+                    this.weight = 0;
+                }
 
+                try {
+                    this.calibFactor = Double.parseDouble(msgArray[2]);
+                }
+                catch (NumberFormatException e) {
+                    this.calibFactor = 0;
+                }
+                
+                try {
+                    this.loadCells[0] = Double.parseDouble(msgArray[4]);
+                }
+                catch (NumberFormatException e) {
+                    this.loadCells[0] = 0;
+                }
+                
+                try {
+                    this.loadCells[1] = Double.parseDouble(msgArray[5]);
+                }
+                catch (NumberFormatException e) {
+                    this.loadCells[1] = 0;
+                }
+                
+                try {
+                    this.loadCells[2] = Double.parseDouble(msgArray[6]);
+                }
+                catch (NumberFormatException e) {
+                    this.loadCells[2] = 0;
+                }
+                
+                try {
+                    this.loadCells[3] = Double.parseDouble(msgArray[7]);
+                }
+                catch (NumberFormatException e) {
+                    this.loadCells[3] = 0;
+                }
+            }
+            
+            else {
+                System.out.println("Invalid Serial Length: "+msgArray.length);
+            }
+	}
+        
+        
 	public String getMsg() {
 		String outString = "";
-		if(isUnread == true) {
-			isUnread = false;
-			outString = toString();
-                }
+		outString = toString();
 		return outString;
 	}
         
@@ -72,10 +97,13 @@ public class LoadCell
         public double getCalibration()  {
             return calibFactor;
         }
+        
+        public double getLoadCells(int pos) {
+            return loadCells[pos];
+        }
 	
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "" + time + " " + weight + "kg" + " " + calibFactor;
 	}	
 }

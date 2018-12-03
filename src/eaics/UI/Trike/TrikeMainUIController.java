@@ -13,14 +13,11 @@ import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
+import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -110,53 +107,29 @@ public class TrikeMainUIController extends MainUIController
         }
     }
     
-    private void handleThrottle(int setting) throws IOException
-    {
-        setting = (int)Math.round(throttleSlider.getValue());
-        String msg = "14A10000#";
-        //setting = 1024 * (int)Math.round(setting / 100.0) + 1024;
-        /*
-        switch(setting)
-        {
-            case 0:
-                break;
-            case 10:
-                setting = -1024;
-                msg = addToMsg(msg, setting);
-                break;
-            case 20:
-                setting = -512;
-                msg = addToMsg(msg, setting);
-                break;
-            case 30:
-                setting = 0;
-                msg = addToMsg(msg, setting);
-                break;
-            case 40:
-                setting = 512;
-                msg = addToMsg(msg, setting);
-                break;
-            case 50:
-                setting = 1024;
-                msg = addToMsg(msg, setting);
-                break;
-            case 60:
-                setting = 1536;
-                msg = addToMsg(msg, setting);
-                break;
+    private void handleThrottle(int setting) throws IOException {
+        
+        if(!manualOverride)  {
+            throttleSlider.setValue(throttle.getThrottle());
+            setting = (int)Math.round(throttleSlider.getValue());
         }
-        */
+        else {
+            setting = 0;
+        }
+        
+        String msg = "14A10000#";
         msg = addToMsg(msg, setting);
-	final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-        //final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);        
+        final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
+        //final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);    
+
+        
     }
     
-    private String addToMsg(String msg, int setting)
-    {
+    private String addToMsg(String msg, int setting) {
         String temp = "";
         
         temp += Integer.toHexString(setting);
-        System.out.println("The setting in decimal: " + setting + " The setting in hex: " + Integer.toHexString(setting));
+       
         int len = temp.length();
 	if(len == 1 || len == 3 || len == 5 || len == 7)
 	{
@@ -168,57 +141,18 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
-    private void handle0(ActionEvent event) throws IOException
-    {
+    private void handle0(ActionEvent event) throws IOException {
         throttleSlider.setValue(0.0);
-        //handleThrottle(0);
+        manualOverride = true;
     }
     
     @FXML
-    private void handle10(ActionEvent event) throws IOException
-    {
-        throttleSlider.setValue(100.0);
-        //handleThrottle(100);
+    private void handleReset(ActionEvent event) throws IOException {
+        manualOverride = false;
     }
     
     @FXML
-    private void handle20(ActionEvent event) throws IOException
-    {
-        throttleSlider.setValue(200.0);
-        //handleThrottle(200);
-    }
-    
-    @FXML
-    private void handle30(ActionEvent event) throws IOException
-    {
-        throttleSlider.setValue(300.0);
-        //handleThrottle(400);
-    }
-    
-    @FXML
-    private void handle40(ActionEvent event) throws IOException
-    {
-        throttleSlider.setValue(400.0);
-        //handleThrottle(600);
-    }
-    
-    @FXML
-    private void handle50(ActionEvent event) throws IOException
-    {
-        throttleSlider.setValue(800.0);
-        //handleThrottle(800);
-    }
-    
-    @FXML
-    private void handle60(ActionEvent event) throws IOException
-    {
-        throttleSlider.setValue(1024.0);
-        //handleThrottle(1024);
-    }
-    
-    @FXML
-    private void handleSettingsPressed(ActionEvent event) throws IOException
-    {
+    private void handleSettingsPressed(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings.fxml"));
         
         try 
@@ -286,12 +220,11 @@ public class TrikeMainUIController extends MainUIController
         serial.writeData("0");
     }
 
-    
-    public void initData(LoadCell cell, Serial serial) throws IOException 
-    {
+    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException {
 	this.filter = CANFilter.getInstance();
         this.loadCell = cell;
         this.serial = serial;
+        this.throttle = throttle;
 	
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours
@@ -482,7 +415,6 @@ public class TrikeMainUIController extends MainUIController
 		    alert.show();
                     filter.setHasWarnedChargerOff(true);    
 		}
-		
                 
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
@@ -526,25 +458,20 @@ public class TrikeMainUIController extends MainUIController
                 
                 rpmPB.setProgress((double)esc[0].getRpm() / maxProgress);
 		
-		
 		//+------------------------------------------------------------+
 		//LC - Load Cell
 		//+------------------------------------------------------------+
 		
 		thrustLabel.setText("" + String.format("%.2f", loadCell.getWeight()));
                 
-		
 		//+------------------------------------------------------------+
-                
                 
                 auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
                 
-                try
-                {
+                try {
                     handleThrottle(0);
                 }
-                catch(Exception e)
-                {
+                catch(Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -552,28 +479,7 @@ public class TrikeMainUIController extends MainUIController
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
-        
-        /*
-        Runnable can = new Runnable() 
-	{	    
-	    @Override
-	    public void run() 
-	    {
-                try
-                {
-                    handleThrottle(0);
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-	    }
-	};
-
-	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(can, 0, 10000, TimeUnit.MILLISECONDS);   // Run every second
-
-        */
        	
     }
+
 }

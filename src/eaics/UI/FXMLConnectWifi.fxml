@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLConnectWifiController">
    <children>
-      <VBox fx:id="root" layoutX="169.0" layoutY="60.0" prefHeight="292.0" prefWidth="464.0">
+      <VBox fx:id="root" layoutX="26.0" layoutY="71.0" prefHeight="83.0" prefWidth="749.0">
          <children>
             <HBox fx:id="ssidBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
@@ -21,12 +21,12 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                <children>
                   <Label text="Password:" />
                   <TextField fx:id="textField" prefHeight="27.0" prefWidth="274.0" />
-                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" text="OK" />
-                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeButtonAction" text="Back" />
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" prefHeight="27.0" prefWidth="74.0" text="OK" />
+                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="27.0" prefWidth="71.0" text="Back" />
                </children>
             </HBox>
          </children>
@@ -36,5 +36,6 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <VBox fx:id="keyboard" layoutX="22.0" layoutY="168.0" prefHeight="300.0" prefWidth="759.0" />
    </children>
 </AnchorPane>

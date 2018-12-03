@@ -14,6 +14,7 @@ import eaics.CAN.EVMS_v3;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
+import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,9 +37,10 @@ public class EAICS extends Application
     public static String currentAircraft;
     
     static LoadCell loadCell = new LoadCell();
+    static Throttle throttle = new Throttle();
     static IPAddress ipAddress = new IPAddress();
     
-    Serial comms = new Serial("/dev/ttyUSB0", loadCell);
+    Serial comms = new Serial("/dev/ttyUSB0", loadCell, throttle);
     
     @Override
     public void start(Stage stage) throws Exception 
@@ -69,7 +71,7 @@ public class EAICS extends Application
         
         startSerComms();
         
-        mainUIcontroller.initData(loadCell, comms);
+        mainUIcontroller.initData(loadCell, comms, throttle);
         stage.show();
     }
 
@@ -146,43 +148,6 @@ public class EAICS extends Application
 
         threadReadCAN1.start();
 	
-	
-	// Load Cell Code ------------------------------------------------------
-        /*
-        final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/LoadCell");
-
-        Thread threadLoadCell = new Thread(new Runnable()
-        {
-	    public void run()
-	    {
-		BufferedReader input = new BufferedReader(new InputStreamReader(loadCellProgram.getInputStream()));
-		String loadCellmsg = null;
-
-		try
-		{
-		    boolean isFirst = true;
-		    while((loadCellmsg = input.readLine()) != null && isFirst)
-		    {
-			isFirst = false;
-		    }
-
-		    while((loadCellmsg = input.readLine()) != null)
-		    {
-			if(loadCellmsg != null && !loadCellmsg.equals(""))
-			{
-			    loadCell.setMsg(loadCellmsg);
-			}
-		    }
-		}
-		catch(IOException e)
-		{
-		    e.printStackTrace();
-		}
-	    }
-        });
-        threadLoadCell.start();
-	*/
-	
 	// Logging to a CSV File Code ------------------------------------------
 	
 	SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy/MM/dd");
@@ -249,8 +214,16 @@ public class EAICS extends Application
 		}
 
 		//Load Cell
-		columnData += loadCell.getWeight() + "\n";
+		columnData += loadCell.getWeight()+",";
+                
+                columnData += loadCell.getCalibration()+",";
+                
+                for(int i = 0; i<4; i++) {
+                    columnData += loadCell.getLoadCells(i)+",";
+                }
 
+                columnData +="\n";
+                
 		// -------------------------------------------------
 
 		fileWriterCSV.write(columnData);

@@ -14,6 +14,8 @@ import com.fazecast.jSerialComm.SerialPortEvent;
  * Serial class to handle serial communications
  * Requires usage of JSerialComm library, obtainable from https://github.com/Fazecast/jSerialComm/wiki
  * Currently using version 2.3.0
+ * Expecting to see string of format:
+ * Count, Thrust, Calibration Factor, Throttle, Load1, Load2, Load3, Load4
  * @author Markcuz
  */
 public class Serial {
@@ -21,6 +23,7 @@ public class Serial {
     private String path;
     private LoadCell cell;
     private SerialPort sp = null;
+    private Throttle throttle;
     
     private SerialPort[] commPorts = null;
 
@@ -28,9 +31,10 @@ public class Serial {
     final static int DASH_ASCII = 45;
     final static int NEW_LINE_ASCII = 10;
     
-    public Serial(String path, LoadCell cell) {
+    public Serial(String path, LoadCell cell, Throttle throttle) {
         this.path = path;
         this.cell = cell;
+        this.throttle = throttle;
         
         searchForPorts();
     }
@@ -83,6 +87,7 @@ public class Serial {
                     }
                     else {
                         cell.setMsg(buffer.toString());
+                        throttle.setMsg(buffer.toString());
                         buffer.setLength(0);
                     } 
                 }

@@ -46,7 +46,7 @@ public class FXMLConnectWifiController implements Initializable
     HBox buttons;
     
     @FXML 
-    VBox root;
+    VBox keyboard;
     
     @FXML
     HBox ssidBox;
@@ -67,15 +67,8 @@ public class FXMLConnectWifiController implements Initializable
     }
     
     //TODO: remove keyboard?
-    public void test() throws IOException 
-    {
+    public void setupSSID() throws IOException  {
 	textField.setPromptText("Enter WiFi password");
-        
-        VirtualKeyboard vkb = new VirtualKeyboard();
-    
-        vkb.view().setStyle("-fx-border-color: darkblue; -fx-border-radius: 5;");
-        
-        root.getChildren().addAll(vkb.view());
         
         Runtime rt = Runtime.getRuntime();
         Process proc = rt.exec("sudo iwlist wlan0 scan");// | grep -w 'ESSID'");//| cut -d ':' -f2");
@@ -92,8 +85,13 @@ public class FXMLConnectWifiController implements Initializable
         }
         
         choiceBox = new ChoiceBox((ObservableList) FXCollections.observableArrayList(ssidList));
-        
         ssidBox.getChildren().add(choiceBox);
+    }
+    
+    public void setupKeyboard() {
+        VirtualKeyboard vkb = new VirtualKeyboard();
+        vkb.view().setStyle("-fx-border-color: darkblue; -fx-border-radius: 5;");
+        keyboard.getChildren().addAll(vkb.view());
     }
     
     @FXML
@@ -148,26 +146,5 @@ public class FXMLConnectWifiController implements Initializable
         
         Runtime.getRuntime().exec("sudo wpa_cli -i wlan0 reconfigure");
 
-        /*
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("WiFi Update");
-        alert.setResizable(false);
-        alert.setContentText("Select okay to restart");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        ButtonType button = result.orElse(ButtonType.CANCEL);
-
-        if (button == ButtonType.OK) 
-        {
-            Runtime.getRuntime().exec("sudo reboot");
-        } 
-        else
-        {
-            
-        }
-        */
-        //alert.show();
-        //Stage stage = (Stage) closeButton.getScene().getWindow();
-        //stage.close();
     }
 }

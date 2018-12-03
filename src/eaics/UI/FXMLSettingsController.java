@@ -31,11 +31,12 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.5.2.0";
+    String version = "3.5.1.2";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     FXMLConnectWifiController wifiConnectController;
     FXMLNumpadController numpad;
+    FXMLSendLogsController loggingController;
     
     FXMLCalibrateLoadCellController calib;
     Serial serial;
@@ -202,8 +203,9 @@ public class FXMLSettingsController implements Initializable
             Pane pane = loader.load();
 
             wifiConnectController = loader.getController();
-            wifiConnectController.test();
-        
+            wifiConnectController.setupKeyboard();
+            wifiConnectController.setupSSID();
+            
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
@@ -223,6 +225,37 @@ public class FXMLSettingsController implements Initializable
             e.printStackTrace();
         }
     }    
+    
+    @FXML   
+    private void handleLogging(ActionEvent event)
+    {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSendLogs.fxml"));
+        try 
+        {
+            Pane pane = loader.load();
+
+            loggingController = loader.getController();
+            loggingController.setupKeyboard();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+
+            Scene scene = new Scene(pane);
+
+            stage.setScene(scene);
+            stage.setTitle("Logging!!");
+
+            stage.show();
+        }
+        
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Logging Window");
+            e.printStackTrace();
+        }
+    }   
     
     public void initSettings(MainUIController mainGui) {
         gui = mainGui;

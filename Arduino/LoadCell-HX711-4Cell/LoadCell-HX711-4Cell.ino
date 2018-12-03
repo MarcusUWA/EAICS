@@ -36,6 +36,8 @@
 #include "HX711.h"
 #include <EEPROM.h>
 
+#define delayTime 10 //in ms
+
 #define DOUT1  3
 #define CLK1  2
 
@@ -49,16 +51,16 @@
 #define CLK4  8
 
 HX711 scale(DOUT1, CLK1);
-
 HX711 scale2(DOUT2, CLK2);
-
 HX711 scale3(DOUT3, CLK3);
-
 HX711 scale4(DOUT4, CLK4);
 
 int count = 0;
-
 float calibration_factor = 17550; //-7050 worked for my 440lb max scale setup
+
+#define throttlePin A0
+int sensorValue = 0;  // variable to store the value coming from the sensor
+int throttle = 0;
 
 void setup() {
   //being EEPROM load
@@ -69,10 +71,6 @@ void setup() {
 }
 
 void loop() {
-
-  Serial.print(count);
-  Serial.print(",");
-
   double weight1, weight2, weight3, weight4;
   double sum;
 
@@ -82,11 +80,27 @@ void loop() {
   weight4 = scale4.get_units();
 
   sum = weight1+weight2+weight3+weight4;
+
+  sensorValue = analogRead(throttlePin); 
+
+  //note this throttle, ranges from 195 - 852
+  //eg. output = (sensorValue-min)*1024/(max-min);
+  throttle = ((sensorValue-195) * 3)/2;
+
+  if(throttle<0) throttle = 0;
+  else if(throttle>1023) throttle = 1023;
+
+  
+  Serial.print(count);
+  Serial.print(",");
   
   Serial.print(sum, 4);
   Serial.print(",");
 
   Serial.print(calibration_factor);
+  Serial.print(",");
+
+  Serial.print(throttle);
   Serial.print(",");
   
   Serial.print(weight1, 4);
@@ -99,8 +113,9 @@ void loop() {
   Serial.print(",");
   
   Serial.print(weight4, 4);
-  Serial.println();
 
+  Serial.println();
+  
   if(Serial.available()) {
     char temp = Serial.read();
     if(temp == '+' || temp == 'a') {
@@ -123,7 +138,9 @@ void loop() {
     //storing into EEPROM
     EEPROM.put(0,calibration_factor);
   }
+
   count++;
+  delay(delayTime);
 }
 
 void tare() {

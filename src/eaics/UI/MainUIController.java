@@ -8,6 +8,7 @@ package eaics.UI;
 import eaics.CAN.CANFilter;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
+import eaics.SER.Throttle;
 import eaics.Settings.IPAddress;
 import java.io.IOException;
 import java.net.URL;
@@ -23,9 +24,12 @@ public abstract class MainUIController implements Initializable
     public static final int refreshFrequency = 650;    //refresh rate in ms
     public static final int timeout = 2000;
     
+    protected boolean manualOverride = false;
+    
     protected CANFilter filter;
     protected LoadCell loadCell;
     protected Serial serial;
+    protected Throttle throttle;
     
     protected FXMLBatteryPageController batterys;
     protected FXMLSettingsController settings;
@@ -45,5 +49,5 @@ public abstract class MainUIController implements Initializable
     
     public abstract void refreshIP() throws IOException;
     
-    public abstract void initData(LoadCell loadCell, Serial serial) throws IOException ;
+    public abstract void initData(LoadCell loadCell, Serial serial, Throttle throttle) throws IOException ;
 }
