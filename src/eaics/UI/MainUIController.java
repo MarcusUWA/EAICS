@@ -33,6 +33,7 @@ public abstract class MainUIController implements Initializable
     
     protected FXMLBatteryPageController batterys;
     protected FXMLSettingsController settings;
+    protected FXMLLoadProfileController loadProfile;
     
     protected int status = 0;
     protected IPAddress ip;
@@ -50,4 +51,14 @@ public abstract class MainUIController implements Initializable
     public abstract void refreshIP() throws IOException;
     
     public abstract void initData(LoadCell loadCell, Serial serial, Throttle throttle) throws IOException ;
+    
+    public boolean getOverrideStatus() {
+        return manualOverride;
+    }
+    
+    public void setOverrideStatus(boolean mode) {
+        manualOverride = mode;
+    }
+    
+    
 }

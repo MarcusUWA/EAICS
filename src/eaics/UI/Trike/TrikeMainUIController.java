@@ -219,6 +219,39 @@ public class TrikeMainUIController extends MainUIController
     private void handleTarePressed(ActionEvent event) {
         serial.writeData("0");
     }
+    
+    @FXML
+    private void handleLoadProfilePressed(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoadProfile.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            loadProfile = loader.getController();
+            //settings.initSettings(this);
+            loadProfile.init(this);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSettings.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Load Profile!!");
+            
+            stage.setX(175.0);
+            stage.setY(20.0);
+            
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Settings Window");
+        }
+    }
 
     public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException {
 	this.filter = CANFilter.getInstance();

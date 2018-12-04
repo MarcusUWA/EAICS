@@ -154,5 +154,6 @@
       </Label>
       <Button defaultButton="true" layoutX="312.0" layoutY="181.0" mnemonicParsing="false" onAction="#handle0" prefHeight="88.0" prefWidth="160.0" text="Kill Throttle" />
       <Button layoutX="363.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleReset" text="Reset" />
+      <Button layoutX="329.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleLoadProfilePressed" prefHeight="27.0" prefWidth="112.0" text="Load Profile" />
    </children>
 </AnchorPane>
