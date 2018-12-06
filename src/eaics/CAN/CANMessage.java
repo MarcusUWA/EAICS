@@ -13,21 +13,26 @@ public class CANMessage
 	private double time;
 	private int busInt;
 	private int frameID;
+        private String frameID_HEX;
 	private int byteData[];
 	private int numData;
+        private String raw;
 	
 	
 	public CANMessage()
 	{
+                this.raw = "";
 		this.time = 0;
 		this.busInt = 0;
 		this.frameID = 0;
+                this.frameID_HEX = "";
 		this.byteData = new int[8];
 		this.numData = 0;
 	}
 	//This will be an alternate constructor that will read the raw data string given from the C program.
 	public void newMessage(String rawDataString)
-	{		
+	{	
+                this.raw = rawDataString;
 		//System.out.println("CANMessage:newMessage: " + rawDataString);
 		String[] splitStr = rawDataString.trim().split("\\s+");
 		//System.out.println("0: " + splitStr[0] + " 1: " + splitStr[1] + " 2: " + splitStr[2] + " 3: " + splitStr[3]);
@@ -40,6 +45,11 @@ public class CANMessage
 		this.numData = Integer.parseInt(temp);
 		setByteData(splitStr, this.numData);
 	}
+        
+        public String getRaw()
+        {
+            return this.raw;
+        }
 	
 	public void setTime(String rawDataString)
 	{
@@ -63,13 +73,19 @@ public class CANMessage
 	
 	public void setFrameID(String rawDataString)
 	{
-		this.frameID = Integer.parseInt(rawDataString, 16);
+            this.frameID_HEX = rawDataString;
+            this.frameID = Integer.parseInt(rawDataString, 16);
 	}
 	
 	public int getFrameID()
 	{
 		return frameID;
 	}
+        
+        public String getFrameID_HEX()
+        {
+            return frameID_HEX;
+        }
 	
 	public void setByteData(String rawDataString[], int numData)
 	{

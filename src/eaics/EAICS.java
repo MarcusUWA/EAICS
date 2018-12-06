@@ -147,6 +147,8 @@ public class EAICS extends Application
         });
 
         threadReadCAN1.start();
+        
+        CANFilter.getInstance().getCharger().startSendHandshake();
 	
 	// Logging to a CSV File Code ------------------------------------------
 	

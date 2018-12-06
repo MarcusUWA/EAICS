@@ -27,6 +27,7 @@ public class CANFilter
     private BMS[] bms;
     private CurrentSensor currentSensor;
     private CCB[] ccb;
+    private ChargerGBT chargerGBT;
     
     private Date dateTimeCAN0;
     private long lastPacketRecievedCANbus0;
@@ -83,6 +84,8 @@ public class CANFilter
 	    {
 		this.ccb[ii] = new CCB();
 	    }
+            
+            this.chargerGBT = new ChargerGBT();
 
 	    this.hasWarnedError = false;
 	    this.hasWarnedChargerOff = false;
@@ -115,28 +118,42 @@ public class CANFilter
 	*/
 	switch (message.getFrameID()) 
 	{
+            //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
 		evms_v2.setAll(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
 		evms_v3.setAll(message);
 		break;
-
-		//Begin ESC CAN Messages
-	    case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
-		esc[0].setAll(message);
-		break;
-	    case 346095622: case 346095623: case 346095624: case 346095625:	  //MGM ESC module Bottom -- offset by 4 in MGM
-		esc[1].setAll(message);
-		break;
-	    case 346095627: case 346095628: case 346095629: case 346095630:	  //MGM ESC module Top -- offset by 8 in MGM
-		esc[2].setAll(message);
-		break;
-	    case 346095632: case 346095633: case 346095634: case 346095635:	  //MGM ESC module Right -- offset by 12 in MGM
-		esc[3].setAll(message);
+                
+                
+            //Begin Current Sensor CAN Messages
+	    case 40:
+		currentSensor.setAll(message);
 		break;
 
-		//Begin BMS Module Information
+                
+            //Begin CCB CAN Messages
+	    case 80://EVMS -> CCB1
+		break;
+	    case 81://CCB1 -> EVMS
+		ccb[0].setAll(message);
+		break;
+
+	    case 82://EVMS -> CCB2
+		break;
+	    case 83://CCB2 -> EVMS
+		ccb[1].setAll(message);
+		break;    
+
+	    case 84://EVMS -> CCB3
+		break;
+	    case 85://CCB3 -> EVMS
+		ccb[2].setAll(message);
+                break;
+
+                
+            //Begin BMS Module Information
 	    case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
 		bms[0].setAll(message);
 		break;
@@ -209,33 +226,105 @@ public class CANFilter
 	    case 531: case 532: case 533: case 534:   //Reply Data - BMS Module 7 + 16
 		bms[23].setAll(message);
 		break;
-
-	    case 40:                              //EVMS Current Sensor
-		currentSensor.setAll(message);
-		break;
-
-	    case 80://EVMS -> CCB1
-		break;
-	    case 81://CCB1 -> EVMS
-		ccb[0].setAll(message);
-		break;
-
-	    case 82://EVMS -> CCB2
-		break;
-	    case 83://CCB2 -> EVMS
-		ccb[1].setAll(message);
-		break;    
-
-	    case 84://EVMS -> CCB3
-		break;
-	    case 85://CCB3 -> EVMS
-		ccb[2].setAll(message);
+            
                 
+            //Begin ESC CAN Messages
+	    case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
+		esc[0].setAll(message);
+		break;
+	    case 346095622: case 346095623: case 346095624: case 346095625:	  //MGM ESC module Bottom -- offset by 4 in MGM
+		esc[1].setAll(message);
+		break;
+	    case 346095627: case 346095628: case 346095629: case 346095630:	  //MGM ESC module Top -- offset by 8 in MGM
+		esc[2].setAll(message);
+		break;
+	    case 346095632: case 346095633: case 346095634: case 346095635:	  //MGM ESC module Right -- offset by 12 in MGM
+		esc[3].setAll(message);
+		break;
+            
+            
+            //Begin Throttle CAN Messages
+            case 346095616: //HEX: "14A10000"
+                break;//throttle command
                 
+            
+            //Begin Charger CAN Messages
+            case 405206102: //HEX: "1826F456" --> Handshake In from Charger
+                //System.out.println("-->Handshake in");
+                break;
+            case 405231348: //HEX: "182756F4" --> Handshake Out to Charger
+                //System.out.println("<--Sending handshake out");
+                break;
+            case 402781270: //HEX: "1801F456" --> Asking for identification from Charger
+                if(message.getByte(0) == 170)
+                {
+                    System.out.println("(Charger) ID Complete State");
+                    System.out.println(message.getRaw());
+                    this.chargerGBT.sendPreParameterSettings();
+                }
+                else
+                {
+                    System.out.println("(Charger) Asking for Pre-Identification from BMS");
+                    this.chargerGBT.stopSendHandshake();
+                    this.chargerGBT.startSendTransportCommManagement();
+                    System.out.println(message.getRaw());
+                }
+                break;
+            case 485250804: //HEX: "1CEC56F4" --> Sending identification to Charger
+                //System.out.println("(BMS) Sending Pre-identification to Charger");
+                //System.out.println(message.getRaw());
+                break;
+            case 485291094: //HEX: "1CECF456" --> Acknowledgments
+                if(message.getByte(0) == 17) //17 = 0x11
+                {
+                    if(message.getByte(1) == 7)
+                    {
+                        System.out.println("(Charger) Acknowledging Pre-Identification received from BMS");
+                        this.chargerGBT.stopSendingTransportCommManagement();
+                        this.chargerGBT.sendIdentificationParams();
+                    }
+                    else if(message.getByte(1) == 2)
+                    {
+                        System.out.println("(Charger) Acknowledgment of Pre-Parameter settings");
+                        this.chargerGBT.sendParameterSettings();
+                    }
+                }
+                else if(message.getByte(0) == 19) //19 = 0x13
+                {
+                    if(message.getByte(1) == 41)
+                    {
+                        System.out.println("(Charger) Confirming all identifcation packets from BMS");                        
+                    }
+                    else if(message.getByte(1) == 13)
+                    {
+                        System.out.println("(Charger) Parameter settings acknowledged");
+                    }
+                }
+                System.out.println(message.getRaw());
+                break;
+            case 485185268: //HEX: "1CEB56F4" --> Sending Identification Parameters
+                //System.out.println("(BMS) Sending 7 Identification packets to Charger");
+                //System.out.println("(BMS) Sending Parameter Settings");
+                break;
+            case 403174486://HEX: "1807F456" --> (Charger) Telling Pre-Charge: Time sync to BMS
+                System.out.println("(Charger) Telling Pre-Charge: Time sync to BMS");
+                break;
+            case 403240022://HEX: "1808F456" --> (Charger) Telling specs of charger itself to BMS
+                System.out.println("(Charger) Telling specs of charger itself to BMS");
+                this.chargerGBT.sendReadyToCharge();
+                break;
+            case 269047540://HEX: "100956F4" --> (BMS) Ready to charge
+                break;
+            case 269153366://HEX: "100AF456" --> (Charger) Ready to charge
+                System.out.println("(Charger) Ready to charge");
+                System.out.println(message.getRaw());
+                break;
+            case 136311894: //HEX: "81FF456" --> Timeout
+                System.out.println("Timeout");
+                break;
                 
-		break; 
-
 	    default:
+                System.out.println("Frame Hex: " + message.getFrameID_HEX() + " Frame ID: " + message.getFrameID());
 		break;
 	}
     }
@@ -346,6 +435,11 @@ public class CANFilter
     public CurrentSensor getCurrentSensor()
     {
 	return this.currentSensor;
+    }
+    
+    public ChargerGBT getCharger()
+    {
+        return this.chargerGBT;
     }
 
     public void setLoggingExecutor(ScheduledExecutorService executor)
