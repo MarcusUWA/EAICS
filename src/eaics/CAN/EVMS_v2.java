@@ -5,6 +5,8 @@
  */
 package eaics.CAN;
 
+import eaics.MiscCAN.CANMessage;
+
 /**
  *
  * @author Troy

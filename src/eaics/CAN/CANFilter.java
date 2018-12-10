@@ -5,6 +5,7 @@
  */
 package eaics.CAN;
 
+import eaics.MiscCAN.CANMessage;
 import eaics.Settings.BMSSettings;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;

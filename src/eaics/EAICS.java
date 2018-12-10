@@ -7,7 +7,7 @@ import eaics.Settings.IPAddress;
 import eaics.Settings.EAICS_Settings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
-import eaics.CAN.CANMessage;
+import eaics.MiscCAN.CANMessage;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;

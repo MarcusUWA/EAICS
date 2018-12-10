@@ -5,6 +5,8 @@
  */
 package eaics.CAN;
 
+import eaics.MiscCAN.CANMessage;
+
 public class CCB 
 {
     private boolean isCCB_On;
