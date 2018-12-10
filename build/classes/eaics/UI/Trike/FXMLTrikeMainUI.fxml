@@ -43,12 +43,12 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="thrustLabel" alignment="TOP_CENTER" layoutX="348.0" layoutY="390.0" prefHeight="26.0" prefWidth="87.0" text="0" textAlignment="CENTER">
+      <Label fx:id="thrustLabel" alignment="TOP_CENTER" layoutX="348.0" layoutY="370.0" prefHeight="26.0" prefWidth="87.0" text="0" textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="400.0" layoutY="397.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
+      <Label alignment="TOP_CENTER" layoutX="349.0" layoutY="405.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
          <font>
             <Font size="12.0" />
          </font>
@@ -101,8 +101,8 @@
             <Image url="@../../Resources/idle.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonTare" layoutX="362.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleTarePressed" text="Tare" />
-      <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="364.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="buttonTare" layoutX="404.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleTarePressed" prefHeight="27.0" prefWidth="112.0" text="Tare" />
+      <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="365.0" layoutY="304.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Resources/fan.png" />
          </image>
@@ -153,7 +153,8 @@
          </font>
       </Label>
       <Button defaultButton="true" layoutX="312.0" layoutY="181.0" mnemonicParsing="false" onAction="#handle0" prefHeight="88.0" prefWidth="160.0" text="Kill Throttle" />
-      <Button layoutX="363.0" layoutY="292.0" mnemonicParsing="false" onAction="#handleReset" text="Reset" />
+      <Button layoutX="319.0" layoutY="270.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="27.0" prefWidth="151.0" text="Reset Throttle" />
       <Button layoutX="329.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleLoadProfilePressed" prefHeight="27.0" prefWidth="112.0" text="Load Profile" />
+      <Button fx:id="buttonTare1" layoutX="279.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleSERReset" prefHeight="27.0" prefWidth="112.0" text="Reset SER" />
    </children>
 </AnchorPane>

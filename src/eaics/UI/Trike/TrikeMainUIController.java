@@ -152,6 +152,12 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
+    private void handleSERReset(ActionEvent event) throws IOException {
+        serial.disconnect();
+        serial.connect();
+    }
+    
+    @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings.fxml"));
         
