@@ -5,8 +5,8 @@ wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=117Mc
 
 echo "Completed download, copying files"
 
-sudo mv /home/pi/EAICS/dist/EAICS.jar /home/pi/EAICS/old/EAICS_prev.jar
-sudo cp /home/pi/EAICS/download/EAICS.jar /home/pi/EAICS/dist/EAICS.jar
+mv /home/pi/EAICS/dist/EAICS.jar /home/pi/EAICS/old/EAICS_prev.jar
+cp /home/pi/EAICS/download/EAICS.jar /home/pi/EAICS/dist/EAICS.jar
 
 echo "Update complete!"
 
