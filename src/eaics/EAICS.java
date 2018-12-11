@@ -43,8 +43,7 @@ public class EAICS extends Application
     
     Serial comms = new Serial("/dev/ttyUSB0", loadCell, throttle);
     
-    
-
+  
     /**
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
@@ -58,77 +57,16 @@ public class EAICS extends Application
         EAICS_Settings settings = EAICS_Settings.getInstance();
         String ipAddressString = settings.getPixHawkSettings().getIpAddress();
 	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
-	//final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + "--aircraft MyCopter");
 	
 	// Read the CAN 0 interface (CAN B on the Hardware) --------------------
-        /*
-        CANHandler bus0CANHandler = new CANHandler(0);
+        
+        CANHandler bus0CANHandler = new CANHandler("can0");
         bus0CANHandler.openPort();
         bus0CANHandler.startReading();
         
-        CANHandler bus1CANHandler = new CANHandler(1);
+        CANHandler bus1CANHandler = new CANHandler("can1");
         bus1CANHandler.openPort();
         bus1CANHandler.startReading();
-        */
-        
-	final CANMessage canMessageCAN0 = new CANMessage();
-        final Process candumpProgramCAN0 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
-
-        Thread threadReadCAN0 = new Thread(new Runnable()
-        {
-	    public void run()
-	    {
-		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgramCAN0.getInputStream()));
-		String rawCANmsg = null;
-
-		try
-		{
-		    CANFilter filter = CANFilter.getInstance();
-		    while((rawCANmsg = input.readLine()) != null)
-		    {
-                        //System.out.println("Old msg 0: " + rawCANmsg);
-			canMessageCAN0.newMessage(rawCANmsg);
-                        filter.run(0, canMessageCAN0);
-		    }
-		}
-		catch(IOException e)
-		{
-		    e.printStackTrace();
-		}
-	    }
-        });
-	threadReadCAN0.start();
-	
-	// Read the CAN 1 interface (CAN A on the Hardware) --------------------
-        
-	final CANMessage canMessageCAN1 = new CANMessage();
-        final Process candumpProgramCAN1 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can1 -tz");
-
-        Thread threadReadCAN1 = new Thread(new Runnable()
-        {
-	    public void run()
-	    {
-		BufferedReader input = new BufferedReader(new InputStreamReader(candumpProgramCAN1.getInputStream()));
-		String rawCANmsg = null;
-
-		try
-		{
-		    CANFilter filter = CANFilter.getInstance();
-		    while((rawCANmsg = input.readLine()) != null)
-		    {
-                        System.out.println("Old msg 1: " + rawCANmsg);
-                        canMessageCAN1.newMessage(rawCANmsg);
-			filter.run(1, canMessageCAN1);
-		    }
-		}
-		catch(IOException e)
-		{
-		    e.printStackTrace();
-		}
-	    }
-        });
-
-        threadReadCAN1.start();
         
         //CANFilter.getInstance().getCharger().startSendHandshake();
 	

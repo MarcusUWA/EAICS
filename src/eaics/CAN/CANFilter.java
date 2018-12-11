@@ -101,24 +101,22 @@ public class CANFilter
 	    this.hasWarnedCAN1Timeout = false;
     }
 
-    public void run(int bus, CANMessage message)
+    public void run(CANMessage message)
     {
-        /*
-	if(bus == 0)
-	{
-            System.out.println("CAN Bus 0");
-	    hasCANBus0TimedOut = false;	    
-	    this.lastPacketRecievedCANbus0 = this.dateTimeCAN0.getTime();
-	}
-	else if(bus == 1)
-	{
-            //System.out.println("CAN Bus 1");
-	    hasCANBus1TimedOut = false;
-	    this.lastPacketRecievedCANbus1 = this.dateTimeCAN1.getTime();
-	}
-	*/
+        System.out.println("Filtering... CANID: "+message.getFrameID());
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("Data: ");
+        
+        for(int i = 0; i<message.getByteData().length; i++) {   
+            sb.append(String.format("%02X ", message.getByte(i)));
+        }
+        
+        System.out.println(sb.toString());
+        
 	switch (message.getFrameID()) 
 	{
+            
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
 		evms_v2.setAll(message);
