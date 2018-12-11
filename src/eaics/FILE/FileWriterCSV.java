@@ -128,6 +128,7 @@ public class FileWriterCSV implements FileWriter
 		try
 		{
 			bufWriter.write(data);
+                        //System.out.println(data);
 			bufWriter.flush();	//flush the writer
 		}
 		catch(IOException e)

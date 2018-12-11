@@ -11,25 +11,27 @@ package eaics.MiscCAN;
 public class CANMessage
 {
 	private double time;
-	private int busInt;
+	private int busNum;
 	private int frameID;
         private String frameID_HEX;
 	private int byteData[];
 	private int numData;
         private String raw;
+        private String busName;
 	
 	
 	public CANMessage()
 	{
                 this.raw = "";
 		this.time = 0;
-		this.busInt = 0;
+		this.busNum = 0;
 		this.frameID = 0;
                 this.frameID_HEX = "";
 		this.byteData = new int[8];
 		this.numData = 0;
 	}
-	//This will be an alternate constructor that will read the raw data string given from the C program.
+        
+        //This will be an alternate constructor that will read the raw data string given from the C program.
 	public void newMessage(String rawDataString)
 	{	
                 this.raw = rawDataString;
@@ -45,6 +47,28 @@ public class CANMessage
 		this.numData = Integer.parseInt(temp);
 		setByteData(splitStr, this.numData);
 	}
+        
+        public void newMessage(String busName, int frameID, byte[] byteData)
+        {
+            this.busName = busName;
+            this.frameID = frameID;
+            this.byteData = convertToIntArray(byteData);
+            for(int ii=0; ii < byteData.length; ii++)
+                //System.out.println("" + byteData[ii]);
+            this.numData = numData;            
+        }
+        
+        private static int[] convertToIntArray(byte[] input)
+        {
+            int[] ret = new int[input.length];
+            for (int i = 0; i < input.length; i++)
+            {
+                ret[i] = input[i] & 0xff; // Range 0 to 255, not -128 to 127
+            }
+            return ret;
+        }
+        
+	
         
         public String getRaw()
         {
@@ -63,12 +87,12 @@ public class CANMessage
 	
 	public void setBusInt(String rawDataString)
 	{
-		this.busInt = Integer.parseInt(rawDataString.charAt(3) + "");
+		this.busNum = Integer.parseInt(rawDataString.charAt(3) + "");
 	}
 	
 	public int getBusInt()
 	{
-		return busInt;
+		return busNum;
 	}
 	
 	public void setFrameID(String rawDataString)

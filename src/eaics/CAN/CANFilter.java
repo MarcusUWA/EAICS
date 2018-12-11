@@ -155,6 +155,11 @@ public class CANFilter
 
                 
             //Begin BMS Module Information
+            case 300: case 310: case 320: case 330: case 340: case 350: case 360: case 370:
+            case 380: case 390: case 400: case 410: case 420: case 430: case 440: case 450:
+            case 460: case 470: case 480: case 490: case 500: case 510: case 520: case 530:
+                break;  //EVMS to BMS polling messages, just ignore these.
+                
 	    case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
 		bms[0].setAll(message);
 		break;
@@ -248,7 +253,7 @@ public class CANFilter
             case 346095616: //HEX: "14A10000"
                 break;//throttle command
                 
-            
+            /*
             //Begin Charger CAN Messages
             case 405206102: //HEX: "1826F456" --> Handshake In from Charger
                 //System.out.println("-->Handshake in");
@@ -323,7 +328,7 @@ public class CANFilter
             case 136311894: //HEX: "81FF456" --> Timeout
                 System.out.println("Timeout");
                 break;
-                
+            */    
 	    default:
                 System.out.println("Frame Hex: " + message.getFrameID_HEX() + " Frame ID: " + message.getFrameID());
 		break;

@@ -53,7 +53,7 @@ public class BMS
 		case 4:
 		    this.temp[0] = message.getByte(0) - 40; // removing the +40 degree C offset
 		    this.temp[1] = message.getByte(1) - 40; // removing the +40 degree C offset
-		    break;		    
+		    break;
 	    }
 	}
 	

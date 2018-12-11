@@ -12,6 +12,7 @@ import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
 import eaics.FILE.FileWriterCSV;
+import eaics.MiscCAN.CANHandler;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
@@ -42,38 +43,7 @@ public class EAICS extends Application
     
     Serial comms = new Serial("/dev/ttyUSB0", loadCell, throttle);
     
-    @Override
-    public void start(Stage stage) throws Exception 
-    {
-        FXMLLoader loader;
-                
-        switch (currentAircraft) 
-        {
-            case TRIKE:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLTrikeMainUI.fxml"));
-                break;
-            case TRIFAN:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
-                break;
-            default:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
-                break;
-        }
-        
-        Scene scene = new Scene(loader.load());
-        stage.setScene(scene);
-        
-        stage.setTitle("ElectroAero Instrumentation and Control System");
-        
-        //initialising main UI controller
-        
-        MainUIController mainUIcontroller = loader.getController();
-        
-        startSerComms();
-        
-        mainUIcontroller.initData(loadCell, comms, throttle);
-        stage.show();
-    }
+    
 
     /**
      * @param args the command line arguments
@@ -91,6 +61,16 @@ public class EAICS extends Application
 	//final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + "--aircraft MyCopter");
 	
 	// Read the CAN 0 interface (CAN B on the Hardware) --------------------
+        /*
+        CANHandler bus0CANHandler = new CANHandler(0);
+        bus0CANHandler.openPort();
+        bus0CANHandler.startReading();
+        
+        CANHandler bus1CANHandler = new CANHandler(1);
+        bus1CANHandler.openPort();
+        bus1CANHandler.startReading();
+        */
+        
 	final CANMessage canMessageCAN0 = new CANMessage();
         final Process candumpProgramCAN0 = Runtime.getRuntime().exec("/home/pi/bin/ReadCAN can0 -tz");
 
@@ -106,6 +86,7 @@ public class EAICS extends Application
 		    CANFilter filter = CANFilter.getInstance();
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
+                        //System.out.println("Old msg 0: " + rawCANmsg);
 			canMessageCAN0.newMessage(rawCANmsg);
                         filter.run(0, canMessageCAN0);
 		    }
@@ -135,6 +116,7 @@ public class EAICS extends Application
 		    CANFilter filter = CANFilter.getInstance();
 		    while((rawCANmsg = input.readLine()) != null)
 		    {
+                        System.out.println("Old msg 1: " + rawCANmsg);
                         canMessageCAN1.newMessage(rawCANmsg);
 			filter.run(1, canMessageCAN1);
 		    }
@@ -148,7 +130,7 @@ public class EAICS extends Application
 
         threadReadCAN1.start();
         
-        CANFilter.getInstance().getCharger().startSendHandshake();
+        //CANFilter.getInstance().getCharger().startSendHandshake();
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
@@ -260,6 +242,39 @@ public class EAICS extends Application
 	// Launch the User Interface (UI) --------------------------------------
         currentAircraft = TRIKE;
         launch(args);
+    }
+    
+    @Override
+    public void start(Stage stage) throws Exception 
+    {
+        FXMLLoader loader;
+                
+        switch (currentAircraft) 
+        {
+            case TRIKE:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLTrikeMainUI.fxml"));
+                break;
+            case TRIFAN:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                break;
+            default:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                break;
+        }
+        
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
+        
+        stage.setTitle("ElectroAero Instrumentation and Control System");
+        
+        //initialising main UI controller
+        
+        MainUIController mainUIcontroller = loader.getController();
+        
+        startSerComms();
+        
+        mainUIcontroller.initData(loadCell, comms, throttle);
+        stage.show();
     }
     
     private void startSerComms() 
