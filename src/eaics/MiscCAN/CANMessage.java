@@ -48,14 +48,12 @@ public class CANMessage
 		setByteData(splitStr, this.numData);
 	}
         
-        public void newMessage(String busName, int frameID, byte[] byteData)
+        public void newMessage(String busName, int frameID, int[] byteData)
         {
             this.busName = busName;
             this.frameID = frameID;
-            this.byteData = convertToIntArray(byteData);
-            for(int ii=0; ii < byteData.length; ii++)
-                //System.out.println("" + byteData[ii]);
-            this.numData = numData;            
+            this.byteData = byteData;
+            this.numData = byteData.length;            
         }
         
         private static int[] convertToIntArray(byte[] input)

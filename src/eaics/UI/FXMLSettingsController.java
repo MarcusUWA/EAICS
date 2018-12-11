@@ -31,7 +31,7 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.5.1.2";
+    String version = "3.6.0.0";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     FXMLConnectWifiController wifiConnectController;

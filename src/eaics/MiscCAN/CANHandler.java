@@ -20,7 +20,8 @@ import java.io.IOException;
 public class CANHandler 
 {
     //name for the interface, can change to can0 or can1 for either mode, needs to match the setting in the /boot/config.txt
-    private String canInterface;
+    private String canSocketString;
+    
     private CanSocket socket;
     private CanInterface canIf;
     private Thread threadReadCAN1;
@@ -34,19 +35,10 @@ public class CANHandler
     
     private CANMessage canMessage;
     
-    public CANHandler(int busNum)
+    public CANHandler(String canSocketString)
     {
-        switch(busNum)
-        {
-            case 0:
-                canInterface = "can0";
-                break;
-            case 1:
-                canInterface = "can1";
-                break;
-            default:
-                throw new IllegalArgumentException("This can bus does not exist: " + busNum);
-        }
+        this.canSocketString = canSocketString;
+        
         this.amReading = true;
         this.startedReading = false;
         this.portBinded = false;
@@ -56,7 +48,7 @@ public class CANHandler
         
             //searches for the interface matching this name
         
-            canIf = new CanInterface(socket, canInterface);
+            canIf = new CanInterface(socket, this.canSocketString);
         }
         catch(IOException e)
         {
@@ -109,13 +101,20 @@ public class CANHandler
                             while(amReading&&portBinded) 
                             {
                                 //to receive all that is needed is the below line
-                                //System.out.println("CANID: " + socket.recv().getCanId().getCanId_EFF() + ", Data: " + socket.recv().getData().toString());
+                                CanFrame currentFrame = socket.recv();
                                 
-                                String rawCanMsg = socket.recv().toString();
-                                System.out.println(rawCanMsg);
+                                int canID = currentFrame.getCanId().getCanId_EFF();
                                 
-                                canMessage.newMessage(canInterface, socket.recv().getCanId().getCanId_EFF(), socket.recv().getData());
-                                filter.run(0, canMessage);
+                                int data[] = new int[8];
+                                int i = 0;
+                                
+                                for (byte b :currentFrame.getData()) {
+                                    data[i] = (b&0xFF);
+                                    i++;
+                                }
+                                
+                                canMessage.newMessage(canSocketString, canID, data);
+                                filter.run(canMessage);
                             }
                         } 
                         catch(IOException e) 

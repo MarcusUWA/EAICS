@@ -106,7 +106,7 @@ public class TrikeMainUIController extends MainUIController
             ipLabel.setText("Not Connected");
         }
     }
-    
+    /*
     private void handleThrottle(int setting) throws IOException {
         
         if(!manualOverride)  {
@@ -123,7 +123,7 @@ public class TrikeMainUIController extends MainUIController
         //final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);    
 
         
-    }
+    }*/
     
     private String addToMsg(String msg, int setting) {
         String temp = "";
@@ -506,13 +506,13 @@ public class TrikeMainUIController extends MainUIController
 		//+------------------------------------------------------------+
                 
                 auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
-                
+                /*
                 try {
                     handleThrottle(0);
                 }
                 catch(Exception e) {
                     e.printStackTrace();
-                }
+                }*/
             }
             
         }));
