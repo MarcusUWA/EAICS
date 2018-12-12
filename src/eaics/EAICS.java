@@ -48,14 +48,7 @@ public class EAICS extends Application
     public static void main(String[] args) throws InterruptedException, IOException 
     {
         //final Process vncServerProgram = Runtime.getRuntime().exec("sudo dispmanx_vncserver rfcbport 5900");
-       
-	// Pix Hawk Code ------------------------------------------------------
-        EAICS_Settings settings = EAICS_Settings.getInstance();
-        String ipAddressString = settings.getPixHawkSettings().getIpAddress();
-	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
-	
-	// Read the CAN 0 interface (CAN B on the Hardware) --------------------
-        
+  
         CANHandler bus0CANHandler = new CANHandler("can0");
         bus0CANHandler.openPort();
         bus0CANHandler.startReading();
@@ -63,6 +56,15 @@ public class EAICS extends Application
         CANHandler bus1CANHandler = new CANHandler("can1");
         bus1CANHandler.openPort();
         bus1CANHandler.startReading();
+        
+        EAICS_Settings settings = EAICS_Settings.getInstance();
+        settings.setHandler(bus0CANHandler);
+        settings.loadSettings();
+        
+	// Pix Hawk Code ------------------------------------------------------
+        String ipAddressString = settings.getPixHawkSettings().getIpAddress();
+	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
+	
         
         //CANFilter.getInstance().getCharger().startSendHandshake();
 	

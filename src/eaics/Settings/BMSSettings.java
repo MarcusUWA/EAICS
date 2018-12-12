@@ -45,11 +45,8 @@ public class BMSSettings
     private ConfigData enablePrecharge;
     private ConfigData stationaryMode;
     
-    private CANHandler handle;
-    
-    public BMSSettings(CANHandler handle)
+    public BMSSettings()
     {
-        this.handle = handle;
         //ConfigData(min, max, initial, unit)
         this.packCapacity = new ConfigData(5, 1250, 100, "Ah");
         this.socWarning = new ConfigData(0, 99, 20, "%");
@@ -157,7 +154,7 @@ public class BMSSettings
         return settingsFileString;
     }
     
-    public void setSettings(String fileString) throws IOException
+    public void setSettings(String fileString, CANHandler handle) throws IOException
     {
         int ii = 0;
         String[] lines = fileString.split("\\r?\\n");
@@ -174,10 +171,10 @@ public class BMSSettings
             ii++;
         }
         
-        update();
+        update(handle);
     }
     
-    public void update() throws IOException
+    public void update(CANHandler handle) throws IOException
     {
         int[] msg1 = {
             this.packCapacity.getSetting()/5,

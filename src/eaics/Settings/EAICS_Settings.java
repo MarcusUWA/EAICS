@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,16 +36,14 @@ public class EAICS_Settings
     
     private static CANHandler handler;
     
-    private EAICS_Settings(CANHandler handler) throws IOException
+    private EAICS_Settings()
     {
-        this.handler = handler;
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
-        this.bmsSettings = new BMSSettings(handler);
+        this.bmsSettings = new BMSSettings();
         this.pixHawkSettings = new PixHawkSettings();
-        loadSettings();
     }
     
-    public static EAICS_Settings getInstance() throws IOException
+    public static EAICS_Settings getInstance() 
     {	
 	if(instance == null)
 	{
@@ -51,12 +51,16 @@ public class EAICS_Settings
 	    {
                 if(instance == null)
                 {
-		instance = new EAICS_Settings(handler);
+		instance = new EAICS_Settings();
                 }
 	    }
 	}
 	
 	return instance;
+    }
+    
+    public void setHandler(CANHandler handler) {
+        this.handler = handler;
     }
     
     public BMSSettings getBmsSettings()
@@ -69,14 +73,18 @@ public class EAICS_Settings
         return pixHawkSettings;
     }
     
-    public void update() throws IOException
+    public void update() 
     {
-	bmsSettings.update();
+        try {
+            bmsSettings.update(handler);
+        } catch (IOException ex) {
+            Logger.getLogger(EAICS_Settings.class.getName()).log(Level.SEVERE, null, ex);
+        }
 	pixHawkSettings.update();
 	writeSettings();	
     }
     
-    public void loadSettings() throws IOException
+    public void loadSettings() 
     {
 	BufferedReader reader;
 		
@@ -157,7 +165,7 @@ public class EAICS_Settings
                 }
 	    }
             
-            bmsSettings.setSettings(bmsFileString);
+            bmsSettings.setSettings(bmsFileString, handler);
             pixHawkSettings.setSettings(pixHawkFileString);
 	}
         catch(FileNotFoundException e)

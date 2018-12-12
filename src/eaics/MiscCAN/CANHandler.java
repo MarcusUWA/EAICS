@@ -24,7 +24,7 @@ public class CANHandler
     
     private CanSocket socket;
     private CanInterface canIf;
-    private Thread threadReadCAN1;
+    private Thread threadReadCAN;
     
     //Boolean to set reading mode to off/on, doesnt turn off thread
     private boolean amReading;
@@ -91,7 +91,7 @@ public class CANHandler
             //Thread for reading...
             if(!startedReading) 
             {
-                threadReadCAN1 = new Thread(new Runnable(){
+                threadReadCAN = new Thread(new Runnable(){
                     public void run()
                     {
                         try 
@@ -116,7 +116,7 @@ public class CANHandler
                         }
                     }
                 });
-                threadReadCAN1.start();
+                threadReadCAN.start();
             }
         }
     }
