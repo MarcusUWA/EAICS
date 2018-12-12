@@ -49,16 +49,9 @@ public class EAICS extends Application
     {
         //final Process vncServerProgram = Runtime.getRuntime().exec("sudo dispmanx_vncserver rfcbport 5900");
   
-        CANHandler bus0CANHandler = new CANHandler("can0");
-        bus0CANHandler.openPort();
-        bus0CANHandler.startReading();
-        
-        CANHandler bus1CANHandler = new CANHandler("can1");
-        bus1CANHandler.openPort();
-        bus1CANHandler.startReading();
+        CANFilter.getInstance();    //Start the CANHandler and create all objects
         
         EAICS_Settings settings = EAICS_Settings.getInstance();
-        settings.setHandler(bus0CANHandler);
         settings.loadSettings();
         
 	// Pix Hawk Code ------------------------------------------------------

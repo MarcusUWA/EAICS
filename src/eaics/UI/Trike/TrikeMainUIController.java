@@ -144,6 +144,7 @@ public class TrikeMainUIController extends MainUIController
     private void handle0(ActionEvent event) throws IOException {
         throttleSlider.setValue(0.0);
         manualOverride = true;
+        CANFilter.getInstance().getCANHandler(0).writeMessage(1000, new int[]{01,02,03,04});
     }
     
     @FXML

@@ -5,8 +5,10 @@
  */
 package eaics.CAN;
 
+import eaics.MiscCAN.CANHandler;
 import eaics.MiscCAN.CANMessage;
 import eaics.Settings.BMSSettings;
+import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -17,6 +19,9 @@ import java.util.concurrent.ScheduledExecutorService;
 public class CANFilter 
 {
     private static CANFilter instance;
+    
+    private CANHandler bus0CANHandler;
+    private CANHandler bus1CANHandler;
     
     public static final int numOfESC = 4;
     public static final int numOfBMS = 24;
@@ -66,42 +71,64 @@ public class CANFilter
 
     private CANFilter()
     {
-	    this.evms_v2 = new EVMS_v2();
-	    this.evms_v3 = new EVMS_v3();
-	    
-	    this.esc = new ESC[numOfESC];
-	    for(int ii = 0; ii < numOfESC; ii++)
-	    {
-		this.esc[ii] = new ESC(ii);
-	    }
-	    
-	    this.bms = new BMS[numOfBMS];
-	    for(int ii = 0; ii < 24; ii++)
-	    {
-		this.bms[ii] = new BMS(ii);
-	    }
-	    
-	    this.currentSensor = new CurrentSensor();
-	    
-	    this.ccb = new CCB[numOfCCB];
-	    for(int ii = 0; ii < numOfCCB; ii++)
-	    {
-		this.ccb[ii] = new CCB();
-	    }
-            
-            this.chargerGBT = new ChargerGBT(evms_v3);
+        bus0CANHandler = new CANHandler("can0");
+        try
+        {
+            bus0CANHandler.openPort();
+            bus0CANHandler.startReading();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
 
-	    this.hasWarnedError = false;
-	    this.hasWarnedChargerOff = false;
-	    
-	    this.dateTimeCAN0 = new Date();
-	    this.lastPacketRecievedCANbus0 = dateTimeCAN0.getTime();
-	    this.dateTimeCAN1 = new Date();
-	    this.lastPacketRecievedCANbus1 = dateTimeCAN1.getTime();
-	    this.hasCANBus0TimedOut = false;
-	    this.hasCANBus0TimedOut = false;
-	    this.hasWarnedCAN0Timeout = false;
-	    this.hasWarnedCAN1Timeout = false;
+        bus1CANHandler = new CANHandler("can1");
+        try
+        {
+            bus1CANHandler.openPort();
+            bus1CANHandler.startReading();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        this.evms_v2 = new EVMS_v2();
+        this.evms_v3 = new EVMS_v3();
+
+        this.esc = new ESC[numOfESC];
+        for(int ii = 0; ii < numOfESC; ii++)
+        {
+            this.esc[ii] = new ESC(ii);
+        }
+
+        this.bms = new BMS[numOfBMS];
+        for(int ii = 0; ii < 24; ii++)
+        {
+            this.bms[ii] = new BMS(ii);
+        }
+
+        this.currentSensor = new CurrentSensor();
+
+        this.ccb = new CCB[numOfCCB];
+        for(int ii = 0; ii < numOfCCB; ii++)
+        {
+            this.ccb[ii] = new CCB();
+        }
+
+        this.chargerGBT = new ChargerGBT(evms_v3);
+
+        this.hasWarnedError = false;
+        this.hasWarnedChargerOff = false;
+
+        this.dateTimeCAN0 = new Date();
+        this.lastPacketRecievedCANbus0 = dateTimeCAN0.getTime();
+        this.dateTimeCAN1 = new Date();
+        this.lastPacketRecievedCANbus1 = dateTimeCAN1.getTime();
+        this.hasCANBus0TimedOut = false;
+        this.hasCANBus0TimedOut = false;
+        this.hasWarnedCAN0Timeout = false;
+        this.hasWarnedCAN1Timeout = false;
     }
 
     public void run(CANMessage message)
@@ -458,5 +485,23 @@ public class CANFilter
     public void stopLogging()
     {
 	this.executor.shutdown();
+    }
+    
+    public CANHandler getCANHandler(int busNum)
+    {
+        CANHandler handler;
+        
+        switch(busNum)
+        {
+            case 0:
+                handler = this.bus0CANHandler;
+                break;
+            case 1:
+                handler = this.bus1CANHandler;
+                break;
+            default:
+                throw new IllegalArgumentException("This bus number does not exist");
+        }
+        return handler;
     }
 }

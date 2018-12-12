@@ -17,7 +17,6 @@
             <Image url="@../../Resources/plane.png" />
          </image>
       </ImageView>
-      <Button fx:id="buttonBattery" layoutX="595.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="45.0" prefWidth="183.0" text="Battery" />
       <Label layoutX="171.0" layoutY="14.0" text="ElectroAero Instrumentation and Control System">
          <font>
             <Font size="20.0" />

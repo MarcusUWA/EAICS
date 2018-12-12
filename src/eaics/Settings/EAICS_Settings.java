@@ -34,8 +34,6 @@ public class EAICS_Settings
     private static final String SETTINGS_BMS = "BMS_SETTINGS";
     private static final String SETTINGS_PIXHAWK = "PIXHAWK_SETTINGS";
     
-    private static CANHandler handler;
-    
     private EAICS_Settings()
     {
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
@@ -59,10 +57,6 @@ public class EAICS_Settings
 	return instance;
     }
     
-    public void setHandler(CANHandler handler) {
-        this.handler = handler;
-    }
-    
     public BMSSettings getBmsSettings()
     {
         return bmsSettings;
@@ -75,9 +69,12 @@ public class EAICS_Settings
     
     public void update() 
     {
-        try {
-            bmsSettings.update(handler);
-        } catch (IOException ex) {
+        try 
+        {
+            bmsSettings.update();
+        } 
+        catch (IOException ex) 
+        {
             Logger.getLogger(EAICS_Settings.class.getName()).log(Level.SEVERE, null, ex);
         }
 	pixHawkSettings.update();
@@ -165,7 +162,7 @@ public class EAICS_Settings
                 }
 	    }
             
-            bmsSettings.setSettings(bmsFileString, handler);
+            bmsSettings.setSettings(bmsFileString);
             pixHawkSettings.setSettings(pixHawkFileString);
 	}
         catch(FileNotFoundException e)

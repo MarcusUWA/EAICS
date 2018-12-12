@@ -5,6 +5,7 @@
  */
 package eaics.Settings;
 
+import eaics.CAN.CANFilter;
 import eaics.MiscCAN.CANHandler;
 import java.io.IOException;
 
@@ -154,7 +155,7 @@ public class BMSSettings
         return settingsFileString;
     }
     
-    public void setSettings(String fileString, CANHandler handle) throws IOException
+    public void setSettings(String fileString) throws IOException
     {
         int ii = 0;
         String[] lines = fileString.split("\\r?\\n");
@@ -171,11 +172,13 @@ public class BMSSettings
             ii++;
         }
         
-        update(handle);
+        update();
     }
     
-    public void update(CANHandler handle) throws IOException
+    public void update() throws IOException
     {
+        CANHandler handle = CANFilter.getInstance().getCANHandler(0);
+        
         int[] msg1 = {
             this.packCapacity.getSetting()/5,
             this.socWarning.getSetting(),
