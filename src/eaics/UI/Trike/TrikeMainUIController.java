@@ -123,7 +123,7 @@ public class TrikeMainUIController extends MainUIController
         //final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);    
 
         
-    }*/
+    }
     
     private String addToMsg(String msg, int setting) {
         String temp = "";
@@ -139,9 +139,10 @@ public class TrikeMainUIController extends MainUIController
         
         return msg;
     }
-    
+    */
     @FXML
-    private void handle0(ActionEvent event) throws IOException {
+    private void handle0(ActionEvent event) throws IOException 
+    {
         throttleSlider.setValue(0.0);
         manualOverride = true;
         CANFilter.getInstance().getCANHandler(0).writeMessage(1000, new int[]{01,02,03,04});
@@ -223,12 +224,14 @@ public class TrikeMainUIController extends MainUIController
     } 
     
     @FXML 
-    private void handleTarePressed(ActionEvent event) {
+    private void handleTarePressed(ActionEvent event) 
+    {
         serial.writeData("0");
     }
     
     @FXML
-    private void handleLoadProfilePressed(ActionEvent event) throws IOException{
+    private void handleLoadProfilePressed(ActionEvent event) throws IOException
+    {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoadProfile.fxml"));
         
         try 
