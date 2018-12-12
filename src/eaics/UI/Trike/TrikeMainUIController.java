@@ -260,7 +260,7 @@ public class TrikeMainUIController extends MainUIController
     }
 
     public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException {
-	this.filter = CANFilter.getInstance();
+	
         this.loadCell = cell;
         this.serial = serial;
         this.throttle = throttle;
@@ -276,7 +276,10 @@ public class TrikeMainUIController extends MainUIController
             @Override
             public void handle(ActionEvent event) 
 	    {
+                CANFilter filter = CANFilter.getInstance();
                 EVMS_v3 evmsV3 = (EVMS_v3) filter.getEVMS_v3();
+                System.out.println("canfilterTrike: " + filter);
+                System.out.println("Aux!!!!!!!!!!!!!!!: " + evmsV3.getAuxVoltage());
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
                 CurrentSensor currentSensor = filter.getCurrentSensor();

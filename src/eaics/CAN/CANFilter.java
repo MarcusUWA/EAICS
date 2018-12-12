@@ -54,7 +54,11 @@ public class CANFilter
 	{
 	    synchronized(CANFilter.class)
 	    {
-		instance = new CANFilter();
+                if(instance == null)
+                {
+                    instance = new CANFilter();
+                    System.out.println("Filter creation! **********************************************");
+                }
 	    }
 	}
 
@@ -123,6 +127,7 @@ public class CANFilter
 		evms_v2.setAll(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
+                /*
                 System.out.println("Filtering... CANID: "+message.getFrameID());
         
                 StringBuilder sb = new StringBuilder();
@@ -133,9 +138,11 @@ public class CANFilter
                 }
         
                 System.out.println(sb.toString());
-                
+                */
 		evms_v3.setAll(message);
                 System.out.println(evms_v3.toString());
+                System.out.println(evms_v3.getAuxVoltage());
+                System.out.println("canfilter: " + this);
 		break;
                 
                 
@@ -431,6 +438,7 @@ public class CANFilter
 
     public EVMS getEVMS_v3()
     {
+        System.out.println("Hello Aux: " + evms_v3.getAuxVoltage());
 	return this.evms_v3;
     }
 
