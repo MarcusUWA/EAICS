@@ -278,8 +278,6 @@ public class TrikeMainUIController extends MainUIController
 	    {
                 CANFilter filter = CANFilter.getInstance();
                 EVMS_v3 evmsV3 = (EVMS_v3) filter.getEVMS_v3();
-                System.out.println("canfilterTrike: " + filter);
-                System.out.println("Aux!!!!!!!!!!!!!!!: " + evmsV3.getAuxVoltage());
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
                 CurrentSensor currentSensor = filter.getCurrentSensor();

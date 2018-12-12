@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.UI.Trike.FXMLLoadProfileController;
 import eaics.CAN.CANFilter;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
