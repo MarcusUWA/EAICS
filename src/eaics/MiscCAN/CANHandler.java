@@ -47,7 +47,6 @@ public class CANHandler
             socket = new CanSocket(Mode.RAW);
         
             //searches for the interface matching this name
-        
             canIf = new CanInterface(socket, this.canSocketString);
         }
         catch(IOException e)
@@ -105,13 +104,7 @@ public class CANHandler
                                 
                                 int canID = currentFrame.getCanId().getCanId_EFF();
                                 
-                                int data[] = new int[8];
-                                int i = 0;
-                                
-                                for (byte b :currentFrame.getData()) {
-                                    data[i] = (b&0xFF);
-                                    i++;
-                                }
+                                int data[] = byte2int(currentFrame.getData());
                                 
                                 canMessage.newMessage(canSocketString, canID, data);
                                 filter.run(canMessage);
@@ -146,8 +139,27 @@ public class CANHandler
         return data;
     }
     
-    /*
-    private void writeMessage() throws IOException 
+    public static byte[] int2byte(int[] src) {
+        byte[] dst = new byte[src.length];
+    
+        for (int i=0; i<src.length; i++) {
+            dst[i] = (byte) (src[i]&0xFF); //masking top bits, only taking lowest 8 bits
+        }
+        return dst;
+    }
+    
+    public static int[] byte2int(byte[] src) {
+        
+        int[] dst = new int[src.length];
+        
+        for (int i=0; i<src.length; i++) {
+            dst[i] = (src[i]&0xFF);
+        }
+        return dst;
+    }
+    
+    
+    public void writeMessage(int id, int[] data) throws IOException 
     {
         if(!portBinded) 
         {
@@ -156,30 +168,28 @@ public class CANHandler
         else 
         {
             //Grabbing data from UI to send
-            CanId id = null; 
-            try 
-            {
-                id = new CanId(Integer.parseInt(CANId.getText()));
-            }
-            catch(NumberFormatException e) 
-            {
-                System.out.println("Invalid CAN id");
-            }
-
-            byte data[];
-            data = hexStringToByteArray(CANData.getText());
+            CanId frameID = new CanId(id);
 
             //Setting to Extended Frame Format (CAN2.0b)
-            id.setEFFSFF();
+            frameID.setEFFSFF();
 
+            //Covert int data array to bytes
+            byte[] frameData;
+
+            /* If in String format...
+            frameData = hexStringToByteArray(data);
+            */
+            
+            frameData = int2byte(data);
+            
             //Packaging the frame
-            CanFrame frame = new CanFrame(canIf, id, data);
+            CanFrame frame = new CanFrame(canIf, frameID, frameData);
 
             //Sending the frame
             socket.send(frame);
         }
     }
-    */
+    
     
     private void stopReading() 
     {        

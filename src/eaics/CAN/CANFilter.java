@@ -86,7 +86,7 @@ public class CANFilter
 		this.ccb[ii] = new CCB();
 	    }
             
-            this.chargerGBT = new ChargerGBT();
+            this.chargerGBT = new ChargerGBT(evms_v3);
 
 	    this.hasWarnedError = false;
 	    this.hasWarnedChargerOff = false;
@@ -103,6 +103,7 @@ public class CANFilter
 
     public void run(CANMessage message)
     {
+        /*
         System.out.println("Filtering... CANID: "+message.getFrameID());
         
         StringBuilder sb = new StringBuilder();
@@ -113,7 +114,7 @@ public class CANFilter
         }
         
         System.out.println(sb.toString());
-        
+        */
 	switch (message.getFrameID()) 
 	{
             
@@ -122,7 +123,19 @@ public class CANFilter
 		evms_v2.setAll(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
+                System.out.println("Filtering... CANID: "+message.getFrameID());
+        
+                StringBuilder sb = new StringBuilder();
+                sb.append("Data: ");
+        
+                for(int i = 0; i<message.getByteData().length; i++) {   
+                    sb.append(String.format("%02X ", message.getByte(i)));
+                }
+        
+                System.out.println(sb.toString());
+                
 		evms_v3.setAll(message);
+                System.out.println(evms_v3.toString());
 		break;
                 
                 

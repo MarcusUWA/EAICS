@@ -7,7 +7,6 @@ import eaics.Settings.IPAddress;
 import eaics.Settings.EAICS_Settings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
-import eaics.MiscCAN.CANMessage;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS_v3;
@@ -17,9 +16,7 @@ import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -35,14 +32,13 @@ public class EAICS extends Application
     public static final String TRIFAN = "xti trifan 600";
     public static final String TRIKE = "ABM4-Y1";
     
-    public static String currentAircraft;
+    public static String currentAircraft = TRIKE;
     
     static LoadCell loadCell = new LoadCell();
     static Throttle throttle = new Throttle();
     static IPAddress ipAddress = new IPAddress();
     
     Serial comms = new Serial("/dev/ttyUSB0", loadCell, throttle);
-    
   
     /**
      * @param args the command line arguments
@@ -178,7 +174,7 @@ public class EAICS extends Application
 	CANFilter.getInstance().setLoggingExecutor(executor);
 	    
 	// Launch the User Interface (UI) --------------------------------------
-        currentAircraft = TRIKE;
+
         launch(args);
     }
     
@@ -209,19 +205,9 @@ public class EAICS extends Application
         
         MainUIController mainUIcontroller = loader.getController();
         
-        startSerComms();
+        comms.connect();
         
         mainUIcontroller.initData(loadCell, comms, throttle);
         stage.show();
-    }
-    
-    private void startSerComms() 
-    {
-        comms.connect();
-    }
-        
-    private void stopSerComms() 
-    {
-        comms.disconnect();
     }
 }

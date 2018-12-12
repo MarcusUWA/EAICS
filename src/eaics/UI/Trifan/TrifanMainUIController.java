@@ -222,7 +222,7 @@ public class TrifanMainUIController extends MainUIController
         
     }
     
-    public void initData(LoadCell cell, Serial serial) throws IOException 
+    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException 
     {
 	this.filter = CANFilter.getInstance();
         this.loadCell = cell;
@@ -673,8 +673,4 @@ public class TrifanMainUIController extends MainUIController
         refreshUI.play();
     }
 
-    @Override
-    public void initData(LoadCell loadCell, Serial serial, Throttle throttle) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
