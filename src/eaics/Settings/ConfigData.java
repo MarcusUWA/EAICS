@@ -11,27 +11,19 @@ package eaics.Settings;
  */
 public class ConfigData 
 {
-    private String unit;
     private int min;
     private int max;
     private int setting;
-    private String displayUnits;
-    private int multiplier;
+    private String units;
     
-    public ConfigData(String unit, int min, int max, int initialSetting, String displayUnits, int multiplier)
+    public ConfigData(int min, int max, int initialSetting, String units)
     {
-        this.unit = unit;
         this.min = min;
         this.max = max;
         this.setting = initialSetting;
-	this.displayUnits = displayUnits;
-	this.multiplier = multiplier;
+	this.units = units;
     }
     
-    public int getMultiplier()
-    {
-        return this.multiplier;
-    }
     
     public int getSetting()
     {
@@ -48,7 +40,7 @@ public class ConfigData
     
     public String getDisplayUnits()
     {
-        return this.displayUnits;
+        return this.units;
     }
     
     public int getMax()

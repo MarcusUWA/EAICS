@@ -5,7 +5,7 @@
  */
 package eaics.Settings;
 
-import eaics.Settings.BMSSettings;
+import eaics.MiscCAN.CANHandler;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -32,21 +32,27 @@ public class EAICS_Settings
     private static final String SETTINGS_BMS = "BMS_SETTINGS";
     private static final String SETTINGS_PIXHAWK = "PIXHAWK_SETTINGS";
     
-    private EAICS_Settings()
+    private static CANHandler handler;
+    
+    private EAICS_Settings(CANHandler handler) throws IOException
     {
+        this.handler = handler;
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
-        this.bmsSettings = new BMSSettings();
+        this.bmsSettings = new BMSSettings(handler);
         this.pixHawkSettings = new PixHawkSettings();
         loadSettings();
     }
     
-    public static EAICS_Settings getInstance()
+    public static EAICS_Settings getInstance() throws IOException
     {	
 	if(instance == null)
 	{
 	    synchronized(EAICS_Settings.class)
 	    {
-		instance = new EAICS_Settings();
+                if(instance == null)
+                {
+		instance = new EAICS_Settings(handler);
+                }
 	    }
 	}
 	
@@ -63,14 +69,14 @@ public class EAICS_Settings
         return pixHawkSettings;
     }
     
-    public void update()
+    public void update() throws IOException
     {
 	bmsSettings.update();
 	pixHawkSettings.update();
 	writeSettings();	
     }
     
-    public void loadSettings()
+    public void loadSettings() throws IOException
     {
 	BufferedReader reader;
 		
