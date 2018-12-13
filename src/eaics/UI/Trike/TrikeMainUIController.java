@@ -105,47 +105,14 @@ public class TrikeMainUIController extends MainUIController
         {
             ipLabel.setText("Not Connected");
         }
-    }
-    /*
-    private void handleThrottle(int setting) throws IOException {
-        
-        if(!manualOverride)  {
-            throttleSlider.setValue(throttle.getThrottle());
-            setting = (int)Math.round(throttleSlider.getValue());
-        }
-        else {
-            setting = 0;
-        }
-        
-        String msg = "14A10000#";
-        msg = addToMsg(msg, setting);
-        final Process loadCellProgram = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-        //final Process loadCell2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);    
-
-        
-    }
+    }    
     
-    private String addToMsg(String msg, int setting) {
-        String temp = "";
-        
-        temp += Integer.toHexString(setting);
-       
-        int len = temp.length();
-	if(len == 1 || len == 3 || len == 5 || len == 7)
-	{
-	    msg += "0";
-	}
-	msg += temp;
-        
-        return msg;
-    }
-    */
     @FXML
-    private void handle0(ActionEvent event) throws IOException 
+    private void handleKillThrottle(ActionEvent event) throws IOException 
     {
         throttleSlider.setValue(0.0);
         manualOverride = true;
-        CANFilter.getInstance().getCANHandler(0).writeMessage(1000, new int[]{01,02,03,04});
+        CANFilter.getInstance().getCANHandler(0).writeMessage(1000, new int[]{0});
     }
     
     @FXML
@@ -154,7 +121,8 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
-    private void handleSERReset(ActionEvent event) throws IOException {
+    private void handleSERReset(ActionEvent event) throws IOException 
+    {
         serial.disconnect();
         serial.connect();
     }
@@ -232,7 +200,7 @@ public class TrikeMainUIController extends MainUIController
     @FXML
     private void handleLoadProfilePressed(ActionEvent event) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoadProfile.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLLoadProfile.fxml"));
         
         try 
 	{
@@ -240,7 +208,7 @@ public class TrikeMainUIController extends MainUIController
 
             loadProfile = loader.getController();
             //settings.initSettings(this);
-            loadProfile.init(this);
+            loadProfile.initData(this, throttle);
         
             Stage stage = new Stage();
         
@@ -259,7 +227,8 @@ public class TrikeMainUIController extends MainUIController
         }
         catch (Exception e) 
         {
-            System.out.println("Failed to open Settings Window");
+            System.out.println("Failed to open Load Profile Window");
+            e.printStackTrace();
         }
     }
 
@@ -519,7 +488,7 @@ public class TrikeMainUIController extends MainUIController
                     e.printStackTrace();
                 }*/
                 
-                throttleSlider.setValue(throttle.getThrottle());
+                throttleSlider.setValue(throttle.getThrottleSetting());
             }
             
         }));
@@ -527,5 +496,4 @@ public class TrikeMainUIController extends MainUIController
         refreshUI.play();
        	
     }
-
 }

@@ -5,6 +5,7 @@
  */
 package eaics.UI.Trike;
 
+import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +30,8 @@ import javafx.stage.Stage;
  * Format of csv: Throttle(Constant) | ThrottlePos (0-1024) | Time (s)  
  * @author Markcuz
  */
-public class FXMLLoadProfileController implements Initializable {
+public class FXMLLoadProfileController implements Initializable 
+{
     List<int[]> lines = new ArrayList<>();
     MainUIController gui;
     
@@ -40,44 +42,56 @@ public class FXMLLoadProfileController implements Initializable {
     
     @FXML
     Button exit;
+    
+    Throttle throttle;
                 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // TODO
     } 
     
-    public void init(MainUIController gui) {
+    public void initData(MainUIController gui, Throttle throttle) 
+    {
         this.gui = gui;
         gui.setOverrideStatus(true);
     }
     
-    public void loadFile(String path) throws FileNotFoundException, IOException {
+    public void loadFile(String path) throws FileNotFoundException, IOException 
+    {
+        path = "/home/pi/LoadProfiles/testLP.csv";
+        status = true;
         //clear list
         lines.clear();
         
-        try {
+        try 
+        {
             BufferedReader br = new BufferedReader(new FileReader(path));
             
             String line = null;
 
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) 
+            {
                 String[] values = line.split(",");
-                
-                if(values.length == 3) {
+                if(values.length == 2) 
+                {
                     int row[] = new int[2];
                     //throttle value
-                    try {
-                        if(Integer.parseInt(values[1])>1024) {
+                    try 
+                    {
+                        if(Integer.parseInt(values[0])>1024) 
+                        {
                             row[0] = 1024;
                         }
-                        else if(Integer.parseInt(values[1])<0) {
+                        else if(Integer.parseInt(values[0])<0) 
+                        {
                             row[0] = 0;
                         }
                         else {
-                            row[0] = Integer.parseInt(values[1]);  
+                            row[0] = Integer.parseInt(values[0]);  
                         }
                     }
                     catch (NumberFormatException e) {
@@ -85,62 +99,92 @@ public class FXMLLoadProfileController implements Initializable {
                         row[1] = 0;
                     }
                     
-                    try {
-                        if(Integer.parseInt(values[2])<0) {
+                    try 
+                    {
+                        int time = Integer.parseInt(values[1].trim());
+                        
+                        if(time < 0) 
+                        {
                             row[1] = 0;
                         }
-                        else {
-                            row[1] = Integer.parseInt(values[2]); 
+                        else 
+                        {
+                            row[1] = time; 
                         }
                         
                     }
-                    catch (NumberFormatException e) {
+                    catch (NumberFormatException e) 
+                    {
                         row[1] = 0;
                     }
+                    
+                    lines.add(row);
                 }
             }
             br.close();
         }
-        catch(FileNotFoundException e) {
+        catch(FileNotFoundException e) 
+        {
             System.out.println("File not found...");
         }
     }
     
-    public void showProfile() {
+    public void showProfile() 
+    {
         //todo: show the profile of the load profile file
     }
     
     @FXML
-    private void handleLoadFile(ActionEvent event) throws IOException {
+    private void handleLoadFile(ActionEvent event) throws IOException 
+    {
         loadFile(path.getText());
         showProfile();
     }
     
     @FXML
-    private void handleStop(ActionEvent event) throws IOException {
+    private void handleStop(ActionEvent event) throws IOException 
+    {
         handleThrottle(0); 
         status = false;
     }
     
     @FXML
-    private void handleRun(ActionEvent event) throws IOException {
+    private void handleRun(ActionEvent event) throws IOException
+    {
+        System.out.println("Run: " + status + " isEmpty: " + lines.isEmpty());
         //ensure that array is not empty
-        if(!lines.isEmpty()&&status) {
+        if(!lines.isEmpty()&&status) 
+        {
             //TODO:
-            for(int i = 0; i<lines.size(); i++) {
+            for(int i = 0; i < lines.size(); i++) 
+            {
                 
                 //send this throttle value for time length : lines.get(i)[1] in seconds
-                handleThrottle(lines.get(i)[1]);
+                //handleThrottle(lines.get(i)[1]);
+                
+                System.out.println("Throttle: " + lines.get(i)[0] + " Time: " + lines.get(i)[1]);
+                                
+//                throttle.setThrottleSetting(lines.get(i)[0]);
+                
+                long startTime = System.currentTimeMillis();
+                long endTime = startTime+(lines.get(i)[1] * 1000);
+
+                while(System.currentTimeMillis()<endTime)
+                {
+                    
+                }
             }
         }
     }
     
-    private void handleThrottle(int value) {
+    private void handleThrottle(int value) 
+    {
         
     }
     
     @FXML
-    private void handleExit(ActionEvent event) throws IOException {
+    private void handleExit(ActionEvent event) throws IOException 
+    {
         Stage stage = (Stage) exit.getScene().getWindow();
         stage.close();
     }

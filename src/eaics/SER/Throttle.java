@@ -27,18 +27,27 @@ public class Throttle
     {
         String[] msgArray = msg.split(",");
 
-        if(msgArray.length > 3) {
-            try {
+        if(msgArray.length > 3) 
+        {
+            try 
+            {
                 this.throttleSetting =  Integer.parseInt(msgArray[3]);
             }
-            catch (NumberFormatException e) {
+            catch (NumberFormatException e) 
+            {
                 this.throttleSetting = 0;
             }
         }
     }
     
-    public int getThrottle() {
+    public int getThrottleSetting() 
+    {
         return throttleSetting;
+    }
+    
+    public void setThrottleSetting(int throttleSetting)
+    {
+        this.throttleSetting = throttleSetting;
     }
     
     public void startSendThrottleCommands()
@@ -55,19 +64,21 @@ public class Throttle
                 {
                     int upperByte = throttleSetting >> 8;
                     int lowerByte = throttleSetting & 0xFF;
-                    filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
-                    System.out.println("Sending Throttle CAN: " + throttleSetting);
-                }
+                    //filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
+                    //System.out.println("Sending Throttle CAN: " + throttleSetting);
+                }catch(Exception e){}
+                /*
                 catch(IOException e)
                 {
                     System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
                     e.printStackTrace();
                 }
+                */
             }
         };
 
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 100, TimeUnit.MILLISECONDS);   // Run every second        
+	executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 100, TimeUnit.MILLISECONDS);
     }
     
     public void stopSendingThrottleCommands()

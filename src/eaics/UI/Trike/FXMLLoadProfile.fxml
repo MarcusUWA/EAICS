@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLLoadProfileController">
+<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.Trike.FXMLLoadProfileController">
    <children>
       <Label alignment="CENTER" layoutX="95.0" layoutY="6.0" prefHeight="17.0" prefWidth="248.0" text="Load Profile Run Mode" />
       <Button fx:id="exit" layoutX="56.0" layoutY="105.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="27.0" prefWidth="63.0" text="Exit" />
