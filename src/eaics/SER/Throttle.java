@@ -53,7 +53,10 @@ public class Throttle
                 //DEC: "346095616" = HEX: "14A10000"
                 try
                 {
-                    filter.getCANHandler(1).writeMessage(346095616, new int[]{throttleSetting});
+                    int upperByte = throttleSetting >> 8;
+                    int lowerByte = throttleSetting & 0xFF;
+                    filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
+                    System.out.println("Sending Throttle CAN: " + throttleSetting);
                 }
                 catch(IOException e)
                 {
@@ -64,7 +67,7 @@ public class Throttle
         };
 
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 500, TimeUnit.MILLISECONDS);   // Run every second        
+	executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 100, TimeUnit.MILLISECONDS);   // Run every second        
     }
     
     public void stopSendingThrottleCommands()

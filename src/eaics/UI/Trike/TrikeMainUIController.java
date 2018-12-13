@@ -518,6 +518,8 @@ public class TrikeMainUIController extends MainUIController
                 catch(Exception e) {
                     e.printStackTrace();
                 }*/
+                
+                throttleSlider.setValue(throttle.getThrottle());
             }
             
         }));

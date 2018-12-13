@@ -22,7 +22,7 @@ import javafx.fxml.Initializable;
  */
 public abstract class MainUIController implements Initializable
 {
-    public static final int refreshFrequency = 650;    //refresh rate in ms
+    public static final int refreshFrequency = 50;    //refresh rate in ms
     public static final int timeout = 2000;
     
     protected boolean manualOverride = false;
