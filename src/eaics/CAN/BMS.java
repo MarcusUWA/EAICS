@@ -82,62 +82,7 @@ public class BMS
 	{
 	    return this.temp[ii];
 	}
-	
-	/*
-	public int getMaxVoltage()
-	{
-	    int max = voltage[0];
-	    for(int ii = 1; ii < voltage.length; ii++)
-	    {
-			if(voltage[ii] > max)
-			{
-				max = voltage[ii];
-			}
-	    }
-	    return max;
-	}
-	
-	public int getMinVoltage()
-	{
-	    int min = voltage[0];
-	    for(int ii = 1; ii < voltage.length; ii++)
-	    {
-			if(voltage[ii] < min)
-			{
-				min = voltage[ii];
-			}
-	    }
-	    return min;
-	}
-	
-	public int getMaxTemp()
-	{
-	    int max;
-	    if(temp[0] > temp[1])
-	    {
-			max = temp[0];
-	    }
-	    else
-	    {
-			max = temp[1];
-	    }
-	    return max;
-	}
-	
-	public int getMinTemp()
-	{
-	    int min;
-	    if(temp[0] < temp[1])
-	    {
-			min = temp[0];
-	    }
-	    else
-	    {
-			min = temp[1];
-	    }
-	    return min;
-	}
-	*/
+
 	public String getVoltagesString()
 	{
 	    String outString = "";

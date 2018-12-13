@@ -116,7 +116,7 @@ public class CANFilter
             this.ccb[ii] = new CCB();
         }
 
-        this.chargerGBT = new ChargerGBT(evms_v3);
+        this.chargerGBT = new ChargerGBT(this);
 
         this.hasWarnedError = false;
         this.hasWarnedChargerOff = false;
@@ -187,6 +187,7 @@ public class CANFilter
             case 300: case 310: case 320: case 330: case 340: case 350: case 360: case 370:
             case 380: case 390: case 400: case 410: case 420: case 430: case 440: case 450:
             case 460: case 470: case 480: case 490: case 500: case 510: case 520: case 530:
+                
                 break;  //EVMS to BMS polling messages, just ignore these.
                 
 	    case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
@@ -281,6 +282,11 @@ public class CANFilter
             //Begin Throttle CAN Messages
             case 346095616: //HEX: "14A10000"
                 break;//throttle command
+                
+                //ADD GBT charger can packet passing to:
+            case 0x1826F456:
+                chargerGBT.handleCharger(message.getFrameID(), message.getByteData());
+                break;
                 
             /*
             //Begin Charger CAN Messages

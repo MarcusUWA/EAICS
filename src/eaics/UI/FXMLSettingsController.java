@@ -6,6 +6,7 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
+import eaics.CAN.ChargerGBT;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -37,6 +39,8 @@ public class FXMLSettingsController implements Initializable
     FXMLConnectWifiController wifiConnectController;
     FXMLNumpadController numpad;
     FXMLSendLogsController loggingController;
+    
+    ChargerGBT chg;
     
     FXMLCalibrateLoadCellController calib;
     Serial serial;
@@ -67,6 +71,9 @@ public class FXMLSettingsController implements Initializable
     
     @FXML 
     Button wifiConnect;
+    
+    @FXML 
+    ToggleButton toggleGBT;
     
     MainUIController gui;
     
@@ -118,7 +125,13 @@ public class FXMLSettingsController implements Initializable
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
-
+    
+    @FXML
+    private void toggleButtonAction(ActionEvent event)
+    {
+        chg.setChargeMode(toggleGBT.isSelected());
+    }
+    
     @FXML   
     private void handleEnterGeneralSettingsPage1(ActionEvent event)
     {   
@@ -177,9 +190,7 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleResetSOC(ActionEvent event) throws IOException
     {
-        msg = "00000026#64"; 
-	final Process rstSoC1 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can0 " + msg);
-        final Process rstSOC2 = Runtime.getRuntime().exec("/home/pi/bin/CANsend can1 " + msg);
+        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
     }
 
     @FXML
@@ -261,11 +272,13 @@ public class FXMLSettingsController implements Initializable
         gui = mainGui;
     }
     
-    public void initData(LoadCell loadCell, Serial serial)
+    public void initData(LoadCell loadCell, Serial serial, ChargerGBT chg)
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
         this.serial = serial;
+        this.chg = chg;
+        
 	softwareVersionLabel.setText(version);
     }
 

@@ -59,8 +59,8 @@ int count = 0;
 float calibration_factor = 17550; //-7050 worked for my 440lb max scale setup
 
 #define throttlePin A0
-int sensorValue = 0;  // variable to store the value coming from the sensor
-int throttle = 0;
+double sensorValue = 0;  // variable to store the value coming from the sensor
+double throttle = 0;
 
 void setup() {
   //being EEPROM load
@@ -85,7 +85,7 @@ void loop() {
 
   //note this throttle, ranges from 195 - 852
   //eg. output = (sensorValue-min)*1024/(max-min);
-  throttle = ((sensorValue-195) * 3)/2;
+  throttle = ((sensorValue-195) * 1024.0/(852-195));
 
   if(throttle<0) throttle = 0;
   else if(throttle>1023) throttle = 1023;
@@ -100,7 +100,7 @@ void loop() {
   Serial.print(calibration_factor);
   Serial.print(",");
 
-  Serial.print(throttle);
+  Serial.print((int)round(throttle));
   Serial.print(",");
   
   Serial.print(weight1, 4);
