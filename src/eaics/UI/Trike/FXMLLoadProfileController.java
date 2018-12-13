@@ -5,6 +5,7 @@
  */
 package eaics.UI.Trike;
 
+import eaics.CAN.CANFilter;
 import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.IOException;
@@ -20,6 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -173,6 +177,19 @@ public class FXMLLoadProfileController implements Initializable
                 {
                     
                 }
+                
+                Runnable ThrottleCommandSender = new Runnable() 
+                {
+                    
+                    @Override
+                    public void run() 
+                    {
+                                            
+                    }
+                };
+
+                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+                executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 1, TimeUnit.SECONDS);
             }
         }
     }
