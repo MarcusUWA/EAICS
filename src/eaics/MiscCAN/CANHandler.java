@@ -107,6 +107,16 @@ public class CANHandler
                                 int data[] = byte2int(currentFrame.getData());
                                 
                                 canMessage.newMessage(canSocketString, canID, data);
+                                if(canSocketString.equals("can0"))
+                                {
+                                    String tmp = "";
+                                    tmp += "Frame Hex: " + Integer.toHexString(canMessage.getFrameID()) + " Frame Data: ";
+                                    for(int ii = 0; ii < canMessage.getNumData(); ii++)
+                                    {
+                                        tmp += Integer.toHexString(canMessage.getByte(ii)) + " ";
+                                    }
+                                    System.out.println(tmp);
+                                }
                                 filter.run(canMessage);
                             }
                         } 

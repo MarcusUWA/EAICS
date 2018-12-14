@@ -81,7 +81,7 @@ public class CANFilter
         {
             e.printStackTrace();
         }
-
+        /*
         bus1CANHandler = new CANHandler("can1");
         try
         {
@@ -92,7 +92,7 @@ public class CANFilter
         {
             e.printStackTrace();
         }
-
+        */
         this.evms_v2 = new EVMS_v2();
         this.evms_v3 = new EVMS_v3();
 
@@ -284,9 +284,23 @@ public class CANFilter
                 break;//throttle command
                 
                 //ADD GBT charger can packet passing to:
-            case 0x1826F456:
-                chargerGBT.handleCharger(message.getFrameID(), message.getByteData());
+            case 0x1826F456: case 0x1801F456: case 0x1CECF456: case 0x1807F456: case 0x1808F456: case 0x100AF456:
+                chargerGBT.handleCharger(message);
                 break;
+                
+            case 0x182756F4:    //BHM
+                break;
+                
+            case 0x1CEC56F4:    //BRM
+                break;
+                
+            case 0x1CEB56F4:    //BRM (data about the BMS)
+                break;
+                
+            case 0x81FF456:     //Timeout
+                System.out.println("Timeout");
+                break;
+                
                 
             /*
             //Begin Charger CAN Messages
@@ -365,7 +379,7 @@ public class CANFilter
                 break;
             */    
 	    default:
-                System.out.println("Frame Hex: " + message.getFrameID_HEX() + " Frame ID: " + message.getFrameID());
+                System.out.println("Unknown packet, Frame ID: " + Integer.toHexString(message.getFrameID()));
 		break;
 	}
     }

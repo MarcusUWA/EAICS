@@ -129,7 +129,7 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void toggleButtonAction(ActionEvent event)
     {
-        chg.setChargeMode(toggleGBT.isSelected());
+        //chg.setChargeMode(toggleGBT.isSelected());
     }
     
     @FXML   
@@ -272,12 +272,12 @@ public class FXMLSettingsController implements Initializable
         gui = mainGui;
     }
     
-    public void initData(LoadCell loadCell, Serial serial, ChargerGBT chg)
+    public void initData(LoadCell loadCell, Serial serial)
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
         this.serial = serial;
-        this.chg = chg;
+        this.chg = filter.getCharger();
         
 	softwareVersionLabel.setText(version);
     }

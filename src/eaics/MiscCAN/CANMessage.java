@@ -56,6 +56,11 @@ public class CANMessage
             this.numData = byteData.length;            
         }
         
+        public int getNumData()
+        {
+            return this.numData;
+        }
+        
         private static int[] convertToIntArray(byte[] input)
         {
             int[] ret = new int[input.length];
