@@ -518,7 +518,50 @@ public class ChargerGBT
         //b[0-1] = Max Charge Voltage b[2-3] = Max Charge Current, b[4] = Mode 01 = Const. Voltage, 02 Const. Current
         //b[5-7] = Unused
         int[] chg = {settings.getSetting(19)*10,(settings.getSetting(19)*10)>>8,40000-(settings.getSetting(20)*100),(40000-(settings.getSetting(20)*100))>>8,0x01,0xFF,0xFF,0xFF};
-        Runnable Identification = new Runnable() 
+        Runnable packet1 = new Runnable() 
+	{            
+	    @Override
+	    public void run() 
+	    {
+                try 
+                {
+                    //handler.writeMessage(0x100956F4, chg);
+                    handler.writeMessage(0x181056F4, chg);
+                } 
+                catch (IOException ex) 
+                {
+                    ex.printStackTrace();
+                    Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
+                }
+	    }
+	};
+
+        this.isChargeExecutorOn = true;
+	this.chargeExecutor = Executors.newScheduledThreadPool(1);
+	this.chargeExecutor.scheduleAtFixedRate(packet1, 0, 10, TimeUnit.MILLISECONDS);
+        
+        Runnable packet2 = new Runnable() 
+	{            
+	    @Override
+	    public void run() 
+	    {
+                try 
+                {
+                    //handler.writeMessage(0x100956F4, chg);
+                    handler.writeMessage(0x1cec56f4, chg);
+                } 
+                catch (IOException ex) 
+                {
+                    ex.printStackTrace();
+                    Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
+                }
+	    }
+	};
+        
+        ScheduledExecutorService exePacket2 = Executors.newScheduledThreadPool(1);
+	exePacket2.scheduleAtFixedRate(packet1, 0, 250, TimeUnit.MILLISECONDS);
+        
+        Runnable packet3 = new Runnable() 
 	{            
 	    @Override
 	    public void run() 
@@ -535,10 +578,9 @@ public class ChargerGBT
                 }
 	    }
 	};
-
-        this.isChargeExecutorOn = true;
-	this.chargeExecutor = Executors.newScheduledThreadPool(1);
-	this.chargeExecutor.scheduleAtFixedRate(Identification, 0, 10, TimeUnit.MILLISECONDS);
+        
+        ScheduledExecutorService exePacket3 = Executors.newScheduledThreadPool(1);
+	exePacket3.scheduleAtFixedRate(packet1, 0, 10, TimeUnit.MILLISECONDS);
     }
      
     public void sendChargingPreUpdate() {
