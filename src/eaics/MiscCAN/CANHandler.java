@@ -91,7 +91,8 @@ public class CANHandler
             //Thread for reading...
             if(!startedReading) 
             {
-                threadReadCAN = new Thread(new Runnable(){
+                threadReadCAN = new Thread(new Runnable()
+                {
                     public void run()
                     {
                         try 
@@ -107,6 +108,7 @@ public class CANHandler
                                 int data[] = byte2int(currentFrame.getData());
                                 
                                 canMessage.newMessage(canSocketString, canID, data);
+                                /*
                                 if(canSocketString.equals("can0"))
                                 {
                                     String tmp = "";
@@ -117,6 +119,7 @@ public class CANHandler
                                     }
                                     System.out.println(tmp);
                                 }
+                                */
                                 filter.run(canMessage);
                             }
                         } 

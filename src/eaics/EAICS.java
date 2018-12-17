@@ -63,7 +63,49 @@ public class EAICS extends Application
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
-	SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy/MM/dd");
+	startLogging();
+	    
+	// Launch the User Interface (UI) --------------------------------------
+
+        launch(args);
+    }
+    
+    @Override
+    public void start(Stage stage) throws Exception 
+    {
+        FXMLLoader loader;
+                
+        switch (currentAircraft) 
+        {
+            case TRIKE:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLTrikeMainUI.fxml"));
+                break;
+            case TRIFAN:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                break;
+            default:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                break;
+        }
+        
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
+        
+        stage.setTitle("ElectroAero Instrumentation and Control System");
+        
+        //initialising main UI controller
+        
+        MainUIController mainUIcontroller = loader.getController();
+        
+        comms.connect();
+        
+        mainUIcontroller.initData(loadCell, comms, throttle);
+        stage.show();
+    }
+    
+    public static void startLogging()
+    {
+        SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm:ss");
 	String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
 	
@@ -167,42 +209,5 @@ public class EAICS extends Application
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
 	CANFilter.getInstance().setLoggingExecutor(executor);
-	    
-	// Launch the User Interface (UI) --------------------------------------
-
-        launch(args);
-    }
-    
-    @Override
-    public void start(Stage stage) throws Exception 
-    {
-        FXMLLoader loader;
-                
-        switch (currentAircraft) 
-        {
-            case TRIKE:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLTrikeMainUI.fxml"));
-                break;
-            case TRIFAN:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
-                break;
-            default:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
-                break;
-        }
-        
-        Scene scene = new Scene(loader.load());
-        stage.setScene(scene);
-        
-        stage.setTitle("ElectroAero Instrumentation and Control System");
-        
-        //initialising main UI controller
-        
-        MainUIController mainUIcontroller = loader.getController();
-        
-        comms.connect();
-        
-        mainUIcontroller.initData(loadCell, comms, throttle);
-        stage.show();
     }
 }

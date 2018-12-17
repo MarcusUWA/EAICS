@@ -54,6 +54,9 @@ public class TrikeMainUIController extends MainUIController
     Button buttonBattery;
     
     @FXML
+    Button startStopThrottle;
+    
+    @FXML
     private Label timeLabel;
     @FXML
     private Label powerLabel;
@@ -106,6 +109,23 @@ public class TrikeMainUIController extends MainUIController
             ipLabel.setText("Not Connected");
         }
     }    
+    
+    private boolean isSendingThrottle = false;
+    
+    @FXML
+    private void handleStartStopThrottle(ActionEvent event)
+    {
+        this.throttle.setIsSendingThrottleCommands(isSendingThrottle);
+        if(isSendingThrottle)
+        {
+            startStopThrottle.setText("Stop Throttle");
+        }
+        else
+        {
+            startStopThrottle.setText("Start Throttle");
+        }
+        this.isSendingThrottle = !this.isSendingThrottle;
+    }
     
     @FXML
     private void handleKillThrottle(ActionEvent event) throws IOException 

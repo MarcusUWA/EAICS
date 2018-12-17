@@ -147,7 +147,6 @@ public class CANFilter
         */
 	switch (message.getFrameID()) 
 	{
-            
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
 		evms_v2.setAll(message);
@@ -301,83 +300,6 @@ public class CANFilter
                 System.out.println("Timeout");
                 break;
                 
-                
-            /*
-            //Begin Charger CAN Messages
-            case 405206102: //HEX: "1826F456" --> Handshake In from Charger
-                //System.out.println("-->Handshake in");
-                break;
-            case 405231348: //HEX: "182756F4" --> Handshake Out to Charger
-                //System.out.println("<--Sending handshake out");
-                break;
-            case 402781270: //HEX: "1801F456" --> Asking for identification from Charger
-                if(message.getByte(0) == 170)
-                {
-                    System.out.println("(Charger) ID Complete State");
-                    System.out.println(message.getRaw());
-                    this.chargerGBT.sendPreParameterSettings();
-                }
-                else
-                {
-                    System.out.println("(Charger) Asking for Pre-Identification from BMS");
-                    this.chargerGBT.stopSendHandshake();
-                    this.chargerGBT.startSendTransportCommManagement();
-                    System.out.println(message.getRaw());
-                }
-                break;
-            case 485250804: //HEX: "1CEC56F4" --> Sending identification to Charger
-                //System.out.println("(BMS) Sending Pre-identification to Charger");
-                //System.out.println(message.getRaw());
-                break;
-            case 485291094: //HEX: "1CECF456" --> Acknowledgments
-                if(message.getByte(0) == 17) //17 = 0x11
-                {
-                    if(message.getByte(1) == 7)
-                    {
-                        System.out.println("(Charger) Acknowledging Pre-Identification received from BMS");
-                        this.chargerGBT.stopSendingTransportCommManagement();
-                        this.chargerGBT.sendIdentificationParams();
-                    }
-                    else if(message.getByte(1) == 2)
-                    {
-                        System.out.println("(Charger) Acknowledgment of Pre-Parameter settings");
-                        this.chargerGBT.sendParameterSettings();
-                    }
-                }
-                else if(message.getByte(0) == 19) //19 = 0x13
-                {
-                    if(message.getByte(1) == 41)
-                    {
-                        System.out.println("(Charger) Confirming all identifcation packets from BMS");                        
-                    }
-                    else if(message.getByte(1) == 13)
-                    {
-                        System.out.println("(Charger) Parameter settings acknowledged");
-                    }
-                }
-                System.out.println(message.getRaw());
-                break;
-            case 485185268: //HEX: "1CEB56F4" --> Sending Identification Parameters
-                //System.out.println("(BMS) Sending 7 Identification packets to Charger");
-                //System.out.println("(BMS) Sending Parameter Settings");
-                break;
-            case 403174486://HEX: "1807F456" --> (Charger) Telling Pre-Charge: Time sync to BMS
-                System.out.println("(Charger) Telling Pre-Charge: Time sync to BMS");
-                break;
-            case 403240022://HEX: "1808F456" --> (Charger) Telling specs of charger itself to BMS
-                System.out.println("(Charger) Telling specs of charger itself to BMS");
-                this.chargerGBT.sendReadyToCharge();
-                break;
-            case 269047540://HEX: "100956F4" --> (BMS) Ready to charge
-                break;
-            case 269153366://HEX: "100AF456" --> (Charger) Ready to charge
-                System.out.println("(Charger) Ready to charge");
-                System.out.println(message.getRaw());
-                break;
-            case 136311894: //HEX: "81FF456" --> Timeout
-                System.out.println("Timeout");
-                break;
-            */    
 	    default:
                 System.out.println("Unknown packet, Frame ID: " + Integer.toHexString(message.getFrameID()));
 		break;

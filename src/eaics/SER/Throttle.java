@@ -16,11 +16,23 @@ public class Throttle
 {
     private int throttleSetting;
     private ScheduledExecutorService executor;
+    private boolean isSendingThrottleCommands;
     
     public Throttle() 
     {
         throttleSetting = 0;
         startSendThrottleCommands();
+        this.isSendingThrottleCommands = true;
+    }
+
+    public boolean isSendingThrottleCommands() 
+    {
+        return isSendingThrottleCommands;
+    }
+
+    public void setIsSendingThrottleCommands(boolean isSendingThrottleCommands) 
+    {
+        this.isSendingThrottleCommands = isSendingThrottleCommands;
     }
 
     public void setMsg(String msg) 
@@ -64,16 +76,17 @@ public class Throttle
                 {
                     int upperByte = throttleSetting >> 8;
                     int lowerByte = throttleSetting & 0xFF;
-                    //filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
-                    //System.out.println("Sending Throttle CAN: " + throttleSetting);
-                }catch(Exception e){}
-                /*
+                    if(isSendingThrottleCommands)
+                    {
+                        filter.getCANHandler(0).writeMessage(346095616, new int[]{lowerByte, upperByte});
+                        System.out.println("Sending Throttle CAN: " + throttleSetting);
+                    }
+                }
                 catch(IOException e)
                 {
                     System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
                     e.printStackTrace();
                 }
-                */
             }
         };
 

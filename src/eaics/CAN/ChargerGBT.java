@@ -17,10 +17,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author troyg
- */
 public class ChargerGBT 
 {
     private ScheduledExecutorService handshakeExecutor;
@@ -51,7 +47,8 @@ public class ChargerGBT
         this.handler = filter.getCANHandler(0);
     }
     
-    public void setChargeMode(Boolean mode){
+    public void setChargeMode(Boolean mode)
+    {
         chargeMode = mode;
     }
     
