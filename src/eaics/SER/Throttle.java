@@ -78,7 +78,7 @@ public class Throttle
                     int lowerByte = throttleSetting & 0xFF;
                     if(isSendingThrottleCommands)
                     {
-                        filter.getCANHandler(0).writeMessage(346095616, new int[]{lowerByte, upperByte});
+                        filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
                         System.out.println("Sending Throttle CAN: " + throttleSetting);
                     }
                 }

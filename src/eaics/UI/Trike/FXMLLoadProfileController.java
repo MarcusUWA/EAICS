@@ -8,6 +8,7 @@ package eaics.UI.Trike;
 import eaics.CAN.CANFilter;
 import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
+import static eaics.UI.MainUIController.refreshFrequency;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,9 +25,13 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -39,7 +44,7 @@ public class FXMLLoadProfileController implements Initializable
     List<int[]> lines = new ArrayList<>();
     MainUIController gui;
     
-    Boolean status = true;
+    boolean status;
     
     @FXML
     TextField path;
@@ -56,6 +61,7 @@ public class FXMLLoadProfileController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         // TODO
+        status = true;
     } 
     
     public void initData(MainUIController gui, Throttle throttle) 
@@ -148,55 +154,65 @@ public class FXMLLoadProfileController implements Initializable
     @FXML
     private void handleStop(ActionEvent event) throws IOException 
     {
-        handleThrottle(0); 
-        status = false;
+        System.out.println("STOP BUTTON PRESSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        stopLoadProfile();
     }
+    
+    private ScheduledExecutorService executor;
     
     @FXML
     private void handleRun(ActionEvent event) throws IOException
-    {
+    {        
         System.out.println("Run: " + status + " isEmpty: " + lines.isEmpty());
         //ensure that array is not empty
         if(!lines.isEmpty()&&status) 
         {
-            //TODO:
-            for(int i = 0; i < lines.size(); i++) 
+            Runnable ThrottleCommandSender = new Runnable() 
             {
-                
-                //send this throttle value for time length : lines.get(i)[1] in seconds
-                //handleThrottle(lines.get(i)[1]);
-                
-                System.out.println("Throttle: " + lines.get(i)[0] + " Time: " + lines.get(i)[1]);
-                                
-//                throttle.setThrottleSetting(lines.get(i)[0]);
-                
-                long startTime = System.currentTimeMillis();
-                long endTime = startTime+(lines.get(i)[1] * 1000);
+                int ii = 0;
+                long startTime;
+                long endTime = System.currentTimeMillis();
 
-                while(System.currentTimeMillis()<endTime)
+                @Override
+                public void run() 
                 {
-                    
-                }
-                
-                Runnable ThrottleCommandSender = new Runnable() 
-                {
-                    
-                    @Override
-                    public void run() 
+                    System.out.println("Current: " + System.currentTimeMillis() + " End Time: " + endTime + " ii = " + ii + " size(): " + lines.size());
+                    if(System.currentTimeMillis() >= endTime && ii < lines.size())
                     {
-                                            
-                    }
-                };
+                        //send this throttle value for time length : lines.get(i)[1] in seconds
+                        //handleThrottle(lines.get(i)[1]);
 
-                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-                executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 1, TimeUnit.SECONDS);
-            }
+                        System.out.println("Throttle: " + lines.get(ii)[0] + " Time: " + lines.get(ii)[1]);
+
+                        //throttle.setThrottleSetting(lines.get(ii)[0]);
+                        System.out.println("here");
+                        startTime = System.currentTimeMillis();
+                        endTime = startTime+(lines.get(ii)[1] * 1000);
+
+                        ii++;
+
+                        if(ii >= lines.size())
+                        {
+                            stopLoadProfile();
+                        }
+                    }
+                }
+            };
+
+            System.out.println("start executor");
+            executor = Executors.newScheduledThreadPool(1);
+            executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 1, TimeUnit.SECONDS); 
+            System.out.println("end start executor");
         }
     }
     
-    private void handleThrottle(int value) 
+    private void stopLoadProfile()
     {
-        
+        if(status)
+        {
+            this.executor.shutdown();
+        }
+        status = false;
     }
     
     @FXML
