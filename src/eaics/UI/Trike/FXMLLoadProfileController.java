@@ -52,7 +52,7 @@ public class FXMLLoadProfileController implements Initializable
     @FXML
     Button exit;
     
-    Throttle throttle;
+    private Throttle throttle;
                 
     /**
      * Initializes the controller class.
@@ -62,12 +62,14 @@ public class FXMLLoadProfileController implements Initializable
     {
         // TODO
         status = true;
+        isRunning = false;
     } 
     
     public void initData(MainUIController gui, Throttle throttle) 
     {
         this.gui = gui;
         gui.setOverrideStatus(true);
+        this.throttle = throttle;
     }
     
     public void loadFile(String path) throws FileNotFoundException, IOException 
@@ -159,50 +161,53 @@ public class FXMLLoadProfileController implements Initializable
     }
     
     private ScheduledExecutorService executor;
+    private boolean isRunning;
     
     @FXML
     private void handleRun(ActionEvent event) throws IOException
-    {        
-        System.out.println("Run: " + status + " isEmpty: " + lines.isEmpty());
-        //ensure that array is not empty
-        if(!lines.isEmpty()&&status) 
+    {
+        if(!isRunning)
         {
-            Runnable ThrottleCommandSender = new Runnable() 
+            isRunning = true;
+            throttle.setIsUsingManualThrottle(false);
+            //ensure that array is not empty
+            if(!lines.isEmpty()&&status) 
             {
-                int ii = 0;
-                long startTime;
-                long endTime = System.currentTimeMillis();
-
-                @Override
-                public void run() 
+                Runnable ThrottleCommandSender = new Runnable() 
                 {
-                    System.out.println("Current: " + System.currentTimeMillis() + " End Time: " + endTime + " ii = " + ii + " size(): " + lines.size());
-                    if(System.currentTimeMillis() >= endTime && ii < lines.size())
+                    int ii = 0;
+                    long startTime;
+                    long endTime = System.currentTimeMillis();
+
+                    @Override
+                    public void run() 
                     {
-                        //send this throttle value for time length : lines.get(i)[1] in seconds
-                        //handleThrottle(lines.get(i)[1]);
-
-                        System.out.println("Throttle: " + lines.get(ii)[0] + " Time: " + lines.get(ii)[1]);
-
-                        //throttle.setThrottleSetting(lines.get(ii)[0]);
-                        System.out.println("here");
-                        startTime = System.currentTimeMillis();
-                        endTime = startTime+(lines.get(ii)[1] * 1000);
-
-                        ii++;
-
-                        if(ii >= lines.size())
+                        if(System.currentTimeMillis() >= endTime && ii < lines.size())
                         {
-                            stopLoadProfile();
+                            //send this throttle value for time length : lines.get(i)[1] in seconds
+                            //handleThrottle(lines.get(i)[1]);
+
+                            System.out.println("Throttle: " + lines.get(ii)[0] + " Time: " + lines.get(ii)[1]);
+
+                            throttle.setThrottleSetting(lines.get(ii)[0]);
+                            startTime = System.currentTimeMillis();
+                            endTime = startTime+(lines.get(ii)[1] * 1000);
+
+                            ii++;
+
+                            if(ii >= lines.size())
+                            {
+                                stopLoadProfile();
+                            }
                         }
                     }
-                }
-            };
+                };
 
-            System.out.println("start executor");
-            executor = Executors.newScheduledThreadPool(1);
-            executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 1, TimeUnit.SECONDS); 
-            System.out.println("end start executor");
+                System.out.println("start executor");
+                executor = Executors.newScheduledThreadPool(1);
+                executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 1, TimeUnit.SECONDS); 
+                System.out.println("end start executor");
+            }
         }
     }
     
@@ -212,6 +217,8 @@ public class FXMLLoadProfileController implements Initializable
         {
             this.executor.shutdown();
         }
+        throttle.setIsUsingManualThrottle(true);
+        isRunning = false;
         status = false;
     }
     

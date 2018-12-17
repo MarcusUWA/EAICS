@@ -81,7 +81,6 @@ public class CANFilter
         {
             e.printStackTrace();
         }
-        /*
         bus1CANHandler = new CANHandler("can1");
         try
         {
@@ -92,7 +91,6 @@ public class CANFilter
         {
             e.printStackTrace();
         }
-        */
         this.evms_v2 = new EVMS_v2();
         this.evms_v3 = new EVMS_v3();
 

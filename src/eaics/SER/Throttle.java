@@ -18,11 +18,19 @@ public class Throttle
     private ScheduledExecutorService executor;
     private boolean isSendingThrottleCommands;
     
+    private boolean isUsingManualThrottle;
+    
     public Throttle() 
     {
         throttleSetting = 0;
         startSendThrottleCommands();
         this.isSendingThrottleCommands = true;
+        this.isUsingManualThrottle = true;
+    }
+
+    public void setIsUsingManualThrottle(boolean isUsingManualThrottle) 
+    {
+        this.isUsingManualThrottle = isUsingManualThrottle;
     }
 
     public boolean isSendingThrottleCommands() 
@@ -37,17 +45,20 @@ public class Throttle
 
     public void setMsg(String msg) 
     {
-        String[] msgArray = msg.split(",");
-
-        if(msgArray.length > 3) 
+        if(this.isUsingManualThrottle)
         {
-            try 
+            String[] msgArray = msg.split(",");
+
+            if(msgArray.length > 3) 
             {
-                this.throttleSetting =  Integer.parseInt(msgArray[3]);
-            }
-            catch (NumberFormatException e) 
-            {
-                this.throttleSetting = 0;
+                try 
+                {
+                    this.throttleSetting =  Integer.parseInt(msgArray[3]);
+                }
+                catch (NumberFormatException e) 
+                {
+                    this.throttleSetting = 0;
+                }
             }
         }
     }
@@ -59,7 +70,7 @@ public class Throttle
     
     public void setThrottleSetting(int throttleSetting)
     {
-        this.throttleSetting = throttleSetting;
+        this.throttleSetting = throttleSetting;   
     }
     
     public void startSendThrottleCommands()
