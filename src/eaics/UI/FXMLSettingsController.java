@@ -306,8 +306,7 @@ public class FXMLSettingsController implements Initializable
         try {
             Pane pane = loader.load();
             numpad = loader.getController();
-            bmsSettingsPage = new FXMLBMSsettingsPage();
-            numpad.initSettings(gui, -1, bmsSettingsPage);
+            numpad.initSettings(gui, FXMLNumpadController.CONFIG_IPADDRESS);
         
             Stage stage = new Stage();
         

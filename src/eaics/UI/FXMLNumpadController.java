@@ -24,34 +24,86 @@ import java.io.IOException;
  * @author Troy
  */
 public class FXMLNumpadController implements Initializable 
-{
+{    
     MainUIController gui;
-    private BMSSettings bmsSettings;
-    private int index;
+    private int config;
     private boolean first;
-    private FXMLBMSsettingsPage settingsPage;
+    private int bmsSettingsIndex;
+    
+    public static final int CONFIG_NUMPAD = 0;
+    public static final int CONFIG_BMS_NUMPAD = 1;
+    public static final int CONFIG_IPADDRESS = 2;
     
     private String value;
     
-    public void initSettings(MainUIController settingsGui, int index, FXMLBMSsettingsPage settingsPage) 
+    @FXML
+    private Button zero;
+    @FXML
+    private Button one;
+    @FXML
+    private Button two;
+    @FXML
+    private Button three;
+    @FXML
+    private Button four;
+    @FXML
+    private Button five;
+    @FXML
+    private Button six;
+    @FXML
+    private Button seven;
+    @FXML
+    private Button eight;
+    @FXML
+    private Button nine;
+    
+    @FXML
+    private Button clear;
+    @FXML
+    private Button enter;
+    @FXML
+    private Button negative;
+    @FXML
+    private Button backspace;
+    
+    @FXML
+    private TextField display;
+    
+    @FXML
+    private Label label;
+    
+    public void initSettings(MainUIController settingsGui, int config) 
     {
         gui = settingsGui;
-	this.settingsPage = settingsPage;
-        this.bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
-        this.index = index;
-        if(index != -1) 
-	{
-            display.setText(display.getText() + bmsSettings.getDisplayUnits(index));
-        }
+        this.config = config;
         
         first = true;
         value = "";
         
-        if(index == -1) 
-	{
-            negative.setText(".");
+        switch(config)
+        {
+            case CONFIG_NUMPAD:
+                break;
+            case CONFIG_BMS_NUMPAD:
+                break;
+            case CONFIG_IPADDRESS:
+                negative.setText(".");
+                break;
+            default:
+                break;
         }
     }
+    
+    public void setBMSIndex(int bmsSettingsIndex, FXMLBMSsettingsPage settingsPage)
+    {
+        this.bmsSettingsIndex = bmsSettingsIndex;
+        this.settingsPage = settingsPage;
+        this.bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+        display.setText(display.getText() + bmsSettings.getDisplayUnits(bmsSettingsIndex));
+    }
+    
+    private BMSSettings bmsSettings;
+    private FXMLBMSsettingsPage settingsPage;
 
     /**
      * Initializes the controller class.
@@ -62,60 +114,20 @@ public class FXMLNumpadController implements Initializable
         // TODO
     }
     
-    @FXML
-    private Button nine;
-
-    @FXML
-    private Button six;
-
-    @FXML
-    private Button one;
-
-    @FXML
-    private TextField display;
-
-    @FXML
-    private Button clear;
-
-    @FXML
-    private Button seven;
-
-    @FXML
-    private Label label;
-
-    @FXML
-    private Button two;
-
-    @FXML
-    private Button three;
-
-    @FXML
-    private Button eight;
-
-    @FXML
-    private Button zero;
-
-    @FXML
-    private Button enter;
-
-    @FXML
-    private Button four;
-
-    @FXML
-    private Button negative;
-
-    @FXML
-    private Button five;
-    
-    @FXML
-    private Button backspace;
-    
-    public String getString() {
+    public String getString() 
+    {
         return value;
+    }
+    
+    @FXML
+    private void handleExit(ActionEvent event)
+    {
+        Stage stage = (Stage) enter.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
-    void handleButtonAction(ActionEvent event) throws IOException 
+    private void handleButtonAction(ActionEvent event) throws IOException 
     {
         if(first)
         {
@@ -165,10 +177,12 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == negative) 
         {
-            if(index==-1) {
+            if(config == CONFIG_IPADDRESS) 
+            {
                 display.setText(display.getText() + ".");
             }
-            else {
+            else
+            {
                 display.setText(display.getText() + "-");
             }
         }
@@ -187,14 +201,14 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == enter) 
         {
-            if(index == -1) 
+            if(config == CONFIG_IPADDRESS) 
 	    {
                 value = display.getText();
                 gui.settings.completeUpdatePixhawk();
             }
             else 
 	    {
-                this.bmsSettings.setSetting(index,  Integer.parseInt(display.getText()));	
+                this.bmsSettings.setSetting(bmsSettingsIndex,  Integer.parseInt(display.getText()));	
 		EAICS_Settings.getInstance().update();
                 this.settingsPage.updateLabels();
             }

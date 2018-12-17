@@ -274,7 +274,8 @@ public class FXMLBMSsettingsPage implements Initializable
         {
             Pane pane = loader.load();
             numpad = loader.getController();
-            numpad.initSettings(gui, index, this);
+            numpad.initSettings(gui, FXMLNumpadController.CONFIG_BMS_NUMPAD);
+            numpad.setBMSIndex(index, this);
         
             Stage stage = new Stage();
         
