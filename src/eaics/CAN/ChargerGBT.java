@@ -156,20 +156,16 @@ public class ChargerGBT
                             {
                                 System.out.println("(Charger) Acknowledgment OK to receive charge update");
                                 System.out.println("Continue to state 12, Data: "+ Int2String(data));
-                                sendChargingPreUpdate();
                                 currentState = 12;
                             }
                         }
                         break;
                     case 12:
-                        if(data[0]==0x13) 
+                        if(data[0] == 0x11)
                         {
-                            if(data[1] == 0x09) 
+                            if(data[1] == 0x02)
                             {
-                                System.out.println("(Charger) Acknowledgment OK");
-                                System.out.println("Continue to state 13, Data: "+ Int2String(data));
-                                sendChargingPreUpdate();
-                                currentState = 13;
+                                sendBatteryChargingState(); //This MAY be so slow, this is sending after 3 CEC's were sent
                             }
                         }
                         break;
@@ -229,17 +225,17 @@ public class ChargerGBT
                 else if(currentState == 10) //This state is not used, remove later
                 {
                     //System.out.println("(Charger) Charger OK, updating details");
-                    //System.out.println("Continue to state 11, Data: "+ Int2String(data));
+                    System.out.println("Continue to state 11");
                     currentState = 11;
                 }
                 break;
                 
             case 0x1812F456:
-                if(currentState == 13) 
+                if(currentState == 12) 
                 {
+                    System.out.println("Happy Packets");
                     System.out.println("(Charger) Charger OK, updating details");
                     System.out.println("Data: "+ Int2String(data));
-                    currentState = 10;
                 }
                 break;
                 
@@ -268,6 +264,22 @@ public class ChargerGBT
         return Arrays.toString(data);
     }
     
+    public void sendBatteryChargingState()  //BCS
+    {
+        int[] msg1 = {0x01, 0xE3, 0x0D, 0xA0, 0x0F, 0x4C, 0x19, 0x5A};  //Should not be hardcoded
+        int[] msg2 = {0x02, 0x3C, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  //Should not be hardcoded
+        try 
+        {
+            handler.writeMessage(0x1CEB56F4, msg1);
+            handler.writeMessage(0x1CEB56F4, msg2);
+        } 
+        catch (IOException ex) 
+        {
+            ex.printStackTrace();
+            Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    
     public void startSendHandshake()
     {
         isHandshakeExecutorOn = true;
@@ -277,7 +289,8 @@ public class ChargerGBT
 	    @Override
 	    public void run() 
 	    {
-                int[] data = {settings.getSetting(19)};
+                //int[] data = {settings.getSetting(19)};
+                int[] data = {0xA0, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  //Should not be hardcoded - Maximum allowble voltage 0FA0 = 4000 (400V)
                 try 
                 {
                     handler.writeMessage(0x182756F4, data);
@@ -379,7 +392,8 @@ public class ChargerGBT
         }
 
         //Fifth-Seventh Message are all reserved..
-        int[] chg = {0x05, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00};
+        int[] chg = {0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+        
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg);
@@ -391,6 +405,7 @@ public class ChargerGBT
         }
 
         chg[0] = 0x06;
+        
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg);
@@ -514,16 +529,37 @@ public class ChargerGBT
     {
         //b[0-1] = Max Charge Voltage b[2-3] = Max Charge Current, b[4] = Mode 01 = Const. Voltage, 02 Const. Current
         //b[5-7] = Unused
-        int[] chg = {settings.getSetting(19)*10,(settings.getSetting(19)*10)>>8,40000-(settings.getSetting(20)*100),(40000-(settings.getSetting(20)*100))>>8,0x01,0xFF,0xFF,0xFF};
+        int[] chg1 = {settings.getSetting(19)*10,(settings.getSetting(19)*10)>>8,40000-(settings.getSetting(20)*100),(40000-(settings.getSetting(20)*100))>>8,0x01,0xFF,0xFF,0xFF};
+        
+        int[] chg2 = {0x10, 0x09, 0x00, 0x02, 0xFF, 0x00, 0x11, 0x00};  //Leave this hardcoded (FINE)
+        
+        int[] chg3 = {0x05, 0x5F, 0x0A, 0x32, 0x14, 0x00, 0xD0, 0xFF};  //This is hardcodded fix later (FIX THIS!
+        
         Runnable packet1 = new Runnable() 
-	{            
+	{
+            int count = 0;  // for 250ms
+            int count2 = 0;
+            
 	    @Override
 	    public void run() 
 	    {
                 try 
                 {
                     //handler.writeMessage(0x100956F4, chg);
-                    handler.writeMessage(0x181056F4, chg);
+                    
+                    handler.writeMessage(0x181056F4, chg1);  //10ms
+                    
+                    if(++count == 25)
+                    {
+                        handler.writeMessage(0x1cec56f4, chg2);  //250ms
+                        count = 0;
+                    }
+                    
+                    if(++count2 == 1000)
+                    {
+                        handler.writeMessage(0x181356F4, chg3);
+                        count2 = 0;
+                    }
                 } 
                 catch (IOException ex) 
                 {
@@ -536,55 +572,21 @@ public class ChargerGBT
         this.isChargeExecutorOn = true;
 	this.chargeExecutor = Executors.newScheduledThreadPool(1);
 	this.chargeExecutor.scheduleAtFixedRate(packet1, 0, 10, TimeUnit.MILLISECONDS);
-        
-        Runnable packet2 = new Runnable() 
-	{            
-	    @Override
-	    public void run() 
-	    {
-                try 
-                {
-                    //handler.writeMessage(0x100956F4, chg);
-                    handler.writeMessage(0x1cec56f4, chg);
-                } 
-                catch (IOException ex) 
-                {
-                    ex.printStackTrace();
-                    Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
-                }
-	    }
-	};
-        
-        ScheduledExecutorService exePacket2 = Executors.newScheduledThreadPool(1);
-	exePacket2.scheduleAtFixedRate(packet1, 0, 250, TimeUnit.MILLISECONDS);
-        
-        Runnable packet3 = new Runnable() 
-	{            
-	    @Override
-	    public void run() 
-	    {
-                try 
-                {
-                    //handler.writeMessage(0x100956F4, chg);
-                    handler.writeMessage(0x18156F4, chg);
-                } 
-                catch (IOException ex) 
-                {
-                    ex.printStackTrace();
-                    Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
-                }
-	    }
-	};
-        
-        ScheduledExecutorService exePacket3 = Executors.newScheduledThreadPool(1);
-	exePacket3.scheduleAtFixedRate(packet1, 0, 10, TimeUnit.MILLISECONDS);
     }
      
-    public void sendChargingPreUpdate() {
+    public void sendChargingPreUpdate() 
+    {
         int[] chg = {0x10, 0x09, 0x00, 0x02, 0xFF, 0x00, 0x11, 0x00};
-        try {
+        
+        try 
+        {
             handler.writeMessage(0x1CEC56F4, chg);
-        } catch (IOException ex) {
+            
+            
+            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        catch (IOException ex) 
+        {
             ex.printStackTrace();
             Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -637,7 +639,14 @@ public class ChargerGBT
         }
      }
     
-    public void stopCharging() {
+    public void stopCharging() //not needed for prototype
+    {        
+        if(this.isChargeExecutorOn)
+        {
+            this.chargeExecutor.shutdown();
+        }
+        this.isChargeExecutorOn = false;
+        /*
         if(this.isHandshakeExecutorOn)
         {
             this.handshakeExecutor.shutdown();
@@ -646,14 +655,17 @@ public class ChargerGBT
          
         int[] chg = {0x40,0,0,0xF0,0xCC,0xCC,0xCC,0xCC};
         
-         Runnable Identification = new Runnable() 
+        Runnable Identification = new Runnable() 
 	{            
 	    @Override
 	    public void run() 
 	    {
-                try {
+                try 
+                {
                     handler.writeMessage(0x101956F4, chg);
-                } catch (IOException ex) {
+                } 
+                catch (IOException ex) 
+                {
                     ex.printStackTrace();
                     Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -663,6 +675,6 @@ public class ChargerGBT
         this.isStoppedExecutorOn = true;
 	this.chargeExecutor = Executors.newScheduledThreadPool(1);
 	this.chargeExecutor.scheduleAtFixedRate(Identification, 0, 10, TimeUnit.MILLISECONDS);
-        
+        */
     }
 }

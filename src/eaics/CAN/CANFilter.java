@@ -281,7 +281,7 @@ public class CANFilter
                 break;//throttle command
                 
                 //ADD GBT charger can packet passing to:
-            case 0x1826F456: case 0x1801F456: case 0x1CECF456: case 0x1807F456: case 0x1808F456: case 0x100AF456:
+            case 0x1826F456: case 0x1801F456: case 0x1CECF456: case 0x1807F456: case 0x1808F456: case 0x100AF456: case 0x1812F456: case 0x101AF456:
                 chargerGBT.handleCharger(message);
                 break;
                 
