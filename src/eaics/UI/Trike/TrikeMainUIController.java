@@ -128,19 +128,6 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
-    private void handleKillThrottle(ActionEvent event) throws IOException 
-    {
-        throttleSlider.setValue(0.0);
-        manualOverride = true;
-        CANFilter.getInstance().getCANHandler(0).writeMessage(1000, new int[]{0});
-    }
-    
-    @FXML
-    private void handleReset(ActionEvent event) throws IOException {
-        manualOverride = false;
-    }
-    
-    @FXML
     private void handleSERReset(ActionEvent event) throws IOException 
     {
         serial.disconnect();

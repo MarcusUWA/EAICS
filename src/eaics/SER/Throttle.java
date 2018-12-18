@@ -95,8 +95,8 @@ public class Throttle
                 }
                 catch(IOException e)
                 {
-                    System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
-                    e.printStackTrace();
+                    //System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
+                    //e.printStackTrace();
                 }
             }
         };

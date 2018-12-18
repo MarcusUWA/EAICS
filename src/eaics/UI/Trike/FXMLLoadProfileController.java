@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -68,13 +69,12 @@ public class FXMLLoadProfileController implements Initializable
     public void initData(MainUIController gui, Throttle throttle) 
     {
         this.gui = gui;
-        gui.setOverrideStatus(true);
         this.throttle = throttle;
     }
     
     public void loadFile(String path) throws FileNotFoundException, IOException 
     {
-        path = "/home/pi/LoadProfiles/testLP.csv";
+        //path = "/home/pi/LoadProfiles/testLP.csv";
         status = true;
         //clear list
         lines.clear();
@@ -82,6 +82,11 @@ public class FXMLLoadProfileController implements Initializable
         try 
         {
             BufferedReader br = new BufferedReader(new FileReader(path));
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Load Successful");
+            alert.setContentText("The load profile has been successfully loaded and is ready to be run.");
+            alert.show();
             
             String line = null;
 
@@ -138,6 +143,10 @@ public class FXMLLoadProfileController implements Initializable
         catch(FileNotFoundException e) 
         {
             System.out.println("File not found...");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("File Not Found Exception");
+            alert.setContentText("This file was not found, please check the file path and try again");
+            alert.show();
         }
     }
     
@@ -156,8 +165,11 @@ public class FXMLLoadProfileController implements Initializable
     @FXML
     private void handleStop(ActionEvent event) throws IOException 
     {
-        System.out.println("STOP BUTTON PRESSED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         stopLoadProfile();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Stopped Load Profile");
+        alert.setContentText("The load profile has now been stopped. Manual throttle control is now in command.");
+        alert.show();
     }
     
     private ScheduledExecutorService executor;
@@ -170,6 +182,12 @@ public class FXMLLoadProfileController implements Initializable
         {
             isRunning = true;
             throttle.setIsUsingManualThrottle(false);
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Running Load Profile");
+            alert.setContentText("The load profile is now running.");
+            alert.show();
+            
             //ensure that array is not empty
             if(!lines.isEmpty()&&status) 
             {
@@ -225,6 +243,7 @@ public class FXMLLoadProfileController implements Initializable
     @FXML
     private void handleExit(ActionEvent event) throws IOException 
     {
+        stopLoadProfile();
         Stage stage = (Stage) exit.getScene().getWindow();
         stage.close();
     }

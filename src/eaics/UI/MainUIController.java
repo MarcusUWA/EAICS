@@ -52,14 +52,4 @@ public abstract class MainUIController implements Initializable
     public abstract void refreshIP() throws IOException;
     
     public abstract void initData(LoadCell loadCell, Serial serial, Throttle throttle) throws IOException ;
-    
-    public boolean getOverrideStatus() {
-        return manualOverride;
-    }
-    
-    public void setOverrideStatus(boolean mode) {
-        manualOverride = mode;
-    }
-    
-    
 }
