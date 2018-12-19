@@ -74,51 +74,49 @@ public class ChargerGBT
         
         switch(CANID) 
         {
-            case 0x1826F456:
-                System.out.println("-->Handshake in");
-                //if in initial start mode
+            case 0x1826F456: // CHM, charger protocol number (sent every 250ms)
+                // Initially waiting for charger to initiate the handshake
                 if(currentState == 0) 
                 {
-                    System.out.println("Continue to state 1, Data: "+ Int2String(data));
+                    System.out.println("Received Charger Handshake Message (CHM), send BMS Handshake Messages (BHM). Increment to State 2");
                     startSendHandshake();
                     currentState = 1;
                 }
                 else 
                 {
-                    System.out.println("Incorrect state "+currentState);
+                    System.out.println("Incorrect state=|"+currentState+"|, for CHM ID=1826F456");
                 }
                 break;
                 
-            case 0x1801F456:
+            case 0x1801F456: // CRM
                 switch (currentState) 
                 {
                     case 1:
-                        if(data[0]==0x00) 
+                        if(data[0]==0x00) // Charger is waiting for BMS's ID
                         {
-                            System.out.println("(Charger) Asking for Pre-Identification from BMS");
-                            System.out.println("Continue to state 2, Data: "+ Int2String(data));
+                            System.out.println("Received Charger Identification Message (CRM), increment to state 2");
                             stopSendHandshake();
                             sendTransportCommManagement();
                             currentState = 2;
                         }
                         break;
                     case 3: case 4: //Do not need the accept
-                        if(data[0] == 0xAA) 
+                        if(data[0] == 0xAA) // Charger has accepted BMS's ID
                         {
-                            System.out.println("(Charger) ID Complete State");
-                            System.out.println("Continue to state 5, Data: "+ Int2String(data));
+                            System.out.println("Charger has received BRM, increment to state 5");
+                            System.out.println("Completed handshake phase, continue to charging parameter setting stage");
                             sendPreParameterSettings();
                             currentState = 5;
                         }
                         break;
                     
                     default:
-                        System.out.println("Incorrect state "+currentState);
+                        System.out.println("Incorrect state=|"+currentState+"| CRM ID=1801F456");
                         break;
                 }
                 break;
         
-            case 0x1CECF456:
+            case 0x1CECF456: // BCP
                 switch (currentState) 
                 {
                     case 2:
