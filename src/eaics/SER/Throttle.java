@@ -7,7 +7,6 @@ package eaics.SER;
 
 import eaics.CAN.CANFilter;
 import java.io.IOException;
-import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +23,7 @@ public class Throttle
     {
         throttleSetting = 0;
         startSendThrottleCommands();
-        this.isSendingThrottleCommands = true;
+        this.isSendingThrottleCommands = false;
         this.isUsingManualThrottle = true;
     }
 
@@ -89,14 +88,14 @@ public class Throttle
                     int lowerByte = throttleSetting & 0xFF;
                     if(isSendingThrottleCommands)
                     {
-                        throw new IOException();
                         //filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
+                        filter.getCANHandler(1).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
                         //System.out.println("Sending Throttle CAN: " + throttleSetting);
                     }
                 }
                 catch(IOException e)
                 {
-                    //System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
+                    System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
                     //e.printStackTrace();
                 }
             }

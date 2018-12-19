@@ -475,6 +475,8 @@ public class TrikeMainUIController extends MainUIController
                 
                 double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
                 powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
+                //this could be changed to be read from the EVMS?
+                
                 
                 rpmPB.setProgress((double)esc[0].getRpm() / maxProgress);
 		
@@ -487,14 +489,6 @@ public class TrikeMainUIController extends MainUIController
 		//+------------------------------------------------------------+
                 
                 auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
-                /*
-                try {
-                    handleThrottle(0);
-                }
-                catch(Exception e) {
-                    e.printStackTrace();
-                }*/
-                
                 throttleSlider.setValue(throttle.getThrottleSetting());
             }
             

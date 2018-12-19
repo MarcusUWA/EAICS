@@ -49,7 +49,7 @@ public class BMSSettings
     public BMSSettings()
     {
         //ConfigData(min, max, initial, unit)
-        this.packCapacity = new ConfigData(5, 1250, 100, "Ah");
+        this.packCapacity = new ConfigData(5, 1250, 10, "Ah");
         this.socWarning = new ConfigData(0, 99, 20, "%");
         this.fullVoltage = new ConfigData(10, 502, 402, "V");
         this.warnCurrent = new ConfigData(10, 1210, 500, "A");

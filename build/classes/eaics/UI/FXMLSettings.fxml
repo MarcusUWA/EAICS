@@ -52,5 +52,6 @@
       <Button layoutX="30.0" layoutY="256.0" mnemonicParsing="false" onAction="#handleCalibrateLoadCell" prefHeight="39.0" prefWidth="164.0" text="Calib. Load Cell" />
       <Button layoutX="30.0" layoutY="304.0" mnemonicParsing="false" onAction="#handleLogging" prefHeight="39.0" prefWidth="164.0" text="Logging" />
       <ToggleButton fx:id="toggleGBT" layoutX="61.0" layoutY="362.0" mnemonicParsing="false" onAction="#toggleButtonAction" text="GBT Charger" />
+      <ToggleButton fx:id="testMGL" layoutX="578.0" layoutY="376.0" mnemonicParsing="false" onAction="#handleTestMGL" prefHeight="27.0" prefWidth="164.0" text="Test MGL Monitor" />
    </children>
 </AnchorPane>

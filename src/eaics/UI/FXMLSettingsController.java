@@ -13,6 +13,11 @@ import eaics.SER.Serial;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,7 +38,7 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.6.0.0";
+    String version = "3.6.1.6";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     FXMLConnectWifiController wifiConnectController;
@@ -190,7 +195,8 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleResetSOC(ActionEvent event) throws IOException
     {
-        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
+        //filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
+        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{90});
     }
 
     @FXML
@@ -377,5 +383,87 @@ public class FXMLSettingsController implements Initializable
             System.out.println("Failed to open LoadCell Calibrarion Window");
             e.printStackTrace();
         }
+    }
+    
+    @FXML
+    ToggleButton testMGL;
+    
+    boolean pressed = false;
+    
+    @FXML 
+    private void handleTestMGL(ActionEvent event) {
+        
+        pressed = !pressed;
+        
+        ScheduledExecutorService fourSecExecutor = null;
+        
+        ScheduledExecutorService fiveHundredMSExecutor = null;
+        
+        ScheduledExecutorService twoHundredMSExecutor = null;
+        
+        if(pressed == true) {
+            Runnable Id = new Runnable() {            
+                @Override
+                public void run() {
+                    try {
+                        //sent every 4 secs
+                        filter.getCANHandler(0).writeMessage(0x201, new int[]{0,0,0,0,0,0,0,0});
+                        //filter.getCANHandler(0).writeMessage(0x202, new int[]{0,0,0,0,0,0,0,0});
+                        System.out.println("outputting 4s message to MGL");
+                    } 
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            fourSecExecutor = Executors.newScheduledThreadPool(1);
+            fourSecExecutor.scheduleAtFixedRate(Id, 0, 4, TimeUnit.SECONDS);
+
+            Runnable Id2 = new Runnable() {            
+                @Override
+                public void run() {
+                    try {
+                        //sent every 500ms the next few seconds
+                        //temperature messages
+                        filter.getCANHandler(0).writeMessage(0x202, new int[]{0,1,0,2,0,3,0,4});
+                        filter.getCANHandler(0).writeMessage(0x203, new int[]{0,1,0,2,0,3,0,4});
+                        filter.getCANHandler(0).writeMessage(0x204, new int[]{0,1,0,2,0,3,0,4});
+                        //raw ADC
+                        filter.getCANHandler(0).writeMessage(0x205, new int[]{0,1,0,2,0,3,0,4});
+                        //ADC
+                        filter.getCANHandler(0).writeMessage(0x206, new int[]{0,1,0,2,0,3,0,4});
+
+                        filter.getCANHandler(0).writeMessage(0x207, new int[]{0,50,0,0,0,0,0,0});
+                    } 
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            fiveHundredMSExecutor = Executors.newScheduledThreadPool(1);
+            fiveHundredMSExecutor.scheduleAtFixedRate(Id2, 0, 500, TimeUnit.MILLISECONDS);
+
+            Runnable Id3 = new Runnable() {            
+                @Override
+                    public void run() {
+                    try {
+                        //sent every 200ms
+                        filter.getCANHandler(0).writeMessage(0x208, new int[]{0,0xFF,0,0xAA,0,2,0,3});
+                    } 
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            twoHundredMSExecutor = Executors.newScheduledThreadPool(1);
+            twoHundredMSExecutor.scheduleAtFixedRate(Id3, 0, 200, TimeUnit.MILLISECONDS);   
+                
+            
+        }
+        else {
+            fourSecExecutor.shutdown();
+            fiveHundredMSExecutor.shutdown();
+            twoHundredMSExecutor.shutdown();
+        }      
     }
 }

@@ -37,6 +37,14 @@ public class ChargerGBT
     int currentState = 0;
     private boolean isStoppedExecutorOn;
     
+    private int maxChargeVoltage;
+    private int maxChargeCurrent;
+    private int packCapacity;
+    private int stateOfCharge;
+    private int fullVoltage;
+    private int bmsMaxVoltage;
+    private int evmsMaxTemp;
+    
     public ChargerGBT(CANFilter filter)
     {
         isHandshakeExecutorOn = false;
@@ -45,6 +53,13 @@ public class ChargerGBT
         this.evms = (EVMS_v3)filter.getEVMS_v3();
         this.settings = EAICS_Settings.getInstance().getBmsSettings();
         this.handler = filter.getCANHandler(0);
+        this.maxChargeVoltage = settings.getSetting(19);
+        this.maxChargeCurrent = settings.getSetting(20);
+        this.packCapacity = settings.getSetting(0);
+        this.stateOfCharge = settings.getSetting(1);
+        this.fullVoltage = settings.getSetting(2);
+        this.bmsMaxVoltage = settings.getSetting(14);
+        this.evmsMaxTemp = settings.getSetting(5);
     }
     
     public void setChargeMode(Boolean mode)
@@ -264,37 +279,20 @@ public class ChargerGBT
         return Arrays.toString(data);
     }
     
-    public void sendBatteryChargingState()  //BCS
-    {
-        int[] msg1 = {0x01, 0xE3, 0x0D, 0xA0, 0x0F, 0x4C, 0x19, 0x5A};  //Should not be hardcoded
-        int[] msg2 = {0x02, 0x3C, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  //Should not be hardcoded
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, msg1);
-            handler.writeMessage(0x1CEB56F4, msg2);
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-            Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-    }
-    
-    public void startSendHandshake()
-    {
+    public void startSendHandshake() {
         isHandshakeExecutorOn = true;
         
-        Runnable Handshake = new Runnable() 
-	{            
+        Runnable Handshake = new Runnable()  {            
 	    @Override
-	    public void run() 
-	    {
-                //int[] data = {settings.getSetting(19)};
-                int[] data = {0xA0, 0x0F, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  //Should not be hardcoded - Maximum allowble voltage 0FA0 = 4000 (400V)
+	    public void run()  {   
+                int[] data = {
+                    maxChargeVoltage&0xFF,  //lower byte of charge voltage
+                    (maxChargeVoltage>>8)&0xFF,  //upper byte
+                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};  //filler data
                 try 
                 {
                     handler.writeMessage(0x182756F4, data);
-                    System.out.println("Sent BHM");
+                    System.out.println("0x182756F4: "+Int2String(data));
                 } 
                 catch (IOException ex) 
                 {
@@ -308,38 +306,44 @@ public class ChargerGBT
 	this.handshakeExecutor.scheduleAtFixedRate(Handshake, 0, 250, TimeUnit.MILLISECONDS);   // Run every second
     }
     
-    public void stopSendHandshake()
-    {
-        if(this.isHandshakeExecutorOn)
-        {
+    public void stopSendHandshake() {
+        if(this.isHandshakeExecutorOn){
             this.handshakeExecutor.shutdown();
         }
         this.isHandshakeExecutorOn = false;
     }
     
-    public void sendTransportCommManagement()
-    {
+    public void sendTransportCommManagement(){
+        //hardcoded message
         int[] data = {0x10,0x29,0x00,0x07,0xFF, 0x00, 0x02,0x00};
-        try 
-        {
+        try {
             handler.writeMessage(0x1CEC56F4, data);
+            System.out.println("0x1CEC56F4: "+Int2String(data));
         }
-        catch (IOException ex) 
-        {
+        catch (IOException ex)  {
             ex.printStackTrace();
             Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public void sendIdentificationParams() 
-    {        
+    public void sendIdentificationParams() {        
         //First message 
         //b[0] = byte no. = 01, b[1,2,3] = message protocol 
         //b[4] = battery type LiPo=7, b[5-6]=Capacity (Ah), b[7] = Pack Voltage 0.1V (LSB)
-        int[] chg1 = {0x01,0x01,0x01,0x00,0x07, settings.getSetting(0)*10, (settings.getSetting(0)*10)>>8, settings.getSetting(3)};
+        int[] chg1 = {
+            0x01, //byte no. = 01
+            0x01, //b[1,2,3] = message protocol
+            0x01, //b[1,2,3] = message protocol
+            0x00, //b[1,2,3] = message protocol
+            0x07, //b[4] = battery type LiPo=7
+            packCapacity&0xFF, //Capacity (Ah) Low Byte
+            (packCapacity>>8), //Capacity (Ah) High Byte Ah
+            (fullVoltage*10)&0xFF //Rated Voltage of Battery Low Byte 0.1V
+        }; 
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg1);
+            System.out.println("0x1CEB56F4: "+Int2String(chg1));
         } 
         catch (IOException ex) 
         {
@@ -350,10 +354,20 @@ public class ChargerGBT
         //Second message
         //b[0] = byte no. = 02, b[1] = Pack Voltage 0.1V (MSB)
         //b[2-5] = Batt Manuf. Name (ASCII), b[6-7] = Batt Ser (LSB)
-        int[] chg2 = {0x02, settings.getSetting(3)>>8,0x45, 0x4C, 0x41, 0x45, 0x00, 0x00};
+        int[] chg2 = {
+            0x02,  //byte no. = 02
+            (fullVoltage*10)>>8, //Max Voltage High Byte
+            0x45, //E - Ascii
+            0x4C, //L - Ascii
+            0x41, //A - Ascii
+            0x45, //E - Ascii
+            0x00, //Batt serial
+            0x00 //Batt serial
+        };
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg2);
+            System.out.println("0x1CEB56F4: "+Int2String(chg2));
         } 
         catch (IOException ex) 
         {
@@ -365,10 +379,20 @@ public class ChargerGBT
         //b[0] = byte no. = 03, b[1-2] = Batt SER (MSB)
         //b[3] = Prod Yr (1985-2235), b[4] = Prod Month (1-12), b[5] = Prod Day(1-31)
         //b[6-7] = No. Times charged (LSB)
-        int[] chg3 = {0x03, 0x00, 0x00, 18, 12, 12, 0x00, 0x00};
+        int[] chg3 = {
+            0x03, //packet no. = 03
+            0x00, //Batt serial
+            0x00, //Batt Serial
+            18, // Prod Yr (1985-2235)
+            12, //Prod Month (1-12)
+            12, //Prod Day(1-31)
+            0x00, //no. times charged
+            0x00 //no times charged
+        };
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg3);
+            System.out.println("0x1CEB56F4: "+Int2String(chg3));
         } 
         catch (IOException ex) 
         {
@@ -378,12 +402,22 @@ public class ChargerGBT
 
         //Fourth message
         //b[0] = byte no. = 04, b[1] = No. Times charged (MSB)
-        //b[2] = owner (0=leased) , b[3] = Res, b[4-7] = VIN
+        //b[2] = owner (0=leased) , b[3] = Res, b[4-5] = VIN
         //b[6-7] = No. Times charged (LSB)
-        int[] chg4 = {0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00};
+        int[] chg4 = {
+            0x04, //Packet no. = 4
+            0x00, //Times charged
+            0x00, //Owner (0=leased)
+            0x00, // Res
+            0x01, //VIN
+            0x00, //VIN
+            0x00, //Times charged
+            0x00  //Times charged
+        };
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg4);
+            System.out.println("0x1CEB56F4: "+Int2String(chg4));
         } 
         catch (IOException ex) 
         {
@@ -392,11 +426,21 @@ public class ChargerGBT
         }
 
         //Fifth-Seventh Message are all reserved..
-        int[] chg = {0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+        int[] chg = {
+            0x05, 
+            0x00, 
+            0x00, 
+            0x00, 
+            0x00, 
+            0x00, 
+            0x00, 
+            0x00
+        };
         
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg);
+            System.out.println("0x1CEB56F4: "+Int2String(chg));
         } 
         catch (IOException ex) 
         {
@@ -409,6 +453,7 @@ public class ChargerGBT
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg);
+            System.out.println("0x1CEB56F4: "+Int2String(chg));
         } 
         catch (IOException ex) 
         {
@@ -420,6 +465,7 @@ public class ChargerGBT
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg);
+            System.out.println("0x1CEB56F4: "+Int2String(chg));
         } 
         catch (IOException ex) 
         {
@@ -430,10 +476,20 @@ public class ChargerGBT
     
     public void sendPreParameterSettings()
     {
-        int[] chg = {0x10, 0x0D, 0x00, 0x02, 0xFF, 0x00, 0x06, 0x00};
+        int[] chg = {
+            0x10, 
+            0x0D, 
+            0x00, 
+            0x02, 
+            0xFF, 
+            0x00, 
+            0x06, 
+            0x00
+        };
         try 
         {
             handler.writeMessage(0x1CEC56F4, chg);
+            System.out.println("0x1CEC56F4: "+Int2String(chg));
         } catch (IOException ex) 
         {
             ex.printStackTrace();
@@ -447,10 +503,21 @@ public class ChargerGBT
         //b[0] = byte no. = 01, b[1-2] = Max Voltage of single cell (0.01V)
         //b[3-4] = Max charge current 40000 - 100*Curr(A) , b[5-6] = Battery energy 0.1kWh
         //b[7] = Charging Voltage (0.1V)
-        int[] chg1 = {0x01, settings.getSetting(14)*100, (settings.getSetting(14)*100)>>8, 40000-(settings.getSetting(20)*100), (40000-(settings.getSetting(20)*100))>>8, settings.getSetting(0)*settings.getSetting(19)*10, (settings.getSetting(0)*settings.getSetting(19)*10)>>8, settings.getSetting(19)*10};
+        int[] chg1 = {
+            0x01, //Packet No. = 1
+            (bmsMaxVoltage/10)&0xFF, 
+            (bmsMaxVoltage/10)>>8, 
+            (40000-maxChargeCurrent*100)&0xFF, 
+            (40000-(maxChargeCurrent*100))>>8, 
+            (packCapacity*maxChargeVoltage/100)&0xFF, 
+            (packCapacity*maxChargeVoltage/100)>>8, 
+            (maxChargeVoltage*10)&0xFF
+        };
+        
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg1);
+            System.out.println("0x1CEB56F4: "+Int2String(chg1));
         } 
         catch (IOException ex) 
         {
@@ -463,29 +530,23 @@ public class ChargerGBT
         //b[2-3] = Max Temp 200-1*Temp, b[4-5] = SoC (0.1%), 
         //b[6-7] = No. Times charged (LSB)
         //int[] chg2 = {0x02, (settings.getSetting(19)*10)>>8, 200-settings.getSetting(5), (int)(evms.getAmpHours()*1000/settings.getSetting(0)), (int)((evms.getAmpHours()*1000/settings.getSetting(0)))>>8, (int)evms.getVoltage(), (int)(settings.getSetting(0)*settings.getSetting(19)*10)>>8, settings.getSetting(19), 0xFF};
-        int maxAllowableTotalCharge = settings.getSetting(19) * 10 >> 8;
-        int maxAllowableTemp = 200-settings.getSetting(5);  //Possibly wrong formula, there is a limit to what you can send, if you break the bounds the charger will not accept it and will say there is a malfunction
-        int batteryStateOfCharge = (int)(evms.getAmpHours()*1000/settings.getSetting(0));
-        int upperByte = batteryStateOfCharge >> 8;
-        int lowerByte = batteryStateOfCharge & 0xFF;
-        //
-        int currentBatteryVoltage = (int)evms.getVoltage();
         
         // Marcus, we need to splite the SOC and Battery voltage accross two bytes
         int[] chg2 = {  
-                        0x02,   
-                        0x0F,//maxAllowableTotalCharge,
-                        0x64,//maxAllowableTemp, 
-                        0x84,//lowerByte,
-                        0x03,//upperByte,
-                        0x10,
-                        0x0E,
+                        0x02,//packet number =  2
+                        (maxChargeVoltage*10) >> 8,//maxAllowableTotalCharge,
+                        (200-evmsMaxTemp)&0xFF,
+                        ((int)evms.getAmpHours()*1000/packCapacity)&0xFF,
+                        (int)(evms.getAmpHours()*1000/packCapacity)>>8,
+                        ((int)evms.getVoltage()*10)&0xFF,
+                        (int)(evms.getVoltage()*10)>>8,
                         0xFF
                       };
         
         try 
         {
             handler.writeMessage(0x1CEB56F4, chg2);
+            System.out.println("0x1CEB56F4: "+Int2String(chg2));
         } 
         catch (IOException ex) 
         {
@@ -507,6 +568,7 @@ public class ChargerGBT
                 try 
                 {
                     handler.writeMessage(0x100956F4, chg1);
+                    System.out.println("0x100956F4: "+Int2String(chg1));
                 } 
                 catch (IOException ex) 
                 {
@@ -529,10 +591,18 @@ public class ChargerGBT
     {
         //b[0-1] = Max Charge Voltage b[2-3] = Max Charge Current, b[4] = Mode 01 = Const. Voltage, 02 Const. Current
         //b[5-7] = Unused
-        int[] chg1 = {settings.getSetting(19)*10,(settings.getSetting(19)*10)>>8,40000-(settings.getSetting(20)*100),(40000-(settings.getSetting(20)*100))>>8,0x01,0xFF,0xFF,0xFF};
+        int[] chg1 = {
+            (maxChargeVoltage*10)&0xFF,
+            (maxChargeVoltage*10)>>8,
+            ((400-maxChargeCurrent)*10)&0xFF,
+            ((400-maxChargeCurrent)*10)>>8,
+            0x01, //constant voltage mode
+            0xFF,0xFF,0xFF
+        };
         
         int[] chg2 = {0x10, 0x09, 0x00, 0x02, 0xFF, 0x00, 0x11, 0x00};  //Leave this hardcoded (FINE)
         
+        //TODO: - Find out what is oging on with this Packet!!!!
         int[] chg3 = {0x05, 0x5F, 0x0A, 0x32, 0x14, 0x00, 0xD0, 0xFF};  //This is hardcodded fix later (FIX THIS!
         
         Runnable packet1 = new Runnable() 
@@ -545,19 +615,21 @@ public class ChargerGBT
 	    {
                 try 
                 {
-                    //handler.writeMessage(0x100956F4, chg);
                     
                     handler.writeMessage(0x181056F4, chg1);  //10ms
+                    System.out.println("0x181056F4: "+Int2String(chg1));
                     
                     if(++count == 25)
                     {
                         handler.writeMessage(0x1cec56f4, chg2);  //250ms
+                        System.out.println("0x1CEC56F4: "+Int2String(chg2));
                         count = 0;
                     }
                     
                     if(++count2 == 1000)
                     {
                         handler.writeMessage(0x181356F4, chg3);
+                        System.out.println("0x181356F4: "+Int2String(chg3));
                         count2 = 0;
                     }
                 } 
@@ -576,14 +648,14 @@ public class ChargerGBT
      
     public void sendChargingPreUpdate() 
     {
+        //hardcoded
         int[] chg = {0x10, 0x09, 0x00, 0x02, 0xFF, 0x00, 0x11, 0x00};
         
         try 
         {
             handler.writeMessage(0x1CEC56F4, chg);
+            System.out.println("0x1CEC56F4: "+Int2String(chg));
             
-            
-            System.out.println("HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         catch (IOException ex) 
         {
@@ -592,7 +664,7 @@ public class ChargerGBT
         }
      }
      
-    public void sendChargingUpdate() {
+    public void sendBatteryChargingState() {
          //First message
         //b[1] = data no., b[1-2] = charging voltage
         //b[3-4] =  Charge Current, b[5] = highest cell
@@ -617,27 +689,36 @@ public class ChargerGBT
 	    }
 	}
         
-        int[] chg1 = {0x01, 
-            settings.getSetting(19)*10,
-            (settings.getSetting(19)*10)>>8, 
-            40000-(settings.getSetting(20)*100),
-            (40000-(settings.getSetting(20)*100))>>8, 
-            maxVoltage/10, 
-            ((maxVoltage/10)>>8)<<4&0xF0+0x01, 
-            (int)evms.getAmpHours()*100/settings.getSetting(0)};
-        
-        int[] chg2 = {0x02, 
-            (int)(settings.getSetting(0)-evms.getAmpHours())*60/settings.getSetting(20), 
-            (int)(settings.getSetting(0)-evms.getAmpHours())*60/settings.getSetting(20)>>8, 
+        int[] chg1 = {
+            0x01, 
+            (maxChargeVoltage*10)&0xFF,
+            (maxChargeVoltage*10)>>8, 
+            40000-(maxChargeCurrent*100)&0xFF,
+            (40000-(maxChargeCurrent*100))>>8, 
+            (maxVoltage/10)&0xFF,  //max cell votlage lower byte
+            ((maxVoltage/10)>>8)<<4 &0xF0 + 0x01, //max cell voltage upper half--byte and posisiton (at 1)
+            (int)evms.getAmpHours()*100/packCapacity
+        };
+        /*
+        System.out.println("---------Ah:" + (int)evms.getAmpHours());
+        System.out.println("---------Ah without typoecast:" + evms.getAmpHours());
+        System.out.println("---------Capacity:"+ packCapacity);
+        */
+        int[] chg2 = {
+            0x02, 
+            ((int)(packCapacity-evms.getAmpHours())*60/maxChargeCurrent)&0xFF, 
+            (int)((packCapacity-evms.getAmpHours())*60/maxChargeCurrent)>>8, 
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
         try {
             handler.writeMessage(0x1CEB56F4, chg1);
+            System.out.println("0x1CEB56F4: "+Int2String(chg1));
             handler.writeMessage(0x1CEB56F4, chg2);
+            System.out.println("0x1CEB56F4: "+Int2String(chg2));
         } catch (IOException ex) {
             ex.printStackTrace();
             Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }
+    }
     
     public void stopCharging() //not needed for prototype
     {        
