@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.LOGGING.JavaSFTP;
 import eaics.Settings.VirtualKeyboard;
 import java.io.IOException;
 import java.net.URL;
@@ -13,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -25,10 +27,22 @@ import javafx.stage.Stage;
 public class FXMLSendLogsController implements Initializable {
 
     @FXML
-    TextField path;
+    TextField pathTo;
+    
+    @FXML
+    TextField pathFrom;
+    
+    @FXML
+    TextField compressedName;
     
     @FXML
     TextField ip;
+    
+    @FXML
+    TextField user;
+    
+    @FXML
+    PasswordField pass;
     
     @FXML
     Button closeButton;
@@ -41,6 +55,8 @@ public class FXMLSendLogsController implements Initializable {
     
     @FXML 
     VBox root;
+    
+    JavaSFTP ftp;
     
     /**
      * Initializes the controller class.
@@ -61,21 +77,31 @@ public class FXMLSendLogsController implements Initializable {
         vkb.view().setStyle("-fx-border-color: darkblue; -fx-border-radius: 5;");
         root.getChildren().addAll(vkb.view());
     }
+    
     @FXML
-    private void deleteLogsButtonAction(ActionEvent event) throws IOException {
+    private void sendFileAction(ActionEvent event) throws IOException {
+        
+        ftp = new JavaSFTP();
+        ftp.openTunnel(user.getText(), ip.getText(), pass.getText());
+        
+        ftp.sendFile(pathFrom.getText(), pathTo.getText());
+        
+        ftp.closeTunnel();
+    }
+    
+    @FXML
+    private void deleteLogsAction(ActionEvent event) throws IOException{
         Runtime.getRuntime().exec("rm /home/pi/Logging/*");
     }
     
     @FXML
     private void sendLogsAction(ActionEvent event) {
-        String command = "scp -r /home/pi/Logging "+ip.getText()+":"+path.getText();
         
-        System.out.println("IP: "+ ip.getText() +"Path: " + path.getText());
-        //Runtime.getRuntime().exec(command);
+        ftp = new JavaSFTP();
         
+        ftp.openTunnel(user.getText(), ip.getText(), pass.getText());
+        ftp.sendFolder("/home/pi/Logging", pathTo.getText(), compressedName.getText());
+        
+        ftp.closeTunnel();
     }
-    
-    
-    
-    
 }
