@@ -270,6 +270,10 @@ public class CANFilter
             case 0x1CEB56F4:    //BRM (data about the BMS)
                 break;
                 
+                //MGL Monitor Polling message
+            case 0x11: case 0x12:
+                break;
+                
             case 0x81FF456:     //Timeout
                 System.out.println("Timeout");
                 break;
