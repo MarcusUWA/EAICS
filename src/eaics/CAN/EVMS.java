@@ -23,6 +23,9 @@ public class EVMS
     
     private int error;
     private int status;
+    
+    private int charge;     // EVMS version 2 only
+    private int current;    // EVMS version 2 only
 
     public EVMS()
     {
@@ -36,9 +39,12 @@ public class EVMS
         
         this.error = 0;
         this.status = 0;
+        
+        this.charge = 0;
+        this.current = 0;
     }
-
-    public void setAll(CANMessage message)
+    
+    public void setEVMS_v3(CANMessage message)
     {
         double batteryVoltage = message.getByte(4) + (message.getByte(3) << 8);
         this.voltage = batteryVoltage / 10.0;
@@ -56,7 +62,18 @@ public class EVMS
 
         this.error = (message.getByte(0) & 0xF8) >>3;
         
-        this.status = message.getByte(0) & 0x07;
+        this.status = message.getByte(0) & 0x07;      
+    }
+    
+    public void setEVMS_v2(CANMessage message)
+    {
+        this.voltage = message.getByte(2) + ((message.getByte(3) & 0x0F) << 8);
+        this.auxVoltage = message.getByte(5) / 10.0;        //tenths of a volt
+        this.leakage = message.getByte(6);
+        this.temp = message.getByte(7);
+        
+        this.charge = message.getByte(1);
+        this.current = (((message.getByte(3) & 0xF0) >> 4) + (message.getByte(4) << 4)) - 2048;	//current has 2028 added to it      
     }
 
     @Override
@@ -81,56 +98,6 @@ public class EVMS
         outString = "Headlights, Amp Hours, ";
         return outString;
     }
-    
-    // EVMS Version 2 code
-    
-    /*
-        private int charge;	//Battery State of Charge (0-100%)
-	private int current;
-		
-	public EVMS_v2()
-	{
-		super();
-		this.charge = 0;
-		this.current = 0;
-	}
-	
-	@Override
-	public void setAll(CANMessage message)
-	{
-		this.charge = message.getByte(1);
-		super.setVoltage( message.getByte(2) + ((message.getByte(3) & 0x0F) << 8) );	
-		this.current = (((message.getByte(3) & 0xF0) >> 4) + (message.getByte(4) << 4)) - 2048;	//current has 2028 added to it
-		super.setAuxVoltage(message.getByte(5) / 10.0);	//tenths of a volt
-		super.setLeakage(message.getByte(6));
-		super.setTemp(message.getByte(7));
-	}
-	
-	public int getCharge()
-	{
-		return charge;		
-	}
-	
-	public void setCharge(int charge)
-	{
-		this.charge = charge;
-	}
-	
-	public int getCurrent()
-	{
-		return current;
-	}
-	
-	public void setCurrent(int current)
-	{
-		this.current = current;
-	}
-	
-	@Override
-	public String toString()
-	{
-	    return "Charge: " + charge + " Current " + current + super.toString();
-    */
 
     public double getVoltage() {
         return voltage;

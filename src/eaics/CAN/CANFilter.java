@@ -146,10 +146,10 @@ public class CANFilter
 	{
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
-		//evms_v2.setAll(message);
+		evms.setEVMS_v2(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
-		evms.setAll(message);
+		evms.setEVMS_v3(message);
 		break;
                 
                 
