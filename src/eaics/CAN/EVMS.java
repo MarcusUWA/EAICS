@@ -76,29 +76,6 @@ public class EVMS
         this.current = (((message.getByte(3) & 0xF0) >> 4) + (message.getByte(4) << 4)) - 2048;	//current has 2028 added to it      
     }
 
-    @Override
-    public String toString()
-    {
-        String tmp = "";
-        tmp += " Volt: " + voltage + " Aux Volt: " + auxVoltage + " Leakage: " + leakage + " Temp: " + temp;
-        return "AmpHours: " + ampHours + " Headlights " + headlights + tmp;
-    }
-
-    public String getLoggingString()
-    {
-        String outString = "";
-        outString += "Auxillary Voltage, Leakage, EVMS Temperature, EVMS Voltage, ";
-        outString += headlights + ", " + ampHours + ", ";
-        return outString;
-    }
-
-    public static String getLoggingHeadings()
-    {
-        String outString = "";
-        outString = "Headlights, Amp Hours, ";
-        return outString;
-    }
-
     public double getVoltage() {
         return voltage;
     }
