@@ -5,12 +5,12 @@
  */
 package eaics.UI;
 
-import eaics.Settings.BMSSettings;
+import eaics.Settings.EVMSSettings;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
-import eaics.CAN.EVMS_v3;
+import eaics.CAN.EVMS;
 import eaics.SER.LoadCell;
 import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
@@ -132,11 +132,11 @@ public class FXMLBatteryPageController implements Initializable
     
     public void updateScreen()
     {
-        EVMS_v3 evmsV3 = (EVMS_v3)filter.getEVMS_v3();
+        EVMS evmsV3 = (EVMS)filter.getEVMS();
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
         CurrentSensor currentSensor = filter.getCurrentSensor();
-        BMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+        EVMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
 
         //+------------------------------------------------------------+
         //BMS Module 8 (switch set to 8): 1 - 12 Cells

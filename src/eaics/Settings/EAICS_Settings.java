@@ -27,7 +27,7 @@ public class EAICS_Settings
     private static EAICS_Settings instance;
     
     private String filePath;
-    private BMSSettings bmsSettings;
+    private EVMSSettings evmsSettings;
     private PixHawkSettings pixHawkSettings;
     
     private static final String SETTINGS_HEADING = "+-----------------------------------------------+\n";
@@ -37,7 +37,7 @@ public class EAICS_Settings
     private EAICS_Settings()
     {
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
-        this.bmsSettings = new BMSSettings();
+        this.evmsSettings = new EVMSSettings();
         this.pixHawkSettings = new PixHawkSettings();
     }
     
@@ -49,7 +49,7 @@ public class EAICS_Settings
 	    {
                 if(instance == null)
                 {
-		instance = new EAICS_Settings();
+                    instance = new EAICS_Settings();
                 }
 	    }
 	}
@@ -57,9 +57,9 @@ public class EAICS_Settings
 	return instance;
     }
     
-    public BMSSettings getBmsSettings()
+    public EVMSSettings getBmsSettings()
     {
-        return bmsSettings;
+        return evmsSettings;
     }
     
     public PixHawkSettings getPixHawkSettings()
@@ -69,20 +69,15 @@ public class EAICS_Settings
     
     public void update() 
     {
-        try 
-        {
-            bmsSettings.update();
-        } 
-        catch (IOException ex) 
-        {
-            Logger.getLogger(EAICS_Settings.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("Update");
+        evmsSettings.update();
 	pixHawkSettings.update();
 	writeSettings();	
     }
     
     public void loadSettings() 
     {
+        System.out.println("Load Settings");
 	BufferedReader reader;
 		
 	try
@@ -162,7 +157,7 @@ public class EAICS_Settings
                 }
 	    }
             
-            bmsSettings.setSettings(bmsFileString);
+            evmsSettings.setSettings(bmsFileString);
             pixHawkSettings.setSettings(pixHawkFileString);
 	}
         catch(FileNotFoundException e)
@@ -181,6 +176,7 @@ public class EAICS_Settings
     
     public void writeSettings()
     {
+        System.out.println("Write Settings");
 	Writer writer = null;
 	try
 	{
@@ -189,7 +185,7 @@ public class EAICS_Settings
 	    writer.write(SETTINGS_HEADING);
 	    writer.write("\t\t" + SETTINGS_BMS + "\n");
 	    writer.write(SETTINGS_HEADING);
-            writer.write(bmsSettings.getSettingsFileString());
+            writer.write(evmsSettings.getSettingsFileString());
             
             writer.write("\n\n");
             
@@ -203,17 +199,17 @@ public class EAICS_Settings
 	}
 	catch(IOException e)
 	{
-		e.printStackTrace();
+            e.printStackTrace();
 	}
 	finally
 	{
-		try
-		{
-			writer.close();
-		}
-		catch(Exception e)
-		{
-		}
+            try
+            {
+                    writer.close();
+            }
+            catch(Exception e)
+            {
+            }
 	}
     }
 }

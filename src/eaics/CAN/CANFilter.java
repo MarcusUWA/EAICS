@@ -7,7 +7,7 @@ package eaics.CAN;
 
 import eaics.MiscCAN.CANHandler;
 import eaics.MiscCAN.CANMessage;
-import eaics.Settings.BMSSettings;
+import eaics.Settings.EVMSSettings;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,8 +27,7 @@ public class CANFilter
     public static final int numOfBMS = 24;
     public static final int numOfCCB = 3;
 
-    private EVMS_v2 evms_v2;
-    private EVMS_v3 evms_v3;
+    private EVMS evms;
     private ESC[] esc;
     private BMS[] bms;
     private CurrentSensor currentSensor;
@@ -91,8 +90,8 @@ public class CANFilter
         {
             e.printStackTrace();
         }
-        this.evms_v2 = new EVMS_v2();
-        this.evms_v3 = new EVMS_v3();
+
+        this.evms = new EVMS();
 
         this.esc = new ESC[numOfESC];
         for(int ii = 0; ii < numOfESC; ii++)
@@ -147,10 +146,10 @@ public class CANFilter
 	{
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
-		evms_v2.setAll(message);
+		//evms_v2.setAll(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
-		evms_v3.setAll(message);
+		evms.setAll(message);
 		break;
                 
                 
@@ -382,14 +381,9 @@ public class CANFilter
 	this.hasWarnedCAN1Timeout = false;
     }
 
-    public EVMS getEVMS_v2()
+    public EVMS getEVMS()
     {
-	return this.evms_v2;
-    }
-
-    public EVMS getEVMS_v3()
-    {
-	return this.evms_v3;
+	return this.evms;
     }
 
     public ESC[] getESC()

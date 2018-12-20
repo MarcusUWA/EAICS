@@ -10,7 +10,7 @@ import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
-import eaics.CAN.EVMS_v3;
+import eaics.CAN.EVMS;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
@@ -257,7 +257,7 @@ public class TrikeMainUIController extends MainUIController
             public void handle(ActionEvent event) 
 	    {
                 CANFilter filter = CANFilter.getInstance();
-                EVMS_v3 evmsV3 = (EVMS_v3) filter.getEVMS_v3();
+                EVMS evmsV3 = (EVMS) filter.getEVMS();
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
                 CurrentSensor currentSensor = filter.getCurrentSensor();

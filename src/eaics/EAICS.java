@@ -9,7 +9,7 @@ import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
-import eaics.CAN.EVMS_v3;
+import eaics.CAN.EVMS;
 import eaics.FILE.FileWriterCSV;
 import eaics.MiscCAN.CANHandler;
 import eaics.SER.LoadCell;
@@ -150,7 +150,7 @@ public class EAICS extends Application
 		columnData += ", ";
 
 		//EVMS
-		EVMS_v3 evms = (EVMS_v3)filter.getEVMS_v3();
+		EVMS evms = (EVMS)filter.getEVMS();
 		columnData += evms.getLoggingString();
 
 		//BMS

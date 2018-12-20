@@ -195,8 +195,8 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleResetSOC(ActionEvent event) throws IOException
     {
-        //filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
-        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{90});
+        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
+        //filter.getCANHandler(0).writeMessage(0x00000026, new int[]{90});
     }
 
     @FXML
@@ -274,7 +274,8 @@ public class FXMLSettingsController implements Initializable
         }
     }   
     
-    public void initSettings(MainUIController mainGui) {
+    public void initSettings(MainUIController mainGui) 
+    {
         gui = mainGui;
     }
     
