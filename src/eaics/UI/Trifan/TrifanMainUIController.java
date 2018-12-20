@@ -477,6 +477,7 @@ public class TrifanMainUIController extends MainUIController
 		}
 		//System.out.println("hasCANBus0TimedOut: " + filter.hasCANBus0TimedOut());
 		// Check if CAN Bus 0 has timed out
+                /*
 		if(filter.hasCANBus0TimedOut() && !filter.hasWarnedCAN0Timeout())
 		{
 		    System.out.println("CAN bus 0 timeout - pop up message");
@@ -523,7 +524,7 @@ public class TrifanMainUIController extends MainUIController
 		    
                     filter.hasWarnedCAN1Timeout(true);    
 		}
-		*/
+		
 		if(!filter.hasCANBus0TimedOut())
 		{
 		    try 
@@ -553,7 +554,7 @@ public class TrifanMainUIController extends MainUIController
 		    image = new Image(input);
 		    can_icon.setImage(image);
 		}
-                
+                */
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
 		//+------------------------------------------------------------+
