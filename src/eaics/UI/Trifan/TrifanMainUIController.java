@@ -9,7 +9,8 @@ import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
-import eaics.CAN.EVMS_v3;
+import eaics.CAN.EVMS;
+import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
@@ -44,10 +45,10 @@ import javafx.stage.Stage;
  */
 public class TrifanMainUIController extends MainUIController
 {    
+    private Logging logging;
+    
     @FXML
     Button buttonSettings;   
-    @FXML
-    Button buttonTare;
     
     // Big Labels - Top of Page ----------------------------------------------
     
@@ -126,6 +127,7 @@ public class TrifanMainUIController extends MainUIController
     private ImageView can_icon;
     @FXML 
     private ImageView status_icon;
+    
     @FXML 
     private Label auxLabel;
     @FXML 
@@ -158,9 +160,9 @@ public class TrifanMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            settings = loader.getController();
-            settings.initSettings(this);
-            settings.initData(loadCell, serial);
+            settingsPageController = loader.getController();
+            settingsPageController.initSettings(this);
+            settingsPageController.initData(loadCell, serial);
         
             Stage stage = new Stage();
         
@@ -190,9 +192,9 @@ public class TrifanMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            batterys = loader.getController();
-            batterys.initSettings(this);
-	    batterys.initData(loadCell);	    
+            batteryPageController = loader.getController();
+            batteryPageController.initSettings(this);
+	    batteryPageController.initData(loadCell);	    
    
             Stage stage = new Stage();
  
@@ -214,17 +216,9 @@ public class TrifanMainUIController extends MainUIController
         }
     } 
     
-    @FXML
-    private void handleTarePressed(ActionEvent event) 
+    public void initData(Logging logging, LoadCell cell, Serial serial, Throttle throttle) throws IOException 
     {
-        //send
-        serial.writeData("0");
-        
-    }
-    
-    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException 
-    {
-	this.filter = CANFilter.getInstance();
+        this.logging = logging;
         this.loadCell = cell;
         this.serial = serial;
 	
@@ -239,7 +233,8 @@ public class TrifanMainUIController extends MainUIController
             @Override
             public void handle(ActionEvent event) 
 	    {
-                EVMS_v3 evmsV3 = (EVMS_v3) filter.getEVMS_v3();
+                CANFilter filter = CANFilter.getInstance();
+                EVMS evmsV3 = (EVMS) filter.getEVMS();
 		ESC[] esc = filter.getESC();
 		BMS[] bms = filter.getBMS();
                 CurrentSensor currentSensor = filter.getCurrentSensor();
@@ -248,106 +243,38 @@ public class TrifanMainUIController extends MainUIController
                 Image image;
 		
                 // Warnings ----------------------------------------------------
-                    
-                //Wifi connection icon
-                /*    
-                try {
-  
-                    ip.updateIPAddress();
-                } 
-                catch (IOException ex) {
-                    Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                if(ip.getLANIP().length()>5) {
-                    ipLabel.setText(ip.getLANIP());
-                    
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    wifi_icon.setImage(image);
-                    
-                }
-                else if(ip.getWifiIP().length()>5) {
-                    ipLabel.setText(ip.getWifiIP());
-                    
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/wifi-on.jpg");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    wifi_icon.setImage(image);
-                    
-                }
-                else {
-                    ipLabel.setText("Not Connected");
-                    
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/wifi-off.png");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    wifi_icon.setImage(image);
-                }  
-                */
-                //TODO: Need to conenct this properly...
-                //CAN-Bus connections Icon
-                /*
-                if(counter<timeout) {
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    can_icon.setImage(image);
-                }
-                else {
-                    try {
-                        input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(MainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                            
-                    image = new Image(input);
-                    can_icon.setImage(image);
-                }
-                */
-                
+
                 //EVMS Status Icons
-		if(evmsV3.getStatus()!=status) {
+		//EVMS Status Icons
+		if(evmsV3.getStatus() != status) 
+                {
                     status = evmsV3.getStatus();
 
-                    switch(status) {
+                    switch(status) 
+                    {
                         //idle state
                         case 0:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/idle.png");
-                               // input = new FileInputStream(getClass().getResource("/eaics/Resources/idle.png"));
-                               //input = new FileInputStream("eaics/resources/idle.png");
-                            } catch (FileNotFoundException ex) {
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
-                            //image = new Image(this.getClass().getResourceAsStream("eaics/resources/idle.png"));
                             image = new Image(input);
                             status_icon.setImage(image);
                             break;
                         
                         //precharging
                         case 1:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/pre-charge.png");
-                            } catch (FileNotFoundException ex) {
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
@@ -356,9 +283,12 @@ public class TrifanMainUIController extends MainUIController
                             break;
                             
                         case 2:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/running.png");
-                            } catch (FileNotFoundException ex) {
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
@@ -367,9 +297,12 @@ public class TrifanMainUIController extends MainUIController
                             break;
                             
                         case 3:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/charge.png");
-                            } catch (FileNotFoundException ex) {
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
@@ -378,9 +311,12 @@ public class TrifanMainUIController extends MainUIController
                             break;
                             
                         case 4:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/setup.png");
-                            } catch (FileNotFoundException ex) {
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
@@ -389,9 +325,12 @@ public class TrifanMainUIController extends MainUIController
                             break;
                             
                         case 5:
-                            try {
+                            try 
+                            {
                                 input = new FileInputStream("/home/pi/EAICS/images/stopped.png");
-                            } catch (FileNotFoundException ex) {
+                            } 
+                            catch (FileNotFoundException ex) 
+                            {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             
@@ -406,10 +345,11 @@ public class TrifanMainUIController extends MainUIController
 		// Errors
 		if(evmsV3.getError() != 0 && !filter.getHasWarnedError())
 		{
-		    Alert alert = new Alert(AlertType.INFORMATION);
+		    Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING!!!");
                     
-                    switch(evmsV3.getError()) {
+                    switch(evmsV3.getError()) 
+                    {
                         case 1: 
                             alert.setContentText("EVMS Error: Corrupt Settings!");
                             break;
@@ -475,85 +415,7 @@ public class TrifanMainUIController extends MainUIController
 		    alert.show();
                     filter.setHasWarnedChargerOff(true);    
 		}
-		//System.out.println("hasCANBus0TimedOut: " + filter.hasCANBus0TimedOut());
-		// Check if CAN Bus 0 has timed out
-		if(filter.hasCANBus0TimedOut() && !filter.hasWarnedCAN0Timeout())
-		{
-		    System.out.println("CAN bus 0 timeout - pop up message");
-		    Alert alert = new Alert(AlertType.INFORMATION);
-		    alert.setHeaderText("WARNING");
-		    alert.setContentText("CAN Bus 0 has timed out");
-		    alert.show();
-		    
-		    try 
-		    {
-			input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
-		    } 
-		    catch (FileNotFoundException ex) 
-		    {
-			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
-		    }
-                            
-		    image = new Image(input);
-		    can_icon.setImage(image);
-		    
-                    filter.hasWarnedCAN0Timeout(true);  
-		}
-		/*
-		// Check if CAN Bus 1 has timed out
-		if(filter.hasCANBus1TimedOut() && !filter.hasWarnedCAN1Timeout())
-		{
-		    System.out.println("CAN bus 1 timeout");
-		    Alert alert = new Alert(AlertType.INFORMATION);
-		    alert.setHeaderText("WARNING");
-		    alert.setContentText("CAN Bus 1 has timed out");
-		    alert.show();
-		    
-		    try 
-		    {
-			input = new FileInputStream("/home/pi/EAICS/images/CAN-disconn.png");
-		    } 
-		    catch (FileNotFoundException ex) 
-		    {
-			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
-		    }
-                            
-		    image = new Image(input);
-		    can_icon.setImage(image);
-		    
-                    filter.hasWarnedCAN1Timeout(true);    
-		}
-		*/
-		if(!filter.hasCANBus0TimedOut())
-		{
-		    try 
-		    {
-			input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
-		    } 
-		    catch (FileNotFoundException ex) 
-		    {
-			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
-		    }
-                            
-		    image = new Image(input);
-		    can_icon.setImage(image);
-		}
-		
-		if(!filter.hasCANBus1TimedOut())
-		{
-		    try 
-		    {
-			input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
-		    } 
-		    catch (FileNotFoundException ex) 
-		    {
-			Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
-		    }
-                            
-		    image = new Image(input);
-		    can_icon.setImage(image);
-		}
-                
+
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
 		//+------------------------------------------------------------+
@@ -564,7 +426,7 @@ public class TrifanMainUIController extends MainUIController
 		powerLabel.setText("" + String.format("%.2f", kwPower));
 		powerIndicator.setProgress((kwPower / (400*500)));
 		
-                double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
+                double time = evmsV3.getAmpHours() / (currentSensor.getCurrent()/1000);
                 time *= 60;
 		if(Double.isNaN(time))
                 {
@@ -589,8 +451,14 @@ public class TrifanMainUIController extends MainUIController
                 }
 		
                 voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
-                currentLabel.setText(Integer.toString(currentSensor.getCurrent()));
-		
+                
+                currentLabel.setText("" + String.format("%.1f", currentSensor.getCurrent()/1000.0));
+                
+                /*
+                System.out.println("Current out: "+currentSensor.getCurrent());
+                System.out.println("Current print out: "+String.format("%.2f", currentSensor.getCurrent()/1000.0));
+		*/
+                
 		//+------------------------------------------------------------+
 		//ESC - Electronic Speed Controller - Left Wing
 		//+------------------------------------------------------------+
@@ -653,13 +521,6 @@ public class TrifanMainUIController extends MainUIController
                 leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerRightMotor));
                 
                 rightRPM.setProgress((double)esc[3].getRpm() / maxProgress);
-		
-		
-		//+------------------------------------------------------------+
-		//LC - Load Cell
-		//+------------------------------------------------------------+
-		
-		thrustLabel.setText("" + String.format("%.2f", loadCell.getWeight()));
                 
 		
 		//+------------------------------------------------------------+

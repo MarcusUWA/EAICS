@@ -89,8 +89,8 @@ public class BMS
 	    
 	    for(int ii = 0; ii < voltage.length; ii++)
 	    {
-			outString += voltage[ii] / 1000.0;
-			outString += ", ";
+                outString += voltage[ii] / 1000.0;
+                outString += ", ";
 	    }
 	    
 	    return outString;
@@ -102,8 +102,8 @@ public class BMS
 	    
 	    for(int ii = 0; ii < temp.length; ii++)
 	    {
-			outString += temp[ii];
-			outString += ", ";
+                outString += temp[ii];
+                outString += ", ";
 	    }
 	    
 	    return outString;
