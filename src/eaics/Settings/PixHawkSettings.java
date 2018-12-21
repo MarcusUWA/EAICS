@@ -23,6 +23,11 @@ public class PixHawkSettings implements Settings
         return ipAddress;
     }
     
+    public void setIpAddress(String ip)
+    {
+        ipAddress = ip;
+    }
+    
     @Override
     public String getSettingsFileString()
     {

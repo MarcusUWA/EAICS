@@ -445,8 +445,9 @@ public class TrikeMainUIController extends MainUIController
                 
 		powerLabel.setText("" + String.format("%.2f", kwPower));
 		
-                double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
+                double time = evmsV3.getAmpHours() / (currentSensor.getCurrent()/1000);
                 time *= 60;
+                
 		if(Double.isNaN(time))
                 {
                     timeLabel.setText("--");
@@ -461,7 +462,8 @@ public class TrikeMainUIController extends MainUIController
                 }
 		
                 voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
-                currentLabel.setText(Integer.toString(currentSensor.getCurrent()));
+                
+                currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
 		
 		//+------------------------------------------------------------+
 		//ESC - Electronic Speed Controller

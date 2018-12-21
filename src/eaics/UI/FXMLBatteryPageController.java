@@ -142,11 +142,11 @@ public class FXMLBatteryPageController implements Initializable
         //BMS Module 8 (switch set to 8): 1 - 12 Cells
         //+------------------------------------------------------------+
 
-        ampsLabel.setText("" + currentSensor.getCurrent());
+        ampsLabel.setText("" + String.format("%.1f", currentSensor.getCurrent()/1000.0));
 
         voltsLabel.setText("" + evmsV3.getVoltage()); //How many packs are connected, i.e. 3
 
-        double time = evmsV3.getAmpHours() / currentSensor.getCurrent();
+        double time = evmsV3.getAmpHours() / (currentSensor.getCurrent()/1000);
         time *= 60;
 	if(Double.isNaN(time))
 	{
@@ -214,7 +214,7 @@ public class FXMLBatteryPageController implements Initializable
 	theLowCellLabel.setText("" + minCellNumber);
 	
 	int delta = maxVoltage - minVoltage;
-	deltaLabel.setText("" + delta);
+	deltaLabel.setText("" + delta/1000.0);
     }
 
     public void initSettings(MainUIController mainGui) 
