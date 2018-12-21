@@ -108,15 +108,15 @@ public class TrikeMainUIController extends MainUIController
         {
             ipLabel.setText("Not Connected");
         }
-    }    
-    
-    private boolean isSendingThrottle = false;
+    }
     
     @FXML
     private void handleStartStopThrottle(ActionEvent event)
     {
-        this.throttle.setIsSendingThrottleCommands(isSendingThrottle);
-        if(isSendingThrottle)
+        System.out.println("start stop clicked");
+        this.throttle.setIsSendingThrottleCommands(!this.throttle.isSendingThrottleCommands());
+        
+        if(this.throttle.isSendingThrottleCommands())
         {
             startStopThrottle.setText("Stop Throttle");
         }
@@ -124,7 +124,6 @@ public class TrikeMainUIController extends MainUIController
         {
             startStopThrottle.setText("Start Throttle");
         }
-        this.isSendingThrottle = !this.isSendingThrottle;
     }
     
     @FXML
@@ -239,11 +238,20 @@ public class TrikeMainUIController extends MainUIController
         }
     }
 
-    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException {
-	
+    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException 
+    {	
         this.loadCell = cell;
         this.serial = serial;
         this.throttle = throttle;
+        
+        if(this.throttle.isSendingThrottleCommands())
+        {
+            startStopThrottle.setText("Stop Throttle");
+        }
+        else
+        {
+            startStopThrottle.setText("Start Throttle");
+        }
 	
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours
