@@ -28,6 +28,8 @@ public class EAICS extends Application
     private static LoadCell loadCell;
     private static Throttle throttle;
     
+    private static Logging logging;
+    
     public static void main(String[] args) throws InterruptedException, IOException 
     {
         currentAircraft = TRIKE;
@@ -51,7 +53,7 @@ public class EAICS extends Application
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
-        Logging logging = new Logging(loadCell, throttle);
+        logging = new Logging(loadCell, throttle);
 	    
 	// Launch the User Interface (UI) --------------------------------------
 
@@ -87,7 +89,7 @@ public class EAICS extends Application
         
         comms.connect();
         
-        mainUIcontroller.initData(loadCell, comms, throttle);
+        mainUIcontroller.initData(logging, loadCell, comms, throttle);
         stage.show();
     }
 }

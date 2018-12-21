@@ -10,6 +10,7 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
+import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
@@ -44,6 +45,8 @@ import javafx.stage.Stage;
  */
 public class TrifanMainUIController extends MainUIController
 {    
+    private Logging logging;
+    
     @FXML
     Button buttonSettings;   
     
@@ -157,9 +160,9 @@ public class TrifanMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            settings = loader.getController();
-            settings.initSettings(this);
-            settings.initData(loadCell, serial);
+            settingsPageController = loader.getController();
+            settingsPageController.initSettings(this);
+            settingsPageController.initData(loadCell, serial);
         
             Stage stage = new Stage();
         
@@ -189,9 +192,9 @@ public class TrifanMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            batterys = loader.getController();
-            batterys.initSettings(this);
-	    batterys.initData(loadCell);	    
+            batteryPageController = loader.getController();
+            batteryPageController.initSettings(this);
+	    batteryPageController.initData(loadCell);	    
    
             Stage stage = new Stage();
  
@@ -213,8 +216,9 @@ public class TrifanMainUIController extends MainUIController
         }
     } 
     
-    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException 
+    public void initData(Logging logging, LoadCell cell, Serial serial, Throttle throttle) throws IOException 
     {
+        this.logging = logging;
         this.loadCell = cell;
         this.serial = serial;
 	

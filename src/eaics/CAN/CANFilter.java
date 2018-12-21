@@ -23,8 +23,8 @@ public class CANFilter
     private CANHandler bus0CANHandler;
     private CANHandler bus1CANHandler;
     
-    public static final int NUM_OF_ESC = 4;
-    public static final int NUM_OF_BMS = 24;
+    public static final int NUM_OF_ESC = 1;//4
+    public static final int NUM_OF_BMS = 8;//24
     public static final int NUM_OF_CCB = 3;
 
     private EVMS evms;
@@ -86,7 +86,7 @@ public class CANFilter
         }
 
         this.bms = new BMS[NUM_OF_BMS];
-        for(int ii = 0; ii < 24; ii++)
+        for(int ii = 0; ii < NUM_OF_BMS; ii++)
         {
             this.bms[ii] = new BMS(ii);
         }

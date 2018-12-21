@@ -204,7 +204,7 @@ public class FXMLNumpadController implements Initializable
             if(config == CONFIG_IPADDRESS) 
 	    {
                 value = display.getText();
-                gui.settings.completeUpdatePixhawk();
+                gui.settingsPageController.completeUpdatePixhawk();
             }
             else 
 	    {

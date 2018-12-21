@@ -21,38 +21,68 @@ import java.util.concurrent.TimeUnit;
  */
 public class Logging 
 {
-    private FileWriter fileWriter;
-    private CANFilter filter;
+    private FileWriter fileWriter;  
     private ScheduledExecutorService executor;
+    private Runnable Logger;
     
+    private CANFilter filter;
     private SimpleDateFormat formatterDate;
     private SimpleDateFormat formatterTime;
-    
     private LoadCell loadCell;
     private Throttle throttle;
     
     public Logging(LoadCell loadCell, Throttle throttle)
     {
+        this.filter = CANFilter.getInstance();
+        this.loadCell = loadCell;
+        this.throttle = throttle;
         formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	formatterTime = new SimpleDateFormat("HH:mm:ss");
+        startNewLogFile();        
+    }
+    
+    public void startNewLogFile()
+    {
 	String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
-        fileWriter = new FileWriterCSV(filename);
-        filter = CANFilter.getInstance();
+        this.fileWriter = new FileWriterCSV("/home/pi/Logging/"+ filename);
         writeHeadings();
-        startLogging();
+        writeLoggins();        
+    }
+    
+    public void changeLoggingRate(int milliseconds) //must be less than 60 seconds i.e. 60 000 milliseconds
+    {
+        if(milliseconds > 0 && milliseconds <= 60000)
+        {
+            stopLogging();
+            executor = Executors.newScheduledThreadPool(1);
+            executor.scheduleAtFixedRate(Logger, 0, milliseconds, TimeUnit.MILLISECONDS);   // Run every second
+        }
+    }
+    
+    public void startLogging()
+    {
+        stopLogging();
+        startNewLogFile();
     }
     
     public void stopLogging()
     {
-	this.executor.shutdown();
+        try
+        {
+            this.executor.shutdown();
+        }
+        catch(Exception e)
+        {
+            //Try to stop logging, may be already stopped.            
+        }
     }
     
-    private void startLogging()
+    private void writeLoggins()
     {
-        Runnable Logger = new Runnable() 
+        Logger = new Runnable() 
 	{
 	    private Date date = new Date();
-	    
+
 	    @Override
 	    public void run() 
 	    {
@@ -90,22 +120,21 @@ public class Logging
 		}
 
 		//Load Cell
-		columnData += loadCell.getWeight()+",";
-                
+                columnData += loadCell.getWeight()+",";
+
                 columnData += loadCell.getCalibration()+",";
-                
-                for(int i = 0; i<4; i++) {
+
+                for(int i = 0; i < 4; i++) {
                     columnData += loadCell.getLoadCells(i)+",";
                 }
 
                 columnData +="\n";
-
 		fileWriter.write(columnData);
 	    }
 	};
 
 	executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second
+	executor.scheduleAtFixedRate(Logger, 0, 1, TimeUnit.SECONDS);   // Run every second   
     }
         
     private void writeHeadings()

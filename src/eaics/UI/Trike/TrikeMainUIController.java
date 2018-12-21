@@ -11,6 +11,7 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
+import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
@@ -46,12 +47,16 @@ import javafx.util.Duration;
  */
 public class TrikeMainUIController extends MainUIController
 {
+    private Logging logging;
+    
     @FXML
     Button buttonSettings;
     @FXML
     Button buttonTare;
     @FXML
     Button buttonBattery;
+    @FXML
+    Button buttonLogging;
     
     @FXML
     Button startStopThrottle;
@@ -141,9 +146,9 @@ public class TrikeMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            settings = loader.getController();
+            settingsPageController = loader.getController();
             //settings.initSettings(this);
-            settings.initData(loadCell, serial);
+            settingsPageController.initData(loadCell, serial);
         
             Stage stage = new Stage();
         
@@ -173,9 +178,9 @@ public class TrikeMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            batterys = loader.getController();
+            batteryPageController = loader.getController();
             //batterys.initSettings(this);
-	    batterys.initData(loadCell);
+	    batteryPageController.initData(loadCell);
    
             Stage stage = new Stage();
  
@@ -195,6 +200,38 @@ public class TrikeMainUIController extends MainUIController
             System.out.println("Failed to open Battery Window");
 	    e.printStackTrace();
         }
+    }
+    
+    @FXML
+    private void handleLoggingPressed(ActionEvent event) 
+    {
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoggingPage.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            loggingPageController = loader.getController();
+	    loggingPageController.initData(this.logging);
+   
+            Stage stage = new Stage();
+ 
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSettings.getScene().getWindow());
+
+            Scene scene = new Scene(pane);
+  
+            stage.setScene(scene);
+            stage.setTitle("Logging!!");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Logging Window");
+	    e.printStackTrace();
+        }
     } 
     
     @FXML 
@@ -212,9 +249,9 @@ public class TrikeMainUIController extends MainUIController
 	{
             Pane pane = loader.load();
 
-            loadProfile = loader.getController();
+            loadProfileController = loader.getController();
             //settings.initSettings(this);
-            loadProfile.initData(this, throttle);
+            loadProfileController.initData(this, throttle);
         
             Stage stage = new Stage();
         
@@ -238,8 +275,9 @@ public class TrikeMainUIController extends MainUIController
         }
     }
 
-    public void initData(LoadCell cell, Serial serial, Throttle throttle) throws IOException 
-    {	
+    public void initData(Logging logging, LoadCell cell, Serial serial, Throttle throttle) throws IOException 
+    {
+        this.logging = logging;
         this.loadCell = cell;
         this.serial = serial;
         this.throttle = throttle;
