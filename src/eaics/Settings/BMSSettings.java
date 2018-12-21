@@ -13,7 +13,7 @@ import java.io.IOException;
  *
  * @author Troy
  */
-public class EVMSSettings implements Settings
+public class BMSSettings 
 {
     private ConfigData packCapacity;
     private ConfigData socWarning;
@@ -46,7 +46,7 @@ public class EVMSSettings implements Settings
     private ConfigData enablePrecharge;
     private ConfigData stationaryMode;
     
-    public EVMSSettings()
+    public BMSSettings()
     {
         //ConfigData(min, max, initial, unit)
         this.packCapacity = new ConfigData(5, 1250, 10, "Ah");
@@ -84,7 +84,6 @@ public class EVMSSettings implements Settings
         this.stationaryMode = new ConfigData(0, 1, 0, "Yes(1)/No(0)");
     }
     
-    @Override
     public String getSettingsFileString()
     {
         String settingsFileString = "";
@@ -156,8 +155,7 @@ public class EVMSSettings implements Settings
         return settingsFileString;
     }
     
-    @Override
-    public void setSettings(String fileString)
+    public void setSettings(String fileString) throws IOException
     {
         int ii = 0;
         String[] lines = fileString.split("\\r?\\n");
@@ -177,8 +175,7 @@ public class EVMSSettings implements Settings
         update();
     }
     
-    @Override
-    public void update()
+    public void update() throws IOException
     {
         CANHandler handle = CANFilter.getInstance().getCANHandler(0);
         
@@ -191,7 +188,8 @@ public class EVMSSettings implements Settings
             this.evmsTempWarning.getSetting(),
             this.minAuxVoltage.getSetting(),
             this.minIsolation.getSetting()
-        };
+        };     
+        handle.writeMessage(0x20, msg1);
         
         int[] msg2 = {
             this.tachoPPR.getSetting(),
@@ -203,6 +201,7 @@ public class EVMSSettings implements Settings
             this.bmsMaxVoltage.getSetting()/10 - 200,
             this.balanceVoltage.getSetting()/10 - 200
         };     
+        handle.writeMessage(0x21, msg2);
         
         int[] msg3 = {  
             this.bmsHysteresis.getSetting()/10,
@@ -214,6 +213,7 @@ public class EVMSSettings implements Settings
             (this.altChargeVoltage.getSetting()/256)*128 + this.altChargeCurrent.getSetting(),
             this.sleepDelay.getSetting()
         };     
+        handle.writeMessage(0x22, msg3);
         
         int[] msg4 = {  
             this.mpiFunction.getSetting(),
@@ -223,18 +223,7 @@ public class EVMSSettings implements Settings
             this.enablePrecharge.getSetting(),
             this.stationaryMode.getSetting()
         };     
-        
-        try
-        {
-            handle.writeMessage(0x20, msg1);
-            handle.writeMessage(0x21, msg2);
-            handle.writeMessage(0x22, msg3);
-            handle.writeMessage(0x23, msg4);
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        handle.writeMessage(0x23, msg4);
     }
 
     public void setSetting(int index, int setting)

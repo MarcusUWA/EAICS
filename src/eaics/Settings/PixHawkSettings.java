@@ -9,7 +9,7 @@ package eaics.Settings;
  *
  * @author troy
  */
-public class PixHawkSettings implements Settings
+public class PixHawkSettings 
 {
     private String ipAddress;
     
@@ -23,12 +23,6 @@ public class PixHawkSettings implements Settings
         return ipAddress;
     }
     
-    public void setIpAddress(String ip)
-    {
-        ipAddress = ip;
-    }
-    
-    @Override
     public String getSettingsFileString()
     {
         String settingsFileString = "";
@@ -39,7 +33,6 @@ public class PixHawkSettings implements Settings
         return settingsFileString;
     }
     
-    @Override
     public void setSettings(String fileString)
     {
         int ii = 0;
@@ -51,7 +44,6 @@ public class PixHawkSettings implements Settings
         }        
     }
     
-    @Override
     public void update()
     {
 	//Nothing to update yet

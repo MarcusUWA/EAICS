@@ -83,6 +83,16 @@
             <Font size="20.0" />
          </font>
       </Label>
+      <Label fx:id="thrustLabel" alignment="TOP_CENTER" layoutX="347.0" layoutY="390.0" prefHeight="26.0" prefWidth="87.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="TOP_CENTER" layoutX="347.0" layoutY="416.0" prefHeight="17.0" prefWidth="87.0" text="Thrust (kg)" textAlignment="CENTER">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Label>
       <Button fx:id="buttonSettings" layoutX="22.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleSettingsPressed" prefHeight="45.0" prefWidth="183.0" text="Settings" />
       <Label alignment="TOP_CENTER" layoutX="114.0" layoutY="208.0" prefHeight="17.0" prefWidth="99.0" text="Motor Temp (C)" textAlignment="CENTER">
          <font>
@@ -236,6 +246,7 @@
             <Image url="@../../Resources/idle.png" />
          </image>
       </ImageView>
+      <Button fx:id="buttonTare" layoutX="368.0" layoutY="435.0" mnemonicParsing="false" onAction="#handleTarePressed" text="Tare" />
       <ImageView fitHeight="54.0" fitWidth="60.0" layoutX="304.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Resources/fan.png" />
@@ -252,10 +263,10 @@
          </image>
       </ImageView>
       <Text layoutX="28.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voltage" />
-      <Text layoutX="712.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current" />
+      <Text layoutX="720.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current" />
       <Text layoutX="36.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Volts" />
-      <Text layoutX="720.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amps" />
-      <Label fx:id="currentLabel" alignment="TOP_CENTER" layoutX="678.0" layoutY="222.0" prefHeight="46.0" prefWidth="112.0" text="0" textAlignment="CENTER">
+      <Text layoutX="726.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amps" />
+      <Label fx:id="currentLabel" alignment="TOP_CENTER" layoutX="697.0" layoutY="222.0" prefHeight="46.0" prefWidth="93.0" text="0" textAlignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>

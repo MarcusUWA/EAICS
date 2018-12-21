@@ -5,8 +5,10 @@
  */
 package eaics.UI.Trike;
 
+import eaics.CAN.CANFilter;
 import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
+import static eaics.UI.MainUIController.refreshFrequency;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -23,10 +25,14 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -68,6 +74,7 @@ public class FXMLLoadProfileController implements Initializable
     
     public void loadFile(String path) throws FileNotFoundException, IOException 
     {
+        //path = "/home/pi/LoadProfiles/testLP.csv";
         status = true;
         //clear list
         lines.clear();

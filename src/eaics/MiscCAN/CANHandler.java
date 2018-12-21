@@ -204,32 +204,6 @@ public class CANHandler
         }
     }
     
-    public void writeMessageSFF(int id, int[] data) throws IOException 
-    {
-        if(!portBinded) 
-        {
-            throw new IllegalStateException("Port not open");
-        }
-        else 
-        {
-            //Grabbing data from UI to send
-            CanId frameID = new CanId(id);
-
-            //Setting to Extended Frame Format (CAN2.0b)
-           // frameID.setEFFSFF();
-
-            //Covert int data array to bytes
-            byte[] frameData;
-            
-            frameData = int2byte(data);
-            
-            //Packaging the frame
-            CanFrame frame = new CanFrame(canIf, frameID, frameData);
-
-            //Sending the frame
-            socket.send(frame);
-        }
-    }
     
     private void stopReading() 
     {        

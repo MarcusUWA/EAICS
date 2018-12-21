@@ -154,7 +154,6 @@
       <Button layoutX="318.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleLoadProfilePressed" prefHeight="39.0" prefWidth="144.0" text="Load Profile" />
       <Button fx:id="buttonTare1" layoutX="279.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleSERReset" prefHeight="27.0" prefWidth="112.0" text="Reset SER" />
       <Button fx:id="buttonBattery" layoutX="589.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="45.0" prefWidth="183.0" text="Battery" />
-      <Button fx:id="startStopThrottle" layoutX="296.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleStartStopThrottle" prefHeight="39.0" prefWidth="183.0" text="Start Throttle" />
-      <Button fx:id="buttonLogging" layoutX="300.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleLoggingPressed" prefHeight="45.0" prefWidth="183.0" text="Logging" />
+      <Button fx:id="startStopThrottle" layoutX="296.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleStartStopThrottle" prefHeight="39.0" prefWidth="183.0" text="Stop Throttle" />
    </children>
 </AnchorPane>

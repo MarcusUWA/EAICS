@@ -109,7 +109,7 @@ public class FXMLConnectWifiController implements Initializable
         String currentPass = textField.getText();
         
         try {
-            BufferedReader file = new BufferedReader(new FileReader("/home/pi/EAICS/opt/wpa_supplicant-empty"));
+            BufferedReader file = new BufferedReader(new FileReader("/home/pi/opt/wpa_supplicant-empty"));
             String line;
             StringBuffer inputBuffer = new StringBuffer();
             int lineNumber = 1;
@@ -133,7 +133,7 @@ public class FXMLConnectWifiController implements Initializable
 
             file.close();
             
-            FileOutputStream fileOut = new FileOutputStream("/home/pi/EAICS/opt/wpa_supplicant-new");
+            FileOutputStream fileOut = new FileOutputStream("/home/pi/opt/wpa_supplicant-new");
             fileOut.write(inputStr.getBytes());
             fileOut.close();
         }
@@ -142,7 +142,7 @@ public class FXMLConnectWifiController implements Initializable
             System.out.println("Problem reading file.");
         }
         
-        Runtime.getRuntime().exec("sudo cp /home/pi/EAICS/opt/wpa_supplicant-new /etc/wpa_supplicant/wpa_supplicant.conf");
+        Runtime.getRuntime().exec("sudo cp /home/pi/opt/wpa_supplicant-new /etc/wpa_supplicant/wpa_supplicant.conf");
         
         Runtime.getRuntime().exec("sudo wpa_cli -i wlan0 reconfigure");
 

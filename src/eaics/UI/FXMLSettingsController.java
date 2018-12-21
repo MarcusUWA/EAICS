@@ -7,14 +7,17 @@ package eaics.UI;
 
 import eaics.CAN.CANFilter;
 import eaics.CAN.ChargerGBT;
-import eaics.CAN.MGLDisplay;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,7 +38,7 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.6.2.7";
+    String version = "3.6.1.6";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     FXMLConnectWifiController wifiConnectController;
@@ -108,7 +111,7 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleKillProgram(ActionEvent event) throws IOException
     {
-        //filter.stopLogging();
+        filter.stopLogging();
         //final Process killPIXHAWK_Program = Runtime.getRuntime().exec("sudo pkill mavproxy.py");
         //final Process killCAN_Program = Runtime.getRuntime().exec("sudo killall ReadCAN");
         //final Process killLoadCell_Program = Runtime.getRuntime().exec("sudo pkill LoadCell");
@@ -192,8 +195,8 @@ public class FXMLSettingsController implements Initializable
     @FXML
     private void handleResetSOC(ActionEvent event) throws IOException
     {
-        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
-        //filter.getCANHandler(0).writeMessage(0x00000026, new int[]{90});
+        //filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
+        filter.getCANHandler(0).writeMessage(0x00000026, new int[]{90});
     }
 
     @FXML
@@ -271,8 +274,7 @@ public class FXMLSettingsController implements Initializable
         }
     }   
     
-    public void initSettings(MainUIController mainGui) 
-    {
+    public void initSettings(MainUIController mainGui) {
         gui = mainGui;
     }
     
@@ -282,10 +284,6 @@ public class FXMLSettingsController implements Initializable
         this.loadCell = loadCell;
         this.serial = serial;
         this.chg = filter.getCharger();
-        
-        mgl = new MGLDisplay();
-        
-        pixhawkIPLabel.setText(EAICS_Settings.getInstance().getPixHawkSettings().getIpAddress());
         
 	softwareVersionLabel.setText(version);
     }
@@ -342,22 +340,16 @@ public class FXMLSettingsController implements Initializable
         String newIP = "";
         
         newIP = numpad.getString();
+        System.out.println("newIP: "+newIP);
         
         final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + ":14550 --aircraft MyCopter");
-        
-        EAICS_Settings settings = EAICS_Settings.getInstance();
-        
-        settings.getPixHawkSettings().setIpAddress(newIP);
-        
-        settings.update();
-        
         pixhawkIPLabel.setText(newIP);
     }
     
     @FXML
     private void handleStopLogging(ActionEvent event)
     {
-        //filter.stopLogging();
+        filter.stopLogging();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("LOGGING");
         alert.setContentText("Logging has been stopped");
@@ -396,19 +388,82 @@ public class FXMLSettingsController implements Initializable
     @FXML
     ToggleButton testMGL;
     
-    MGLDisplay mgl;
+    boolean pressed = false;
     
     @FXML 
     private void handleTestMGL(ActionEvent event) {
+        
+        pressed = !pressed;
+        
+        ScheduledExecutorService fourSecExecutor = null;
+        
+        ScheduledExecutorService fiveHundredMSExecutor = null;
+        
+        ScheduledExecutorService twoHundredMSExecutor = null;
+        
+        if(pressed == true) {
+            Runnable Id = new Runnable() {            
+                @Override
+                public void run() {
+                    try {
+                        //sent every 4 secs
+                        filter.getCANHandler(0).writeMessage(0x201, new int[]{0,0,0,0,0,0,0,0});
+                        //filter.getCANHandler(0).writeMessage(0x202, new int[]{0,0,0,0,0,0,0,0});
+                        System.out.println("outputting 4s message to MGL");
+                    } 
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            fourSecExecutor = Executors.newScheduledThreadPool(1);
+            fourSecExecutor.scheduleAtFixedRate(Id, 0, 4, TimeUnit.SECONDS);
 
-        if(testMGL.isSelected()) {
-            mgl.startDisplay();
-            testMGL.setText("Stop Display");
+            Runnable Id2 = new Runnable() {            
+                @Override
+                public void run() {
+                    try {
+                        //sent every 500ms the next few seconds
+                        //temperature messages
+                        filter.getCANHandler(0).writeMessage(0x202, new int[]{0,1,0,2,0,3,0,4});
+                        filter.getCANHandler(0).writeMessage(0x203, new int[]{0,1,0,2,0,3,0,4});
+                        filter.getCANHandler(0).writeMessage(0x204, new int[]{0,1,0,2,0,3,0,4});
+                        //raw ADC
+                        filter.getCANHandler(0).writeMessage(0x205, new int[]{0,1,0,2,0,3,0,4});
+                        //ADC
+                        filter.getCANHandler(0).writeMessage(0x206, new int[]{0,1,0,2,0,3,0,4});
+
+                        filter.getCANHandler(0).writeMessage(0x207, new int[]{0,50,0,0,0,0,0,0});
+                    } 
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            fiveHundredMSExecutor = Executors.newScheduledThreadPool(1);
+            fiveHundredMSExecutor.scheduleAtFixedRate(Id2, 0, 500, TimeUnit.MILLISECONDS);
+
+            Runnable Id3 = new Runnable() {            
+                @Override
+                    public void run() {
+                    try {
+                        //sent every 200ms
+                        filter.getCANHandler(0).writeMessage(0x208, new int[]{0,0xFF,0,0xAA,0,2,0,3});
+                    } 
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+            twoHundredMSExecutor = Executors.newScheduledThreadPool(1);
+            twoHundredMSExecutor.scheduleAtFixedRate(Id3, 0, 200, TimeUnit.MILLISECONDS);   
+                
+            
         }
         else {
-            mgl.stopDisplay();
-            testMGL.setText("Start Display");
-        }
-        
+            fourSecExecutor.shutdown();
+            fiveHundredMSExecutor.shutdown();
+            twoHundredMSExecutor.shutdown();
+        }      
     }
 }

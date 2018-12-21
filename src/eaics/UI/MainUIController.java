@@ -7,7 +7,6 @@ package eaics.UI;
 
 import eaics.UI.Trike.FXMLLoadProfileController;
 import eaics.CAN.CANFilter;
-import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
@@ -33,10 +32,9 @@ public abstract class MainUIController implements Initializable
     protected Serial serial;
     protected Throttle throttle;
     
-    protected FXMLBatteryPageController batteryPageController;
-    protected FXMLSettingsController settingsPageController;
-    protected FXMLLoadProfileController loadProfileController;
-    protected FXMLLoggingPageController loggingPageController;
+    protected FXMLBatteryPageController batterys;
+    protected FXMLSettingsController settings;
+    protected FXMLLoadProfileController loadProfile;
     
     protected int status = 0;
     protected IPAddress ip;
@@ -53,5 +51,5 @@ public abstract class MainUIController implements Initializable
     
     public abstract void refreshIP() throws IOException;
     
-    public abstract void initData(Logging logging, LoadCell loadCell, Serial serial, Throttle throttle) throws IOException ;
+    public abstract void initData(LoadCell loadCell, Serial serial, Throttle throttle) throws IOException ;
 }

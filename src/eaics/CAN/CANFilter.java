@@ -7,7 +7,7 @@ package eaics.CAN;
 
 import eaics.MiscCAN.CANHandler;
 import eaics.MiscCAN.CANMessage;
-import eaics.Settings.EVMSSettings;
+import eaics.Settings.BMSSettings;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,20 +23,35 @@ public class CANFilter
     private CANHandler bus0CANHandler;
     private CANHandler bus1CANHandler;
     
-    public static final int NUM_OF_ESC = 1;//4
-    public static final int NUM_OF_BMS = 8;//24
-    public static final int NUM_OF_CCB = 3;
+    public static final int numOfESC = 4;
+    public static final int numOfBMS = 24;
+    public static final int numOfCCB = 3;
 
-    private EVMS evms;
+    private EVMS_v2 evms_v2;
+    private EVMS_v3 evms_v3;
     private ESC[] esc;
     private BMS[] bms;
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     private ChargerGBT chargerGBT;
+    
+    private Date dateTimeCAN0;
+    private long lastPacketRecievedCANbus0;
+    private Date dateTimeCAN1;
+    private long lastPacketRecievedCANbus1;
+    
+    private boolean hasCANBus0TimedOut;
+    private boolean hasCANBus1TimedOut;
+    
+    private boolean hasWarnedCAN0Timeout;
+    private boolean hasWarnedCAN1Timeout;
 
     //Warnings
     private boolean hasWarnedError;
     private boolean hasWarnedChargerOff;
+
+    //Logging
+    ScheduledExecutorService executor;
 
     public static CANFilter getInstance()
     {
@@ -76,25 +91,25 @@ public class CANFilter
         {
             e.printStackTrace();
         }
+        this.evms_v2 = new EVMS_v2();
+        this.evms_v3 = new EVMS_v3();
 
-        this.evms = new EVMS();
-
-        this.esc = new ESC[NUM_OF_ESC];
-        for(int ii = 0; ii < NUM_OF_ESC; ii++)
+        this.esc = new ESC[numOfESC];
+        for(int ii = 0; ii < numOfESC; ii++)
         {
             this.esc[ii] = new ESC(ii);
         }
 
-        this.bms = new BMS[NUM_OF_BMS];
-        for(int ii = 0; ii < NUM_OF_BMS; ii++)
+        this.bms = new BMS[numOfBMS];
+        for(int ii = 0; ii < 24; ii++)
         {
             this.bms[ii] = new BMS(ii);
         }
 
         this.currentSensor = new CurrentSensor();
 
-        this.ccb = new CCB[NUM_OF_CCB];
-        for(int ii = 0; ii < NUM_OF_CCB; ii++)
+        this.ccb = new CCB[numOfCCB];
+        for(int ii = 0; ii < numOfCCB; ii++)
         {
             this.ccb[ii] = new CCB();
         }
@@ -103,6 +118,15 @@ public class CANFilter
 
         this.hasWarnedError = false;
         this.hasWarnedChargerOff = false;
+
+        this.dateTimeCAN0 = new Date();
+        this.lastPacketRecievedCANbus0 = dateTimeCAN0.getTime();
+        this.dateTimeCAN1 = new Date();
+        this.lastPacketRecievedCANbus1 = dateTimeCAN1.getTime();
+        this.hasCANBus0TimedOut = false;
+        this.hasCANBus0TimedOut = false;
+        this.hasWarnedCAN0Timeout = false;
+        this.hasWarnedCAN1Timeout = false;
     }
 
     public void run(CANMessage message)
@@ -123,10 +147,10 @@ public class CANFilter
 	{
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
-		evms.setEVMS_v2(message);
+		evms_v2.setAll(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
-		evms.setEVMS_v3(message);
+		evms_v3.setAll(message);
 		break;
                 
                 
@@ -270,10 +294,6 @@ public class CANFilter
             case 0x1CEB56F4:    //BRM (data about the BMS)
                 break;
                 
-                //MGL Monitor Polling message
-            case 0x11: case 0x12:
-                break;
-                
             case 0x81FF456:     //Timeout
                 System.out.println("Timeout");
                 break;
@@ -282,6 +302,56 @@ public class CANFilter
                 System.out.println("Unknown packet, Frame ID: " + Integer.toHexString(message.getFrameID()));
 		break;
 	}
+    }
+    
+    public long getLastPacketRecievedCANbus0()
+    {
+	return this.lastPacketRecievedCANbus0;
+    }
+    
+    public long getLastPacketRecievedCANbus1()
+    {
+	return this.lastPacketRecievedCANbus1;
+    }
+    
+    public boolean hasCANBus0TimedOut()
+    {
+	return this.hasCANBus0TimedOut;
+    }
+    
+    public void can0Timeout()
+    {
+	this.hasCANBus0TimedOut = true;
+    }
+    
+    public boolean hasCANBus1TimedOut()
+    {
+	return this.hasCANBus1TimedOut;
+    }
+    
+    public void can1Timeout()
+    {
+	this.hasCANBus1TimedOut = true;
+    }
+    
+    public boolean hasWarnedCAN0Timeout()
+    {
+	return this.hasWarnedCAN0Timeout;
+    }
+    
+    public void hasWarnedCAN0Timeout(boolean hasWarnedCAN0Timeout)
+    {
+	this.hasWarnedCAN0Timeout = hasWarnedCAN0Timeout;
+    }
+    
+    public boolean hasWarnedCAN1Timeout()
+    {
+	return this.hasWarnedCAN1Timeout;
+    }
+    
+    public void hasWarnedCAN1Timeout(boolean hasWarnedCAN1Timeout)
+    {
+	this.hasWarnedCAN1Timeout = hasWarnedCAN1Timeout;
     }
 
     public boolean getHasWarnedError()
@@ -308,11 +378,18 @@ public class CANFilter
     {
 	this.hasWarnedError = false;
 	this.hasWarnedChargerOff = false;
+	this.hasWarnedCAN0Timeout = false;
+	this.hasWarnedCAN1Timeout = false;
     }
 
-    public EVMS getEVMS()
+    public EVMS getEVMS_v2()
     {
-	return this.evms;
+	return this.evms_v2;
+    }
+
+    public EVMS getEVMS_v3()
+    {
+	return this.evms_v3;
     }
 
     public ESC[] getESC()
@@ -338,6 +415,16 @@ public class CANFilter
     public ChargerGBT getCharger()
     {
         return this.chargerGBT;
+    }
+
+    public void setLoggingExecutor(ScheduledExecutorService executor)
+    {
+	this.executor = executor;
+    }
+
+    public void stopLogging()
+    {
+	this.executor.shutdown();
     }
     
     public CANHandler getCANHandler(int busNum)

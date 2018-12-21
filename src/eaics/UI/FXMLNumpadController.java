@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import eaics.Settings.EVMSSettings;
+import eaics.Settings.BMSSettings;
 import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
 
@@ -102,7 +102,7 @@ public class FXMLNumpadController implements Initializable
         display.setText(display.getText() + bmsSettings.getDisplayUnits(bmsSettingsIndex));
     }
     
-    private EVMSSettings bmsSettings;
+    private BMSSettings bmsSettings;
     private FXMLBMSsettingsPage settingsPage;
 
     /**
@@ -204,7 +204,7 @@ public class FXMLNumpadController implements Initializable
             if(config == CONFIG_IPADDRESS) 
 	    {
                 value = display.getText();
-                gui.settingsPageController.completeUpdatePixhawk();
+                gui.settings.completeUpdatePixhawk();
             }
             else 
 	    {
