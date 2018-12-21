@@ -13,7 +13,7 @@ import java.io.IOException;
  *
  * @author Troy
  */
-public class BMSSettings 
+public class EVMSSettings implements Settings
 {
     private ConfigData packCapacity;
     private ConfigData socWarning;
@@ -46,7 +46,7 @@ public class BMSSettings
     private ConfigData enablePrecharge;
     private ConfigData stationaryMode;
     
-    public BMSSettings()
+    public EVMSSettings()
     {
         //ConfigData(min, max, initial, unit)
         this.packCapacity = new ConfigData(5, 1250, 10, "Ah");
@@ -84,6 +84,7 @@ public class BMSSettings
         this.stationaryMode = new ConfigData(0, 1, 0, "Yes(1)/No(0)");
     }
     
+    @Override
     public String getSettingsFileString()
     {
         String settingsFileString = "";
@@ -155,7 +156,8 @@ public class BMSSettings
         return settingsFileString;
     }
     
-    public void setSettings(String fileString) throws IOException
+    @Override
+    public void setSettings(String fileString)
     {
         int ii = 0;
         String[] lines = fileString.split("\\r?\\n");
@@ -175,7 +177,8 @@ public class BMSSettings
         update();
     }
     
-    public void update() throws IOException
+    @Override
+    public void update()
     {
         CANHandler handle = CANFilter.getInstance().getCANHandler(0);
         
@@ -188,8 +191,7 @@ public class BMSSettings
             this.evmsTempWarning.getSetting(),
             this.minAuxVoltage.getSetting(),
             this.minIsolation.getSetting()
-        };     
-        handle.writeMessage(0x20, msg1);
+        };
         
         int[] msg2 = {
             this.tachoPPR.getSetting(),
@@ -201,7 +203,6 @@ public class BMSSettings
             this.bmsMaxVoltage.getSetting()/10 - 200,
             this.balanceVoltage.getSetting()/10 - 200
         };     
-        handle.writeMessage(0x21, msg2);
         
         int[] msg3 = {  
             this.bmsHysteresis.getSetting()/10,
@@ -213,7 +214,6 @@ public class BMSSettings
             (this.altChargeVoltage.getSetting()/256)*128 + this.altChargeCurrent.getSetting(),
             this.sleepDelay.getSetting()
         };     
-        handle.writeMessage(0x22, msg3);
         
         int[] msg4 = {  
             this.mpiFunction.getSetting(),
@@ -223,7 +223,18 @@ public class BMSSettings
             this.enablePrecharge.getSetting(),
             this.stationaryMode.getSetting()
         };     
-        handle.writeMessage(0x23, msg4);
+        
+        try
+        {
+            handle.writeMessage(0x20, msg1);
+            handle.writeMessage(0x21, msg2);
+            handle.writeMessage(0x22, msg3);
+            handle.writeMessage(0x23, msg4);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void setSetting(int index, int setting)

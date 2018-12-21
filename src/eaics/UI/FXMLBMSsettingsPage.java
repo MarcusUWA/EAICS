@@ -14,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import eaics.Settings.BMSSettings;
+import eaics.Settings.EVMSSettings;
 import eaics.CAN.CANFilter;
 import eaics.SER.LoadCell;
 import eaics.Settings.EAICS_Settings;
@@ -37,7 +37,7 @@ public class FXMLBMSsettingsPage implements Initializable
     
     FXMLNumpadController numpad;
     
-    private BMSSettings bmsSettings;
+    private EVMSSettings bmsSettings;
     
     // Titel Label
     
@@ -296,7 +296,7 @@ public class FXMLBMSsettingsPage implements Initializable
         }
     }
     
-    public BMSSettings getBMSSettings()
+    public EVMSSettings getBMSSettings()
     {
 	return this.bmsSettings;
     }

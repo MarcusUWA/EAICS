@@ -12,7 +12,7 @@ import eaics.CAN.CCB;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
 import eaics.SER.LoadCell;
-import eaics.Settings.BMSSettings;
+import eaics.Settings.EVMSSettings;
 import eaics.Settings.EAICS_Settings;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -110,7 +110,7 @@ public class FXMLBatteryCellPageController implements Initializable
     
     public void updateScreen()
     {
-        EVMS evmsV3 = filter.getEVMS_v3();
+        EVMS evmsV3 = filter.getEVMS();
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
         CCB[] ccb = filter.getCCB();
@@ -120,10 +120,13 @@ public class FXMLBatteryCellPageController implements Initializable
         Image image;
         if(ccb[0].isCCB_On()) //CCB1
 	{
-            try {
+            try 
+            {
                 input = new FileInputStream("/home/pi/EAICS/images/switch_on.jpg");
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            catch (FileNotFoundException ex) 
+            {
+                ex.printStackTrace();
             }
                             
             image = new Image(input);
@@ -137,7 +140,7 @@ public class FXMLBatteryCellPageController implements Initializable
             } 
 	    catch (FileNotFoundException ex) 
 	    {
-                Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
                             
             image = new Image(input);
@@ -162,7 +165,7 @@ public class FXMLBatteryCellPageController implements Initializable
         
 	int bmsModuleNum, cellNum, count;
 	double cellVoltage;
-	BMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+	EVMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
 	int bmsMaxVoltage = bmsSettings.getSetting(14);
 	int bmsBalanceVoltage = bmsSettings.getSetting(15);
 	int bmsMinVoltage = bmsSettings.getSetting(13);
@@ -206,7 +209,8 @@ public class FXMLBatteryCellPageController implements Initializable
     }
     
     @FXML
-    private void closeButtonAction(ActionEvent event) {
+    private void closeButtonAction(ActionEvent event) 
+    {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
@@ -215,7 +219,8 @@ public class FXMLBatteryCellPageController implements Initializable
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         
     }
 }

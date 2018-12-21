@@ -13,6 +13,7 @@ import eaics.MiscCAN.CANMessage;
  */
 public class CurrentSensor 
 {
+    //in milliamps
     private int current;
 
     public CurrentSensor()
@@ -20,6 +21,7 @@ public class CurrentSensor
         this.current = 0;
     }
 
+    //in milliamps
     public void setAll(CANMessage message)
     {
         this.current = (message.getByte(0) << 16) + (message.getByte(1) << 8) + message.getByte(2);

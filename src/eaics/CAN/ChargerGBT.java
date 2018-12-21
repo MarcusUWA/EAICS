@@ -7,7 +7,7 @@ package eaics.CAN;
 
 import eaics.MiscCAN.CANHandler;
 import eaics.MiscCAN.CANMessage;
-import eaics.Settings.BMSSettings;
+import eaics.Settings.EVMSSettings;
 import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,8 +28,8 @@ public class ChargerGBT
     boolean isChargeExecutorOn;
     private ScheduledExecutorService stopExecutor;
     
-    private EVMS_v3 evms;
-    private BMSSettings settings;
+    private EVMS evms;
+    private EVMSSettings settings;
     private CANHandler handler;
     
     private Boolean chargeMode = false;
@@ -50,7 +50,7 @@ public class ChargerGBT
         isHandshakeExecutorOn = false;
         isChargeExecutorOn = false;
         isStoppedExecutorOn = false;
-        this.evms = (EVMS_v3)filter.getEVMS_v3();
+        this.evms = filter.getEVMS();
         this.settings = EAICS_Settings.getInstance().getBmsSettings();
         this.handler = filter.getCANHandler(0);
         this.maxChargeVoltage = settings.getSetting(19);
