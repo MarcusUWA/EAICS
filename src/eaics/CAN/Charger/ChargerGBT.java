@@ -370,8 +370,8 @@ public class ChargerGBT
             (maxChargeVoltage*10) >> 8,//maxAllowableTotalCharge,
             (200-evmsMaxTemp)&0xFF,
             ((int)evms.getAmpHours()*1000/packCapacity)&0xFF,
-            0x03,//(int)(evms.getAmpHours()*1000/packCapacity)>>8,  //0x03  These two need to be non-zero to make work
-            0x84,//((int)evms.getVoltage()*10)&0xFF,                //0x84
+            (int)(evms.getAmpHours()*1000/packCapacity)>>8,  //0x03  These two need to be non-zero to make work
+            ((int)evms.getVoltage()*10)&0xFF,                //0x84
             (int)(evms.getVoltage()*10)>>8,
             0xFF
         };
