@@ -116,6 +116,24 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
+    private void handleStopCharge(ActionEvent event)
+    {        
+        int[] chg = {0x40,0,0,0xF0,0xCC,0xCC,0xCC,0xCC};
+        
+        try 
+        {
+            System.out.println("Stop charging");
+            CANFilter.getInstance().getCANHandler(0).writeMessage(0x101956F4, chg);
+        } 
+        catch (IOException ex) 
+        {
+            ex.printStackTrace();
+        }
+        
+        CANFilter.getInstance().getCharger().stopCharging();
+    }
+    
+    @FXML
     private void handleStartStopThrottle(ActionEvent event)
     {
         System.out.println("start stop clicked");

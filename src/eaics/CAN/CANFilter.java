@@ -5,6 +5,7 @@
  */
 package eaics.CAN;
 
+import eaics.CAN.Charger.ChargerGBT;
 import eaics.MiscCAN.CANHandler;
 import eaics.MiscCAN.CANMessage;
 import eaics.Settings.EVMSSettings;
@@ -257,25 +258,22 @@ public class CANFilter
                 break;//throttle command
                 
                 //ADD GBT charger can packet passing to:
-            case 0x1826F456: case 0x1801F456: case 0x1CECF456: case 0x1807F456: case 0x1808F456: case 0x100AF456: case 0x1812F456: case 0x101AF456:
+            case 0x1826F456: case 0x1801F456: case 0x1CECF456: case 0x1807F456: case 0x1808F456: case 0x100AF456: case 0x1812F456: case 0x101AF456: case 0x81FF456:
                 chargerGBT.handleCharger(message);
                 break;
                 
+            case 0x101956F4:    //EAICS to Charger, stop charging message
             case 0x182756F4:    //BHM
-                break;
-                
             case 0x1CEC56F4:    //BRM
-                break;
-                
             case 0x1CEB56F4:    //BRM (data about the BMS)
                 break;
                 
-                //MGL Monitor Polling message
-            case 0x11: case 0x12:
+            case 0x181DF456:
+                System.out.println("Charger IDLE");
                 break;
                 
-            case 0x81FF456:     //Timeout
-                System.out.println("Timeout");
+            //MGL Monitor Polling message
+            case 0x11: case 0x12:
                 break;
                 
 	    default:

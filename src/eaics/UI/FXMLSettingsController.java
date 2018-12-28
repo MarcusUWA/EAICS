@@ -6,7 +6,7 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
-import eaics.CAN.ChargerGBT;
+import eaics.CAN.Charger.ChargerGBT;
 import eaics.CAN.MGLDisplay;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
