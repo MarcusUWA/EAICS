@@ -439,9 +439,80 @@ public class ChargerGBT
         
         int[] chg2 = {0x10, 0x09, 0x00, 0x02, 0xFF, 0x00, 0x11, 0x00};  //Leave this hardcoded (FINE)
         
-        //TODO: - Find out what is oging on with this Packet!!!!
-        int[] chg3 = {0x05, 0x5F, 0x0A, 0x32, 0x14, 0x00, 0xD0, 0xFF};  //This is hardcodded fix later (FIX THIS!
+        //int[] chg3 = {0x05, 0x5F, 0x0A, 0x32, 0x14, 0x00, 0xD0, 0xFF};  //This is hardcodded fix later (FIX THIS!
+	
+	//----------------------------------------------------------------------------------------------------------------------
+	
+	int bmsMaxTemp = -50; // Find the maximum temperature of each cell, each BMS is connected to 2 battery modules.
+        int loopi = 0;
+        int loopj = 0;
+        for(int ii = 0; ii < CANFilter.NUM_OF_BMS; ii++)
+        {
+            for(int jj = 0; jj < 2; jj++)
+            {
+                int tmp = CANFilter.getInstance().getBMS()[ii].getTemp(jj);
+                if(tmp > bmsMaxTemp) 
+                {
+                    bmsMaxTemp = tmp;
+                    loopi = ii;
+                    loopj = jj;
+                }
+            }
+        }
+        int bmsMaxTempLocation = (loopi-1)*2+loopj-1+1; // Find the location of the Max cell temperature
+        if (bmsMaxTempLocation > 127) // Ensure it does not exceed 127, the maximum value the charger can take
+        {
+            bmsMaxTempLocation = 127;
+        }
+        int bmsMinTemp = 200; // Find the minimum temperature of each cell, each BMS is connected to 2 battery modules.
+        for(int ii = 0; ii < CANFilter.NUM_OF_BMS; ii++)
+        {
+            for(int jj = 0; jj < 2; jj++)
+            {
+                int tmp = CANFilter.getInstance().getBMS()[ii].getTemp(jj);
+                if(tmp < bmsMinTemp) 
+                {
+                    bmsMinTemp = tmp;
+                    loopi = ii;
+                    loopj = jj;
+                }
+            }
+        }
+        int bmsMinTempLocation = (loopi-1)*2+loopj-1+1; // Find the location of the Min cell temperature
+        if (bmsMinTempLocation > 127) // Ensure it does not exceed 127, the maximum value the charger can take
+        {
+            bmsMinTempLocation = 127;
+        }
+        int  chg3Byte6 = 0b00000000;
+        // 0b00 = normal, 0b01 = Wrong value, 0b10 = untrusted value
+        // LSB b[1,2] = is a single cell overvoltage? 
+        // b[3,4] = Is SoC right?
+        // b[5,6] = Is charing overcurrent?
+        // MSB b[7,8] = is temperature too high?
+        // ------------------ USED FOR 1813 (chg3) --------------------------------
+        //b[0-1] = Max Charge Voltage b[2-3] = Max Charge Current, b[4] = Mode 01 = Const. Voltage, 02 Const. Current
+        //b[5-7] = Unused
+        int  chg3Byte7 = 0b11010000;
+        // 0b00 = normal, 0b01 = Wrong value, 0b10 = untrusted value
+        // LSB b[1,2] =Is the battery insulation test normal?
+        // b[3,4] = Is the battery connector status normal?
+        // b[5,6] = Is charging allowed? THIS IS DIFFERENT 0b00 = don't allow charging, 0b01 = allow charging (01)
+        // MSB b[7,8] = undefined (11)
+        // ------------------ USED FOR 1813 (chg3) --------------------------------
+
+	// ID: 181356F4 (BCP)
+        int[] chg3 = {0x05, // Location of highest single battery power range 1 to 256
+                      0x05, // Location of the cell with the highest power, NOTE THIS IS HARD CODED
+                      (200-bmsMaxTemp)&0xFF, // Maximum cell temperature, range -50 to 200C
+                      bmsMaxTempLocation+1, // Maximum cell temperature location, bit = location+1, range 1 to 127
+                      (200-bmsMaxTemp)&0xFF, // Minimum cell temperature, range -50 to 200C
+                      bmsMinTempLocation+1, // Minimum cell temperature location, bit = location+1,range 1 to 127
+                      chg3Byte6, // Refer to declaration comments HARDCODED
+                      chg3Byte7, // Refer to declaration comments HARDCODED
+                      0xFF}; // This byte is undefined
         
+	//----------------------------------------------------------------------------------------------------------------------
+	
         this.isChargeExecutorOn = true;
         
         Runnable packet1 = new Runnable() 
