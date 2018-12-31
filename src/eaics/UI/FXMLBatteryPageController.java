@@ -48,6 +48,8 @@ public class FXMLBatteryPageController implements Initializable
     private static final int numberOfCellPages = 3;
     FXMLBatteryCellPageController[] cellPage = new FXMLBatteryCellPageController[numberOfCellPages];
     
+    private FXMLBatteryGraphController batteryGraphController;
+    
     @FXML
     Button buttonCellPage1;
     
@@ -56,6 +58,9 @@ public class FXMLBatteryPageController implements Initializable
     
     @FXML
     Button buttonCellPage3;
+    
+    @FXML
+    Button buttonBatterySummary;
     
     @FXML
     private Label ampsLabel;
@@ -274,6 +279,37 @@ public class FXMLBatteryPageController implements Initializable
         catch (Exception e) 
         {
             System.out.println("Failed to open Battery Cell Page " + (pageNumber + 1));
+        }	
+    }
+    
+    @FXML
+    private void handleBatterySummary(ActionEvent event) throws IOException
+    {
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLBatteryGraph.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            batteryGraphController = loader.getController();
+            batteryGraphController.initData();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonBatterySummary.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Battery Summary");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Battery Summary Window");
         }	
     }
 }
