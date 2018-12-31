@@ -141,11 +141,11 @@ public class TrikeMainUIController extends MainUIController
         
         if(this.throttle.isSendingThrottleCommands())
         {
-            startStopThrottle.setText("Stop Throttle");
+            startStopThrottle.setText("Disable Throttle");
         }
         else
         {
-            startStopThrottle.setText("Start Throttle");
+            startStopThrottle.setText("Enable Throttle");
         }
     }
     
@@ -302,11 +302,11 @@ public class TrikeMainUIController extends MainUIController
         
         if(this.throttle.isSendingThrottleCommands())
         {
-            startStopThrottle.setText("Stop Throttle");
+            startStopThrottle.setText("Disable Throttle");
         }
         else
         {
-            startStopThrottle.setText("Start Throttle");
+            startStopThrottle.setText("Enable Throttle");
         }
 	
 	int maxProgress = 10000;
