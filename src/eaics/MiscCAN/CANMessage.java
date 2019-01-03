@@ -56,6 +56,13 @@ public class CANMessage
             this.numData = byteData.length;            
         }
         
+        public void newMessageSFF(String busName, int frameID, int[] byteData) {
+            this.busName = busName;
+            this.frameID = frameID;
+            this.byteData = byteData;
+            this.numData = byteData.length;
+        }
+        
         public int getNumData()
         {
             return this.numData;

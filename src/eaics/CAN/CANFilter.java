@@ -8,10 +8,7 @@ package eaics.CAN;
 import eaics.CAN.Charger.ChargerGBT;
 import eaics.MiscCAN.CANHandler;
 import eaics.MiscCAN.CANMessage;
-import eaics.Settings.EVMSSettings;
 import java.io.IOException;
-import java.util.Date;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  *
@@ -24,6 +21,9 @@ public class CANFilter
     private CANHandler bus0CANHandler;
     private CANHandler bus1CANHandler;
     
+    private boolean bus0online = true;
+    private boolean bus1online = true;
+    
     public static final int NUM_OF_ESC = 1;//4
     public static final int NUM_OF_BMS = 8;//24
     public static final int NUM_OF_CCB = 3;
@@ -34,6 +34,7 @@ public class CANFilter
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     private ChargerGBT chargerGBT;
+    private MGL mgl;
 
     //Warnings
     private boolean hasWarnedError;
@@ -104,6 +105,8 @@ public class CANFilter
 
         this.hasWarnedError = false;
         this.hasWarnedChargerOff = false;
+        
+        this.mgl = new MGL();
     }
 
     public void run(CANMessage message)
@@ -274,6 +277,7 @@ public class CANFilter
                 
             //MGL Monitor Polling message
             case 0x11: case 0x12:
+                mgl.processMessage(message);
                 break;
                 
 	    default:
@@ -336,6 +340,10 @@ public class CANFilter
     public ChargerGBT getCharger()
     {
         return this.chargerGBT;
+    }
+
+    public MGL getMgl() {
+        return this.mgl;
     }
     
     public CANHandler getCANHandler(int busNum)

@@ -39,7 +39,7 @@ public class FXMLLoadProfileController implements Initializable
     List<int[]> lines = new ArrayList<>();
     MainUIController gui;
     
-    boolean status;
+    boolean fileRead;
     
     @FXML
     TextField path;
@@ -56,7 +56,7 @@ public class FXMLLoadProfileController implements Initializable
     public void initialize(URL url, ResourceBundle rb) 
     {
         // TODO
-        status = true;
+        fileRead = false;
         isRunning = false;
     } 
     
@@ -68,7 +68,7 @@ public class FXMLLoadProfileController implements Initializable
     
     public void loadFile(String path) throws FileNotFoundException, IOException 
     {
-        status = true;
+        fileRead = true;
         //clear list
         lines.clear();
         
@@ -169,12 +169,13 @@ public class FXMLLoadProfileController implements Initializable
     private boolean isRunning;
     
     @FXML
-    private void handleRun(ActionEvent event) throws IOException
-    {
-        if(!isRunning)
-        {
+    private void handleRun(ActionEvent event) throws IOException {
+        
+        if(!isRunning) {
+            
             isRunning = true;
             throttle.setIsUsingManualThrottle(false);
+            throttle.setIsSendingThrottleCommands(true);
             
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Running Load Profile");
@@ -182,19 +183,15 @@ public class FXMLLoadProfileController implements Initializable
             alert.show();
             
             //ensure that array is not empty
-            if(!lines.isEmpty()&&status) 
-            {
-                Runnable ThrottleCommandSender = new Runnable() 
-                {
+            if(!lines.isEmpty()&&fileRead)  {
+                Runnable ThrottleCommandSender = new Runnable()  {
                     int ii = 0;
                     long startTime;
                     long endTime = System.currentTimeMillis();
 
                     @Override
-                    public void run() 
-                    {
-                        if(System.currentTimeMillis() >= endTime && ii < lines.size())
-                        {
+                    public void run() {
+                        if(System.currentTimeMillis() >= endTime && ii < lines.size()) {
                             //send this throttle value for time length : lines.get(i)[1] in seconds
                             //handleThrottle(lines.get(i)[1]);
 
@@ -206,31 +203,27 @@ public class FXMLLoadProfileController implements Initializable
 
                             ii++;
 
-                            if(ii >= lines.size())
-                            {
+                            if(ii >= lines.size()) {
                                 stopLoadProfile();
                             }
                         }
                     }
                 };
 
-                System.out.println("start executor");
                 executor = Executors.newScheduledThreadPool(1);
                 executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 1, TimeUnit.SECONDS); 
-                System.out.println("end start executor");
             }
         }
     }
     
     private void stopLoadProfile()
     {
-        if(status)
-        {
+        if(isRunning) {
             this.executor.shutdown();
         }
+        throttle.setIsSendingThrottleCommands(false);
         throttle.setIsUsingManualThrottle(true);
         isRunning = false;
-        status = false;
     }
     
     @FXML

@@ -115,9 +115,7 @@ public class TrikeMainUIController extends MainUIController
         }
     }
     
-    @FXML
-    private void handleStopCharge(ActionEvent event)
-    {        
+    private void handleStopCharge() {        
         int[] chg = {0x40,0,0,0xF0,0xCC,0xCC,0xCC,0xCC};
         
         try 
@@ -136,7 +134,6 @@ public class TrikeMainUIController extends MainUIController
     @FXML
     private void handleStartStopThrottle(ActionEvent event)
     {
-        System.out.println("start stop clicked");
         this.throttle.setIsSendingThrottleCommands(!this.throttle.isSendingThrottleCommands());
         
         if(this.throttle.isSendingThrottleCommands())
@@ -165,8 +162,7 @@ public class TrikeMainUIController extends MainUIController
             Pane pane = loader.load();
 
             settingsPageController = loader.getController();
-            //settings.initSettings(this);
-            settingsPageController.initData(loadCell, serial);
+            settingsPageController.initData(loadCell, serial, logging);
         
             Stage stage = new Stage();
         
@@ -197,7 +193,6 @@ public class TrikeMainUIController extends MainUIController
             Pane pane = loader.load();
 
             batteryPageController = loader.getController();
-            //batterys.initSettings(this);
 	    batteryPageController.initData(loadCell);
    
             Stage stage = new Stage();
@@ -219,39 +214,7 @@ public class TrikeMainUIController extends MainUIController
 	    e.printStackTrace();
         }
     }
-    
-    @FXML
-    private void handleLoggingPressed(ActionEvent event) 
-    {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoggingPage.fxml"));
-        
-        try 
-	{
-            Pane pane = loader.load();
-
-            loggingPageController = loader.getController();
-	    loggingPageController.initData(this.logging);
    
-            Stage stage = new Stage();
- 
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonSettings.getScene().getWindow());
-
-            Scene scene = new Scene(pane);
-  
-            stage.setScene(scene);
-            stage.setTitle("Logging!!");
-            
-            stage.setMaximized(true);
-            stage.show();
-        }
-        catch (Exception e) 
-        {
-            System.out.println("Failed to open Logging Window");
-	    e.printStackTrace();
-        }
-    } 
-    
     @FXML 
     private void handleTarePressed(ActionEvent event) 
     {
@@ -268,7 +231,6 @@ public class TrikeMainUIController extends MainUIController
             Pane pane = loader.load();
 
             loadProfileController = loader.getController();
-            //settings.initSettings(this);
             loadProfileController.initData(this, throttle);
         
             Stage stage = new Stage();
@@ -346,6 +308,8 @@ public class TrikeMainUIController extends MainUIController
                             {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            
+                            handleStopCharge();
                             
                             image = new Image(input);
                             status_icon.setImage(image);
@@ -505,10 +469,7 @@ public class TrikeMainUIController extends MainUIController
 		//+------------------------------------------------------------+
 		
 		//Calculation variable
-		double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
-                
-		powerLabel.setText("" + String.format("%.2f", kwPower));
-		
+
                 double time = evmsV3.getAmpHours() / (currentSensor.getCurrent()/1000);
                 time *= 60;
                 
@@ -534,17 +495,23 @@ public class TrikeMainUIController extends MainUIController
 		//+------------------------------------------------------------+
 		
 		rpmLabel.setText("" + esc[0].getRpm());
+                rpmPB.setProgress((double)esc[0].getRpm() / maxProgress);
 		
 		controllerTempLabel.setText("" + esc[0].getControllerTemp());
-		
 		motorTempLabel.setText("" + esc[0].getMotorTemp());
+                
                 
                 double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
                 powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
                 //this could be changed to be read from the EVMS?
                 
+                /*double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
                 
-                rpmPB.setProgress((double)esc[0].getRpm() / maxProgress);
+		powerLabel.setText("" + String.format("%.2f", kwPower));
+		*/
+                
+                
+                
 		
 		//+------------------------------------------------------------+
 		//LC - Load Cell
@@ -555,6 +522,9 @@ public class TrikeMainUIController extends MainUIController
 		//+------------------------------------------------------------+
                 
                 auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
+                
+                throttleLabel.setText(Integer.toString(throttle.getThrottleSetting()));
+                
                 throttleSlider.setValue(throttle.getThrottleSetting());
             }
             

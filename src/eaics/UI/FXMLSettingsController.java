@@ -8,6 +8,7 @@ package eaics.UI;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Charger.ChargerGBT;
 import eaics.CAN.MGLDisplay;
+import eaics.LOGGING.Logging;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
@@ -20,7 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -40,12 +40,16 @@ public class FXMLSettingsController implements Initializable
     FXMLBMSsettingsPage bmsSettingsPage;
     FXMLConnectWifiController wifiConnectController;
     FXMLNumpadController numpad;
-    FXMLSendLogsController loggingController;
+    FXMLSendLogsController sendLogsController;
+    
+    FXMLLoggingPageController loggingController;
     
     ChargerGBT chg;
     
     FXMLCalibrateLoadCellController calib;
     Serial serial;
+    
+    private Logging logging;
     
     @FXML
     Button buttonStopLogging;
@@ -241,15 +245,15 @@ public class FXMLSettingsController implements Initializable
     }    
     
     @FXML   
-    private void handleLogging(ActionEvent event)
+    private void handleSendLogging(ActionEvent event)
     {   
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSendLogs.fxml"));
         try 
         {
             Pane pane = loader.load();
 
-            loggingController = loader.getController();
-            loggingController.setupKeyboard();
+            sendLogsController = loader.getController();
+            sendLogsController.setupKeyboard();
         
             Stage stage = new Stage();
         
@@ -271,17 +275,48 @@ public class FXMLSettingsController implements Initializable
         }
     }   
     
-    public void initSettings(MainUIController mainGui) 
+    @FXML
+    private void handleAdjustLogging(ActionEvent event) 
     {
-        gui = mainGui;
-    }
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoggingPage.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            loggingController = loader.getController();
+	    loggingController.initData(this.logging);
+   
+            Stage stage = new Stage();
+ 
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+
+            Scene scene = new Scene(pane);
+  
+            stage.setScene(scene);
+            stage.setTitle("Adjust Logging!!");
+            
+            stage.setX(175.0);
+            stage.setY(20.0);
+            
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Logging Window");
+	    e.printStackTrace();
+        }
+    } 
+
     
-    public void initData(LoadCell loadCell, Serial serial)
+    public void initData(LoadCell loadCell, Serial serial, Logging logging)
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
         this.serial = serial;
         this.chg = filter.getCharger();
+        this.logging = logging;
         
         mgl = new MGLDisplay();
         
@@ -352,16 +387,6 @@ public class FXMLSettingsController implements Initializable
         settings.update();
         
         pixhawkIPLabel.setText(newIP);
-    }
-    
-    @FXML
-    private void handleStopLogging(ActionEvent event)
-    {
-        //filter.stopLogging();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("LOGGING");
-        alert.setContentText("Logging has been stopped");
-        alert.show();
     }
     
     @FXML

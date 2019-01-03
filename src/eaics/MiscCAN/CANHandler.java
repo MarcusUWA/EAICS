@@ -104,10 +104,9 @@ public class CANHandler
                                 CanFrame currentFrame = socket.recv();
                                 
                                 int canID = currentFrame.getCanId().getCanId_EFF();
-                                int canIDSFF = currentFrame.getCanId().getCanId_SFF();
                                 
                                 int data[] = byte2int(currentFrame.getData());
-                                
+
                                 canMessage.newMessage(canSocketString, canID, data);
                                 /*
                                 if(canSocketString.equals("can0"))

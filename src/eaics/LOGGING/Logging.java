@@ -5,6 +5,7 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
+import eaics.CAN.MGL;
 import eaics.FILE.FileWriter;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
@@ -30,15 +31,26 @@ public class Logging
     private SimpleDateFormat formatterTime;
     private LoadCell loadCell;
     private Throttle throttle;
+    private MGL mgl;
+    
+    private boolean isLogging;
     
     public Logging(LoadCell loadCell, Throttle throttle)
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
         this.throttle = throttle;
+        this.mgl = filter.getMgl();
         formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	formatterTime = new SimpleDateFormat("HH:mm:ss");
+
         startNewLogFile();        
+    }
+    public void setLogging(boolean state) {
+        isLogging = state;
+    }
+    public boolean getLogging() {
+        return isLogging;
     }
     
     public void startNewLogFile()
@@ -46,7 +58,8 @@ public class Logging
 	String filename = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.csv'").format(new Date());
         this.fileWriter = new FileWriterCSV("/home/pi/Logging/"+ filename);
         writeHeadings();
-        writeLoggins();        
+        writeLoggins();     
+        isLogging = true;
     }
     
     public void changeLoggingRate(int milliseconds) //must be less than 60 seconds i.e. 60 000 milliseconds
@@ -61,12 +74,14 @@ public class Logging
     
     public void startLogging()
     {
-        stopLogging();
+        //stopLogging();
         startNewLogFile();
+        isLogging = true;
     }
     
     public void stopLogging()
     {
+        isLogging = false;
         try
         {
             this.executor.shutdown();
@@ -127,6 +142,13 @@ public class Logging
                 for(int i = 0; i < 4; i++) {
                     columnData += loadCell.getLoadCells(i)+",";
                 }
+                
+                columnData += loadCell.getWeight()+",";
+                
+                columnData += mgl.getBankAngle()+",";
+                columnData += mgl.getPitchAngle()+",";
+                columnData += mgl.getYawAngle()+",";
+                columnData += mgl.getGndSpeed()+",";
 
                 columnData +="\n";
 		fileWriter.write(columnData);
@@ -181,6 +203,13 @@ public class Logging
         {
             columnHeadings += "Load Cell "+i+",";
         }
+        
+        columnHeadings += "Weight, ";
+        
+        columnHeadings += "Bank Angle, ";
+        columnHeadings += "Pitch Angle, ";
+        columnHeadings += "Yaw Angle, ";
+        columnHeadings += "Ground Speed, ";
 
         columnHeadings += "\n";
 

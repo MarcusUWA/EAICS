@@ -161,8 +161,7 @@ public class TrifanMainUIController extends MainUIController
             Pane pane = loader.load();
 
             settingsPageController = loader.getController();
-            settingsPageController.initSettings(this);
-            settingsPageController.initData(loadCell, serial);
+            settingsPageController.initData(loadCell, serial, logging);
         
             Stage stage = new Stage();
         

@@ -90,12 +90,11 @@ public class Throttle
                     {
                         //filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
                         filter.getCANHandler(1).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
-                        //System.out.println("Sending Throttle CAN: " + throttleSetting);
                     }
                 }
                 catch(IOException e)
                 {
-                    System.out.println("Can bus is possibily not in correct state, check terminating resistors or use another bus");
+                    System.out.println("Can bus is possibly not in correct state, check terminating resistors or use another bus");
                     //e.printStackTrace();
                 }
             }

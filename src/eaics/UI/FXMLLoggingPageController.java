@@ -8,10 +8,16 @@ package eaics.UI;
 import eaics.LOGGING.Logging;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 
 /**
@@ -26,9 +32,29 @@ public class FXMLLoggingPageController implements Initializable
     @FXML
     private javafx.scene.control.Button buttonExit;
     
+    @FXML
+    private ChoiceBox rateChoiceBox;
+    
+    @FXML
+    private Button loggingState;
+    
     public void initData(Logging logging) throws IOException 
     {
         this.logging = logging;
+        
+        List<Integer> loggingRates = new ArrayList<>();
+        
+        loggingRates.add(10);
+        loggingRates.add(20);
+        loggingRates.add(50);
+        loggingRates.add(100);
+        loggingRates.add(200);
+        loggingRates.add(500);
+        loggingRates.add(1000);
+        loggingRates.add(2000);
+        loggingRates.add(5000);
+        
+        rateChoiceBox.setItems((ObservableList) FXCollections.observableArrayList(loggingRates));
     }
 
     /**
@@ -41,28 +67,25 @@ public class FXMLLoggingPageController implements Initializable
     }    
     
     @FXML
-    private void handle100msLogging(ActionEvent event)
-    {
-        this.logging.changeLoggingRate(100);
+    private void handleChangeRate(ActionEvent event) {
+        this.logging.changeLoggingRate(Integer.parseInt(rateChoiceBox.getValue().toString()));
+        System.out.println("Rate(ms)"+Integer.parseInt(rateChoiceBox.getValue().toString()));
     }
     
     @FXML
-    private void handleOneSecLogging(ActionEvent event)
-    {
-        this.logging.changeLoggingRate(1000);
+    private void handleState(ActionEvent event)
+    {       
+        if(this.logging.getLogging())
+        {
+            this.logging.stopLogging();
+            loggingState.setText("Start Logging");
+        }
+        else
+        {
+            this.logging.startLogging();
+            loggingState.setText("Stop Logging");
+        }
     }
-    
-    @FXML
-    private void handleStartLog(ActionEvent event)
-    {
-        this.logging.startLogging();
-    }
-    
-    @FXML
-    private void handleStopLog(ActionEvent event)
-    {
-        this.logging.stopLogging();
-    }  
     
     @FXML
     private void handleExitPressed(ActionEvent event)
