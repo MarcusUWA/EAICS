@@ -5,7 +5,7 @@
  */
 package eaics.CAN;
 
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANMessage;
 
 /**
  *
@@ -30,8 +30,7 @@ public class ESC
     private int remainingBatteryCapacity;
     private int throttleCommand;
     
-    public ESC(int escID)
-    {
+    public ESC(int escID){
 		this.escID = escID;
                 this.offset = 5;
 		

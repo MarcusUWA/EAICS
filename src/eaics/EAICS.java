@@ -1,5 +1,7 @@
 /*
  * ElectroAero Instrumentation and Control System
+ * @author Marcus Pham
+ * @version 3.6.7.0
  */
 package eaics;
 
@@ -17,16 +19,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class EAICS extends Application 
-{    
+/**
+ * Main Application Loader for EAICS
+ * @author Markcuz
+ */
+public class EAICS extends Application { 
+    
+    //Strings to define different operating conditions
     public static final String TRIFAN = "xti trifan 600";
     public static final String TRIKE = "ABM4-Y1";
+    public static final String AEROSKI = "ElectroNautic Jetski";
     
     public static String currentAircraft;
     
     private static Serial comms;
-    private static LoadCell loadCell;
-    private static Throttle throttle;
     
     private static Logging logging;
     
@@ -34,13 +40,8 @@ public class EAICS extends Application
     {
         currentAircraft = TRIKE;
         
-        loadCell = new LoadCell();
-        throttle = new Throttle();
-        IPAddress ipAddress = new IPAddress();
-        
-        comms = new Serial("/dev/ttyUSB0", loadCell, throttle);
-        
-        //final Process vncServerProgram = Runtime.getRuntime().exec("sudo dispmanx_vncserver rfcbport 5900");
+        //need to improve upon this....
+        comms = new Serial("/dev/ttyUSB0");
   
         CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
@@ -53,7 +54,7 @@ public class EAICS extends Application
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
-        logging = new Logging(loadCell, throttle);
+        logging = new Logging(comms);
 	    
 	// Launch the User Interface (UI) --------------------------------------
 
@@ -89,7 +90,7 @@ public class EAICS extends Application
         
         comms.connect();
         
-        mainUIcontroller.initData(logging, loadCell, comms, throttle);
+        mainUIcontroller.initData(logging,comms);
         stage.show();
     }
 }

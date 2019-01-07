@@ -98,7 +98,7 @@ public class FXMLNumpadController implements Initializable
     {
         this.bmsSettingsIndex = bmsSettingsIndex;
         this.settingsPage = settingsPage;
-        this.bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+        this.bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
         display.setText(display.getText() + bmsSettings.getDisplayUnits(bmsSettingsIndex));
     }
     

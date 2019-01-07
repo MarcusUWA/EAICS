@@ -2,13 +2,13 @@
 <jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="EAICS.jnlp">
   <information>
     <title>EAICS</title>
-    <vendor>Troy</vendor>
+    <vendor>Marcus</vendor>
     <description>null</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="EAICS.jar" size="398875" download="eager" />
+    <jar href="EAICS.jar" size="402032" download="eager" />
     <jar href="lib/jSerialComm-2.3.0.jar" size="372797" download="eager" />
     <jar href="lib/jsch-0.1.55.jar" size="280681" download="eager" />
     <jar href="lib/libsocket-can-java.jar" size="52235" download="eager" />

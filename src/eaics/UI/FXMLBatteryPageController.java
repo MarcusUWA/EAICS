@@ -141,7 +141,7 @@ public class FXMLBatteryPageController implements Initializable
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
         CurrentSensor currentSensor = filter.getCurrentSensor();
-        EVMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+        EVMSSettings bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
 
         //+------------------------------------------------------------+
         //BMS Module 8 (switch set to 8): 1 - 12 Cells

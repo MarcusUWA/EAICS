@@ -6,7 +6,7 @@
 package eaics.Settings;
 
 import eaics.CAN.CANFilter;
-import eaics.MiscCAN.CANHandler;
+import eaics.CAN.MiscCAN.CANHandler;
 import java.io.IOException;
 
 /**

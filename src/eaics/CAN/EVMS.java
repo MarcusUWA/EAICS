@@ -5,7 +5,7 @@
  */
 package eaics.CAN;
 
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANMessage;
 
 /**
  *
@@ -27,8 +27,7 @@ public class EVMS
     private int charge;     // EVMS version 2 only
     private int current;    // EVMS version 2 only
 
-    public EVMS()
-    {
+    public EVMS(){
         this.voltage = 0;
         this.auxVoltage = 0.0;
         this.leakage = 0;

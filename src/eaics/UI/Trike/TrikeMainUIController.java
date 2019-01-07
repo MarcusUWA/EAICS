@@ -255,12 +255,12 @@ public class TrikeMainUIController extends MainUIController
         }
     }
 
-    public void initData(Logging logging, LoadCell cell, Serial serial, Throttle throttle) throws IOException 
+    public void initData(Logging logging, Serial serial) throws IOException 
     {
         this.logging = logging;
-        this.loadCell = cell;
         this.serial = serial;
-        this.throttle = throttle;
+        this.loadCell = serial.getCell();
+        this.throttle = serial.getThrottle();
         
         if(this.throttle.isSendingThrottleCommands())
         {

@@ -165,7 +165,7 @@ public class FXMLBatteryCellPageController implements Initializable
         
 	int bmsModuleNum, cellNum, count;
 	double cellVoltage;
-	EVMSSettings bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+	EVMSSettings bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
 	int bmsMaxVoltage = bmsSettings.getSetting(14);
 	int bmsBalanceVoltage = bmsSettings.getSetting(15);
 	int bmsMinVoltage = bmsSettings.getSetting(13);

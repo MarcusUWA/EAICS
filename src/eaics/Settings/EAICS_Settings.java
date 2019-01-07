@@ -5,7 +5,7 @@
  */
 package eaics.Settings;
 
-import eaics.MiscCAN.CANHandler;
+import eaics.CAN.MiscCAN.CANHandler;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -57,7 +57,7 @@ public class EAICS_Settings
 	return instance;
     }
     
-    public EVMSSettings getBmsSettings()
+    public EVMSSettings getEVMSSettings()
     {
         return evmsSettings;
     }

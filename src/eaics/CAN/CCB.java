@@ -5,24 +5,21 @@
  */
 package eaics.CAN;
 
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANMessage;
 
 public class CCB 
 {
     private boolean isCCB_On;
 
-    public CCB() 
-    {
+    public CCB() {
 	
     }
     
-    public void setAll(CANMessage message)
-    {
+    public void setAll(CANMessage message){
 	isCCB_On = ((message.getByte(0)&0x01) == 1);
     }
     
-    public boolean isCCB_On()
-    {
+    public boolean isCCB_On(){
 	return isCCB_On;
     }
 }

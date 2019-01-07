@@ -8,8 +8,8 @@ package eaics.CAN.Charger;
 import eaics.CAN.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.EVMS;
-import eaics.MiscCAN.CANHandler;
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANHandler;
+import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.EVMSSettings;
 import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
@@ -83,7 +83,7 @@ public class ChargerGBT
         isChargeExecutorOn = false;
         
         this.evms = filter.getEVMS();
-        this.settings = EAICS_Settings.getInstance().getBmsSettings();
+        this.settings = EAICS_Settings.getInstance().getEVMSSettings();
         this.handler = filter.getCANHandler(0);
         
         this.maxChargeVoltage = settings.getSetting(19);
@@ -341,8 +341,8 @@ public class ChargerGBT
             0x01, //Packet No. = 1
             (bmsMaxVoltage/10)&0xFF, 
             (bmsMaxVoltage/10)>>8, 
-            (40000-maxChargeCurrent*100)&0xFF, 
-            (40000-(maxChargeCurrent*100))>>8, 
+            ((400-maxChargeCurrent)*10)&0xFF, 
+            ((400-maxChargeCurrent)*10)>>8, 
             (packCapacity*maxChargeVoltage/100)&0xFF, 
             (packCapacity*maxChargeVoltage/100)>>8, 
             (maxChargeVoltage*10)&0xFF

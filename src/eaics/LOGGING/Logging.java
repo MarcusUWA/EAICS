@@ -5,10 +5,11 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
-import eaics.CAN.MGL;
+import eaics.CAN.MGLDisplay;
 import eaics.FILE.FileWriter;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
+import eaics.SER.Serial;
 import eaics.SER.Throttle;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,15 +32,15 @@ public class Logging
     private SimpleDateFormat formatterTime;
     private LoadCell loadCell;
     private Throttle throttle;
-    private MGL mgl;
+    private MGLDisplay mgl;
     
     private boolean isLogging;
     
-    public Logging(LoadCell loadCell, Throttle throttle)
+    public Logging(Serial comms)
     {
         this.filter = CANFilter.getInstance();
-        this.loadCell = loadCell;
-        this.throttle = throttle;
+        this.loadCell = comms.getCell();
+        this.throttle = comms.getThrottle();
         this.mgl = filter.getMgl();
         formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	formatterTime = new SimpleDateFormat("HH:mm:ss");

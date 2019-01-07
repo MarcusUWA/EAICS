@@ -254,7 +254,7 @@ public class FXMLBMSsettingsPage implements Initializable
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
-	this.bmsSettings = EAICS_Settings.getInstance().getBmsSettings();
+	this.bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
 	this.pageNumber = (pageNumber - 1) * 8;
 	updateLabels();
     }

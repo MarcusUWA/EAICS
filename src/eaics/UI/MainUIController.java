@@ -53,5 +53,5 @@ public abstract class MainUIController implements Initializable
     
     public abstract void refreshIP() throws IOException;
     
-    public abstract void initData(Logging logging, LoadCell loadCell, Serial serial, Throttle throttle) throws IOException ;
+    public abstract void initData(Logging logging, Serial serial) throws IOException ;
 }

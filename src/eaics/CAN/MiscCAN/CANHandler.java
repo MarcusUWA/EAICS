@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics.MiscCAN;
+package eaics.CAN.MiscCAN;
 
 import de.entropia.can.CanSocket;
 import de.entropia.can.CanSocket.CanFrame;

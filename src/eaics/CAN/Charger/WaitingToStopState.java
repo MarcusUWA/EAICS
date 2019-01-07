@@ -5,7 +5,7 @@
  */
 package eaics.CAN.Charger;
 
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANMessage;
 
 /**
  *

@@ -6,7 +6,7 @@
 package eaics.CAN.Charger;
 
 import static eaics.CAN.Charger.ChargerGBT.Int2String;
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANMessage;
 
 /**
  *

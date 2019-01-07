@@ -11,9 +11,7 @@ import eaics.CAN.CurrentSensor;
 import eaics.CAN.ESC;
 import eaics.CAN.EVMS;
 import eaics.LOGGING.Logging;
-import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -215,11 +213,12 @@ public class TrifanMainUIController extends MainUIController
         }
     } 
     
-    public void initData(Logging logging, LoadCell cell, Serial serial, Throttle throttle) throws IOException 
+    public void initData(Logging logging, Serial serial) throws IOException 
     {
         this.logging = logging;
-        this.loadCell = cell;
+        
         this.serial = serial;
+        this.loadCell = serial.getCell();
 	
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours

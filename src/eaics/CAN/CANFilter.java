@@ -6,8 +6,8 @@
 package eaics.CAN;
 
 import eaics.CAN.Charger.ChargerGBT;
-import eaics.MiscCAN.CANHandler;
-import eaics.MiscCAN.CANMessage;
+import eaics.CAN.MiscCAN.CANHandler;
+import eaics.CAN.MiscCAN.CANMessage;
 import java.io.IOException;
 
 /**
@@ -34,7 +34,7 @@ public class CANFilter
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     private ChargerGBT chargerGBT;
-    private MGL mgl;
+    private MGLDisplay mgl;
 
     //Warnings
     private boolean hasWarnedError;
@@ -106,7 +106,7 @@ public class CANFilter
         this.hasWarnedError = false;
         this.hasWarnedChargerOff = false;
         
-        this.mgl = new MGL();
+        this.mgl = new MGLDisplay();
     }
 
     public void run(CANMessage message)
@@ -257,7 +257,7 @@ public class CANFilter
             
             
             //Begin Throttle CAN Messages
-            case 346095616: //HEX: "14A10000"
+            case 0x14A10000: case 0x14A10005: case 0x14A1000A: case 0x14A1000F:
                 break;//throttle command
                 
                 //ADD GBT charger can packet passing to:
@@ -342,7 +342,7 @@ public class CANFilter
         return this.chargerGBT;
     }
 
-    public MGL getMgl() {
+    public MGLDisplay getMgl() {
         return this.mgl;
     }
     

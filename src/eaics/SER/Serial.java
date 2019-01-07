@@ -31,11 +31,12 @@ public class Serial {
     final static int DASH_ASCII = 45;
     final static int NEW_LINE_ASCII = 10;
     
-    public Serial(String path, LoadCell cell, Throttle throttle) {
+    public Serial(String path) {
         this.path = path;
-        this.cell = cell;
-        this.throttle = throttle;
         
+        cell = new LoadCell();
+        throttle = new Throttle();
+
         searchForPorts();
     }
     
@@ -114,4 +115,14 @@ public class Serial {
            System.out.println("Failed to write data. (" + e.toString() + ")");
         }
     }
+
+    public LoadCell getCell() {
+        return cell;
+    }
+
+    public Throttle getThrottle() {
+        return throttle;
+    }
+    
+    
 }
