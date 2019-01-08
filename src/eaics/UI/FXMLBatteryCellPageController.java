@@ -5,12 +5,11 @@
  */
 package eaics.UI;
 
-import eaics.UI.Trifan.TrifanMainUIController;
-import eaics.CAN.BMS;
+import eaics.CAN.Battery.BMS;
 import eaics.CAN.CANFilter;
-import eaics.CAN.CCB;
-import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
+import eaics.CAN.Battery.CCB;
+import eaics.CAN.ESC.ESC;
+import eaics.CAN.Battery.EVMS;
 import eaics.SER.LoadCell;
 import eaics.Settings.EVMSSettings;
 import eaics.Settings.EAICS_Settings;
@@ -19,8 +18,6 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -40,14 +37,10 @@ import javafx.util.Duration;
 public class FXMLBatteryCellPageController implements Initializable 
 {
     private int pageNumber;
-    
-    MainUIController gui;
-    
     //refresh rate in ms
     int refreshFrequency = 1000;
     
     private CANFilter filter;
-    private LoadCell loadCell;
     
     @FXML
     private Label title;
@@ -85,11 +78,10 @@ public class FXMLBatteryCellPageController implements Initializable
     @FXML
     private List<Label> cellLabelList;
     
-    public void initData(LoadCell cell, int pageNumber) 
+    public void initData(int pageNumber) 
     {
 	this.pageNumber = (pageNumber) * 8;
         this.filter = CANFilter.getInstance();
-        this.loadCell = cell;
         
         updateScreen();
 	
@@ -110,6 +102,7 @@ public class FXMLBatteryCellPageController implements Initializable
     
     public void updateScreen()
     {
+        /*
         EVMS evmsV3 = filter.getEVMS();
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
@@ -200,14 +193,9 @@ public class FXMLBatteryCellPageController implements Initializable
 	    }
 	    
 	    count++;
-        }
+        }*/
     }
 
-    public void initSettings(MainUIController mainGui) 
-    {
-        gui = mainGui;
-    }
-    
     @FXML
     private void closeButtonAction(ActionEvent event) 
     {

@@ -6,11 +6,11 @@
 package eaics.UI;
 
 import eaics.Settings.EVMSSettings;
-import eaics.CAN.BMS;
+import eaics.CAN.Battery.BMS;
 import eaics.CAN.CANFilter;
-import eaics.CAN.CurrentSensor;
-import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
+import eaics.CAN.Battery.CurrentSensor;
+import eaics.CAN.ESC.ESC;
+import eaics.CAN.Battery.EVMS;
 import eaics.SER.LoadCell;
 import eaics.Settings.EAICS_Settings;
 import java.io.IOException;
@@ -252,17 +252,14 @@ public class FXMLBatteryPageController implements Initializable
         openCellPage(2);
     }
     
-    private void openCellPage(int pageNumber)
-    {
+    private void openCellPage(int pageNumber){
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage.fxml"));
         
-        try 
-        {
+        try {
             Pane pane = loader.load();
 	    
             cellPage[pageNumber] = loader.getController();
-            cellPage[pageNumber].initSettings(gui);
-	    cellPage[pageNumber].initData(loadCell, pageNumber);
+	    cellPage[pageNumber].initData(pageNumber);
         
             Stage stage = new Stage();
         

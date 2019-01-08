@@ -6,8 +6,8 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
-import eaics.CAN.Charger.ChargerGBT;
-import eaics.CAN.MGLDisplay;
+import eaics.CAN.Charger.GBT.ChargerGBT;
+import eaics.CAN.MGL.MGLDisplay;
 import eaics.LOGGING.Logging;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;

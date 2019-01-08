@@ -5,11 +5,11 @@
  */
 package eaics.UI.Trifan;
 
-import eaics.CAN.BMS;
+import eaics.CAN.Battery.BMS;
 import eaics.CAN.CANFilter;
-import eaics.CAN.CurrentSensor;
-import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
+import eaics.CAN.Battery.CurrentSensor;
+import eaics.CAN.ESC.ESC;
+import eaics.CAN.Battery.EVMS;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
 import eaics.UI.MainUIController;

@@ -5,7 +5,14 @@
  */
 package eaics.CAN;
 
-import eaics.CAN.Charger.ChargerGBT;
+import eaics.CAN.Battery.CCB;
+import eaics.CAN.ESC.ESC;
+import eaics.CAN.Battery.EVMS;
+import eaics.CAN.Battery.CurrentSensor;
+import eaics.CAN.MGL.MGLDisplay;
+import eaics.CAN.Battery.BMS;
+import eaics.CAN.Charger.GBT.ChargerGBT;
+import eaics.CAN.MGL.MGLReceive;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
 import java.io.IOException;
@@ -34,7 +41,7 @@ public class CANFilter
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     private ChargerGBT chargerGBT;
-    private MGLDisplay mgl;
+    private MGLReceive mgl;
 
     //Warnings
     private boolean hasWarnedError;
@@ -106,7 +113,7 @@ public class CANFilter
         this.hasWarnedError = false;
         this.hasWarnedChargerOff = false;
         
-        this.mgl = new MGLDisplay();
+        this.mgl = new MGLReceive();
     }
 
     public void run(CANMessage message)
@@ -342,7 +349,7 @@ public class CANFilter
         return this.chargerGBT;
     }
 
-    public MGLDisplay getMgl() {
+    public MGLReceive getMgl() {
         return this.mgl;
     }
     

@@ -1,11 +1,12 @@
 package eaics.LOGGING;
 
-import eaics.CAN.BMS;
+import eaics.CAN.Battery.BMS;
 import eaics.CAN.CANFilter;
-import eaics.CAN.CurrentSensor;
-import eaics.CAN.ESC;
-import eaics.CAN.EVMS;
-import eaics.CAN.MGLDisplay;
+import eaics.CAN.Battery.CurrentSensor;
+import eaics.CAN.ESC.ESC;
+import eaics.CAN.Battery.EVMS;
+import eaics.CAN.MGL.MGLDisplay;
+import eaics.CAN.MGL.MGLReceive;
 import eaics.FILE.FileWriter;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
@@ -32,7 +33,7 @@ public class Logging
     private SimpleDateFormat formatterTime;
     private LoadCell loadCell;
     private Throttle throttle;
-    private MGLDisplay mgl;
+    private MGLReceive mgl;
     
     private boolean isLogging;
     
@@ -145,12 +146,12 @@ public class Logging
                 }
                 
                 columnData += loadCell.getWeight()+",";
-                
+                /*
                 columnData += mgl.getBankAngle()+",";
                 columnData += mgl.getPitchAngle()+",";
                 columnData += mgl.getYawAngle()+",";
                 columnData += mgl.getGndSpeed()+",";
-
+*/
                 columnData +="\n";
 		fileWriter.write(columnData);
 	    }
