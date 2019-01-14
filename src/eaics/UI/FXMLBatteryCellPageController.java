@@ -10,7 +10,6 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CCB;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
-import eaics.SER.LoadCell;
 import eaics.Settings.EVMSSettings;
 import eaics.Settings.EAICS_Settings;
 import java.io.FileInputStream;
@@ -24,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,8 +34,7 @@ import javafx.util.Duration;
  * FXML Controller class
  *
  */
-public class FXMLBatteryCellPageController implements Initializable 
-{
+public class FXMLBatteryCellPageController implements Initializable {
     private int pageNumber;
     //refresh rate in ms
     int refreshFrequency = 1000;
@@ -70,7 +69,7 @@ public class FXMLBatteryCellPageController implements Initializable
     private Label bms7;
     
     @FXML
-    private javafx.scene.control.Button closeButton;
+    private Button closeButton;
     
     @FXML 
     private ImageView switchImage;
@@ -78,8 +77,7 @@ public class FXMLBatteryCellPageController implements Initializable
     @FXML
     private List<Label> cellLabelList;
     
-    public void initData(int pageNumber) 
-    {
+    public void initData(int pageNumber) {
 	this.pageNumber = (pageNumber) * 8;
         this.filter = CANFilter.getInstance();
         
@@ -100,9 +98,8 @@ public class FXMLBatteryCellPageController implements Initializable
         refreshUI.play();
     }
     
-    public void updateScreen()
-    {
-        /*
+    public void updateScreen() {
+        
         EVMS evmsV3 = filter.getEVMS();
         ESC[] esc = filter.getESC();
         BMS[] bms = filter.getBMS();
@@ -169,7 +166,19 @@ public class FXMLBatteryCellPageController implements Initializable
 	    bmsModuleNum = count / 12;	//integer division
 	    cellNum = count % 12;
 	    
-	    cellVoltage = (bms[pageNumber + bmsModuleNum].getVoltage(cellNum) / 1000.0);
+            //here is the problem...
+	    
+            cellVoltage = 5;
+            
+            System.out.println("voltage:" +bms[8+0].getVoltage(0));
+            System.out.println("bmsModuleNo:" +bmsModuleNum);
+            System.out.println("cellno:" +cellNum);
+            System.out.println("pageno:" +pageNumber);
+            
+            //System.out.println("Voltage: "+bms[pageNumber + bmsModuleNum].getVoltage(cellNum));
+            
+            //cellVoltage = (bms[pageNumber + bmsModuleNum].getVoltage(cellNum) / 1000.0);
+            
             
 	    label.setText(cellVoltage + "V");
 	    
@@ -193,7 +202,7 @@ public class FXMLBatteryCellPageController implements Initializable
 	    }
 	    
 	    count++;
-        }*/
+        }
     }
 
     @FXML

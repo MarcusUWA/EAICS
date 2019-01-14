@@ -11,10 +11,10 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
+import eaics.CAN.Charger.TC.TCCharger;
+import eaics.CAN.Charger.TC.TCSend;
 import eaics.LOGGING.Logging;
-import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -147,6 +147,16 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
+    private void startCharger(ActionEvent event) {
+        chargerSend.runCharger();
+    }
+    
+    @FXML
+    private void stopCharger(ActionEvent event) {
+        chargerSend.stopCharger();
+    }
+    
+    @FXML
     private void handleSERReset(ActionEvent event) throws IOException 
     {
         serial.disconnect();
@@ -254,9 +264,13 @@ public class TrikeMainUIController extends MainUIController
             e.printStackTrace();
         }
     }
+    
+    TCSend chargerSend;
 
     public void initData(Logging logging, Serial serial) throws IOException 
     {
+        this.chargerSend = new TCSend();
+        
         this.logging = logging;
         this.serial = serial;
         this.loadCell = serial.getCell();

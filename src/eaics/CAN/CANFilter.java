@@ -12,6 +12,7 @@ import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.MGL.MGLDisplay;
 import eaics.CAN.Battery.BMS;
 import eaics.CAN.Charger.GBT.ChargerGBT;
+import eaics.CAN.Charger.TC.TCCharger;
 import eaics.CAN.MGL.MGLReceive;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
@@ -42,6 +43,7 @@ public class CANFilter
     private CCB[] ccb;
     private ChargerGBT chargerGBT;
     private MGLReceive mgl;
+    private TCCharger tc;
 
     //Warnings
     private boolean hasWarnedError;
@@ -114,6 +116,9 @@ public class CANFilter
         this.hasWarnedChargerOff = false;
         
         this.mgl = new MGLReceive();
+        
+        this.tc = new TCCharger();
+        
     }
 
     public void run(CANMessage message)
@@ -287,8 +292,25 @@ public class CANFilter
                 mgl.processMessage(message);
                 break;
                 
+                
+            case 0x18FF50E5:
+                tc.setMessage(message);
+                break;
+                
+            case 0x18000000: case 0x18000002: case 0x18000001:
+                break;
+                
+                
 	    default:
                 System.out.println("Unknown packet, Frame ID: " + Integer.toHexString(message.getFrameID()));
+                StringBuilder sb = new StringBuilder();
+                sb.append("Data: ");
+        
+                for(int i = 0; i<message.getByteData().length; i++) {   
+                    sb.append(String.format("%02X ", message.getByte(i)));
+                }
+        
+                System.out.println(sb.toString());
 		break;
 	}
     }

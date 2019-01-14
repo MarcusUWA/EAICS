@@ -50,6 +50,8 @@ public class FXMLBatteryPageController implements Initializable
     
     private FXMLBatteryGraphController batteryGraphController;
     
+    private FXMLCellPageController cellController;
+    
     @FXML
     Button buttonCellPage1;
     
@@ -101,6 +103,8 @@ public class FXMLBatteryPageController implements Initializable
     
     @FXML
     private javafx.scene.control.Button closeButton;
+    
+    
 
     /**
      * Initializes the controller class.
@@ -235,9 +239,34 @@ public class FXMLBatteryPageController implements Initializable
     }
     
     @FXML
-    private void handleCellPage1(ActionEvent event) throws IOException
-    {
-        openCellPage(0);
+    private void handleCellPage1(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLCellPage.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            cellController = loader.getController();
+	    cellController.initData();
+   
+            Stage stage = new Stage();
+ 
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonCellPage1.getScene().getWindow());
+
+            Scene scene = new Scene(pane);
+  
+            stage.setScene(scene);
+            stage.setTitle("Cell Pages");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Battery Window");
+	    e.printStackTrace();
+        }
     }
     
     @FXML

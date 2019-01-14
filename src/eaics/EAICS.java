@@ -5,13 +5,10 @@
  */
 package eaics;
 
-import eaics.Settings.IPAddress;
 import eaics.Settings.EAICS_Settings;
 import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
-import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.SER.Throttle;
 import eaics.UI.MainUIController;
 import java.io.IOException;
 import javafx.application.Application;
