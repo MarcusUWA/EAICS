@@ -60,6 +60,76 @@ public class ChargerGBT
     private int bmsMaxVoltage;
     private int evmsMaxTemp;
     
+    private float observedCurrent; // variables needed for FXMLChargingController
+    private float observedVoltage;
+    private float maxChargerCurrent;
+    private float minChargerCurrent;
+    private float maxChargerVoltage;
+    private float minChargerVoltage;
+    private int timeOnCharge;
+    
+    public void setMaxChargerCurrent(float maxChargerCurrent) // Set all variables for FXMLChargingController
+    {
+        this.maxChargerCurrent = maxChargerCurrent;
+    }
+    public void setMaxChargerVoltage(float maxChargerVoltage) 
+    {
+        this.maxChargerVoltage = maxChargerVoltage;
+    }
+    public void setMinChargerCurrent(float maxChargerCurrent)
+    {
+        this.maxChargerCurrent = maxChargerCurrent;
+    }
+    public void setMinChargerVoltage(float maxChargerVoltage) 
+    {
+        this.maxChargerVoltage = maxChargerVoltage;
+    }
+    public void setObservedCurrent(float observedCurrent) 
+    {
+        this.observedCurrent = observedCurrent;
+    }
+    public void setObservedVoltage(float observedVoltage) 
+    {
+        this.observedVoltage = observedVoltage;
+    }
+    public void setTimeOnCharge(int timeOnCharge) 
+    {
+        this.timeOnCharge = timeOnCharge;
+    }
+    
+
+    public float getObservedCurrent()  // Set all variables for FXMLChargingController
+    {
+        return observedCurrent;
+    }
+    public float getObservedVoltage() // Set all variables for FXMLChargingController
+    {
+        return observedVoltage;
+    }
+    public float getMaxChargerCurrent() 
+    {
+        return maxChargerCurrent;
+    }
+    public float getMaxChargerVoltage() 
+    {
+        return maxChargerVoltage;
+    }
+    public float getMinChargerCurrent() 
+    {
+        return maxChargerCurrent;
+    }
+    public float getMinChargerVoltage() 
+    {
+        return maxChargerVoltage;
+    }
+    public int getTimeOnCharge() 
+    {
+        return timeOnCharge;
+    }
+
+
+    
+    
     public ChargerGBT(CANFilter filter)
     {
         state0 = new State0(this);

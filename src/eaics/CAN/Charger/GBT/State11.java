@@ -37,10 +37,16 @@ public class State11 implements State
                 }
             }
         }
-        else if(CANID == 0x1812F456)
+        else if(CANID == 0x1812F456) // The charger is sending back observed voltage/current
         {
-            System.out.println("Happy Packets");
-            System.out.println("(Charger) Charger OK, updating details");
+            System.out.println("(Charger) Charger OK it is sending observed current/voltage");
+            // Concatenate hex values, such that the second byte of data is first, then divide by 10 and ensure that it is type casted to a float as data is originally an int
+            chargerGBT.setObservedVoltage((float) ((data[1]<<8+data[0]%256)/10.0));
+            // to calculate current it is 400 - data/10
+            chargerGBT.setObservedCurrent((float) (400.0 - (float) ((data[3]<<8+data[2]%256)/10.0)));
+            // convert each bit to a minute. NOTE: the range is 0 to 600 minutes
+            chargerGBT.setTimeOnCharge((data[5]<<8+data[4]%256));
+
         }
         else if(CANID == 0x100AF456)
         {

@@ -94,7 +94,7 @@ public class SettingsGeneral implements Settings {
         return numBatteryModules;
     }
 
-    public ChargerType getChg() {
+    public ChargerType getChargerType() {
         return chg;
     }
 
@@ -108,6 +108,11 @@ public class SettingsGeneral implements Settings {
 
     public ThrottleType getThr() {
         return thr;
+    }
+
+    public void setChargerType(ChargerType chg) 
+    {
+        this.chg = chg;
     }
     
     
