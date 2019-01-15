@@ -48,11 +48,12 @@ public class FXMLBatteryPageController implements Initializable
     private int timeToRefresh = 5000;
     
     private static final int numberOfCellPages = 3;
+    
+    // The page variables
     FXMLBatteryCellPageController[] cellPage = new FXMLBatteryCellPageController[numberOfCellPages];
-    
     private FXMLBatteryGraphController batteryGraphController;
-    
     private FXMLCellPageController cellController;
+    private FXMLChargingController chargingController; // Used to create the Charging Page scene
     
     @FXML
     Button buttonCellPage1;
@@ -325,19 +326,16 @@ public class FXMLBatteryPageController implements Initializable
     @FXML
     private void handleChargingSummary(ActionEvent event) throws IOException
     {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLCharing.fxml"));
-        
+        // Get the FXML page called Charging
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLCharging.fxml"));
+        // Try and load the Charging page
         try 
-	{
+	{ // 
             Pane pane = loader.load();
-
-            batteryGraphController = loader.getController();
-            batteryGraphController.initData();
+            chargingController = loader.getController(); // Get the instance of the chargingController which is an FXMLChargingController class
+            // chargingController.initData();  // part of this class
         
-            Stage stage = new Stage();
-        
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonBatterySummary.getScene().getWindow());
+            Stage stage = new Stage(); // Do not need init because it doesn't have multiple tabs on the same page
         
             Scene scene = new Scene(pane);
         
@@ -346,10 +344,12 @@ public class FXMLBatteryPageController implements Initializable
             
             stage.setMaximized(true);
             stage.show();
+            chargingController.InitialiseChargingScene(); // Ensure initial settings
         }
         catch (Exception e) 
         {
-            System.out.println("Failed to open Charging Summary Window");
+            System.out.println("ERROR: Failed to open Charging Summary Window");
+            System.out.println("ERROR message: "+ e.getMessage());
         }	
     }
 }

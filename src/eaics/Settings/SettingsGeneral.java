@@ -11,6 +11,8 @@ package eaics.Settings;
  */
 public class SettingsGeneral implements Settings {
     
+    public boolean isCharging = false; // Used to determine if the system is charging or not
+    
     public enum ChargerType {
         None, TC, GBT
     }
@@ -78,38 +80,43 @@ public class SettingsGeneral implements Settings {
     }
 
     @Override
-    public void update() {
-
+    public void update() 
+    {
+         // TODO
     }
-
-    public boolean isMglConnected() {
+    public boolean isMglConnected() 
+    {
         return mglConnected;
     }
-
-    public boolean isBmsFaker() {
+    public boolean isBmsFaker() 
+    {
         return bmsFaker;
     }
-
-    public int getNumBatteryModules() {
+    public int getNumBatteryModules() 
+    {
         return numBatteryModules;
     }
-
-    public ChargerType getChargerType() {
+    public ChargerType getChargerType() 
+    {
         return chg;
     }
-
-    public ESCType getEsc() {
+    public ChargerType[] getChargerEnumList() 
+    {
+        return ChargerType.values();
+    }
+    public ESCType getEsc() 
+    {
         return esc;
     }
-
-    public BMSType getBms() {
+    public BMSType getBms() 
+    {
         return bms;
     }
-
-    public ThrottleType getThr() {
+    public ThrottleType getThr() 
+    {
         return thr;
     }
-
+    
     public void setChargerType(ChargerType chg) 
     {
         this.chg = chg;

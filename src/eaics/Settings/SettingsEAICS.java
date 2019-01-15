@@ -225,7 +225,8 @@ public class SettingsEAICS {
                 writer.close();
             }
             catch(Exception e) {
-                System.out.println("Failed to close settings file");
+                System.out.println("ERROR: Failed to close settings file");
+                System.out.println("ERROR Message: "+e.getMessage());
             }
 	}
     }
