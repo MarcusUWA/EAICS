@@ -54,57 +54,43 @@ public class FXMLBatteryPageController implements Initializable
     
     @FXML
     Button buttonCellPage1;
-    
     @FXML
     Button buttonCellPage2;
-    
     @FXML
     Button buttonCellPage3;
-    
     @FXML
     Button buttonBatterySummary;
+    @FXML
+    Button buttonChargingPage;
     
     @FXML
     private Label ampsLabel;
-    
     @FXML
     private Label voltsLabel;
-    
     @FXML
     private Label timeLabel;
-    
     @FXML
     private Label highCellLabel;
-    
     @FXML
     private Label lowCellLabel;
-    
     @FXML
     private Label capacityLabel;
-    
     @FXML
     private Label powerLabel;
-    
     @FXML
     private Label socLabel;
-    
     @FXML
     private Label theHighBMSLabel;    
     @FXML
     private Label theHighCellLabel;
-    
     @FXML
     private Label theLowBMSLabel;    
     @FXML
     private Label theLowCellLabel;
-    
     @FXML
     private Label deltaLabel;
-    
     @FXML
     private javafx.scene.control.Button closeButton;
-    
-    
 
     /**
      * Initializes the controller class.
@@ -307,7 +293,6 @@ public class FXMLBatteryPageController implements Initializable
             System.out.println("Failed to open Battery Cell Page " + (pageNumber + 1));
         }	
     }
-    
     @FXML
     private void handleBatterySummary(ActionEvent event) throws IOException
     {
@@ -336,6 +321,36 @@ public class FXMLBatteryPageController implements Initializable
         catch (Exception e) 
         {
             System.out.println("Failed to open Battery Summary Window");
+        }	
+    }
+    @FXML
+    private void handleChargingSummary(ActionEvent event) throws IOException
+    {
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLCharing.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
+
+            batteryGraphController = loader.getController();
+            batteryGraphController.initData();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonBatterySummary.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Charging Summary");
+            
+            stage.setMaximized(true);
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Charging Summary Window");
         }	
     }
 }

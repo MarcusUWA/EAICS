@@ -126,9 +126,6 @@ public class ChargerGBT
     {
         return timeOnCharge;
     }
-
-
-    
     
     public ChargerGBT(CANFilter filter)
     {

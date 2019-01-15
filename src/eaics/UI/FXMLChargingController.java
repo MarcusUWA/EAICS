@@ -3,24 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+// This is myyyy swamp
+
 package eaics.UI;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML; // Allows the injection of FXML code, e.g. the @FXML
+import javafx.stage.Stage; // Allows a change of screen
 
-import eaics.CAN.CANFilter; // Access CAN messages
-import eaics.CAN.Charger.GBT.ChargerGBT; // Access messages filtered via the GB/T class
-import eaics.CAN.Charger.TC.TCCharger; // Access messages filtered via the TC class
-import eaics.Settings.SettingsEAICS;
+import eaics.CAN.CANFilter; // Access variables sent via CAN
+import eaics.Settings.SettingsEAICS; // Access charging typesa and other settings
+import javafx.event.ActionEvent;
 
 import javafx.scene.control.Button; // Used to control button behaviour
 import javafx.scene.control.Label; // Used to control label behaviour
+import javafx.scene.control.ChoiceBox; // Used to control the choice box for charge protocol selection
 /**
  * FXML Controller class
  * 
- * @author Markcuz
+ * @author Alex
  */
 public class FXMLChargingController implements Initializable {
     // Initialise the Labels and buttons on the GUI
@@ -46,24 +49,29 @@ public class FXMLChargingController implements Initializable {
     @FXML
     Button BackButton; // Used to navigate back
     @FXML
-    Button ChargeSelectionGBT; // Sets charging protocol to GB/T
-    @FXML
-    Button ChargeSelectionTC; // Sets charging protocol to TC
+    ChoiceBox ChargeSelection; // ALlows the charging protocol to be selected
     @FXML
     Button SetUserChargeParameters; // Sets user specified current and voltage
     
-    // Assume that GB/T Charging will always be used first.
-    
-    
-    
     @Override // Note: Forced function on bootup (don't need it because variables might not have been initialised yet)
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         // TODO
     }    
     
+    public void InitialiseChargerSelection() // Used to initialise the choice box
+    {
+        SettingsEAICS settings = SettingsEAICS.getInstance();
+        
+        // Set the values of the charge selection
+        ChargeSelection.getItems().setAll(settings.getGeneralSettings().getChargerType());
+        
+        // Set the default to last selected charging mode, NOTE: none is always indexed as 0
+        ChargeSelection.getSelectionModel().select(0);
+    }
     public void UpdateStatistics() // Updates the page with new values
-    { // NOTE TO SELF: variables have lower case
-        CANFilter filter = CANFilter.getInstance();
+    { 
+        CANFilter filter = CANFilter.getInstance(); // Get instance of filter and settings
         SettingsEAICS settings = SettingsEAICS.getInstance();
         
         float chargeVoltage = settings.getEVMSSettings().getSetting(19);
@@ -71,7 +79,7 @@ public class FXMLChargingController implements Initializable {
                 
         float observedVoltage  = filter.getCharger().getObservedVoltage();
         float observedCurrent = filter.getCharger().getObservedCurrent();
-        
+
         // Ensure that the return float is converted to string with 1dp
         ChargerMaxVoltage.setText(String.format("%.1f",filter.getCharger().getMaxChargerVoltage()));
         ChargerMinVoltage.setText(String.format("%.1f",filter.getCharger().getMinChargerVoltage()));
@@ -85,6 +93,12 @@ public class FXMLChargingController implements Initializable {
         // Integer is converted to string
         TimeCharging.setText(String.format("d",filter.getCharger().getTimeOnCharge()));
         ETACharging.setText("something");
+    }
+    @FXML // Delete the charging screne and go back to the previous scene.
+    private void closeButtonAction(ActionEvent event)
+    {
+        Stage stage = (Stage) BackButton.getScene().getWindow();
+        stage.close();
     }
     
 }

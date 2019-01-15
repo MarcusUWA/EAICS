@@ -12,7 +12,7 @@ package eaics.Settings;
 public class SettingsGeneral implements Settings {
     
     public enum ChargerType {
-        TC, GBT, None
+        None, TC, GBT
     }
     
     public enum ESCType{
