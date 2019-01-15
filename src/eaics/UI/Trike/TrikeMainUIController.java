@@ -183,7 +183,6 @@ public class TrikeMainUIController extends MainUIController
             stage.setScene(scene);
             stage.setTitle("Settings!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 
@@ -214,7 +213,6 @@ public class TrikeMainUIController extends MainUIController
             stage.setScene(scene);
             stage.setTitle("Battery!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 

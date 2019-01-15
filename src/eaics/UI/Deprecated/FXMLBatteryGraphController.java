@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics.UI;
+package eaics.UI.Deprecated;
 
 import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;

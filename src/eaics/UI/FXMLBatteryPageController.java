@@ -5,6 +5,8 @@
  */
 package eaics.UI;
 
+import eaics.UI.Deprecated.FXMLBatteryCellPageController;
+import eaics.UI.Deprecated.FXMLBatteryGraphController;
 import eaics.Settings.SettingsEVMS;
 import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
@@ -245,7 +247,6 @@ public class FXMLBatteryPageController implements Initializable
             stage.setScene(scene);
             stage.setTitle("Cell Pages");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 
@@ -314,8 +315,6 @@ public class FXMLBatteryPageController implements Initializable
         
             stage.setScene(scene);
             stage.setTitle("Battery Summary");
-            
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 

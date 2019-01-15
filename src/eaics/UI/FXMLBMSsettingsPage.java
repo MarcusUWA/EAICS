@@ -285,7 +285,7 @@ public class FXMLBMSsettingsPage implements Initializable
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("Numpad!!!");
+            stage.setTitle("Numpad");
             
             stage.show();
         }        
