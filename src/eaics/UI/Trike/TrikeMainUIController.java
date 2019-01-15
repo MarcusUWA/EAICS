@@ -6,12 +6,11 @@
 package eaics.UI.Trike;
 
 import eaics.UI.Trifan.TrifanMainUIController;
-import eaics.CAN.Battery.BMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
-import eaics.CAN.Charger.TC.TCCharger;
 import eaics.CAN.Charger.TC.TCSend;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
@@ -299,7 +298,7 @@ public class TrikeMainUIController extends MainUIController
                 CANFilter filter = CANFilter.getInstance();
                 EVMS evmsV3 = (EVMS) filter.getEVMS();
 		ESC[] esc = filter.getESC();
-		BMS[] bms = filter.getBMS();
+		BMS12v3[] bms = filter.getBMS();
                 CurrentSensor currentSensor = filter.getCurrentSensor();
                 
                 FileInputStream input = null;

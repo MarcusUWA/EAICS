@@ -3,26 +3,31 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics.CAN.Battery;
+package eaics.CAN.Battery.BMS;
 
 import eaics.CAN.MiscCAN.CANMessage;
+import eaics.Settings.SettingsEAICS;
 
 /**
  *
  * @author Troy
  */
-public class BMS 
+public class BMS12v3 
 {
+    
+    private SettingsEAICS settings;
         private final int BPID = 300;
 	private int MODULE_ID;
 	private int[] voltage;
 	private int[] temp;
+        
 	
 	public static final int NUMBER_OF_CELLS = 12;
 	public static final int NUMBER_OF_TEMP_SENSORS = 2;
 	
-	public BMS(int inID)
+	public BMS12v3(int inID)
 	{
+            this.settings = SettingsEAICS.getInstance();
 	    this.MODULE_ID = inID;
 	    this.voltage = new int[NUMBER_OF_CELLS];
 	    this.temp = new int[NUMBER_OF_TEMP_SENSORS];
@@ -54,6 +59,10 @@ public class BMS
 		    this.temp[0] = message.getByte(0) - 40; // removing the +40 degree C offset
 		    this.temp[1] = message.getByte(1) - 40; // removing the +40 degree C offset
 		    break;
+                case 0:
+                    //the request packet...
+                    break;
+                    
 	    }
 	}
 	

@@ -14,10 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import eaics.Settings.EVMSSettings;
+import eaics.Settings.SettingsEVMS;
 import eaics.CAN.CANFilter;
 import eaics.SER.LoadCell;
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEAICS;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -37,7 +37,7 @@ public class FXMLBMSsettingsPage implements Initializable
     
     FXMLNumpadController numpad;
     
-    private EVMSSettings bmsSettings;
+    private SettingsEVMS bmsSettings;
     
     // Titel Label
     
@@ -254,7 +254,7 @@ public class FXMLBMSsettingsPage implements Initializable
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
-	this.bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
+	this.bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
 	this.pageNumber = (pageNumber - 1) * 8;
 	updateLabels();
     }
@@ -296,7 +296,7 @@ public class FXMLBMSsettingsPage implements Initializable
         }
     }
     
-    public EVMSSettings getBMSSettings()
+    public SettingsEVMS getBMSSettings()
     {
 	return this.bmsSettings;
     }

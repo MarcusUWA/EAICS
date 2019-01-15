@@ -14,8 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import eaics.Settings.EVMSSettings;
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEVMS;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 
 /**
@@ -98,11 +98,11 @@ public class FXMLNumpadController implements Initializable
     {
         this.bmsSettingsIndex = bmsSettingsIndex;
         this.settingsPage = settingsPage;
-        this.bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
+        this.bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
         display.setText(display.getText() + bmsSettings.getDisplayUnits(bmsSettingsIndex));
     }
     
-    private EVMSSettings bmsSettings;
+    private SettingsEVMS bmsSettings;
     private FXMLBMSsettingsPage settingsPage;
 
     /**
@@ -209,7 +209,7 @@ public class FXMLNumpadController implements Initializable
             else 
 	    {
                 this.bmsSettings.setSetting(bmsSettingsIndex,  Integer.parseInt(display.getText()));	
-		EAICS_Settings.getInstance().update();
+		SettingsEAICS.getInstance().update();
                 this.settingsPage.updateLabels();
             }
             Stage stage = (Stage) enter.getScene().getWindow();

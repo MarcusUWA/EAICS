@@ -12,7 +12,7 @@ import eaics.LOGGING.Logging;
 import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,7 +35,7 @@ import javafx.stage.Stage;
  */
 public class FXMLSettingsController implements Initializable 
 {
-    String version = "3.6.2.7";
+    String version = "3.6.5.0";
     
     FXMLBMSsettingsPage bmsSettingsPage;
     FXMLConnectWifiController wifiConnectController;
@@ -320,7 +320,7 @@ public class FXMLSettingsController implements Initializable
         
         mgl = new MGLDisplay();
         
-        pixhawkIPLabel.setText(EAICS_Settings.getInstance().getPixHawkSettings().getIpAddress());
+        pixhawkIPLabel.setText(SettingsEAICS.getInstance().getPixHawkSettings().getIpAddress());
         
 	softwareVersionLabel.setText(version);
     }
@@ -380,7 +380,7 @@ public class FXMLSettingsController implements Initializable
         
         final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + ":14550 --aircraft MyCopter");
         
-        EAICS_Settings settings = EAICS_Settings.getInstance();
+        SettingsEAICS settings = SettingsEAICS.getInstance();
         
         settings.getPixHawkSettings().setIpAddress(newIP);
         

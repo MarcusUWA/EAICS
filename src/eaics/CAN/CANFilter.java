@@ -10,7 +10,7 @@ import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.MGL.MGLDisplay;
-import eaics.CAN.Battery.BMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.Charger.GBT.ChargerGBT;
 import eaics.CAN.Charger.TC.TCCharger;
 import eaics.CAN.MGL.MGLReceive;
@@ -38,7 +38,7 @@ public class CANFilter
 
     private EVMS evms;
     private ESC[] esc;
-    private BMS[] bms;
+    private BMS12v3[] bms;
     private CurrentSensor currentSensor;
     private CCB[] ccb;
     private ChargerGBT chargerGBT;
@@ -96,10 +96,10 @@ public class CANFilter
             this.esc[ii] = new ESC(ii);
         }
 
-        this.bms = new BMS[NUM_OF_BMS];
+        this.bms = new BMS12v3[NUM_OF_BMS];
         for(int ii = 0; ii < NUM_OF_BMS; ii++)
         {
-            this.bms[ii] = new BMS(ii);
+            this.bms[ii] = new BMS12v3(ii);
         }
 
         this.currentSensor = new CurrentSensor();
@@ -351,7 +351,7 @@ public class CANFilter
 	return this.esc;
     }
 
-    public BMS[] getBMS()
+    public BMS12v3[] getBMS()
     {
 	return this.bms;
     }

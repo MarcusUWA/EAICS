@@ -1,11 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLChargingController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eaics.UI.FXMLChargingController">
+   <children>
+      <Label fx:id="titleLabel" layoutX="294.0" layoutY="35.0" text="Charging Settings">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Line endX="395.0" layoutX="411.0" layoutY="67.0" startX="-395.0" />
+      <Button layoutX="320.0" layoutY="104.0" mnemonicParsing="false" text="GBT" />
+      <Button layoutX="388.0" layoutY="104.0" mnemonicParsing="false" text="TC" />
+      <Label layoutX="304.0" layoutY="77.0" text="Protocol Selection">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Line endX="100.0" layoutX="376.0" layoutY="139.0" startX="-100.0" />
+      <Label layoutX="42.0" layoutY="172.0" text="Observed Current [A]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="42.0" layoutY="203.0" text="Observed Voltage [V]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="231.0" layoutY="177.0" text="VALUE" />
+      <Label layoutX="232.0" layoutY="208.0" text="VALUE" />
+      <Label layoutX="662.0" layoutY="206.0" text="VALUE" />
+      <Label layoutX="662.0" layoutY="175.0" text="VALUE" />
+      <Label layoutX="529.0" layoutY="201.0" text="Set Voltage [V]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="529.0" layoutY="170.0" text="Set Current [A]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="288.0" layoutY="316.0" text="ETA [Minutes]:">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label layoutX="454.0" layoutY="322.0" text="VALUE">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="231.0" layoutY="239.0" text="VALUE" />
+      <Label layoutX="42.0" layoutY="233.0" text="Observed Power [W]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="263.0" text="Amount Charged [A/Hr]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="232.0" layoutY="269.0" text="VALUE" />
+      <Label layoutX="529.0" layoutY="76.0" text="Max Allowable Current [A]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="737.0" layoutY="81.0" text="VALUE" />
+      <Label layoutX="529.0" layoutY="107.0" text="Max Allowable Voltage [V]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="740.0" layoutY="113.0" text="VALUE" />
+      <Label layoutX="272.0" layoutY="355.0" text="Time on Charge [Minutes]:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="482.0" layoutY="360.0" text="VALUE" />
+   </children>
 </AnchorPane>

@@ -5,7 +5,7 @@
  */
 package eaics;
 
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEAICS;
 import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
@@ -42,7 +42,7 @@ public class EAICS extends Application {
   
         CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
-        EAICS_Settings settings = EAICS_Settings.getInstance();
+        SettingsEAICS settings = SettingsEAICS.getInstance();
         settings.loadSettings();
         
 	// Pix Hawk Code ------------------------------------------------------

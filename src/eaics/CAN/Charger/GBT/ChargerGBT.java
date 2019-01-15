@@ -5,13 +5,13 @@
  */
 package eaics.CAN.Charger.GBT;
 
-import eaics.CAN.Battery.BMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.EVMS;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
-import eaics.Settings.EVMSSettings;
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEVMS;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
@@ -49,7 +49,7 @@ public class ChargerGBT
     private boolean isChargeExecutorOn;
     
     private EVMS evms;
-    private EVMSSettings settings;
+    private SettingsEVMS settings;
     private CANHandler handler;
     
     private int maxChargeVoltage;
@@ -83,7 +83,7 @@ public class ChargerGBT
         isChargeExecutorOn = false;
         
         this.evms = filter.getEVMS();
-        this.settings = EAICS_Settings.getInstance().getEVMSSettings();
+        this.settings = SettingsEAICS.getInstance().getEVMSSettings();
         this.handler = filter.getCANHandler(0);
         
         this.maxChargeVoltage = settings.getSetting(19);
@@ -582,11 +582,11 @@ public class ChargerGBT
         int maxVoltage = -1;
 	int maxCellNumber = -1;
 	int maxBmsNumber = -1;
-        BMS[] bms = CANFilter.getInstance().getBMS();
+        BMS12v3[] bms = CANFilter.getInstance().getBMS();
 	
 	for(int ii = 0; ii < bms.length; ii++)
 	{
-	    for(int jj = 0; jj < BMS.NUMBER_OF_CELLS; jj++)
+	    for(int jj = 0; jj < BMS12v3.NUMBER_OF_CELLS; jj++)
 	    {
 		int tempVoltage = bms[ii].getVoltage(jj);
 		if(tempVoltage > maxVoltage)

@@ -5,14 +5,14 @@
  */
 package eaics.UI;
 
-import eaics.Settings.EVMSSettings;
-import eaics.CAN.Battery.BMS;
+import eaics.Settings.SettingsEVMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.SER.LoadCell;
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -143,9 +143,9 @@ public class FXMLBatteryPageController implements Initializable
     {
         EVMS evmsV3 = (EVMS)filter.getEVMS();
         ESC[] esc = filter.getESC();
-        BMS[] bms = filter.getBMS();
+        BMS12v3[] bms = filter.getBMS();
         CurrentSensor currentSensor = filter.getCurrentSensor();
-        EVMSSettings bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
+        SettingsEVMS bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
 
         //+------------------------------------------------------------+
         //BMS Module 8 (switch set to 8): 1 - 12 Cells
@@ -184,7 +184,7 @@ public class FXMLBatteryPageController implements Initializable
 	
 	for(int ii = 0; ii < bms.length; ii++)
 	{
-	    for(int jj = 0; jj < BMS.NUMBER_OF_CELLS; jj++)
+	    for(int jj = 0; jj < BMS12v3.NUMBER_OF_CELLS; jj++)
 	    {
 		int tempVoltage = bms[ii].getVoltage(jj);
 		if(tempVoltage > maxVoltage)
@@ -206,7 +206,7 @@ public class FXMLBatteryPageController implements Initializable
 	
 	for(int ii = 0; ii < bms.length; ii++)
 	{
-	    for(int jj = 0; jj < BMS.NUMBER_OF_CELLS; jj++)
+	    for(int jj = 0; jj < BMS12v3.NUMBER_OF_CELLS; jj++)
 	    {
 		int tempVoltage = bms[ii].getVoltage(jj);
 		if(tempVoltage < minVoltage)

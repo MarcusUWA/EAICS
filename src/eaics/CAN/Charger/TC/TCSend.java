@@ -6,8 +6,8 @@
 package eaics.CAN.Charger.TC;
 
 import eaics.CAN.CANFilter;
-import eaics.Settings.EAICS_Settings;
-import eaics.Settings.EVMSSettings;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.SettingsEVMS;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,13 +28,13 @@ public class TCSend {
 
     private ScheduledExecutorService chargerExecutor;
 
-    private EVMSSettings settings;
+    private SettingsEVMS settings;
 
     boolean chargeStatus;
 
     public TCSend() {
 
-        this.settings = EAICS_Settings.getInstance().getEVMSSettings();
+        this.settings = SettingsEAICS.getInstance().getEVMSSettings();
 
         this.chargeVoltage = settings.getSetting(19);
         this.chargeCurrent = settings.getSetting(20);

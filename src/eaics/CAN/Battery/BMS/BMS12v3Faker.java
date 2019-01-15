@@ -3,14 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics.Settings;
+package eaics.CAN.Battery.BMS;
 
 /**
  *
- * @author Troy Burgess
+ * @author Markcuz
  */
-public interface Settings {
-    public String getSettingsFileString();
-    public void setSettings(String fileString);
-    public void update();
+public class BMS12v3Faker {
+
+    public BMS12v3Faker() {
+        
+    }
+    
+    
+    
+    
 }

@@ -35,101 +35,120 @@ public class CANHandler
     
     private CANMessage canMessage;
     
-    public CANHandler(String canSocketString)
-    {
+    private boolean noCAN = true;
+    
+    public CANHandler(String canSocketString) {
         this.canSocketString = canSocketString;
         
         this.amReading = true;
         this.startedReading = false;
         this.portBinded = false;
-        try
-        {
-            socket = new CanSocket(Mode.RAW);
         
-            //searches for the interface matching this name
-            canIf = new CanInterface(socket, this.canSocketString);
+        if(noCAN) {
+            System.out.println("Initialise: CAN turned off");
         }
-        catch(IOException e)
-        {
-            e.printStackTrace();
+        else {
+            try {
+                socket = new CanSocket(Mode.RAW);
+
+                //searches for the interface matching this name
+                canIf = new CanInterface(socket, this.canSocketString);
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
         }
         
         canMessage = new CANMessage();
     }
     
-    public void openPort() throws IOException 
-    {
-        //Binding the socket
-        socket.bind(canIf);
+    public void openPort() throws IOException  {
         
-        portBinded = true;
-    }
-
-    private void closePort() throws IOException 
-    {
-        if(portBinded) 
-        {
-            socket.close();
+        if(noCAN) {
+            System.out.println("Open: CAN turned off");
             portBinded = false;
         }
-        else 
-        {
-            throw new IllegalStateException("Port not opened yet!");
+        else {
+            //Binding the socket
+            socket.bind(canIf);
+
+            portBinded = true;
+        }
+    }
+
+    private void closePort() throws IOException  {  
+        if(noCAN) {
+            System.out.println("Close: CAN turned off");
+            portBinded = false;
+        }
+        else {
+            if(portBinded) {
+                socket.close();
+                portBinded = false;
+            }
+            else {
+                throw new IllegalStateException("Port not opened yet!");
+            }
         }
     }
     
-    public void startReading() throws IOException 
-    {
-        if(!portBinded) 
-        {
-            throw new IllegalStateException("Port not open");
+    public void startReading() throws IOException {
+        if(noCAN) {
+            System.out.println("Close: CAN turned off");
+            portBinded = false;
         }
-        else 
-        {
-            amReading = true;
-
-            //Thread for reading...
-            if(!startedReading) 
+        else {
+            if(!portBinded) 
             {
-                threadReadCAN = new Thread(new Runnable()
-                {
-                    public void run()
-                    {
-                        try 
-                        {
-                            CANFilter filter = CANFilter.getInstance();
-                            while(amReading&&portBinded) 
-                            {
-                                //to receive all that is needed is the below line
-                                CanFrame currentFrame = socket.recv();
-                                
-                                int canID = currentFrame.getCanId().getCanId_EFF();
-                                
-                                int data[] = byte2int(currentFrame.getData());
+                throw new IllegalStateException("Port not open");
+            }
+            else 
+            {
+                amReading = true;
 
-                                canMessage.newMessage(canSocketString, canID, data);
-                                /*
-                                if(canSocketString.equals("can0"))
-                                {
-                                    String tmp = "";
-                                    tmp += "Frame Hex: " + Integer.toHexString(canMessage.getFrameID()) + " Frame Data: ";
-                                    for(int ii = 0; ii < canMessage.getNumData(); ii++)
-                                    {
-                                        tmp += Integer.toHexString(canMessage.getByte(ii)) + " ";
-                                    }
-                                    System.out.println(tmp);
-                                }
-                                */
-                                filter.run(canMessage);
-                            }
-                        } 
-                        catch(IOException e) 
+                //Thread for reading...
+                if(!startedReading) 
+                {
+                    threadReadCAN = new Thread(new Runnable()
+                    {
+                        public void run()
                         {
-                            e.printStackTrace();
+                            try 
+                            {
+                                CANFilter filter = CANFilter.getInstance();
+                                while(amReading&&portBinded) 
+                                {
+                                    //to receive all that is needed is the below line
+                                    CanFrame currentFrame = socket.recv();
+
+                                    int canID = currentFrame.getCanId().getCanId_EFF();
+
+                                    int data[] = byte2int(currentFrame.getData());
+
+                                    canMessage.newMessage(canSocketString, canID, data);
+                                    /*
+                                    if(canSocketString.equals("can0"))
+                                    {
+                                        String tmp = "";
+                                        tmp += "Frame Hex: " + Integer.toHexString(canMessage.getFrameID()) + " Frame Data: ";
+                                        for(int ii = 0; ii < canMessage.getNumData(); ii++)
+                                        {
+                                            tmp += Integer.toHexString(canMessage.getByte(ii)) + " ";
+                                        }
+                                        System.out.println(tmp);
+                                    }
+                                    */
+                                    filter.run(canMessage);
+                                }
+                            } 
+                            catch(IOException e) 
+                            {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-                threadReadCAN.start();
+                    });
+                    threadReadCAN.start();
+                }
             }
         }
     }
@@ -172,66 +191,75 @@ public class CANHandler
     }
     
     
-    public void writeMessage(int id, int[] data) throws IOException 
-    {
-        if(!portBinded) 
-        {
-            throw new IllegalStateException("Port not open");
+    public void writeMessage(int id, int[] data) throws IOException  {
+        if(noCAN) {
+            System.out.println("Close: CAN turned off");
+            portBinded = false;
         }
-        else 
-        {
-            //Grabbing data from UI to send
-            CanId frameID = new CanId(id);
+        else {
+            if(!portBinded) 
+            {
+                throw new IllegalStateException("Port not open");
+            }
+            else 
+            {
+                //Grabbing data from UI to send
+                CanId frameID = new CanId(id);
 
-            //Setting to Extended Frame Format (CAN2.0b)
-            frameID.setEFFSFF();
+                //Setting to Extended Frame Format (CAN2.0b)
+                frameID.setEFFSFF();
 
-            //Covert int data array to bytes
-            byte[] frameData;
+                //Covert int data array to bytes
+                byte[] frameData;
 
-            /* If in String format...
-            frameData = hexStringToByteArray(data);
-            */
-            
-            frameData = int2byte(data);
-            
-            //Packaging the frame
-            CanFrame frame = new CanFrame(canIf, frameID, frameData);
+                /* If in String format...
+                frameData = hexStringToByteArray(data);
+                */
 
-            //Sending the frame
-            socket.send(frame);
-        }
-    }
-    
-    public void writeMessageSFF(int id, int[] data) throws IOException 
-    {
-        if(!portBinded) 
-        {
-            throw new IllegalStateException("Port not open");
-        }
-        else 
-        {
-            //Grabbing data from UI to send
-            CanId frameID = new CanId(id);
+                frameData = int2byte(data);
 
-            //Setting to Extended Frame Format (CAN2.0b)
-           // frameID.setEFFSFF();
+                //Packaging the frame
+                CanFrame frame = new CanFrame(canIf, frameID, frameData);
 
-            //Covert int data array to bytes
-            byte[] frameData;
-            
-            frameData = int2byte(data);
-            
-            //Packaging the frame
-            CanFrame frame = new CanFrame(canIf, frameID, frameData);
-
-            //Sending the frame
-            socket.send(frame);
+                //Sending the frame
+                socket.send(frame);
+            }
         }
     }
     
-    private void stopReading() 
-    {        
+    public void writeMessageSFF(int id, int[] data) throws IOException {
+        if(noCAN) {
+            System.out.println("Close: CAN turned off");
+            portBinded = false;
+        }
+        else {
+            if(!portBinded) 
+            {
+                throw new IllegalStateException("Port not open");
+            }
+            else 
+            {
+                //Grabbing data from UI to send
+                CanId frameID = new CanId(id);
+
+                //Setting to Extended Frame Format (CAN2.0b)
+               // frameID.setEFFSFF();
+
+                //Covert int data array to bytes
+                byte[] frameData;
+
+                frameData = int2byte(data);
+
+                //Packaging the frame
+                CanFrame frame = new CanFrame(canIf, frameID, frameData);
+
+                //Sending the frame
+                socket.send(frame);
+            }
+        }
+    }
+    
+    private void stopReading() {        
         amReading = false;
     }
 }

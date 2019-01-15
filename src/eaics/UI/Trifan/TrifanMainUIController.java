@@ -5,7 +5,7 @@
  */
 package eaics.UI.Trifan;
 
-import eaics.CAN.Battery.BMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
@@ -234,7 +234,7 @@ public class TrifanMainUIController extends MainUIController
                 CANFilter filter = CANFilter.getInstance();
                 EVMS evmsV3 = (EVMS) filter.getEVMS();
 		ESC[] esc = filter.getESC();
-		BMS[] bms = filter.getBMS();
+		BMS12v3[] bms = filter.getBMS();
                 CurrentSensor currentSensor = filter.getCurrentSensor();
                 
                 FileInputStream input = null;

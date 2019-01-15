@@ -7,8 +7,8 @@ package eaics.CAN.Charger.TC;
 
 import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANMessage;
-import eaics.Settings.EAICS_Settings;
-import eaics.Settings.EVMSSettings;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.SettingsEVMS;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,7 +25,7 @@ public class TCCharger {
     float outputVoltage;
     float outputCurrent;
 
-    private EVMSSettings settings;
+    private SettingsEVMS settings;
     
     //Warnings
     boolean hardwareFailure;

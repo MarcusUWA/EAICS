@@ -5,13 +5,13 @@
  */
 package eaics.UI;
 
-import eaics.CAN.Battery.BMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CCB;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
-import eaics.Settings.EVMSSettings;
-import eaics.Settings.EAICS_Settings;
+import eaics.Settings.SettingsEVMS;
+import eaics.Settings.SettingsEAICS;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -102,7 +102,7 @@ public class FXMLBatteryCellPageController implements Initializable {
         
         EVMS evmsV3 = filter.getEVMS();
         ESC[] esc = filter.getESC();
-        BMS[] bms = filter.getBMS();
+        BMS12v3[] bms = filter.getBMS();
         CCB[] ccb = filter.getCCB();
         
         //CCB
@@ -155,7 +155,7 @@ public class FXMLBatteryCellPageController implements Initializable {
         
 	int bmsModuleNum, cellNum, count;
 	double cellVoltage;
-	EVMSSettings bmsSettings = EAICS_Settings.getInstance().getEVMSSettings();
+	SettingsEVMS bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
 	int bmsMaxVoltage = bmsSettings.getSetting(14);
 	int bmsBalanceVoltage = bmsSettings.getSetting(15);
 	int bmsMinVoltage = bmsSettings.getSetting(13);

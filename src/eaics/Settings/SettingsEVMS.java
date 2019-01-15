@@ -13,80 +13,77 @@ import java.io.IOException;
  *
  * @author Troy
  */
-public class EVMSSettings implements Settings
-{
-    private ConfigData packCapacity;
-    private ConfigData socWarning;
-    private ConfigData fullVoltage;
-    private ConfigData warnCurrent;
-    private ConfigData tripCurrent;
-    private ConfigData evmsTempWarning;
-    private ConfigData minAuxVoltage;
-    private ConfigData minIsolation;
-    private ConfigData tachoPPR;
-    private ConfigData fuelGaugeFull;
-    private ConfigData fuelGaugeEmpty;
-    private ConfigData tempGaugeHot;
-    private ConfigData tempGaugeCold;
-    private ConfigData bmsMinVoltage;
-    private ConfigData bmsMaxVoltage;
-    private ConfigData balanceVoltage;
-    private ConfigData bmsHysteresis;
-    private ConfigData bmsMinTemp;
-    private ConfigData bmsMaxTemp;
-    private ConfigData maxChargeVoltage;
-    private ConfigData maxChargeCurrent;
-    private ConfigData altChargeVoltage;
-    private ConfigData altChargeCurrent;
-    private ConfigData sleepDelay;
-    private ConfigData mpiFunction;
-    private ConfigData mpo1Function;
-    private ConfigData mpo2Function;
-    private ConfigData parallelStrings;
-    private ConfigData enablePrecharge;
-    private ConfigData stationaryMode;
+public class SettingsEVMS implements Settings {
+    private SettingsConfigData packCapacity;
+    private SettingsConfigData socWarning;
+    private SettingsConfigData fullVoltage;
+    private SettingsConfigData warnCurrent;
+    private SettingsConfigData tripCurrent;
+    private SettingsConfigData evmsTempWarning;
+    private SettingsConfigData minAuxVoltage;
+    private SettingsConfigData minIsolation;
+    private SettingsConfigData tachoPPR;
+    private SettingsConfigData fuelGaugeFull;
+    private SettingsConfigData fuelGaugeEmpty;
+    private SettingsConfigData tempGaugeHot;
+    private SettingsConfigData tempGaugeCold;
+    private SettingsConfigData bmsMinVoltage;
+    private SettingsConfigData bmsMaxVoltage;
+    private SettingsConfigData balanceVoltage;
+    private SettingsConfigData bmsHysteresis;
+    private SettingsConfigData bmsMinTemp;
+    private SettingsConfigData bmsMaxTemp;
+    private SettingsConfigData maxChargeVoltage;
+    private SettingsConfigData maxChargeCurrent;
+    private SettingsConfigData altChargeVoltage;
+    private SettingsConfigData altChargeCurrent;
+    private SettingsConfigData sleepDelay;
+    private SettingsConfigData mpiFunction;
+    private SettingsConfigData mpo1Function;
+    private SettingsConfigData mpo2Function;
+    private SettingsConfigData parallelStrings;
+    private SettingsConfigData enablePrecharge;
+    private SettingsConfigData stationaryMode;
     
-    public EVMSSettings()
-    {
+    public SettingsEVMS() {
         //ConfigData(min, max, initial, unit)
-        this.packCapacity = new ConfigData(5, 1250, 10, "Ah");
-        this.socWarning = new ConfigData(0, 99, 20, "%");
-        this.fullVoltage = new ConfigData(10, 502, 402, "V");
-        this.warnCurrent = new ConfigData(10, 1210, 500, "A");
-        this.tripCurrent = new ConfigData(10, 1210, 500, "A");
-        this.evmsTempWarning = new ConfigData(0, 151, 100, "degrees C");    //Over temp (degC)
-        this.minAuxVoltage = new ConfigData(8, 15, 10, "V");
-        this.minIsolation = new ConfigData(0, 99, 20, "%");
+        this.packCapacity = new SettingsConfigData(5, 1250, 10, "Ah");
+        this.socWarning = new SettingsConfigData(0, 99, 20, "%");
+        this.fullVoltage = new SettingsConfigData(10, 502, 402, "V");
+        this.warnCurrent = new SettingsConfigData(10, 1210, 500, "A");
+        this.tripCurrent = new SettingsConfigData(10, 1210, 500, "A");
+        this.evmsTempWarning = new SettingsConfigData(0, 151, 100, "degrees C");    //Over temp (degC)
+        this.minAuxVoltage = new SettingsConfigData(8, 15, 10, "V");
+        this.minIsolation = new SettingsConfigData(0, 99, 20, "%");
 	
-        this.tachoPPR = new ConfigData(1, 6, 2, "");
-        this.fuelGaugeFull = new ConfigData(0, 100, 80, "%");
-        this.fuelGaugeEmpty = new ConfigData(0, 100, 20, "%");
-        this.tempGaugeHot = new ConfigData(0, 100, 80, "%");
-        this.tempGaugeCold = new ConfigData(0, 100, 20, "%");
-        this.bmsMinVoltage = new ConfigData(1500, 4000, 3000, "mV");//0,250,100
-        this.bmsMaxVoltage = new ConfigData(2000, 4500, 4200, "mV");//0,250,180
-        this.balanceVoltage = new ConfigData(2000, 4520, 4180, "mV");//0,252,251
+        this.tachoPPR = new SettingsConfigData(1, 6, 2, "");
+        this.fuelGaugeFull = new SettingsConfigData(0, 100, 80, "%");
+        this.fuelGaugeEmpty = new SettingsConfigData(0, 100, 20, "%");
+        this.tempGaugeHot = new SettingsConfigData(0, 100, 80, "%");
+        this.tempGaugeCold = new SettingsConfigData(0, 100, 20, "%");
+        this.bmsMinVoltage = new SettingsConfigData(1500, 4000, 3000, "mV");//0,250,100
+        this.bmsMaxVoltage = new SettingsConfigData(2000, 4500, 4200, "mV");//0,250,180
+        this.balanceVoltage = new SettingsConfigData(2000, 4520, 4180, "mV");//0,252,251
 	
-        this.bmsHysteresis = new ConfigData(0, 500, 100, "mV");//divide!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        this.bmsMinTemp = new ConfigData(-40, 101, -40, "degrees C");//0,141,0
-        this.bmsMaxTemp = new ConfigData(-40, 101, 101, "degrees C");//0,141,141
-        this.maxChargeVoltage = new ConfigData(0, 511, 400, "V");//0,255,100
-        this.maxChargeCurrent = new ConfigData(0, 127, 10, "A");//0,255,10
-        this.altChargeVoltage = new ConfigData(0, 511, 400, "V");//0,255,100
-        this.altChargeCurrent = new ConfigData(0, 127, 10, "A");//0,255,20
-        this.sleepDelay = new ConfigData(1, 6, 6, "minutes, 6=Off");
+        this.bmsHysteresis = new SettingsConfigData(0, 500, 100, "mV");//divide!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        this.bmsMinTemp = new SettingsConfigData(-40, 101, -40, "degrees C");//0,141,0
+        this.bmsMaxTemp = new SettingsConfigData(-40, 101, 101, "degrees C");//0,141,141
+        this.maxChargeVoltage = new SettingsConfigData(0, 511, 400, "V");//0,255,100
+        this.maxChargeCurrent = new SettingsConfigData(0, 127, 10, "A");//0,255,10
+        this.altChargeVoltage = new SettingsConfigData(0, 511, 400, "V");//0,255,100
+        this.altChargeCurrent = new SettingsConfigData(0, 127, 10, "A");//0,255,20
+        this.sleepDelay = new SettingsConfigData(1, 6, 6, "minutes, 6=Off");
 	
-        this.mpiFunction = new ConfigData(0, 3, 0, "");
-        this.mpo1Function = new ConfigData(0, 6, 0, "");
-        this.mpo2Function = new ConfigData(0, 6, 0, "");
-        this.parallelStrings = new ConfigData(1, 20, 3, "");
-        this.enablePrecharge = new ConfigData(0, 1, 1, "Yes(1)/No(0)");
-        this.stationaryMode = new ConfigData(0, 1, 0, "Yes(1)/No(0)");
+        this.mpiFunction = new SettingsConfigData(0, 3, 0, "");
+        this.mpo1Function = new SettingsConfigData(0, 6, 0, "");
+        this.mpo2Function = new SettingsConfigData(0, 6, 0, "");
+        this.parallelStrings = new SettingsConfigData(1, 20, 3, "");
+        this.enablePrecharge = new SettingsConfigData(0, 1, 1, "Yes(1)/No(0)");
+        this.stationaryMode = new SettingsConfigData(0, 1, 0, "Yes(1)/No(0)");
     }
     
     @Override
-    public String getSettingsFileString()
-    {
+    public String getSettingsFileString() {
         String settingsFileString = "";
         
 	settingsFileString += "Pack Capacity:" + "\t\t\t\t#";
@@ -156,6 +153,7 @@ public class EVMSSettings implements Settings
         return settingsFileString;
     }
     
+    //only passing the values.....
     @Override
     public void setSettings(String fileString)
     {

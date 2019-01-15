@@ -9,14 +9,14 @@ package eaics.Settings;
  *
  * @author Troy
  */
-public class ConfigData 
+public class SettingsConfigData 
 {
     private int min;
     private int max;
     private int setting;
     private String units;
     
-    public ConfigData(int min, int max, int initialSetting, String units)
+    public SettingsConfigData(int min, int max, int initialSetting, String units)
     {
         this.min = min;
         this.max = max;

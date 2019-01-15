@@ -9,11 +9,11 @@ package eaics.Settings;
  *
  * @author troy
  */
-public class PixHawkSettings implements Settings
+public class SettingsPixhawk implements Settings
 {
     private String ipAddress;
     
-    public PixHawkSettings()
+    public SettingsPixhawk()
     {
         this.ipAddress = "192.168.201.113"; //default ip address
     }

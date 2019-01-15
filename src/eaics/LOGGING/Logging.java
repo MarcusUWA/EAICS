@@ -1,6 +1,6 @@
 package eaics.LOGGING;
 
-import eaics.CAN.Battery.BMS;
+import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
@@ -122,7 +122,7 @@ public class Logging
                 columnData += evms.getAmpHours() + ", ";
                 
 		//BMS
-		BMS bms[] = filter.getBMS();
+		BMS12v3 bms[] = filter.getBMS();
 		for(int ii = 0; ii < bms.length; ii++)
 		{
 		    columnData += bms[ii].getVoltagesString();
@@ -172,7 +172,7 @@ public class Logging
 
         for(int ii = 1; ii <= CANFilter.NUM_OF_BMS; ii++)
         {
-            for(int jj = 1; jj <= BMS.NUMBER_OF_CELLS; jj++)
+            for(int jj = 1; jj <= BMS12v3.NUMBER_OF_CELLS; jj++)
             {
                 columnHeadings += "BMS " + ii + " Cell " + jj + " Voltage, ";			    
             }
