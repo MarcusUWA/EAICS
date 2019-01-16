@@ -5,6 +5,7 @@
  */
 package eaics.UI;
 
+import eaics.UI.FXMLSettings.FXMLLoggingPageController;
 import eaics.UI.Trike.FXMLLoadProfileController;
 import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
@@ -34,7 +35,7 @@ public abstract class MainUIController implements Initializable
     protected Throttle throttle;
     
     protected FXMLBatteryPageController batteryPageController;
-    protected FXMLSettingsController settingsPageController;
+    public FXMLSettingsController settingsPageController;
     protected FXMLLoadProfileController loadProfileController;
     protected FXMLLoggingPageController loggingPageController;
     

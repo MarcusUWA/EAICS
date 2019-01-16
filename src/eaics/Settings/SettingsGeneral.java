@@ -21,10 +21,6 @@ public class SettingsGeneral implements Settings {
         MGM, None
     }
     
-    public enum BMSType {
-        ZEVA2, ZEVA3, ELECAERO
-    }
-    
     public enum ThrottleType {
         SER, CAN, None
     }
@@ -38,6 +34,7 @@ public class SettingsGeneral implements Settings {
     BMSType bms;
     ThrottleType thr;
     
+    
     public SettingsGeneral(){
         mglConnected = false;
         bmsFaker = true;
@@ -45,8 +42,9 @@ public class SettingsGeneral implements Settings {
         numBatteryModules = 4; //default for one box 96s, one module = 24 BMS
         chg = ChargerType.None;
         esc = ESCType.MGM;
-        bms = BMSType.ZEVA3;
         thr = ThrottleType.SER;
+        
+        bms = BMSType.ZEVA3;
     }
     
     @Override
@@ -121,6 +119,8 @@ public class SettingsGeneral implements Settings {
     {
         this.chg = chg;
     }
+    
+    
     
     
 }

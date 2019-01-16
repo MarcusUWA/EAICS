@@ -5,8 +5,10 @@
  */
 package eaics.UI;
 
-import eaics.UI.Deprecated.FXMLBatteryCellPageController;
-import eaics.UI.Deprecated.FXMLBatteryGraphController;
+import eaics.UI.FXMLBattery.FXMLChargingController;
+import eaics.UI.FXMLBattery.FXMLCellPageController;
+import eaics.UI.FXMLDeprecated.FXMLBatteryCellPageController;
+import eaics.UI.FXMLDeprecated.FXMLBatteryGraphController;
 import eaics.Settings.SettingsEVMS;
 import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
@@ -93,7 +95,7 @@ public class FXMLBatteryPageController implements Initializable
     @FXML
     private Label deltaLabel;
     @FXML
-    private javafx.scene.control.Button closeButton;
+    private Button closeButton;
 
     /**
      * Initializes the controller class.
@@ -229,7 +231,7 @@ public class FXMLBatteryPageController implements Initializable
     
     @FXML
     private void handleCellPage1(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLCellPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery/FXMLCellPage.fxml"));
         
         try 
 	{
@@ -270,7 +272,7 @@ public class FXMLBatteryPageController implements Initializable
     }
     
     private void openCellPage(int pageNumber){
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBatteryCellPage.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDeprecated/FXMLBatteryCellPage.fxml"));
         
         try {
             Pane pane = loader.load();
@@ -295,10 +297,11 @@ public class FXMLBatteryPageController implements Initializable
             System.out.println("Failed to open Battery Cell Page " + (pageNumber + 1));
         }	
     }
+    
     @FXML
     private void handleBatterySummary(ActionEvent event) throws IOException
     {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLBatteryGraph.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDepercated/FXMLBatteryGraph.fxml"));
         
         try 
 	{
@@ -323,11 +326,12 @@ public class FXMLBatteryPageController implements Initializable
             System.out.println("Failed to open Battery Summary Window");
         }	
     }
+    
     @FXML
     private void handleChargingSummary(ActionEvent event) throws IOException
     {
         // Get the FXML page called Charging
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLCharging.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery/FXMLCharging.fxml"));
         // Try and load the Charging page
         try 
 	{ // 

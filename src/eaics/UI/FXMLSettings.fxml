@@ -44,10 +44,7 @@
             <Button mnemonicParsing="false" onAction="#handleAdjustLogging" prefHeight="39.0" prefWidth="200.0" text="Adjust Logging" GridPane.rowIndex="4" />
             <Button mnemonicParsing="false" onAction="#handleSendLogging" prefHeight="39.0" prefWidth="200.0" text="Send Logs" GridPane.rowIndex="5" />
             <Button mnemonicParsing="false" onAction="#handleCalibrateLoadCell" prefHeight="39.0" prefWidth="200.0" text="Calib. Load Cell" GridPane.rowIndex="7" />
-            <Button fx:id="buttonGeneralSettingsPage1" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage1" prefHeight="39.0" prefWidth="200.0" text="EVMS Page 1" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="buttonGeneralSettingsPage2" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage2" prefHeight="39.0" prefWidth="200.0" text="EVMS Page 2" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Button fx:id="buttonGeneralSettingsPage3" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage3" prefHeight="39.0" prefWidth="200.0" text="EVMS Page 3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button fx:id="buttonGeneralSettingsPage4" mnemonicParsing="false" onAction="#handleEnterGeneralSettingsPage4" prefHeight="39.0" prefWidth="200.0" text="EVMS Page 4" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="buttonGeneralSettingsPage1" mnemonicParsing="false" onAction="#handleAdvancedZEVASettingsPage" prefHeight="39.0" prefWidth="200.0" text="Advanced ZEVA" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ToggleButton fx:id="toggleGBT" mnemonicParsing="false" onAction="#toggleButtonAction" prefHeight="40.0" prefWidth="200.0" text="Test GBT Charger" GridPane.columnIndex="2" GridPane.rowIndex="7" />
             <ToggleButton fx:id="testMGL" mnemonicParsing="false" onAction="#handleTestMGL" prefHeight="40.0" prefWidth="200.0" text="Test MGL Monitor" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <Button fx:id="pixhawkButton" mnemonicParsing="false" onAction="#handleUpdatePixhawk" prefHeight="39.0" prefWidth="240.0" text="Set PC IP (for PixHawk)" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -86,12 +83,13 @@
                   <Label fx:id="pixhawkIPLabel" prefHeight="17.0" prefWidth="160.0" text="192.168.201.113" />
                </children>
             </HBox>
-            <Label alignment="CENTER" prefHeight="23.0" prefWidth="240.0" text="EVMS Settings" GridPane.columnIndex="2">
+            <Label alignment="CENTER" prefHeight="23.0" prefWidth="240.0" text="EAICS Settings" GridPane.columnIndex="2">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="General Settings" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="General Settings" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="Basic ZEVA" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>

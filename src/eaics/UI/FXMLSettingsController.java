@@ -13,6 +13,12 @@ import eaics.Settings.IPAddress;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.Settings.SettingsEAICS;
+import eaics.UI.FXMLSettings.FXMLAdvZEVASettingsPage;
+import eaics.UI.FXMLSettings.FXMLCalibrateLoadCellController;
+import eaics.UI.FXMLSettings.FXMLConnectWifiController;
+import eaics.UI.FXMLSettings.FXMLLoggingPageController;
+import eaics.UI.FXMLSettings.FXMLNumpadController;
+import eaics.UI.FXMLSettings.FXMLSendLogsController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,11 +39,10 @@ import javafx.stage.Stage;
  *
  * @author Troy
  */
-public class FXMLSettingsController implements Initializable 
-{
-    String version = "3.6.5.0";
+public class FXMLSettingsController implements Initializable {
+    String version = "3.7.0";
     
-    FXMLBMSsettingsPage bmsSettingsPage;
+    FXMLAdvZEVASettingsPage advZEVASettingsPage;
     FXMLConnectWifiController wifiConnectController;
     FXMLNumpadController numpad;
     FXMLSendLogsController sendLogsController;
@@ -59,18 +64,6 @@ public class FXMLSettingsController implements Initializable
     
     @FXML
     Button buttonResetWarnings;
-    
-    @FXML
-    Button buttonGeneralSettingsPage1;
-    
-    @FXML
-    Button buttonGeneralSettingsPage2;
-    
-    @FXML
-    Button buttonGeneralSettingsPage3;
-    
-    @FXML
-    Button buttonGeneralSettingsPage4;
     
     @FXML
     Button buttonResetSOC;
@@ -104,7 +97,7 @@ public class FXMLSettingsController implements Initializable
     private Label softwareVersionLabel;
     
     @FXML
-    private javafx.scene.control.Button closeButton;
+    private Button closeButton;
     
     @FXML 
     private Label pixhawkIPLabel;
@@ -120,8 +113,7 @@ public class FXMLSettingsController implements Initializable
     }
     
     @FXML
-    private void handleResetWarnings(ActionEvent event)
-    {
+    private void handleResetWarnings(ActionEvent event) {
         filter.resetAllWarnings();
     }
     
@@ -139,70 +131,48 @@ public class FXMLSettingsController implements Initializable
     }
     
     @FXML   
-    private void handleEnterGeneralSettingsPage1(ActionEvent event)
-    {   
+    private void handleAdvancedZEVASettingsPage(ActionEvent event) {   
         openSettingsPage(1);
     }
-    
-    @FXML   
-    private void handleEnterGeneralSettingsPage2(ActionEvent event)
-    {   
-        openSettingsPage(2);
-    }
-    
-    @FXML   
-    private void handleEnterGeneralSettingsPage3(ActionEvent event)
-    {   
-        openSettingsPage(3);
-    }
-    
-    @FXML   
-    private void handleEnterGeneralSettingsPage4(ActionEvent event)
-    {   
-        openSettingsPage(4);
-    }
-    
+
     private void openSettingsPage(int pageNumber) {
         
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBMSsettingsPage.fxml"));
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLAdvZEVASettingsPage.fxml"));
 	
         try  {
             Pane pane = loader.load();
 
-            bmsSettingsPage = loader.getController();
-            bmsSettingsPage.initSettings(gui);
-            bmsSettingsPage.initData(loadCell, pageNumber);
-	    bmsSettingsPage.updateLabels();
+            advZEVASettingsPage = loader.getController();
+            advZEVASettingsPage.initData(pageNumber);
+	    advZEVASettingsPage.updateLabels();
         
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonGeneralSettingsPage2.getScene().getWindow());
+            stage.initOwner(closeButton.getScene().getWindow());
         
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("General Settings Page " + pageNumber);
+            stage.setTitle("ZEVA Advanced Settings Page " + pageNumber);
             
             stage.show();
         }
         catch (Exception e) 
         {
-            System.out.println("Failed to open General Settings Page " + pageNumber);
+            System.out.println("Failed to open ZEVA Advanced Settings Page");
             e.printStackTrace();
         }
     }
     
     @FXML
-    private void handleResetSOC(ActionEvent event) throws IOException
-    {
+    private void handleResetSOC(ActionEvent event) throws IOException {
         filter.getCANHandler(0).writeMessage(0x00000026, new int[]{100});
         //filter.getCANHandler(0).writeMessage(0x00000026, new int[]{90});
     }
 
     @FXML
-    private void handleRefreshIP(ActionEvent event) throws IOException
-    {
+    private void handleRefreshIP(ActionEvent event) throws IOException {
         IPAddress ipAddress = new IPAddress();
         
         ipAddress.updateIPAddress();
@@ -213,11 +183,9 @@ public class FXMLSettingsController implements Initializable
     }
     
     @FXML   
-    private void handleWifiSetup(ActionEvent event)
-    {   
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLConnectWifi.fxml"));
-        try 
-        {
+    private void handleWifiSetup(ActionEvent event) {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLConnectWifi.fxml"));
+        try  {
             Pane pane = loader.load();
 
             wifiConnectController = loader.getController();
@@ -227,7 +195,7 @@ public class FXMLSettingsController implements Initializable
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+            stage.initOwner(closeButton.getScene().getWindow());
 
             Scene scene = new Scene(pane);
 
@@ -237,19 +205,16 @@ public class FXMLSettingsController implements Initializable
             stage.show();
         }
         
-        catch (Exception e) 
-        {
+        catch (Exception e)  {
             System.out.println("Failed to open Wifi Window");
             e.printStackTrace();
         }
     }    
     
     @FXML   
-    private void handleSendLogging(ActionEvent event)
-    {   
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSendLogs.fxml"));
-        try 
-        {
+    private void handleSendLogging(ActionEvent event) {   
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLSendLogs.fxml"));
+        try  {
             Pane pane = loader.load();
 
             sendLogsController = loader.getController();
@@ -258,7 +223,7 @@ public class FXMLSettingsController implements Initializable
             Stage stage = new Stage();
         
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+            stage.initOwner(closeButton.getScene().getWindow());
 
             Scene scene = new Scene(pane);
 
@@ -268,20 +233,17 @@ public class FXMLSettingsController implements Initializable
             stage.show();
         }
         
-        catch (Exception e) 
-        {
+        catch (Exception e)  {
             System.out.println("Failed to open Logging Window");
             e.printStackTrace();
         }
     }   
     
     @FXML
-    private void handleAdjustLogging(ActionEvent event) 
-    {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLLoggingPage.fxml"));
+    private void handleAdjustLogging(ActionEvent event)  {
+	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLLoggingPage.fxml"));
         
-        try 
-	{
+        try  {
             Pane pane = loader.load();
 
             loggingController = loader.getController();
@@ -290,7 +252,7 @@ public class FXMLSettingsController implements Initializable
             Stage stage = new Stage();
  
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonGeneralSettingsPage1.getScene().getWindow());
+            stage.initOwner(closeButton.getScene().getWindow());
 
             Scene scene = new Scene(pane);
   
@@ -302,16 +264,14 @@ public class FXMLSettingsController implements Initializable
             
             stage.show();
         }
-        catch (Exception e) 
-        {
+        catch (Exception e)  {
             System.out.println("Failed to open Logging Window");
 	    e.printStackTrace();
         }
     } 
 
     
-    public void initData(LoadCell loadCell, Serial serial, Logging logging)
-    {
+    public void initData(LoadCell loadCell, Serial serial, Logging logging) {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
         this.serial = serial;
@@ -344,7 +304,7 @@ public class FXMLSettingsController implements Initializable
         
         numpad = new FXMLNumpadController();
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLNumpad.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLNumpad.fxml"));
         
         try {
             Pane pane = loader.load();
@@ -394,7 +354,7 @@ public class FXMLSettingsController implements Initializable
         
         calib = new FXMLCalibrateLoadCellController();
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLCalibrateLoadCell.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLCalibrateLoadCell.fxml"));
         try {
             Pane pane = loader.load();
             calib = loader.getController();
