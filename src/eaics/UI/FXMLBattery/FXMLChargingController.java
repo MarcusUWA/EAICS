@@ -15,9 +15,7 @@ import javafx.stage.Stage; // Allows a change of screen
 
 import eaics.CAN.CANFilter; // Access variables sent via CAN
 import eaics.Settings.SettingsEAICS; // Access charging typesa and other settings
-import eaics.Settings.SettingsGeneral;
-import java.util.Arrays;
-import javafx.collections.FXCollections;
+import eaics.Settings.TYPECharger;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Button; // Used to control button behaviour
@@ -29,9 +27,6 @@ import javafx.scene.control.ChoiceBox; // Used to control the choice box for cha
  * @author Alex
  */
 public class FXMLChargingController implements Initializable {
-    public enum ChargerTypeTest { // PLZ DELETE ME LATER
-            None, TC, GBT
-    }
     
     // Initialise the Labels and buttons on the GUI
     @FXML // 
@@ -188,17 +183,17 @@ public class FXMLChargingController implements Initializable {
             if (ChargeSelection.getSelectionModel().getSelectedItem() == "None")
             {
                 System.out.println("User selected None charger type state");
-                settings.getGeneralSettings().setChargerType(SettingsGeneral.ChargerType.None);
+                settings.getGeneralSettings().setChargerType(TYPECharger.None);
 
             } else if (ChargeSelection.getSelectionModel().getSelectedItem() == "GBT")
             {
                 System.out.println("User selected GBT charger type state");
-                settings.getGeneralSettings().setChargerType(SettingsGeneral.ChargerType.GBT);
+                settings.getGeneralSettings().setChargerType(TYPECharger.GBT);
 
             } else if (ChargeSelection.getSelectionModel().getSelectedItem() == "TC")
             {
                 System.out.println("User selected TC charger type state");
-                settings.getGeneralSettings().setChargerType(SettingsGeneral.ChargerType.TC);
+                settings.getGeneralSettings().setChargerType(TYPECharger.TC);
 
             } else {
                 System.out.println("ERROR: unknown user selection");

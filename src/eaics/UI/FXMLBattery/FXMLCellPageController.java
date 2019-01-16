@@ -6,7 +6,7 @@
 package eaics.UI.FXMLBattery;
 
 import eaics.CAN.CANFilter;
-import eaics.Settings.BMSType;
+import eaics.Settings.TYPEBms;
 import eaics.Settings.SettingsEAICS;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -191,7 +191,7 @@ public class FXMLCellPageController implements Initializable {
             //black
         }
         */
-        if(settings.getGeneralSettings().getBms()==BMSType.ZEVA3) {
+        if(settings.getGeneralSettings().getBms()==TYPEBms.ZEVA3) {
             B0C0.setText(String.format("%.2f", filter.getBMS()[0+currentModule*2].getVoltage(0)/1000.0)+" V");
             B0C1.setText(String.format("%.2f", filter.getBMS()[0+currentModule*2].getVoltage(1)/1000.0)+" V");
             B0C2.setText(String.format("%.2f", filter.getBMS()[0+currentModule*2].getVoltage(2)/1000.0)+" V");

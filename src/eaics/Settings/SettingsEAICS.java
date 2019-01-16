@@ -121,7 +121,7 @@ public class SettingsEAICS {
                        readingGeneral = false;
                        continue;
                     }
-                    
+                    /*
 		    String[] line = inFileString.split("\\s+");
 		    
                     //only passing the value... need to fix this...
@@ -131,6 +131,8 @@ public class SettingsEAICS {
                             generalFileString += line[ii].substring(1) + "\n";
                         }
                     }
+                    */
+                    generalFileString += inFileString + "\n";
 		    
                 }
                 

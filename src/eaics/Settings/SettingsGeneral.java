@@ -12,68 +12,115 @@ package eaics.Settings;
 public class SettingsGeneral implements Settings {
     
     public boolean isCharging = false; // Used to determine if the system is charging or not
-    
-    public enum ChargerType {
-        None, TC, GBT
-    }
-    
-    public enum ESCType{
-        MGM, None
-    }
-    
-    public enum ThrottleType {
-        SER, CAN, None
-    }
-    
-    boolean mglConnected;
     boolean bmsFaker;
     int numBatteryModules;
     
-    ChargerType chg;
-    ESCType esc;
-    BMSType bms;
-    ThrottleType thr;
-    
+    TYPECharger chg;
+    TYPEEsc esc;
+    TYPEBms bms;
+    TYPEThrottle thr;
+    TYPEDisplay disp;
     
     public SettingsGeneral(){
-        mglConnected = false;
         bmsFaker = true;
         
         numBatteryModules = 4; //default for one box 96s, one module = 24 BMS
-        chg = ChargerType.None;
-        esc = ESCType.MGM;
-        thr = ThrottleType.SER;
-        
-        bms = BMSType.ZEVA3;
+        this.chg = TYPECharger.None;
+        this.esc = TYPEEsc.MGM;
+        this.thr = TYPEThrottle.SER;
+        this.bms = TYPEBms.ZEVA3;
+        this.disp = TYPEDisplay.MGL;
     }
     
     @Override
     public String getSettingsFileString() {
         String settingsFileString = "";
         
-	settingsFileString += "Charger Type:" + "\t\t\t" + "#";
+	settingsFileString += "ChargerType:" + "\t\t\t" + "#";
         settingsFileString += chg + "\n";
         
-        settingsFileString += "ESC Type:" + "\t\t\t" + "#";
+        settingsFileString += "ESCType:" + "\t\t\t" + "#";
         settingsFileString += esc + "\n";
         
-        settingsFileString += "BMS Type:" + "\t\t\t" + "#";
+        settingsFileString += "BMSType:" + "\t\t\t" + "#";
         settingsFileString += bms + "\n";
         
-        settingsFileString += "BMS Type:" + "\t\t\t" + "#";
+        settingsFileString += "ThrottleType:" + "\t\t\t" + "#";
         settingsFileString += thr + "\n";
+        
+        settingsFileString += "DisplayType:" + "\t\t\t" + "#";
+        settingsFileString += disp + "\n";
+        
+        settingsFileString += "NumBatteryModules:" + "\t\t\t" + "#";
+        settingsFileString += numBatteryModules + "\n";
         
         return settingsFileString;
     }
 
     @Override
     public void setSettings(String fileString) {
-        int ii = 0;
         String[] lines = fileString.split("\\r?\\n");
         for (String line : lines) {
+            String[] split = line.split("#");
 
-        }
-        
+            if("ChargerType:".equals(split[0].trim())) {
+                if(split[1].contains(TYPECharger.GBT.toString())) {
+                    chg = TYPECharger.GBT;
+                }
+                else if(split[1].contains(TYPECharger.TC.toString())) {
+                    chg = TYPECharger.TC;
+                }
+                else {
+                    chg = TYPECharger.None;
+                }  
+            }
+            
+            else if("ESCType:".equals(split[0].trim())) {
+                if(split[1].contains(TYPEEsc.MGM.toString())) {
+                    esc = TYPEEsc.MGM;
+                }
+                else {
+                    esc = TYPEEsc.None;
+                }
+            }
+            
+            else if("BMSType:".equals(split[0].trim())) {
+                if(split[1].contains(TYPEBms.ZEVA2.toString())) {
+                    bms = TYPEBms.ZEVA2;
+                }
+                else if(split[1].contains(TYPEBms.ZEVA3.toString())) {
+                    bms = TYPEBms.ZEVA3;
+                }
+                else {
+                    bms = TYPEBms.ELECAERO;
+                }  
+            }
+            
+            else if("ThrottleType:".equals(split[0].trim())) {
+                if(split[1].contains(TYPEThrottle.SER.toString())) {
+                    thr = TYPEThrottle.SER;
+                }
+                else if(split[1].contains(TYPEThrottle.CAN.toString())) {
+                    thr = TYPEThrottle.CAN;
+                }
+                else {
+                    thr = TYPEThrottle.None;
+                }  
+            }
+            
+            if("DisplayType:".equals(split[0].trim())) {
+                if(split[1].contains(TYPEDisplay.MGL.toString())) {
+                    disp = TYPEDisplay.MGL;
+                }
+                else {
+                    disp = TYPEDisplay.None;
+                }  
+            }
+            
+            if("NumBatteryModules:".equals(split[0].trim())) {
+                numBatteryModules = Integer.parseInt(split[1].trim());
+            }
+        } 
         update();
     }
 
@@ -82,45 +129,62 @@ public class SettingsGeneral implements Settings {
     {
          // TODO
     }
-    public boolean isMglConnected() 
-    {
-        return mglConnected;
-    }
-    public boolean isBmsFaker() 
-    {
+    
+    public boolean isBmsFaker()  {
         return bmsFaker;
     }
-    public int getNumBatteryModules() 
-    {
+    public int getNumBatteryModules()  {
         return numBatteryModules;
     }
-    public ChargerType getChargerType() 
-    {
+    public TYPECharger getChargerType()  {
         return chg;
     }
-    public ChargerType[] getChargerEnumList() 
-    {
-        return ChargerType.values();
+    public TYPECharger[] getChargerEnumList()  {
+        return TYPECharger.values();
     }
-    public ESCType getEsc() 
-    {
+    public TYPEEsc getEsc()  {
         return esc;
     }
-    public BMSType getBms() 
-    {
+    public TYPEBms getBms()  {
         return bms;
     }
-    public ThrottleType getThr() 
-    {
+    public TYPEThrottle getThr()  {
         return thr;
     }
     
-    public void setChargerType(ChargerType chg) 
-    {
+    public void setChargerType(TYPECharger chg)  {
         this.chg = chg;
     }
     
-    
-    
-    
+    public TYPEDisplay getDisp() {
+        return disp;
+    }
+
+    public void setBmsFaker(boolean bmsFaker) {
+        this.bmsFaker = bmsFaker;
+    }
+
+    public void setNumBatteryModules(int numBatteryModules) {
+        this.numBatteryModules = numBatteryModules;
+    }
+
+    public void setChg(TYPECharger chg) {
+        this.chg = chg;
+    }
+
+    public void setEsc(TYPEEsc esc) {
+        this.esc = esc;
+    }
+
+    public void setBms(TYPEBms bms) {
+        this.bms = bms;
+    }
+
+    public void setThr(TYPEThrottle thr) {
+        this.thr = thr;
+    }
+
+    public void setDisp(TYPEDisplay disp) {
+        this.disp = disp;
+    }
 }
