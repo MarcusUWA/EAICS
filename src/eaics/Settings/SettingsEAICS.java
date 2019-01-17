@@ -70,8 +70,7 @@ public class SettingsEAICS {
     public SettingsGeneral getGeneralSettings() {
         return generalSettings;
     }
-    
-    
+       
     public void update() {
         System.out.println("Update Settings");
         generalSettings.update();

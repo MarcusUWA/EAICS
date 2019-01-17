@@ -39,11 +39,11 @@ public class EAICS extends Application {
         
         //need to improve upon this....
         comms = new Serial("/dev/ttyUSB0");
-  
-        CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
         SettingsEAICS settings = SettingsEAICS.getInstance();
         settings.loadSettings();
+  
+        CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
 	// Pix Hawk Code ------------------------------------------------------
         String ipAddressString = settings.getPixHawkSettings().getIpAddress();

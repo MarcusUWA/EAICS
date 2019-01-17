@@ -14,6 +14,8 @@ public class SettingsGeneral implements Settings {
     public boolean isCharging = false; // Used to determine if the system is charging or not
     boolean bmsFaker;
     int numBatteryModules;
+    int numEsc;
+    int numCCB;
     
     TYPECharger chg;
     TYPEEsc esc;
@@ -24,7 +26,10 @@ public class SettingsGeneral implements Settings {
     public SettingsGeneral(){
         bmsFaker = true;
         
-        numBatteryModules = 4; //default for one box 96s, one module = 24 BMS
+        this.numBatteryModules = 4; //default for one box 96s, one module = 24 BMS
+        
+        this.numEsc = 1;
+        
         this.chg = TYPECharger.None;
         this.esc = TYPEEsc.MGM;
         this.thr = TYPEThrottle.SER;
@@ -53,6 +58,21 @@ public class SettingsGeneral implements Settings {
         
         settingsFileString += "NumBatteryModules:" + "\t\t\t" + "#";
         settingsFileString += numBatteryModules + "\n";
+        
+        settingsFileString += "NumESC:" + "\t\t\t" + "#";
+        settingsFileString += numEsc + "\n";
+        
+        settingsFileString += "BMSFaker:" + "\t\t\t" + "#";
+        
+        if(bmsFaker) {
+            settingsFileString += 1 + "\n";
+        }
+        else {
+            settingsFileString += 0 + "\n";
+        }
+        
+        
+        
         
         return settingsFileString;
     }
@@ -119,6 +139,19 @@ public class SettingsGeneral implements Settings {
             
             if("NumBatteryModules:".equals(split[0].trim())) {
                 numBatteryModules = Integer.parseInt(split[1].trim());
+            }
+            
+             if("NumEsc:".equals(split[0].trim())) {
+                numEsc = Integer.parseInt(split[1].trim());
+            }
+             
+              if("BMSFaker:".equals(split[0].trim())) {
+                if(Integer.parseInt(split[1].trim())==1) {
+                    bmsFaker = true;
+                }
+                else {
+                    bmsFaker = false;
+                }
             }
         } 
         update();
@@ -187,4 +220,14 @@ public class SettingsGeneral implements Settings {
     public void setDisp(TYPEDisplay disp) {
         this.disp = disp;
     }
+
+    public void setNumEsc(int numEsc) {
+        this.numEsc = numEsc;
+    }
+
+    public int getNumEsc() {
+        return numEsc;
+    }
+    
+    
 }

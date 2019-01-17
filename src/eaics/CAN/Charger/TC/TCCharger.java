@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  */
 public class TCCharger {
     
+    CANFilter filter;
     float outputVoltage;
     float outputCurrent;
 
@@ -33,9 +34,17 @@ public class TCCharger {
     boolean inputFailure;
     boolean startFailure;
     boolean commsFailure;
+    
+    float chargeVoltage;
+    float chargeCurrent;
 
+    private ScheduledExecutorService chargerExecutor;
 
-    public TCCharger() {
+    boolean chargeStatus;
+
+    public TCCharger(CANFilter filter) {
+        
+        this.filter = filter;
         this.outputVoltage = 0;
         this.outputCurrent = 0;
         
@@ -45,7 +54,10 @@ public class TCCharger {
         this.startFailure = false;
         this.commsFailure = false;
         
+        this.settings = SettingsEAICS.getInstance().getEVMSSettings();
 
+        this.chargeVoltage = settings.getSetting(19);
+        this.chargeCurrent = settings.getSetting(20);
     }
     
     //only one message with ID: 0x18FF50E5
@@ -90,6 +102,60 @@ public class TCCharger {
         }
         else {
             commsFailure = false;
+        }
+    }
+    
+    public void runCharger() {
+        chargerExecutor = null;
+        
+        System.out.println("Starting Charger...");
+        
+        Runnable Id = new Runnable() { 
+            
+            @Override
+            public void run() {
+                chargeVoltage = settings.getSetting(19)*10;
+                chargeCurrent = settings.getSetting(20)*10;
+                
+                chargeStatus = true;
+                
+                try {
+                    filter.getCANHandler(0).writeMessage(
+                            0x1806E5F4, 
+                            new int[]{
+                                (int)chargeVoltage/256,
+                                (int)chargeVoltage%256,
+                                (int)chargeCurrent/256,
+                                (int)chargeCurrent%256,
+                                0,
+                                0,
+                                0,
+                                0
+                            }
+                    );
+                } catch (IOException ex) {
+                    System.out.println("Failed...");
+                    //Logger.getLogger(TCCharger.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        chargerExecutor = Executors.newScheduledThreadPool(1);
+        chargerExecutor.scheduleAtFixedRate(Id, 0, 500, TimeUnit.MILLISECONDS);
+    }
+    
+    public void stopCharger() {
+        try {
+            filter.getCANHandler(0).writeMessage(0x1806E5F4, new int[]{
+                (int)chargeVoltage/256,
+                (int)chargeVoltage%256,
+                (int)chargeCurrent/256,
+                (int)chargeCurrent%256,
+                1,0,0,0});
+        } catch (IOException ex) {
+            Logger.getLogger(TCCharger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(chargerExecutor!=null) {
+            chargerExecutor.shutdown();
         }
     }
     

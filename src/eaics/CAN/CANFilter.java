@@ -9,21 +9,21 @@ import eaics.CAN.Battery.CCB;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.CAN.Battery.CurrentSensor;
-import eaics.CAN.MGL.MGLDisplay;
 import eaics.CAN.Battery.BMS.BMS12v3;
+import eaics.CAN.Battery.BMS.BMS12v3Faker;
 import eaics.CAN.Charger.GBT.ChargerGBT;
 import eaics.CAN.Charger.TC.TCCharger;
-import eaics.CAN.MGL.MGLReceive;
+import eaics.CAN.MGL.MGLDisplay;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 
 /**
  *
  * @author Troy
  */
-public class CANFilter 
-{
+public class CANFilter {
     private static CANFilter instance;
     
     private CANHandler bus0CANHandler;
@@ -32,18 +32,31 @@ public class CANFilter
     private boolean bus0online = true;
     private boolean bus1online = true;
     
-    public static final int NUM_OF_ESC = 1;//4
-    public static final int NUM_OF_BMS = 8;//24
+    public static final int NUM_OF_ESC = SettingsEAICS.getInstance().getGeneralSettings().getNumEsc();
+    
+    public static final int NUM_OF_BMS = SettingsEAICS.getInstance().getGeneralSettings().getNumBatteryModules()*2;//24
+    
     public static final int NUM_OF_CCB = 3;
 
+    //Bms systems
     private EVMS evms;
-    private ESC[] esc;
     private BMS12v3[] bms;
     private CurrentSensor currentSensor;
+    private BMS12v3Faker faker;
+    
+    //Esc
+    private ESC[] esc;
+     
+    //CCB
     private CCB[] ccb;
+    
+    //chargers
     private ChargerGBT chargerGBT;
-    private MGLReceive mgl;
     private TCCharger tc;
+    
+    //Displays
+    private MGLDisplay mgl;
+    
 
     //Warnings
     private boolean hasWarnedError;
@@ -115,9 +128,11 @@ public class CANFilter
         this.hasWarnedError = false;
         this.hasWarnedChargerOff = false;
         
-        this.mgl = new MGLReceive();
+        this.mgl = new MGLDisplay(this);
         
-        this.tc = new TCCharger();
+        this.tc = new TCCharger(this);
+        
+        this.faker = new BMS12v3Faker(this.bus0CANHandler, 3700);
         
     }
 
@@ -135,8 +150,7 @@ public class CANFilter
         
         System.out.println(sb.toString());
         */
-	switch (message.getFrameID()) 
-	{
+	switch (message.getFrameID()) {
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
 		evms.setEVMS_v2(message);
@@ -176,7 +190,12 @@ public class CANFilter
             case 300: case 310: case 320: case 330: case 340: case 350: case 360: case 370:
             case 380: case 390: case 400: case 410: case 420: case 430: case 440: case 450:
             case 460: case 470: case 480: case 490: case 500: case 510: case 520: case 530:
-                
+                if(SettingsEAICS.getInstance().getGeneralSettings().isBmsFaker()) {
+                    if(message.getFrameID()>
+                                (300+10*(SettingsEAICS.getInstance().getGeneralSettings().getNumBatteryModules())*2-1)) {
+                        faker.sendBMSMessage(message.getFrameID());
+                    }
+                }
                 break;  //EVMS to BMS polling messages, just ignore these.
                 
 	    case 301: case 302: case 303: case 304:   //Reply Data - BMS Module 0
@@ -371,7 +390,7 @@ public class CANFilter
         return this.chargerGBT;
     }
 
-    public MGLReceive getMgl() {
+    public MGLDisplay getMgl() {
         return this.mgl;
     }
     
@@ -392,4 +411,10 @@ public class CANFilter
         }
         return handler;
     }
+
+    public TCCharger getTc() {
+        return tc;
+    }
+    
+    
 }

@@ -16,6 +16,7 @@ import eaics.Settings.SettingsEAICS;
 import eaics.UI.FXMLSettings.FXMLAdvZEVASettingsPage;
 import eaics.UI.FXMLSettings.FXMLCalibrateLoadCellController;
 import eaics.UI.FXMLSettings.FXMLConnectWifiController;
+import eaics.UI.FXMLSettings.FXMLGeneralSettingsController;
 import eaics.UI.FXMLSettings.FXMLLoggingPageController;
 import eaics.UI.FXMLSettings.FXMLNumpadController;
 import eaics.UI.FXMLSettings.FXMLSendLogsController;
@@ -46,6 +47,8 @@ public class FXMLSettingsController implements Initializable {
     FXMLConnectWifiController wifiConnectController;
     FXMLNumpadController numpad;
     FXMLSendLogsController sendLogsController;
+    
+    FXMLGeneralSettingsController genSettings;
     
     FXMLLoggingPageController loggingController;
     
@@ -278,7 +281,7 @@ public class FXMLSettingsController implements Initializable {
         this.chg = filter.getCharger();
         this.logging = logging;
         
-        mgl = new MGLDisplay();
+        mgl = filter.getMgl();
         
         pixhawkIPLabel.setText(SettingsEAICS.getInstance().getPixHawkSettings().getIpAddress());
         
@@ -374,6 +377,35 @@ public class FXMLSettingsController implements Initializable {
         }        
         catch (Exception e) {
             System.out.println("Failed to open LoadCell Calibrarion Window");
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void handleGeneralSettings(ActionEvent event) {
+        
+        genSettings = new FXMLGeneralSettingsController();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLGeneralSettings.fxml"));
+        try {
+            Pane pane = loader.load();
+            genSettings = loader.getController();
+            genSettings.setupScreen();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(closeButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("General Settings");
+            
+            stage.show();
+        }        
+        catch (Exception e) {
+            System.out.println("Failed to open General Settings Window");
             e.printStackTrace();
         }
     }

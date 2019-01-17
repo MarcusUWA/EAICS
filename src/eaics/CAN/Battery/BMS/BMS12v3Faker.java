@@ -5,17 +5,49 @@
  */
 package eaics.CAN.Battery.BMS;
 
+import eaics.CAN.CANFilter;
+import eaics.CAN.MiscCAN.CANHandler;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Markcuz
  */
 public class BMS12v3Faker {
-
-    public BMS12v3Faker() {
-        
+    private CANHandler handler;
+    int fakeVoltage; // in mV
+    
+    public BMS12v3Faker(CANHandler handler, int fakeVoltage) {
+        this.fakeVoltage = fakeVoltage;
+        this.handler = handler;
     }
     
-    
-    
-    
+    public void sendBMSMessage(int id) {
+        int[] data = new int[]{
+            (fakeVoltage/256)%256,
+            fakeVoltage%256,
+            (fakeVoltage/256)%256,
+            fakeVoltage%256,
+            (fakeVoltage/256)%256,
+            fakeVoltage%256,
+            (fakeVoltage/256)%256,
+            fakeVoltage%256
+        };
+        
+        int[] temp = new int[]{
+            0,40,0,40
+        };
+        
+                
+        try {
+            handler.writeMessage(id+1, data);
+            handler.writeMessage(id+2, data);
+            handler.writeMessage(id+3, data);
+            handler.writeMessage(id+4, temp);
+        } catch (IOException ex) {
+            Logger.getLogger(BMS12v3Faker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

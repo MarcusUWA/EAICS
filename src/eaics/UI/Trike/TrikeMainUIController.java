@@ -11,7 +11,6 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
-import eaics.CAN.Charger.TC.TCSend;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
 import eaics.UI.MainUIController;
@@ -147,12 +146,12 @@ public class TrikeMainUIController extends MainUIController
     
     @FXML
     private void startCharger(ActionEvent event) {
-        chargerSend.runCharger();
+        filter.getTc().runCharger();
     }
     
     @FXML
     private void stopCharger(ActionEvent event) {
-        chargerSend.stopCharger();
+        filter.getTc().stopCharger();
     }
     
     @FXML
@@ -261,12 +260,9 @@ public class TrikeMainUIController extends MainUIController
             e.printStackTrace();
         }
     }
-    
-    TCSend chargerSend;
 
     public void initData(Logging logging, Serial serial) throws IOException 
     {
-        this.chargerSend = new TCSend();
         
         this.logging = logging;
         this.serial = serial;

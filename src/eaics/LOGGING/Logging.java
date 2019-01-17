@@ -6,7 +6,6 @@ import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.CAN.MGL.MGLDisplay;
-import eaics.CAN.MGL.MGLReceive;
 import eaics.FILE.FileWriter;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
@@ -33,7 +32,7 @@ public class Logging
     private SimpleDateFormat formatterTime;
     private LoadCell loadCell;
     private Throttle throttle;
-    private MGLReceive mgl;
+    private MGLDisplay mgl;
     
     private boolean isLogging;
     
