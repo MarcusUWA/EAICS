@@ -135,10 +135,10 @@ public class FXMLSettingsController implements Initializable {
     
     @FXML   
     private void handleAdvancedZEVASettingsPage(ActionEvent event) {   
-        openSettingsPage(1);
+        openSettingsPage();
     }
 
-    private void openSettingsPage(int pageNumber) {
+    private void openSettingsPage() {
         
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLAdvZEVASettingsPage.fxml"));
 	
@@ -146,7 +146,7 @@ public class FXMLSettingsController implements Initializable {
             Pane pane = loader.load();
 
             advZEVASettingsPage = loader.getController();
-            advZEVASettingsPage.initData(pageNumber);
+            advZEVASettingsPage.initData(1);
 	    advZEVASettingsPage.updateLabels();
         
             Stage stage = new Stage();
@@ -157,7 +157,7 @@ public class FXMLSettingsController implements Initializable {
             Scene scene = new Scene(pane);
         
             stage.setScene(scene);
-            stage.setTitle("ZEVA Advanced Settings Page " + pageNumber);
+            stage.setTitle("ZEVA Advanced Settings Page " + 1);
             
             stage.show();
         }
@@ -183,6 +183,8 @@ public class FXMLSettingsController implements Initializable {
         labelWifiIP.setText(ipAddress.getWifiIP());
         labelWifiSSID.setText(ipAddress.getWifiSSID());
         labelLANIP.setText(ipAddress.getLANIP());
+        
+        pixhawkIPLabel.setText(SettingsEAICS.getInstance().getPixHawkSettings().getIpAddress());
     }
     
     @FXML   
@@ -312,7 +314,7 @@ public class FXMLSettingsController implements Initializable {
         try {
             Pane pane = loader.load();
             numpad = loader.getController();
-            numpad.initSettings(gui, FXMLNumpadController.CONFIG_IPADDRESS);
+            numpad.initSettings(FXMLNumpadController.CONFIG_IPADDRESS);
         
             Stage stage = new Stage();
         
@@ -330,26 +332,6 @@ public class FXMLSettingsController implements Initializable {
             System.out.println("Failed to open Numpad Window");
             e.printStackTrace();
         }
-        
-    }
-    
-    public void completeUpdatePixhawk() throws IOException {
-        
-        final Process pixHawkKill = Runtime.getRuntime().exec("pkill mavproxy.py");
-
-        String newIP = "";
-        
-        newIP = numpad.getString();
-        
-        final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + ":14550 --aircraft MyCopter");
-        
-        SettingsEAICS settings = SettingsEAICS.getInstance();
-        
-        settings.getPixHawkSettings().setIpAddress(newIP);
-        
-        settings.update();
-        
-        pixhawkIPLabel.setText(newIP);
     }
     
     @FXML

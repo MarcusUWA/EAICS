@@ -32,7 +32,6 @@ public class Logging
     private SimpleDateFormat formatterTime;
     private LoadCell loadCell;
     private Throttle throttle;
-    private MGLDisplay mgl;
     
     private boolean isLogging;
     
@@ -41,7 +40,6 @@ public class Logging
         this.filter = CANFilter.getInstance();
         this.loadCell = comms.getCell();
         this.throttle = comms.getThrottle();
-        this.mgl = filter.getMgl();
         formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	formatterTime = new SimpleDateFormat("HH:mm:ss");
 
@@ -145,12 +143,13 @@ public class Logging
                 }
                 
                 columnData += loadCell.getWeight()+",";
-                /*
+                
+                MGLDisplay mgl = filter.getMgl();
                 columnData += mgl.getBankAngle()+",";
                 columnData += mgl.getPitchAngle()+",";
                 columnData += mgl.getYawAngle()+",";
                 columnData += mgl.getGndSpeed()+",";
-*/
+
                 columnData +="\n";
 		fileWriter.write(columnData);
 	    }

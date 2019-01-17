@@ -21,9 +21,12 @@ import com.fazecast.jSerialComm.SerialPortEvent;
 public class Serial {
     
     private String path;
-    private LoadCell cell;
     private SerialPort sp = null;
+    
+    private LoadCell cell;
     private Throttle throttle;
+    private Temp temp;
+    private AirPressure airPress;
     
     private SerialPort[] commPorts = null;
 
@@ -34,8 +37,13 @@ public class Serial {
     public Serial(String path) {
         this.path = path;
         
-        cell = new LoadCell();
-        throttle = new Throttle();
+        this.cell = new LoadCell(4);
+        
+        this.throttle = new Throttle();
+        
+        this.temp = new Temp(6);
+        
+        this.airPress = new AirPressure();
 
         searchForPorts();
     }
@@ -89,6 +97,8 @@ public class Serial {
                     else {
                         cell.setMsg(buffer.toString());
                         throttle.setMsg(buffer.toString());
+                        temp.setMsg(buffer.toString());
+                        airPress.setMsg(buffer.toString());
                         buffer.setLength(0);
                     } 
                 }

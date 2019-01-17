@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import eaics.Settings.SettingsEVMS;
 import eaics.Settings.SettingsEAICS;
-import eaics.UI.MainUIController;
 import java.io.IOException;
 
 /**
@@ -26,7 +25,6 @@ import java.io.IOException;
  */
 public class FXMLNumpadController implements Initializable 
 {    
-    MainUIController gui;
     private int config;
     private boolean first;
     private int bmsSettingsIndex;
@@ -73,9 +71,11 @@ public class FXMLNumpadController implements Initializable
     @FXML
     private Label label;
     
-    public void initSettings(MainUIController settingsGui, int config) 
+    private SettingsEVMS bmsSettings;
+    private FXMLAdvZEVASettingsPage settingsPage;
+    
+    public void initSettings(int config) 
     {
-        gui = settingsGui;
         this.config = config;
         
         first = true;
@@ -102,9 +102,6 @@ public class FXMLNumpadController implements Initializable
         this.bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
         display.setText(display.getText() + bmsSettings.getDisplayUnits(bmsSettingsIndex));
     }
-    
-    private SettingsEVMS bmsSettings;
-    private FXMLAdvZEVASettingsPage settingsPage;
 
     /**
      * Initializes the controller class.
@@ -204,8 +201,8 @@ public class FXMLNumpadController implements Initializable
         {
             if(config == CONFIG_IPADDRESS) 
 	    {
-                value = display.getText();
-                gui.settingsPageController.completeUpdatePixhawk();
+                SettingsEAICS.getInstance().getPixHawkSettings().completeUpdatePixhawk(display.getText());
+                SettingsEAICS.getInstance().update();
             }
             else 
 	    {

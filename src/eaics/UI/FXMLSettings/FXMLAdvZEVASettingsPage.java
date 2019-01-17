@@ -26,7 +26,6 @@ import javafx.scene.control.Label;
  * @author Markcuz & Troy
  */
 public class FXMLAdvZEVASettingsPage implements Initializable{
-    MainUIController gui;
     private int pageIndex;
     FXMLNumpadController numpad;
     private SettingsEVMS bmsSettings;
@@ -195,10 +194,6 @@ public class FXMLAdvZEVASettingsPage implements Initializable{
         // TODO
     }    
     
-    public void initSettings(MainUIController settingsGui)  {
-        gui = settingsGui;
-    }
-    
     public void initData(int pageNumber) {
 	this.bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
 	this.pageIndex = (pageNumber - 1) * 8;
@@ -217,7 +212,7 @@ public class FXMLAdvZEVASettingsPage implements Initializable{
         try {
             Pane pane = loader.load();
             numpad = loader.getController();
-            numpad.initSettings(gui, FXMLNumpadController.CONFIG_BMS_NUMPAD);
+            numpad.initSettings(FXMLNumpadController.CONFIG_BMS_NUMPAD);
             numpad.setBMSIndex(index, this);
         
             Stage stage = new Stage();

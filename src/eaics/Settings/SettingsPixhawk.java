@@ -5,6 +5,8 @@
  */
 package eaics.Settings;
 
+import java.io.IOException;
+
 /**
  *
  * @author troy
@@ -52,8 +54,13 @@ public class SettingsPixhawk implements Settings
     }
     
     @Override
-    public void update()
-    {
+    public void update() {
 	//Nothing to update yet
+    }
+    
+    public void completeUpdatePixhawk(String newIP) throws IOException {
+        final Process pixHawkKill = Runtime.getRuntime().exec("pkill mavproxy.py");
+        final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + newIP + ":14550 --aircraft MyCopter");
+        setIpAddress(newIP);       
     }
 }

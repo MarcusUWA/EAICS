@@ -16,8 +16,6 @@ import javafx.fxml.FXML; // Allows the injection of FXML code, e.g. the @FXML
 import javafx.stage.Stage; // Allows a change of screen
 
 import eaics.CAN.CANFilter; // Access variables sent via CAN
-import eaics.CAN.Charger.GBT; // Get access to GBT protocol
-import eaics.CAN.Charger.TC; // Get access to TC protocol
 import eaics.Settings.SettingsEAICS; // Access charging typesa and other settings
 import eaics.Settings.TYPECharger;
 import javafx.event.ActionEvent;

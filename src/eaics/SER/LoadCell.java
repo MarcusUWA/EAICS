@@ -9,25 +9,26 @@ package eaics.SER;
  *
  * @author Markcuz
  */
-public class LoadCell
-{
+public class LoadCell {
 	private long time;
 	private double weight;
         private double calibFactor;
         
         private double loadCells[];
+        int numCells;
 	
-	public LoadCell() {
-		this.time = 0;
-		this.weight = 0.0;
-		this.calibFactor = 0;
-                loadCells = new double[4];
+	public LoadCell(int number) {
+            this.time = 0;
+            this.weight = 0.0;
+            this.calibFactor = 0;
+            loadCells = new double[number];
+            numCells = number;
 	}
 	
 	public void setMsg(String msg) {
             String[] msgArray = msg.split(",");
             
-            if(msgArray.length == 8 ) {
+            if(msgArray.length == 8) {
                 try {
                     this.time =  Long.parseLong(msgArray[0]);
                 }
@@ -49,32 +50,13 @@ public class LoadCell
                     this.calibFactor = 0;
                 }
                 
-                try {
-                    this.loadCells[0] = Double.parseDouble(msgArray[4]);
-                }
-                catch (NumberFormatException e) {
-                    this.loadCells[0] = 0;
-                }
-                
-                try {
-                    this.loadCells[1] = Double.parseDouble(msgArray[5]);
-                }
-                catch (NumberFormatException e) {
-                    this.loadCells[1] = 0;
-                }
-                
-                try {
-                    this.loadCells[2] = Double.parseDouble(msgArray[6]);
-                }
-                catch (NumberFormatException e) {
-                    this.loadCells[2] = 0;
-                }
-                
-                try {
-                    this.loadCells[3] = Double.parseDouble(msgArray[7]);
-                }
-                catch (NumberFormatException e) {
-                    this.loadCells[3] = 0;
+                for(int i = 0; i<numCells; i++) {
+                    try {
+                        this.loadCells[i] = Double.parseDouble(msgArray[i+4]);
+                    }
+                    catch (NumberFormatException e) {
+                        this.loadCells[i] = 0;
+                    }
                 }
             }
             
