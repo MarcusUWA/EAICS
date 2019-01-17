@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 // This is myyyy swamp
-
+// TODO...
+// 1) HOW TO RUN CHARGER SO THAT IT CONTINUES EVEN AFTER USER NAVIGATES AWAY FROM CHARGING PAGE
+// 2) HOW TO UPDATE VALUES EVERY X SECONDS OR WITH UPDATE FUNCTION IN CHARGER GBT/TC
 package eaics.UI.FXMLBattery;
 
 import java.net.URL;
@@ -14,6 +16,8 @@ import javafx.fxml.FXML; // Allows the injection of FXML code, e.g. the @FXML
 import javafx.stage.Stage; // Allows a change of screen
 
 import eaics.CAN.CANFilter; // Access variables sent via CAN
+import eaics.CAN.Charger.GBT; // Get access to GBT protocol
+import eaics.CAN.Charger.TC; // Get access to TC protocol
 import eaics.Settings.SettingsEAICS; // Access charging typesa and other settings
 import eaics.Settings.TYPECharger;
 import javafx.event.ActionEvent;
@@ -178,27 +182,36 @@ public class FXMLChargingController implements Initializable {
         } else // It is not charging
         {
             settings.getGeneralSettings().isCharging = true;
-            
-            // Determine what protocol the user wants to select
-            if (ChargeSelection.getSelectionModel().getSelectedItem() == "None")
-            {
-                System.out.println("User selected None charger type state");
-                settings.getGeneralSettings().setChargerType(TYPECharger.None);
+            // Check to see if the user has selected a protocol TODO CHECK THIS WORKS
+            if (ChargeSelection.getStyle().contains("33CC00") == true)
+            { // It has been set
+                // Determine what protocol the user wants to select
+                if (ChargeSelection.getSelectionModel().getSelectedItem() == "None")
+                {
+                    System.out.println("User selected None charger type state");
+                    settings.getGeneralSettings().setChargerType(TYPECharger.None);
+                    // do nothing the pi is not involved
 
-            } else if (ChargeSelection.getSelectionModel().getSelectedItem() == "GBT")
-            {
-                System.out.println("User selected GBT charger type state");
-                settings.getGeneralSettings().setChargerType(TYPECharger.GBT);
+                } else if (ChargeSelection.getSelectionModel().getSelectedItem() == "GBT")
+                {
+                    System.out.println("User selected GBT charger type state");
+                    settings.getGeneralSettings().setChargerType(TYPECharger.GBT);
+                    
+                    
 
-            } else if (ChargeSelection.getSelectionModel().getSelectedItem() == "TC")
-            {
-                System.out.println("User selected TC charger type state");
-                settings.getGeneralSettings().setChargerType(TYPECharger.TC);
+                } else if (ChargeSelection.getSelectionModel().getSelectedItem() == "TC")
+                {
+                    System.out.println("User selected TC charger type state");
+                    settings.getGeneralSettings().setChargerType(TYPECharger.TC);
 
-            } else {
-                System.out.println("ERROR: unknown user selection");
+                } else 
+                {
+                    System.out.println("ERROR: unknown user selection");
+                }
+            } else
+            { // It has not been set, TODO MIGHT BE WORTH CHANGING Stop/Start BUTTON
+                    System.out.println("User tried to start charging but did not select a protocol");
             }
-            
             // Start charging, change text to Stop and change colour to red
             StartStop.setText("Stop");
             StartStop.setStyle("-fx-background-color: #FF0000; ");
