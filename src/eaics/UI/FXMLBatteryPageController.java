@@ -123,7 +123,7 @@ public class FXMLBatteryPageController implements Initializable
             @Override
             public void handle(ActionEvent event) 
 	    {
-		updateScreen();
+		//updateScreen();
             }
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
