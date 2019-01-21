@@ -105,7 +105,7 @@ public class TCCharger {
         }
     }
     
-    public void runCharger() {
+    public void runCharger(int CANPort) {
         chargerExecutor = null;
         
         System.out.println("Starting Charger...");
@@ -120,7 +120,7 @@ public class TCCharger {
                 chargeStatus = true;
                 
                 try {
-                    filter.getCANHandler(0).writeMessage(
+                    filter.getCANHandler(CANPort).writeMessage(
                             0x1806E5F4, 
                             new int[]{
                                 (int)chargeVoltage/256,
@@ -143,9 +143,9 @@ public class TCCharger {
         chargerExecutor.scheduleAtFixedRate(Id, 0, 500, TimeUnit.MILLISECONDS);
     }
     
-    public void stopCharger() {
+    public void stopCharger(int canPort) {
         try {
-            filter.getCANHandler(0).writeMessage(0x1806E5F4, new int[]{
+            filter.getCANHandler(canPort).writeMessage(0x1806E5F4, new int[]{
                 (int)chargeVoltage/256,
                 (int)chargeVoltage%256,
                 (int)chargeCurrent/256,

@@ -37,10 +37,17 @@ public class FXMLCalibrateLoadCellController implements Initializable {
     Label calibrationFactor;
     
     @FXML
+    Label calibrationFactorS;
+    
+    @FXML
     Label loadValue;
+    
+    @FXML
+    Label inLineValue;
     
     @FXML 
     Button closeButton;
+            
         
     /**
      * Initializes the controller class.
@@ -61,9 +68,10 @@ public class FXMLCalibrateLoadCellController implements Initializable {
             public void handle(ActionEvent event) {
                
                 loadValue.setText("" + String.format("%.2f",loadcell.getWeight()));
-                //loadValue.setText("5");
                 calibrationFactor.setText("" + String.format("%.2f",loadcell.getCalibration()));
-                //calibrationFactor.setText("100");
+                
+                inLineValue.setText("" + String.format("%.2f",loadcell.getWeightS()));
+                calibrationFactorS.setText("" + String.format("%.2f",loadcell.getCalibFactorS()));
             }
             
         }));
@@ -80,6 +88,16 @@ public class FXMLCalibrateLoadCellController implements Initializable {
     @FXML
     private void handleDecreaseCalibration(ActionEvent event) {
         serial.writeData("-");
+    }
+    
+    @FXML
+    private void handleIncreaseCalibrationS(ActionEvent event) {
+        serial.writeData("s");
+    }
+    
+    @FXML
+    private void handleDecreaseCalibrationS(ActionEvent event) {
+        serial.writeData("x");
     }
     
     @FXML

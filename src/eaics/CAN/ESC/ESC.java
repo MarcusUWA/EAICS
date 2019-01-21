@@ -55,31 +55,30 @@ public class ESC
 		this.throttleCommand = 0;
     }
     
-    public void setAll(CANMessage message)
-    {
-		switch(message.getFrameID() - (346095616 + this.offset * this.escID))
-		{
-			case 1:
-				this.batteryVoltage = (message.getByte(0) + 256*message.getByte(1))/57.45;
-				this.batteryCurrent = (message.getByte(2) + 256*message.getByte(3))/10.0;
-				this.rpm = (message.getByte(4) + 256*message.getByte(5) + 65536*message.getByte(6))*10;
-				break;
-			case 2:
-				this.odometer = (message.getByte(0) + 256*message.getByte(1) + 65536*message.getByte(2) + 16777216*message.getByte(3));
-				this.controllerTemp = message.getByte(4);
-				this.motorTemp = message.getByte(5);
-				this.battTemp = message.getByte(6);
-				break;
-			case 3:
-				this.requestedOutputPWM = (message.getByte(0) + 256*message.getByte(1))/10.0;
-				this.realOutputPWM = (message.getByte(2) + 256*message.getByte(3))/10.0;
-				this.warnings = (message.getByte(4) + 256*message.getByte(5));
-				this.failures = (message.getByte(6) + 256*message.getByte(7));
-				break;
-			case 4:
-				this.remainingBatteryCapacity = message.getByte(0) + 256*message.getByte(1);
-				break;
-		}		
+    public void setAll(CANMessage message){
+        
+        switch(message.getFrameID() - (346095616 + this.offset * this.escID)) {
+                case 1:
+                        this.batteryVoltage = (message.getByte(0) + 256*message.getByte(1))/57.45;
+                        this.batteryCurrent = (message.getByte(2) + 256*message.getByte(3))/10.0;
+                        this.rpm = (message.getByte(4) + 256*message.getByte(5) + 65536*message.getByte(6))*10;
+                        break;
+                case 2:
+                        this.odometer = (message.getByte(0) + 256*message.getByte(1) + 65536*message.getByte(2) + 16777216*message.getByte(3));
+                        this.controllerTemp = message.getByte(4);
+                        this.motorTemp = message.getByte(5);
+                        this.battTemp = message.getByte(6);
+                        break;
+                case 3:
+                        this.requestedOutputPWM = (message.getByte(0) + 256*message.getByte(1))/10.0;
+                        this.realOutputPWM = (message.getByte(2) + 256*message.getByte(3))/10.0;
+                        this.warnings = (message.getByte(4) + 256*message.getByte(5));
+                        this.failures = (message.getByte(6) + 256*message.getByte(7));
+                        break;
+                case 4:
+                        this.remainingBatteryCapacity = message.getByte(0) + 256*message.getByte(1);
+                        break;
+        }		
     }
     
     public double getBatteryVoltage()
@@ -141,7 +140,7 @@ public class ESC
     {
 		return this.remainingBatteryCapacity;
     }
-    
+    /*
     public void setThrottleCommand(int throttleCommand)
     {
 		this.throttleCommand = throttleCommand;
@@ -151,7 +150,7 @@ public class ESC
     {
 		return this.throttleCommand;
     }
-    
+    */
     public String getLoggingString()
     {
 		String outString = "";

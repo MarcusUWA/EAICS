@@ -14,6 +14,9 @@ public class LoadCell {
 	private double weight;
         private double calibFactor;
         
+        private double weightS;
+        private double calibFactorS;
+        
         private double loadCells[];
         int numCells;
 	
@@ -26,9 +29,10 @@ public class LoadCell {
 	}
 	
 	public void setMsg(String msg) {
+            //System.out.println("Serial: "+msg);
             String[] msgArray = msg.split(",");
             
-            if(msgArray.length == 8) {
+            if(msgArray.length == 10|| msgArray.length == 8) {
                 try {
                     this.time =  Long.parseLong(msgArray[0]);
                 }
@@ -58,6 +62,24 @@ public class LoadCell {
                         this.loadCells[i] = 0;
                     }
                 }
+                
+                if(msgArray.length == 10) {
+                    
+                    try {
+                        this.weightS = Double.parseDouble(msgArray[8]);
+                    }
+                    catch (NumberFormatException e) {
+                        this.weightS = 0;
+                    }
+                    
+                    
+                    try {
+                        this.calibFactorS = Double.parseDouble(msgArray[9]);
+                    }
+                    catch (NumberFormatException e) {
+                        this.calibFactorS = 0;
+                    }
+                }
             }
             
             else {
@@ -82,6 +104,14 @@ public class LoadCell {
         
         public double getLoadCells(int pos) {
             return loadCells[pos];
+        }
+
+        public double getWeightS() {
+            return weightS;
+        }
+
+        public double getCalibFactorS() {
+            return calibFactorS;
         }
 	
 	@Override

@@ -83,6 +83,9 @@ public class TrikeMainUIController extends MainUIController
     private Label thrustLabel;
     
     @FXML
+    private Label inLineLabel;
+    
+    @FXML
     private Slider throttleSlider;
     
     @FXML
@@ -146,12 +149,12 @@ public class TrikeMainUIController extends MainUIController
     
     @FXML
     private void startCharger(ActionEvent event) {
-        filter.getTc().runCharger();
+        filter.getTc().runCharger(1);
     }
     
     @FXML
     private void stopCharger(ActionEvent event) {
-        filter.getTc().stopCharger();
+        filter.getTc().stopCharger(1);
     }
     
     @FXML
@@ -525,6 +528,8 @@ public class TrikeMainUIController extends MainUIController
 		//+------------------------------------------------------------+
 		
 		thrustLabel.setText("" + String.format("%.2f", loadCell.getWeight()));
+                
+                inLineLabel.setText("" + String.format("%.2f", loadCell.getWeightS()));
                 
 		//+------------------------------------------------------------+
                 

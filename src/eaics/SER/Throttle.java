@@ -42,20 +42,15 @@ public class Throttle
         this.isSendingThrottleCommands = isSendingThrottleCommands;
     }
 
-    public void setMsg(String msg) 
-    {
-        if(this.isUsingManualThrottle)
-        {
+    public void setMsg(String msg) {
+        if(this.isUsingManualThrottle) {
             String[] msgArray = msg.split(",");
 
-            if(msgArray.length > 3) 
-            {
-                try 
-                {
+            if(msgArray.length == 8 || msgArray.length == 10)  {
+                try  {
                     this.throttleSetting =  Integer.parseInt(msgArray[3]);
                 }
-                catch (NumberFormatException e) 
-                {
+                catch (NumberFormatException e)  {
                     this.throttleSetting = 0;
                 }
             }
@@ -89,7 +84,7 @@ public class Throttle
                     if(isSendingThrottleCommands)
                     {
                         //filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
-                        filter.getCANHandler(1).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
+                        filter.getCANHandler(0).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
                     }
                 }
                 catch(IOException e)
@@ -101,7 +96,7 @@ public class Throttle
         };
 
 	ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-	executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 100, TimeUnit.MILLISECONDS);
+	executor.scheduleAtFixedRate(ThrottleCommandSender, 0, 200, TimeUnit.MILLISECONDS);
     }
     
     public void stopSendingThrottleCommands()

@@ -50,28 +50,41 @@
 #define DOUT4  9
 #define CLK4  8
 
+#define OUTS 11
+#define CLKS 10
+
 HX711 scale(DOUT1, CLK1);
 HX711 scale2(DOUT2, CLK2);
 HX711 scale3(DOUT3, CLK3);
 HX711 scale4(DOUT4, CLK4);
 
+HX711 scaleS(OUTS, CLKS);
+
 int count = 0;
 float calibration_factor = 17550; //-7050 worked for my 440lb max scale setup
+
+float calibration_factorS = 17550;
 
 #define throttlePin A0
 double sensorValue = 0;  // variable to store the value coming from the sensor
 double throttle = 0;
 
+#define inline false
+
 void setup() {
   //being EEPROM load
   EEPROM.get(0,calibration_factor);
+
+  if(inline) {
+    EEPROM.get(sizeof(float), calibration_factorS);
+  }
   
   Serial.begin(9600);
   tare();
 }
 
 void loop() {
-  double weight1, weight2, weight3, weight4;
+  double weight1, weight2, weight3, weight4, weightS;
   double sum;
 
   weight1 = scale.get_units();
@@ -79,18 +92,27 @@ void loop() {
   weight3 = scale3.get_units();
   weight4 = scale4.get_units();
 
+  if(inline) {
+    weightS = scaleS.get_units();
+  }
+
   sum = weight1+weight2+weight3+weight4;
 
   sensorValue = analogRead(throttlePin); 
+  //Serial.println(sensorValue);
 
   //note this throttle, ranges from 195 - 852
   //eg. output = (sensorValue-min)*1024/(max-min);
-  throttle = ((sensorValue-195) * 1024.0/(852-195));
+
+  //for throttle one...
+  //throttle = ((sensorValue-195) * 1024.0/(852-195));
+
+  //for throttle two
+  throttle = ((sensorValue-240) * 1024.0/(852-240));
 
   if(throttle<0) throttle = 0;
   else if(throttle>1023) throttle = 1023;
 
-  
   Serial.print(count);
   Serial.print(",");
   
@@ -113,6 +135,14 @@ void loop() {
   Serial.print(",");
   
   Serial.print(weight4, 4);
+ 
+  if(inline) {
+    Serial.print(",");
+    Serial.print(weightS, 4);
+    Serial.print(",");
+  
+    Serial.print(calibration_factorS);
+  }
 
   Serial.println();
   
@@ -132,11 +162,22 @@ void loop() {
         scale3.set_scale(calibration_factor); //Adjust to this calibration factor
         scale4.set_scale(calibration_factor); //Adjust to this calibration factor
     }
+
+    else if(temp == 's') {
+      calibration_factorS += 10;
+      scaleS.set_scale(calibration_factorS); //Adjust to this calibration factor
+    }
+    else if(temp == 'x') {
+      calibration_factorS -= 10;
+      scaleS.set_scale(calibration_factorS); //Adjust to this calibration factor
+    }
     else if(temp == '0') {
       tare();
     }
+
     //storing into EEPROM
     EEPROM.put(0,calibration_factor);
+    EEPROM.put(sizeof(float),calibration_factorS);
   }
 
   count++;
@@ -155,9 +196,15 @@ void tare() {
 
   scale4.set_scale();
   scale4.tare();  //Reset the scale to 0
-
+  
   scale.set_scale(calibration_factor); //Adjust to this calibration factor
   scale2.set_scale(calibration_factor); //Adjust to this calibration factor
   scale3.set_scale(calibration_factor); //Adjust to this calibration factor
   scale4.set_scale(calibration_factor); //Adjust to this calibration factor
+
+  if(inline) {
+    scaleS.set_scale();
+    scaleS.tare();  //Reset the scale to 0
+    scaleS.set_scale(calibration_factorS); //Adjust to this calibration factor
+  }
 }

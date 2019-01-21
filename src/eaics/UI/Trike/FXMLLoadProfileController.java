@@ -48,6 +48,12 @@ public class FXMLLoadProfileController implements Initializable
     Button exit;
     
     private Throttle throttle;
+    
+    private boolean isLoaded;
+    
+        
+    private ScheduledExecutorService executor;
+    private boolean isRunning;
                 
     /**
      * Initializes the controller class.
@@ -58,6 +64,7 @@ public class FXMLLoadProfileController implements Initializable
         // TODO
         fileRead = false;
         isRunning = false;
+        isLoaded = false;
     } 
     
     public void initData(MainUIController gui, Throttle throttle) 
@@ -132,6 +139,7 @@ public class FXMLLoadProfileController implements Initializable
                 }
             }
             br.close();
+            isLoaded = true;
         }
         catch(FileNotFoundException e) 
         {
@@ -164,14 +172,11 @@ public class FXMLLoadProfileController implements Initializable
         alert.setContentText("The load profile has now been stopped. Manual throttle control is now in command.");
         alert.show();
     }
-    
-    private ScheduledExecutorService executor;
-    private boolean isRunning;
+
     
     @FXML
-    private void handleRun(ActionEvent event) throws IOException {
-        
-        if(!isRunning) {
+    private void handleRun(ActionEvent event) throws IOException {      
+        if(!isRunning&&isLoaded) {
             
             isRunning = true;
             throttle.setIsUsingManualThrottle(false);
@@ -191,20 +196,24 @@ public class FXMLLoadProfileController implements Initializable
 
                     @Override
                     public void run() {
-                        if(System.currentTimeMillis() >= endTime && ii < lines.size()) {
-                            //send this throttle value for time length : lines.get(i)[1] in seconds
-                            //handleThrottle(lines.get(i)[1]);
+                        
+                        if(isRunning) {
+                            if(System.currentTimeMillis() >= endTime && ii < lines.size()) {
+                                //send this throttle value for time length : lines.get(i)[1] in seconds
+                                //handleThrottle(lines.get(i)[1]);
 
-                            System.out.println("Throttle: " + lines.get(ii)[0] + " Time: " + lines.get(ii)[1]);
+                                System.out.println("Throttle: " + lines.get(ii)[0] + " Time: " + lines.get(ii)[1]);
 
-                            throttle.setThrottleSetting(lines.get(ii)[0]);
-                            startTime = System.currentTimeMillis();
-                            endTime = startTime+(lines.get(ii)[1] * 1000);
+                                throttle.setThrottleSetting(lines.get(ii)[0]);
+                                startTime = System.currentTimeMillis();
+                                endTime = startTime+(lines.get(ii)[1] * 1000);
 
-                            ii++;
+                                ii++;
 
-                            if(ii >= lines.size()) {
-                                stopLoadProfile();
+                                if(ii >= lines.size()) {
+                                    stopLoadProfile();
+                                    isRunning = false;
+                                }
                             }
                         }
                     }
@@ -216,13 +225,11 @@ public class FXMLLoadProfileController implements Initializable
         }
     }
     
-    private void stopLoadProfile()
-    {
-        if(isRunning) {
-            this.executor.shutdown();
-        }
+    private void stopLoadProfile() {
+        
         throttle.setIsSendingThrottleCommands(false);
         throttle.setIsUsingManualThrottle(true);
+
         isRunning = false;
     }
     
