@@ -348,7 +348,7 @@ public class FXMLBatteryPageController implements Initializable
             
             stage.setMaximized(true);
             stage.show();
-            chargingController.InitialiseChargingScene(); // Ensure initial settings
+            chargingController.initialiseChargingScene(); // Ensure initial settings
         }
         catch (Exception e) 
         {

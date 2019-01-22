@@ -120,7 +120,7 @@ public class TCCharger {
                 chargeStatus = true;
                 
                 try {
-                    filter.getCANHandler(CANPort).writeMessage(
+                    filter.getCANHandler(1).writeMessage(
                             0x1806E5F4, 
                             new int[]{
                                 (int)chargeVoltage/256,
@@ -141,6 +141,7 @@ public class TCCharger {
         };
         chargerExecutor = Executors.newScheduledThreadPool(1);
         chargerExecutor.scheduleAtFixedRate(Id, 0, 500, TimeUnit.MILLISECONDS);
+
     }
     
     public void stopCharger(int canPort) {

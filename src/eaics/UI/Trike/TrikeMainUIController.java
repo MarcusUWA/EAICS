@@ -129,7 +129,7 @@ public class TrikeMainUIController extends MainUIController
             ex.printStackTrace();
         }
         
-        CANFilter.getInstance().getCharger().stopCharging();
+        CANFilter.getInstance().getChargerGBT().stopCharging();
     }
     
     @FXML
@@ -149,12 +149,13 @@ public class TrikeMainUIController extends MainUIController
     
     @FXML
     private void startCharger(ActionEvent event) {
-        filter.getTc().runCharger(1);
+        
+        CANFilter.getInstance().getChargerTC().runCharger(1);
     }
     
     @FXML
     private void stopCharger(ActionEvent event) {
-        filter.getTc().stopCharger(1);
+        CANFilter.getInstance().getChargerTC().stopCharger(1);
     }
     
     @FXML

@@ -52,12 +52,11 @@ public class CANFilter {
     
     //chargers
     private ChargerGBT chargerGBT;
-    private TCCharger tc;
+    private TCCharger chargerTC;
     
     //Displays
     private MGLDisplay mgl;
     
-
     //Warnings
     private boolean hasWarnedError;
     private boolean hasWarnedChargerOff;
@@ -130,7 +129,7 @@ public class CANFilter {
         
         this.mgl = new MGLDisplay(this);
         
-        this.tc = new TCCharger(this);
+        this.chargerTC = new TCCharger(this);
         
         this.faker = new BMS12v3Faker(this.bus0CANHandler, 3700);
         
@@ -313,7 +312,7 @@ public class CANFilter {
                 
                 
             case 0x18FF50E5:
-                tc.setMessage(message);
+                chargerTC.setMessage(message);
                 break;
                 
             case 0x18000000: case 0x18000002: case 0x18000001:
@@ -385,7 +384,7 @@ public class CANFilter {
 	return this.currentSensor;
     }
     
-    public ChargerGBT getCharger()
+    public ChargerGBT getChargerGBT()
     {
         return this.chargerGBT;
     }
@@ -412,8 +411,8 @@ public class CANFilter {
         return handler;
     }
 
-    public TCCharger getTc() {
-        return tc;
+    public TCCharger getChargerTC() {
+        return chargerTC;
     }
     
     

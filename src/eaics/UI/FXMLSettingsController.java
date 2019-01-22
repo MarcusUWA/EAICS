@@ -280,7 +280,7 @@ public class FXMLSettingsController implements Initializable {
         this.filter = CANFilter.getInstance();
         this.loadCell = loadCell;
         this.serial = serial;
-        this.chg = filter.getCharger();
+        this.chg = filter.getChargerGBT();
         this.logging = logging;
         
         mgl = filter.getMgl();
