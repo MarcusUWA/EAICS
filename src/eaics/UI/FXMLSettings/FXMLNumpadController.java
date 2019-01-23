@@ -32,6 +32,7 @@ public class FXMLNumpadController implements Initializable
     public static final int CONFIG_NUMPAD = 0;
     public static final int CONFIG_BMS_NUMPAD = 1;
     public static final int CONFIG_IPADDRESS = 2;
+    public static final int CONFIG_CHARGE = 3;
     
     private String value;
     
@@ -74,8 +75,16 @@ public class FXMLNumpadController implements Initializable
     private SettingsEVMS bmsSettings;
     private FXMLAdvZEVASettingsPage settingsPage;
     
-    public void initSettings(int config) 
-    {
+    public void importAdvZEVA(FXMLAdvZEVASettingsPage settingsPage)  {
+        this.settingsPage = settingsPage;
+        
+    }
+    
+    public void setBMSIndex(int bmsSettingsIndex, int config) {
+        this.bmsSettingsIndex = bmsSettingsIndex;
+        this.settingsPage = settingsPage;
+        
+        this.bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
         this.config = config;
         
         first = true;
@@ -93,13 +102,7 @@ public class FXMLNumpadController implements Initializable
             default:
                 break;
         }
-    }
-    
-    public void setBMSIndex(int bmsSettingsIndex, FXMLAdvZEVASettingsPage settingsPage)
-    {
-        this.bmsSettingsIndex = bmsSettingsIndex;
-        this.settingsPage = settingsPage;
-        this.bmsSettings = SettingsEAICS.getInstance().getEVMSSettings();
+        
         display.setText(display.getText() + bmsSettings.getDisplayUnits(bmsSettingsIndex));
     }
 
@@ -199,16 +202,23 @@ public class FXMLNumpadController implements Initializable
         }
         else if (event.getSource() == enter) 
         {
-            if(config == CONFIG_IPADDRESS) 
-	    {
+            if(config == CONFIG_IPADDRESS)  {
                 SettingsEAICS.getInstance().getPixHawkSettings().completeUpdatePixhawk(display.getText());
                 SettingsEAICS.getInstance().update();
             }
-            else 
-	    {
+            else if(config==CONFIG_NUMPAD){
                 this.bmsSettings.setSetting(bmsSettingsIndex,  Integer.parseInt(display.getText()));	
 		SettingsEAICS.getInstance().update();
                 this.settingsPage.updateLabels();
+            }
+            
+            else if(config==CONFIG_BMS_NUMPAD){
+                this.bmsSettings.setSetting(bmsSettingsIndex,  Integer.parseInt(display.getText()));	
+		SettingsEAICS.getInstance().update();
+                this.settingsPage.updateLabels();
+            }
+            else if(config==CONFIG_CHARGE){
+                
             }
             Stage stage = (Stage) enter.getScene().getWindow();
             stage.close();

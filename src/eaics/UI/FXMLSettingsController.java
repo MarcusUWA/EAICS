@@ -314,7 +314,7 @@ public class FXMLSettingsController implements Initializable {
         try {
             Pane pane = loader.load();
             numpad = loader.getController();
-            numpad.initSettings(FXMLNumpadController.CONFIG_IPADDRESS);
+            numpad.setBMSIndex(0,FXMLNumpadController.CONFIG_IPADDRESS);
         
             Stage stage = new Stage();
         

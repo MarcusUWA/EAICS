@@ -5,12 +5,15 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
+import eaics.CAN.Charger.TC.TCCharger;
 import eaics.CAN.MGL.MGLDisplay;
 import eaics.FILE.FileWriter;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
 import eaics.SER.Throttle;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPECharger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -149,6 +152,13 @@ public class Logging
                 columnData += mgl.getPitchAngle()+",";
                 columnData += mgl.getYawAngle()+",";
                 columnData += mgl.getGndSpeed()+",";
+                
+                if(SettingsEAICS.getInstance().getGeneralSettings().getChargerType()==TYPECharger.TC) {
+                    TCCharger tc = filter.getChargerTC();
+                    columnData += tc.getOutputVoltage()+",";
+                    columnData += tc.getOutputCurrent()+",";
+                    columnData += tc.getStatusByte();
+                }
 
                 columnData +="\n";
 		fileWriter.write(columnData);
@@ -210,7 +220,11 @@ public class Logging
         columnHeadings += "Pitch Angle, ";
         columnHeadings += "Yaw Angle, ";
         columnHeadings += "Ground Speed, ";
-
+        
+        columnHeadings += "Charging Voltage, ";
+        columnHeadings += "Charging Current, ";
+        columnHeadings += "Status Byte";
+      
         columnHeadings += "\n";
 
         fileWriter.write(columnHeadings);

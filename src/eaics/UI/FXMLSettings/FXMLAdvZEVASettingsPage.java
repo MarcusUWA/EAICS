@@ -16,7 +16,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import eaics.Settings.SettingsEVMS;
 import eaics.Settings.SettingsEAICS;
-import eaics.UI.MainUIController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -212,8 +211,8 @@ public class FXMLAdvZEVASettingsPage implements Initializable{
         try {
             Pane pane = loader.load();
             numpad = loader.getController();
-            numpad.initSettings(FXMLNumpadController.CONFIG_BMS_NUMPAD);
-            numpad.setBMSIndex(index, this);
+            numpad.importAdvZEVA(this);
+            numpad.setBMSIndex(index, FXMLNumpadController.CONFIG_BMS_NUMPAD);
         
             Stage stage = new Stage();
         

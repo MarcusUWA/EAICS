@@ -233,8 +233,7 @@ public class FXMLBatteryPageController implements Initializable
     private void handleCellPage1(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLBattery/FXMLCellPage.fxml"));
         
-        try 
-	{
+        try  {
             Pane pane = loader.load();
 
             cellController = loader.getController();
@@ -346,7 +345,6 @@ public class FXMLBatteryPageController implements Initializable
             stage.setScene(scene);
             stage.setTitle("Charging Summary");
             
-            stage.setMaximized(true);
             stage.show();
             chargingController.initialiseChargingScene(); // Ensure initial settings
         }

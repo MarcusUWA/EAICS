@@ -47,6 +47,8 @@ public class TrikeMainUIController extends MainUIController
 {
     private Logging logging;
     
+    boolean escData = true;
+    
     @FXML
     Button buttonSettings;
     @FXML
@@ -497,9 +499,19 @@ public class TrikeMainUIController extends MainUIController
                     timeLabel.setText("" + String.format("%.2f", time));
                 }
 		
-                voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
+                if(!escData) {
+                    voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
+                }
+                else {
+                    voltageLabel.setText(String.format("%.2f", esc[0].getBatteryVoltage())+"");
+                }
                 
-                currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
+                if(!escData) {
+                    currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
+                }
+                else {
+                    currentLabel.setText(String.format("%.2f", esc[0].getBatteryCurrent())+"");
+                }
 		
 		//+------------------------------------------------------------+
 		//ESC - Electronic Speed Controller
@@ -511,18 +523,14 @@ public class TrikeMainUIController extends MainUIController
 		controllerTempLabel.setText("" + esc[0].getControllerTemp());
 		motorTempLabel.setText("" + esc[0].getMotorTemp());
                 
-                
-                double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
-                powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
-                //this could be changed to be read from the EVMS?
-                
-                /*double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
-                
-		powerLabel.setText("" + String.format("%.2f", kwPower));
-		*/
-                
-                
-                
+                if(!escData) {
+                    double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
+                    powerLabel.setText("" + String.format("%.2f", kwPower));
+                }
+                else {
+                    double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
+                    powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
+                }
 		
 		//+------------------------------------------------------------+
 		//LC - Load Cell

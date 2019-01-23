@@ -18,15 +18,20 @@ import javafx.stage.Stage; // Allows a change of screen
 import eaics.CAN.CANFilter; // Access variables sent via CAN
 import eaics.Settings.SettingsEAICS; // Access charging typesa and other settings
 import eaics.Settings.TYPECharger;
+import eaics.UI.FXMLSettings.FXMLNumpadController;
 import javafx.animation.KeyFrame; // Used to control the screen updating
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 
 import javafx.scene.control.Button; // Used to control button behaviour
 import javafx.scene.control.Label; // Used to control label behaviour
 import javafx.scene.control.ChoiceBox; // Used to control the choice box for charge protocol selection
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.util.Duration;
 /**
  * FXML Controller class
@@ -36,10 +41,10 @@ import javafx.util.Duration;
 public class FXMLChargingController implements Initializable {
     // Used to initiate 
     private CANFilter filter;
-    
     SettingsEAICS settings;
+    FXMLNumpadController numpad;
     
-    private int timeToRefresh = 5000; // Time to refresh the screen
+    private int timeToRefresh = 200; // Time to refresh the screen
     
     // Initialise the Labels and buttons on the GUI
     @FXML // 
@@ -50,8 +55,7 @@ public class FXMLChargingController implements Initializable {
     private Label ObservedPower; // Unit of measurement is kilowatts
     @FXML
     private Label TimeCharging; // Unit of measurement is minutes, how long the vehicle has been charging
-    @FXML
-    private Label ETACharging; // Unit of measurement is minutes
+    
     @FXML
     private Label ChargerMaxVoltage; // Unit of measurement is volts        
     @FXML
@@ -65,6 +69,9 @@ public class FXMLChargingController implements Initializable {
     private Label chargeCurrent;
     @FXML 
     private Label chargeVoltage;
+    
+    @FXML
+    private Label chargerStatus;
     
     
     @FXML
@@ -90,6 +97,12 @@ public class FXMLChargingController implements Initializable {
         ChargeSelection.getItems().setAll((Object[])TYPECharger.values());
         ChargeSelection.setValue(settings.getGeneralSettings().getChargerType());
         
+        if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
+            StartStop.setSelected(filter.getChargerTC().isChargeStatus());
+        }
+        
+        updateScreen();
+        
         Timeline refreshUI;
         refreshUI = new Timeline(new KeyFrame(Duration.millis(timeToRefresh), new EventHandler<ActionEvent>()
 	{
@@ -99,6 +112,7 @@ public class FXMLChargingController implements Initializable {
 		updateScreen();
             }
         }));
+        
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
     }
@@ -122,6 +136,8 @@ public class FXMLChargingController implements Initializable {
 
             // Integer is converted to string
             TimeCharging.setText(""+filter.getChargerGBT().getTimeOnCharge());
+            
+            chargerStatus.setText("N/A");
         }
         else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
             ChargerMaxVoltage.setText("N/A");
@@ -129,8 +145,8 @@ public class FXMLChargingController implements Initializable {
             ChargerMaxCurrent.setText("N/A");
             ChargerMinCurrent.setText("N/A");
             
-            ObservedCurrent.setText(String.format("%.1f",filter.getChargerTC().getOutputCurrent()));
-            ObservedVoltage.setText(String.format("%.1f",filter.getChargerTC().getOutputVoltage()));
+            ObservedCurrent.setText(String.format("%.1f",filter.getChargerTC().getOutputCurrent())+" A");
+            ObservedVoltage.setText(String.format("%.1f",filter.getChargerTC().getOutputVoltage())+" V");
 
             // Power [kW] = current*voltage/1000
             ObservedPower.setText(String.format("%.1f",
@@ -138,6 +154,34 @@ public class FXMLChargingController implements Initializable {
 
             // Integer is converted to string
             TimeCharging.setText("N/A");
+            
+            String statusString = "";
+            if(filter.getChargerTC().getStatusByte()==0x00) {
+                statusString="Charging...";
+            }
+            else {
+                if((filter.getChargerTC().getStatusByte()&0x01)==0x01) {
+                    statusString+="HardWare ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x02)==0x02) {
+                    statusString+="Temp ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x04)==0x04) {
+                    statusString+="Volts ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x08)==0x08) {
+                    statusString+="Ready ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x10)==0x10) {
+                    statusString+="Comms";
+                }
+            }
+
+            chargerStatus.setText(statusString);
         }
         
         else {
@@ -156,8 +200,8 @@ public class FXMLChargingController implements Initializable {
             TimeCharging.setText("N/A");
         }
         
-        chargeVoltage.setText(String.format(""+settings.getEVMSSettings().getSetting(19)));
-        chargeCurrent.setText(String.format(""+settings.getEVMSSettings().getSetting(20)));
+        chargeVoltage.setText(String.format(settings.getEVMSSettings().getSetting(19)+" V"));
+        chargeCurrent.setText(String.format(settings.getEVMSSettings().getSetting(20)+" A"));
     }
     
     @FXML // Delete the charging screne and go back to the previous scene.
@@ -169,6 +213,39 @@ public class FXMLChargingController implements Initializable {
     @FXML // Used to set the charge protocol that is in the 
     private void setChargeProtocol(ActionEvent event) {
         settings.getGeneralSettings().setChargerType((TYPECharger) ChargeSelection.getValue());
+        settings.update();
+    }
+    
+    @FXML
+    public void handleChangeCurrent(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLNumpad.fxml"));
+        
+        try {
+            Pane pane = loader.load();
+            numpad = loader.getController();
+            numpad.setBMSIndex(20, FXMLNumpadController.CONFIG_CHARGE);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(BackButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Numpad");
+            
+            stage.show();
+        }        
+        catch (Exception e)  {
+            System.out.println("Failed to open Numpad Window");
+            e.printStackTrace();
+        }
+    }
+    
+     @FXML
+    public void handleChangeVoltage(ActionEvent event) {
+
     }
     
     @FXML // Used to start or stop the charge

@@ -28,15 +28,10 @@ public class TCCharger {
 
     private SettingsEVMS settings;
     
-    //Warnings
-    boolean hardwareFailure;
-    boolean tempFailure;
-    boolean inputFailure;
-    boolean startFailure;
-    boolean commsFailure;
-    
     float chargeVoltage;
     float chargeCurrent;
+    
+    int statusByte;
 
     private ScheduledExecutorService chargerExecutor;
 
@@ -47,12 +42,7 @@ public class TCCharger {
         this.filter = filter;
         this.outputVoltage = 0;
         this.outputCurrent = 0;
-        
-        this.hardwareFailure = false;
-        this.tempFailure = false;
-        this.inputFailure = false;
-        this.startFailure = false;
-        this.commsFailure = false;
+        this.statusByte = 0;
         
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
 
@@ -64,51 +54,23 @@ public class TCCharger {
     public void setMessage(CANMessage message) {
         outputVoltage = (float) ((message.getByte(0)*256+message.getByte(1))/10.0);
         outputCurrent = (float) ((message.getByte(2)*256+message.getByte(3))/10.0);
-        System.out.println("Output Voltage: "+outputVoltage+"Output Current: "+outputCurrent);
+        //System.out.println("Output Voltage: "+outputVoltage+"V, Output Current: "+outputCurrent);
         
-        int statusByte = message.getByte(4);
-        System.out.println("Status Byte: "+statusByte);
+        statusByte = message.getByte(4);
+        //System.out.println("Status Byte: "+statusByte);
         
-        if((statusByte&0x01) == 0x01) {
-            hardwareFailure = true;
+        if(statusByte==0x00) {
+            chargeStatus = true;
         }
         else {
-            hardwareFailure = false;
-        }
-        
-        if((statusByte&0x02) == 0x02) {
-            tempFailure = true;
-        }
-        else {
-            tempFailure = false;
-        }
-        
-        if((statusByte&0x04) == 0x04) {
-            inputFailure = true;
-        }
-        else {
-            inputFailure = false;
-        }
-        
-        if((statusByte&0x08) == 0x08) {
-            startFailure = true;
-        }
-        else {
-            startFailure = false;
-        }
-        
-        if((statusByte&0x10) == 0x10) {
-            commsFailure = true;
-        }
-        else {
-            commsFailure = false;
+            chargeStatus = false;
         }
     }
     
     public void runCharger(int CANPort) {
         chargerExecutor = null;
         
-        System.out.println("Starting Charger...");
+       // System.out.println("Starting Charger...");
         
         Runnable Id = new Runnable() { 
             
@@ -159,8 +121,10 @@ public class TCCharger {
             chargerExecutor.shutdown();
         }
     }
-    
 
+    public boolean isChargeStatus() {
+        return chargeStatus;
+    }
 
     public float getOutputVoltage() {
         return outputVoltage;
@@ -170,26 +134,8 @@ public class TCCharger {
         return outputCurrent;
     }
 
-    public boolean isHardwareFailure() {
-        return hardwareFailure;
+    public int getStatusByte() {
+        return statusByte;
     }
-
-    public boolean isTempFailure() {
-        return tempFailure;
-    }
-
-    public boolean isInputFailure() {
-        return inputFailure;
-    }
-
-    public boolean isStartFailure() {
-        return startFailure;
-    }
-
-    public boolean isCommsFailure() {
-        return commsFailure;
-    }
-    
-    
 }
 

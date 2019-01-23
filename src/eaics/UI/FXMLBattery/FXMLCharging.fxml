@@ -43,9 +43,9 @@
             <Label text="Observed Voltage" GridPane.rowIndex="1" />
             <Label text="Observed Power" GridPane.rowIndex="2" />
             <Label text="Amount Charged" GridPane.rowIndex="3" />
-            <Label prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" />
-            <Label prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="ObservedCurrent" prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" />
+            <Label fx:id="ObservedVoltage" prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="ObservedPower" prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label prefWidth="100.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label prefHeight="26.0" prefWidth="60.0" text="[A]" GridPane.columnIndex="2" />
             <Label prefHeight="26.0" prefWidth="60.0" text="[V]" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -53,7 +53,7 @@
             <Label prefHeight="26.0" prefWidth="60.0" text="[A/Hr]" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <GridPane layoutX="295.0" layoutY="184.0" prefHeight="120.0" prefWidth="300.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
+      <GridPane hgap="5.0" layoutX="295.0" layoutY="184.0" prefHeight="120.0" prefWidth="300.0" vgap="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="180.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="219.0" minWidth="10.0" prefWidth="150.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="120.0" />
@@ -66,31 +66,31 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="26.0" prefWidth="208.0" text="Max Allowable Current" />
-            <Label text="Max Allowable Voltage" GridPane.rowIndex="1" />
-            <Label text="Max Allowable Current" GridPane.rowIndex="2" />
-            <Label text="Max Allowable Voltage" GridPane.rowIndex="3" />
-            <Label text="VALUE" GridPane.columnIndex="1" />
-            <Label text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label prefHeight="26.0" prefWidth="208.0" text="Max Allow. Current" />
+            <Label text="Max Allow. Voltage" GridPane.rowIndex="1" />
+            <Label text="Min Allow. Current" GridPane.rowIndex="2" />
+            <Label text="Min Allow. Voltage" GridPane.rowIndex="3" />
+            <Label fx:id="ChargerMaxCurrent" text="VALUE" GridPane.columnIndex="1" />
+            <Label fx:id="ChargerMaxVoltage" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="ChargerMinCurrent" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="ChargerMinVoltage" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label prefHeight="26.0" prefWidth="26.0" text="[A]" GridPane.columnIndex="2" />
             <Label prefHeight="26.0" prefWidth="26.0" text="[V]" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label prefHeight="26.0" prefWidth="26.0" text="[V]" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Label prefHeight="26.0" prefWidth="26.0" text="[A]" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <ToggleButton layoutX="285.0" layoutY="429.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="180.0" text="Start Charging" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0">
+      <ToggleButton fx:id="StartStop" layoutX="285.0" layoutY="429.0" mnemonicParsing="false" onAction="#startStopCharging" prefHeight="40.0" prefWidth="180.0" text="Start Charging" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="240.0">
          <font>
             <Font size="14.0" />
          </font>
       </ToggleButton>
       <HBox alignment="CENTER" layoutX="401.0" layoutY="321.0" prefHeight="40.0" prefWidth="620.0" spacing="20.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="120.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Set Current [A]:" />
-            <Label prefWidth="120.0" text="VALUE" />
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Set Voltage [V]: " />
-            <Label prefWidth="120.0" text="VALUE" />
+            <Button mnemonicParsing="false" onAction="#handleChangeCurrent" prefHeight="30.0" prefWidth="150.0" text="Set Current :" />
+            <Label fx:id="chargeCurrent" prefWidth="120.0" text="VALUE" />
+            <Button mnemonicParsing="false" onAction="#handleChangeVoltage" prefHeight="30.0" prefWidth="150.0" text="Set Voltage: " />
+            <Label fx:id="chargeVoltage" prefWidth="120.0" text="VALUE" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="50.0" layoutY="13.0" prefHeight="30.0" prefWidth="620.0" spacing="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="80.0">
@@ -101,30 +101,30 @@
       </HBox>
       <GridPane alignment="CENTER" hgap="10.0" layoutX="28.0" layoutY="320.0" prefHeight="100.0" prefWidth="574.0" vgap="10.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="180.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="402.0" minWidth="10.0" prefWidth="395.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="355.0" text="ETA [Minutes]:">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label prefHeight="22.0" prefWidth="433.0" text="VALUE" GridPane.columnIndex="1">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="400.0" text="Time on Charge [Minutes]:" GridPane.rowIndex="1">
+            <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="355.0" text="Status:">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label prefHeight="17.0" prefWidth="417.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="chargerStatus" prefHeight="22.0" prefWidth="433.0" text="VALUE" GridPane.columnIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="400.0" text="Time on Charge:" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="TimeCharging" prefHeight="17.0" prefWidth="417.0" text="VALUE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="18.0" />
                </font>
