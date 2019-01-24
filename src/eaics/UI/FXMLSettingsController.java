@@ -55,7 +55,6 @@ public class FXMLSettingsController implements Initializable {
     ChargerGBT chg;
     
     FXMLCalibrateLoadCellController calib;
-    Serial serial;
     
     private Logging logging;
     
@@ -276,10 +275,8 @@ public class FXMLSettingsController implements Initializable {
     } 
 
     
-    public void initData(LoadCell loadCell, Serial serial, Logging logging) {
+    public void initData(Logging logging) {
         this.filter = CANFilter.getInstance();
-        this.loadCell = loadCell;
-        this.serial = serial;
         this.chg = filter.getChargerGBT();
         this.logging = logging;
         
@@ -343,7 +340,7 @@ public class FXMLSettingsController implements Initializable {
         try {
             Pane pane = loader.load();
             calib = loader.getController();
-            calib.init(serial, loadCell);
+            calib.init();
         
             Stage stage = new Stage();
         

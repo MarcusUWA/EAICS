@@ -99,7 +99,15 @@ public class FXMLChargingController implements Initializable {
         
         if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
             StartStop.setSelected(filter.getChargerTC().isChargeStatus());
+            if(filter.getChargerTC().isChargeStatus()==true) {
+                StartStop.setText("Stop Charging");
+            }
+            else {
+                StartStop.setText("Start Charging");
+            }
         }
+        
+        
         
         updateScreen();
         
@@ -202,6 +210,8 @@ public class FXMLChargingController implements Initializable {
         
         chargeVoltage.setText(String.format(settings.getEVMSSettings().getSetting(19)+" V"));
         chargeCurrent.setText(String.format(settings.getEVMSSettings().getSetting(20)+" A"));
+        
+        
     }
     
     @FXML // Delete the charging screne and go back to the previous scene.
@@ -218,7 +228,7 @@ public class FXMLChargingController implements Initializable {
     
     @FXML
     public void handleChangeCurrent(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLNumpad.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings/FXMLNumpad.fxml"));
         
         try {
             Pane pane = loader.load();
@@ -245,7 +255,29 @@ public class FXMLChargingController implements Initializable {
     
      @FXML
     public void handleChangeVoltage(ActionEvent event) {
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings/FXMLNumpad.fxml"));
+        
+        try {
+            Pane pane = loader.load();
+            numpad = loader.getController();
+            numpad.setBMSIndex(19, FXMLNumpadController.CONFIG_CHARGE);
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(BackButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Numpad");
+            
+            stage.show();
+        }        
+        catch (Exception e)  {
+            System.out.println("Failed to open Numpad Window");
+            e.printStackTrace();
+        }
     }
     
     @FXML // Used to start or stop the charge

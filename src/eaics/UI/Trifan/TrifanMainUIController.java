@@ -159,7 +159,7 @@ public class TrifanMainUIController extends MainUIController
             Pane pane = loader.load();
 
             settingsPageController = loader.getController();
-            settingsPageController.initData(loadCell, serial, logging);
+            settingsPageController.initData(logging);
         
             Stage stage = new Stage();
         
@@ -213,11 +213,11 @@ public class TrifanMainUIController extends MainUIController
         }
     } 
     
-    public void initData(Logging logging, Serial serial) throws IOException 
+    public void initData(Logging logging) throws IOException 
     {
         this.logging = logging;
         
-        this.serial = serial;
+        this.serial = Serial.getInstance();
         this.loadCell = serial.getCell();
 	
 	int maxProgress = 10000;

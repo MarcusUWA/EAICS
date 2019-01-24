@@ -13,6 +13,7 @@ import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
+import eaics.UI.FXMLBattery.FXMLAuxTempController;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -150,19 +151,7 @@ public class TrikeMainUIController extends MainUIController
     }
     
     @FXML
-    private void startCharger(ActionEvent event) {
-        
-        CANFilter.getInstance().getChargerTC().runCharger(1);
-    }
-    
-    @FXML
-    private void stopCharger(ActionEvent event) {
-        CANFilter.getInstance().getChargerTC().stopCharger(1);
-    }
-    
-    @FXML
-    private void handleSERReset(ActionEvent event) throws IOException 
-    {
+    private void handleSERReset(ActionEvent event) throws IOException {
         serial.disconnect();
         serial.connect();
     }
@@ -176,7 +165,7 @@ public class TrikeMainUIController extends MainUIController
             Pane pane = loader.load();
 
             settingsPageController = loader.getController();
-            settingsPageController.initData(loadCell, serial, logging);
+            settingsPageController.initData(logging);
         
             Stage stage = new Stage();
         
@@ -266,12 +255,43 @@ public class TrikeMainUIController extends MainUIController
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    private void handleTempSensor(ActionEvent event) throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLBattery/FXMLAuxTemp.fxml"));
+        
+        try 
+	{
+            Pane pane = loader.load();
 
-    public void initData(Logging logging, Serial serial) throws IOException 
+            FXMLAuxTempController tempController = loader.getController();
+            tempController.init();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(buttonSettings.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("Aux Temp!!");
+            
+            stage.show();
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Failed to open Aux Temp Window");
+            e.printStackTrace();
+        }
+    }
+
+    public void initData(Logging logging) throws IOException 
     {
         
         this.logging = logging;
-        this.serial = serial;
+        this.serial = Serial.getInstance();
         this.loadCell = serial.getCell();
         this.throttle = serial.getThrottle();
         
@@ -503,14 +523,14 @@ public class TrikeMainUIController extends MainUIController
                     voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
                 }
                 else {
-                    voltageLabel.setText(String.format("%.2f", esc[0].getBatteryVoltage())+"");
+                    voltageLabel.setText(Integer.toString((int)esc[0].getBatteryVoltage()));
                 }
                 
                 if(!escData) {
                     currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
                 }
                 else {
-                    currentLabel.setText(String.format("%.2f", esc[0].getBatteryCurrent())+"");
+                    currentLabel.setText(Integer.toString((int)esc[0].getBatteryCurrent()));
                 }
 		
 		//+------------------------------------------------------------+

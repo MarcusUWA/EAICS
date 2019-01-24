@@ -57,9 +57,9 @@ public class FXMLCalibrateLoadCellController implements Initializable {
         // TODO
     }    
     
-    public void init(Serial serial, LoadCell loadcell) {
-        this.serial = serial;
-        this.loadcell = loadcell;
+    public void init() {
+        this.serial = Serial.getInstance();
+        this.loadcell = Serial.getInstance().getCell();
         
         
         Timeline refreshUI;

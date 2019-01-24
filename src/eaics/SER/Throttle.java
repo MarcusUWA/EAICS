@@ -46,7 +46,7 @@ public class Throttle
         if(this.isUsingManualThrottle) {
             String[] msgArray = msg.split(",");
 
-            if(msgArray.length == 8 || msgArray.length == 10)  {
+            if(msgArray.length == 16 || msgArray.length == 10)  {
                 try  {
                     this.throttleSetting =  Integer.parseInt(msgArray[3]);
                 }

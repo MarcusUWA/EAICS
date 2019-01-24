@@ -32,7 +32,7 @@ public class LoadCell {
             //System.out.println("Serial: "+msg);
             String[] msgArray = msg.split(",");
             
-            if(msgArray.length == 10|| msgArray.length == 8) {
+            if(msgArray.length == 10|| msgArray.length == 16) {
                 try {
                     this.time =  Long.parseLong(msgArray[0]);
                 }
@@ -62,8 +62,6 @@ public class LoadCell {
                         this.loadCells[i] = 0;
                     }
                 }
-                
-                if(msgArray.length == 10) {
                     
                     try {
                         this.weightS = Double.parseDouble(msgArray[8]);
@@ -79,7 +77,6 @@ public class LoadCell {
                     catch (NumberFormatException e) {
                         this.calibFactorS = 0;
                     }
-                }
             }
             
             else {

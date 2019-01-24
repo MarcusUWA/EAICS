@@ -29,8 +29,6 @@ public class EAICS extends Application {
     
     public static String currentAircraft;
     
-    private static Serial comms;
-    
     private static Logging logging;
     
     public static void main(String[] args) throws InterruptedException, IOException 
@@ -38,7 +36,7 @@ public class EAICS extends Application {
         currentAircraft = TRIKE;
         
         //need to improve upon this....
-        comms = new Serial("/dev/ttyUSB0");
+        Serial comms = Serial.getInstance();
         
         SettingsEAICS settings = SettingsEAICS.getInstance();
         settings.loadSettings();
@@ -51,7 +49,7 @@ public class EAICS extends Application {
 	
 	// Logging to a CSV File Code ------------------------------------------
 	
-        logging = new Logging(comms);
+        logging = new Logging();
 	    
 	// Launch the User Interface (UI) --------------------------------------
 
@@ -85,9 +83,9 @@ public class EAICS extends Application {
         
         MainUIController mainUIcontroller = loader.getController();
         
-        comms.connect();
+        Serial.getInstance().connect();
         
-        mainUIcontroller.initData(logging,comms);
+        mainUIcontroller.initData(logging);
         stage.show();
     }
 }

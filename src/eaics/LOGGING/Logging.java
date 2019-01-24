@@ -11,7 +11,7 @@ import eaics.FILE.FileWriter;
 import eaics.FILE.FileWriterCSV;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.SER.Throttle;
+import eaics.SER.Temp;
 import eaics.Settings.SettingsEAICS;
 import eaics.Settings.TYPECharger;
 import java.text.SimpleDateFormat;
@@ -33,16 +33,11 @@ public class Logging
     private CANFilter filter;
     private SimpleDateFormat formatterDate;
     private SimpleDateFormat formatterTime;
-    private LoadCell loadCell;
-    private Throttle throttle;
     
     private boolean isLogging;
     
-    public Logging(Serial comms)
-    {
+    public Logging() {
         this.filter = CANFilter.getInstance();
-        this.loadCell = comms.getCell();
-        this.throttle = comms.getThrottle();
         formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	formatterTime = new SimpleDateFormat("HH:mm:ss");
 
@@ -94,15 +89,12 @@ public class Logging
         }
     }
     
-    private void writeLoggins()
-    {
-        Logger = new Runnable() 
-	{
+    private void writeLoggins() {
+        Logger = new Runnable() {
 	    private Date date = new Date();
 
 	    @Override
-	    public void run() 
-	    {
+	    public void run() {
                 String columnData = "";
 		Date date = new Date();
 		columnData += formatterDate.format(date) + " " + formatterTime.format(date) + ", ";
@@ -137,6 +129,7 @@ public class Logging
 		}
 
 		//Load Cell
+                LoadCell loadCell = Serial.getInstance().getCell();
                 columnData += loadCell.getWeight()+",";
 
                 columnData += loadCell.getCalibration()+",";
@@ -153,11 +146,22 @@ public class Logging
                 columnData += mgl.getYawAngle()+",";
                 columnData += mgl.getGndSpeed()+",";
                 
+                
                 if(SettingsEAICS.getInstance().getGeneralSettings().getChargerType()==TYPECharger.TC) {
                     TCCharger tc = filter.getChargerTC();
                     columnData += tc.getOutputVoltage()+",";
                     columnData += tc.getOutputCurrent()+",";
-                    columnData += tc.getStatusByte();
+                    columnData += tc.getStatusByte()+",";
+                }
+                else {
+                    columnData += "--,";
+                    columnData += "--,";
+                    columnData += "--,";
+                }
+                
+                Temp temp = Serial.getInstance().getTemp();
+                for(int i = 0; i<temp.getTempSensors().length; i++) {
+                    columnData += temp.getTempSensors()[i]+",";
                 }
 
                 columnData +="\n";
@@ -223,7 +227,11 @@ public class Logging
         
         columnHeadings += "Charging Voltage, ";
         columnHeadings += "Charging Current, ";
-        columnHeadings += "Status Byte";
+        columnHeadings += "Status Byte, ";
+        
+        for(int i = 1; i <=6; i++) {
+            columnHeadings += "Aux Temp "+i+",";
+        }
       
         columnHeadings += "\n";
 

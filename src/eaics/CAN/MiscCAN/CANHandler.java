@@ -35,7 +35,7 @@ public class CANHandler
     
     private CANMessage canMessage;
     
-    private boolean noCAN = true;
+    private boolean noCAN = false;
     
     public CANHandler(String canSocketString) {
         this.canSocketString = canSocketString;

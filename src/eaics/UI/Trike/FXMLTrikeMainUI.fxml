@@ -84,7 +84,7 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <ProgressBar fx:id="rpmPB" layoutX="474.0" layoutY="244.0" prefHeight="30.0" prefWidth="180.0" progress="0.0" rotate="-90.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="240.0" />
+      <ProgressBar fx:id="rpmPB" layoutX="474.0" layoutY="244.0" prefHeight="30.0" prefWidth="180.0" progress="0.0" rotate="-90.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="240.0" />
       <ImageView fx:id="wifi_icon" fitHeight="30.0" fitWidth="30.0" layoutX="664.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="5.0">
          <image>
             <Image url="@../../Resources/wifi-on.jpg" />
@@ -135,20 +135,20 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="rpmLabel" alignment="TOP_CENTER" layoutX="516.0" layoutY="258.0" prefHeight="60.0" prefWidth="100.0" text="--" textAlignment="CENTER" AnchorPane.bottomAnchor="160.0" AnchorPane.rightAnchor="100.0">
+      <Label fx:id="rpmLabel" alignment="TOP_CENTER" layoutX="516.0" layoutY="258.0" prefHeight="60.0" prefWidth="110.0" text="--" textAlignment="CENTER" AnchorPane.bottomAnchor="160.0" AnchorPane.rightAnchor="100.0">
          <font>
-            <Font size="48.0" />
+            <Font size="40.0" />
          </font>
       </Label>
-      <Slider fx:id="throttleSlider" blockIncrement="16.0" disable="true" layoutX="225.0" layoutY="171.0" max="1024.0" orientation="VERTICAL" prefHeight="180.0" prefWidth="60.0" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="160.0" />
+      <Slider fx:id="throttleSlider" blockIncrement="16.0" disable="true" layoutX="225.0" layoutY="171.0" max="1024.0" orientation="VERTICAL" prefHeight="180.0" prefWidth="60.0" AnchorPane.leftAnchor="190.0" AnchorPane.topAnchor="160.0" />
       <Label alignment="CENTER" layoutX="144.0" layoutY="199.0" prefHeight="60.0" prefWidth="100.0" text="Throttle &#10;Position" AnchorPane.bottomAnchor="220.0" AnchorPane.leftAnchor="100.0">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="throttleLabel" alignment="TOP_CENTER" layoutX="108.0" layoutY="258.0" prefHeight="60.0" prefWidth="100.0" text="--" textAlignment="CENTER" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="100.0">
+      <Label fx:id="throttleLabel" alignment="TOP_CENTER" layoutX="108.0" layoutY="258.0" prefHeight="60.0" prefWidth="110.0" text="--" textAlignment="CENTER" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="110.0">
          <font>
-            <Font size="48.0" />
+            <Font size="40.0" />
          </font>
       </Label>
       <Button layoutX="318.0" layoutY="60.0" mnemonicParsing="false" onAction="#handleLoadProfilePressed" prefHeight="39.0" prefWidth="144.0" text="Load Profile" AnchorPane.leftAnchor="240.0" AnchorPane.topAnchor="60.0" />
@@ -165,7 +165,6 @@
             <Font size="12.0" />
          </font>
       </Label>
-      <Button layoutX="262.0" layoutY="113.0" mnemonicParsing="false" onAction="#startCharger" prefHeight="27.0" prefWidth="110.0" text="Start CHG" />
-      <Button layoutX="262.0" layoutY="150.0" mnemonicParsing="false" onAction="#stopCharger" prefHeight="27.0" prefWidth="110.0" text="Stop CHG" />
+      <Button layoutX="237.0" layoutY="130.0" mnemonicParsing="false" onAction="#handleTempSensor" prefHeight="40.0" prefWidth="150.0" text="Temp Sensors" AnchorPane.topAnchor="130.0" />
    </children>
 </AnchorPane>

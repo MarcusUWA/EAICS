@@ -9,6 +9,7 @@ package eaics.SER;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
+import eaics.Settings.SettingsEAICS;
 
 /**
  * Serial class to handle serial communications
@@ -19,6 +20,8 @@ import com.fazecast.jSerialComm.SerialPortEvent;
  * @author Markcuz
  */
 public class Serial {
+    
+    private static Serial instance;
     
     private String path;
     private SerialPort sp = null;
@@ -46,6 +49,22 @@ public class Serial {
         this.airPress = new AirPressure();
 
         searchForPorts();
+    }
+    
+    public static Serial getInstance() 
+    {	
+	if(instance == null)
+	{
+	    synchronized(Serial.class)
+	    {
+                if(instance == null)
+                {
+                    instance = new Serial("/dev/ttyUSB0");
+                }
+	    }
+	}
+	
+	return instance;
     }
     
     //search for all the serial ports
@@ -131,6 +150,10 @@ public class Serial {
 
     public Throttle getThrottle() {
         return throttle;
+    }
+
+    public Temp getTemp() {
+        return temp;
     }
     
     

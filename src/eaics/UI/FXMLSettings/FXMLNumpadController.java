@@ -218,7 +218,8 @@ public class FXMLNumpadController implements Initializable
                 this.settingsPage.updateLabels();
             }
             else if(config==CONFIG_CHARGE){
-                
+                this.bmsSettings.setSetting(bmsSettingsIndex,  Integer.parseInt(display.getText()));
+                SettingsEAICS.getInstance().update();
             }
             Stage stage = (Stage) enter.getScene().getWindow();
             stage.close();

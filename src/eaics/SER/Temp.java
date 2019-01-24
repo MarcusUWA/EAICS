@@ -17,10 +17,29 @@ public class Temp {
     public Temp(int number) {
         numSensors = number;
         tempSensors = new double[number];
+        
+        for(int i = 0; i<number; i++) {
+            tempSensors[i] = 0;
+        }
     }
     
     public void setMsg(String msg) {
-        
+            String[] msgArray = msg.split(",");
+            
+            if(msgArray.length == 16) {
+                for(int i = 0; i<numSensors; i++) {
+                    try {
+                        tempSensors[i] = Double.parseDouble(msgArray[10+i]);
+                    }
+                    catch (NumberFormatException e) {
+                        tempSensors[i] = 0;
+                    }
+                }
+            }
+            
+            else {
+                System.out.println("Invalid Serial Length: "+msgArray.length);
+            }
     }
 
     public double[] getTempSensors() {
