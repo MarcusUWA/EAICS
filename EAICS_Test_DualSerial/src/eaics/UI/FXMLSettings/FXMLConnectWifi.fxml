@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLSettings.FXMLConnectWifiController">
+   <children>
+      <VBox fx:id="root" layoutX="26.0" layoutY="53.0" prefHeight="151.0" prefWidth="630.0" AnchorPane.leftAnchor="5.0">
+         <children>
+            <HBox fx:id="ssidBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="SSID:">
+                     <padding>
+                        <Insets right="30.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="640.0" spacing="30.0">
+               <children>
+                  <Label text="Password:" />
+                  <TextField fx:id="textField" prefHeight="27.0" prefWidth="274.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="445.0" spacing="29.0">
+               <children>
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#okButtonAction" prefHeight="40.0" prefWidth="180.0" text="OK" />
+                  <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="40.0" prefWidth="180.0" text="Back" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="342.0" layoutY="24.0" text="Wifi Setup" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <VBox fx:id="keyboard" layoutX="22.0" layoutY="168.0" prefHeight="250.0" prefWidth="630.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" />
+      <Line endX="640.0" layoutY="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="40.0" />
+   </children>
+</AnchorPane>

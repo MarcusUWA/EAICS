@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.Trike.FXMLLoadProfileController">
+   <children>
+      <Label alignment="CENTER" layoutX="61.0" layoutY="4.0" prefHeight="17.0" prefWidth="248.0" text="Load Profile Run Mode" />
+      <Button fx:id="exit" layoutX="10.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="100.0" prefWidth="100.0" text="Exit" />
+      <Button layoutX="257.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleStop" prefHeight="100.0" prefWidth="100.0" text="Stop" />
+      <Button layoutX="122.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleRun" prefHeight="54.0" prefWidth="119.0" text="Run Profile" />
+      <Button layoutX="122.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleLoadFile" prefHeight="54.0" prefWidth="119.0" text="Load Profile" />
+      <TextField fx:id="path" layoutX="56.0" layoutY="152.0" prefHeight="39.0" prefWidth="301.0" text="/home/pi/LoadProfiles/testLP.csv" />
+      <Label layoutX="11.0" layoutY="158.0" prefHeight="27.0" prefWidth="50.0" text="Path:" />
+   </children>
+</AnchorPane>
