@@ -151,7 +151,7 @@ public class ChargerGBT
         
         this.evms = filter.getEVMS();
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
-        this.handler = filter.getCANHandler(0);
+        this.handler = filter.getCANHandler(1); // Must change manually, UPDATE AS A = 0 B = 1
         
         this.maxChargeVoltage = settings.getSetting(19);
         this.maxChargeCurrent = settings.getSetting(20);
