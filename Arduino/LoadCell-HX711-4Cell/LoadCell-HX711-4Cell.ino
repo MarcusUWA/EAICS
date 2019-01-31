@@ -67,6 +67,11 @@ float calibration_factorS = 17550;
 #define throttlePin A0
 float throttle = 0;
 
+int pressurePin = A1;   
+int pressureValue = 0; 
+float pressureVout=0;
+float pressureP=0;
+
 // which analog pin to connect
 #define THERM2 A2  
 #define THERM3 A3 
@@ -224,6 +229,8 @@ void loop() {
     Serial.print(","); 
     Serial.print(steinhart);
   }
+
+  
     
   Serial.println();
   

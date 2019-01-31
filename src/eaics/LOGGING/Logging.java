@@ -14,6 +14,9 @@ import eaics.SER.Serial;
 import eaics.SER.Temp;
 import eaics.Settings.SettingsEAICS;
 import eaics.Settings.TYPECharger;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -36,13 +39,51 @@ public class Logging
     
     private boolean isLogging;
     
-    public Logging() {
+    private boolean spl = true;
+    
+    float dbReading ;
+    
+    public Logging() throws IOException {
         this.filter = CANFilter.getInstance();
         formatterDate = new SimpleDateFormat("yyyy/MM/dd");
 	formatterTime = new SimpleDateFormat("HH:mm:ss");
-
+        
+        dbReading = 0;
+        
+        if(spl) {
+            startSPL();
+        }
+        
         startNewLogFile();        
     }
+    
+    private void startSPL() throws IOException {
+        final Process processSPL = Runtime.getRuntime().exec("sudo python /home/pi/usbsplloop.py");
+
+        Thread threadSPL = new Thread(new Runnable() {
+	    public void run() {
+		BufferedReader input = new BufferedReader(new InputStreamReader(processSPL.getInputStream()));
+		String rawSPL = null;
+
+		try {
+		    while((rawSPL = input.readLine()) != null) {
+                        try {
+                            dbReading = Float.parseFloat(rawSPL);
+                        }
+                        catch(NumberFormatException e) {
+                            System.out.println("Failed to convert");
+                        }
+		    }
+		}
+		catch(IOException e) {
+                    System.out.println("caught ");
+		    e.printStackTrace();
+		}
+	    }
+        });
+	threadSPL.start();
+    }
+    
     public void setLogging(boolean state) {
         isLogging = state;
     }
@@ -163,6 +204,10 @@ public class Logging
                 for(int i = 0; i<temp.getTempSensors().length; i++) {
                     columnData += temp.getTempSensors()[i]+",";
                 }
+                
+                if(spl) {
+                    columnData += dbReading;
+                }
 
                 columnData +="\n";
 		fileWriter.write(columnData);
@@ -232,6 +277,8 @@ public class Logging
         for(int i = 1; i <=6; i++) {
             columnHeadings += "Aux Temp "+i+",";
         }
+        
+        columnHeadings += "SPL";
       
         columnHeadings += "\n";
 
