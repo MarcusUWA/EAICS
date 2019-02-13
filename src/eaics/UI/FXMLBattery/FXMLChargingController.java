@@ -145,7 +145,7 @@ public class FXMLChargingController implements Initializable {
             // Integer is converted to string
             TimeCharging.setText(""+filter.getChargerGBT().getTimeOnCharge());
             
-            chargerStatus.setText("N/A");
+            chargerStatus.setText(filter.getChargerGBT().getError());
         }
         else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
             ChargerMaxVoltage.setText("N/A");
@@ -210,8 +210,6 @@ public class FXMLChargingController implements Initializable {
         
         chargeVoltage.setText(String.format(settings.getEVMSSettings().getSetting(19)+" V"));
         chargeCurrent.setText(String.format(settings.getEVMSSettings().getSetting(20)+" A"));
-        
-        
     }
     
     @FXML // Delete the charging screne and go back to the previous scene.
@@ -287,7 +285,9 @@ public class FXMLChargingController implements Initializable {
             if(settings.getGeneralSettings().getChargerType()==TYPECharger.GBT) {
                 System.out.println("GBT charger started");
                 
-                filter.getChargerGBT().setState(filter.getChargerGBT().getState0()); // Start charging with GBT protocol
+                filter.getChargerGBT().setState(0); // Start charging with GBT protocol
+                filter.getChargerGBT().setIsCharging(true);
+                
             }
             else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
                 filter.getChargerTC().runCharger();
@@ -303,6 +303,7 @@ public class FXMLChargingController implements Initializable {
                 filter.getChargerGBT().stopCharging(); // Stop charging
             }
             else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
+                filter.getChargerGBT().setIsCharging(false);
                 filter.getChargerTC().stopCharger();
             }
             else {

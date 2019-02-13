@@ -18,7 +18,7 @@
          </image>
       </ImageView>
       <Button layoutX="595.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="40.0" prefWidth="180.0" text="Battery" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-      <Label layoutX="171.0" layoutY="14.0" text="ElectroAero Instrumentation and Control System" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="10.0">
+      <Label layoutX="171.0" layoutY="14.0" text="ElectroAero Instrumentation and Control System" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font size="20.0" />
          </font>
@@ -265,13 +265,13 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="605.0" layoutY="373.0" prefHeight="18.0" prefWidth="160.0" text="Aux Voltage (V)" textAlignment="CENTER" AnchorPane.rightAnchor="10.0" />
+      <Label alignment="CENTER" layoutX="605.0" layoutY="373.0" prefHeight="18.0" prefWidth="180.0" text="Aux Voltage (V)" textAlignment="CENTER" AnchorPane.rightAnchor="10.0" />
       <Label fx:id="auxLabel" alignment="CENTER" layoutX="594.0" layoutY="395.0" prefHeight="18.0" prefWidth="183.0" text="0" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="10.0">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="17.0" layoutY="374.0" prefHeight="17.0" prefWidth="183.0" text="EAICS IP Address" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" />
+      <Label alignment="CENTER" layoutX="17.0" layoutY="374.0" prefHeight="17.0" prefWidth="180.0" text="EAICS IP Address" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" />
       <Label fx:id="ipLabel" alignment="CENTER" layoutX="22.0" layoutY="394.0" prefHeight="18.0" prefWidth="183.0" text="0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0">
          <font>
             <Font name="System Bold" size="14.0" />

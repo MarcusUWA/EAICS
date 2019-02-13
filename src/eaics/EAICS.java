@@ -30,8 +30,6 @@ public class EAICS extends Application {
         SettingsEAICS settings = SettingsEAICS.getInstance();
         settings.loadSettings();
         
-        //System.out.println("Settings read: ESC: "+settings.getGeneralSettings().getNumEsc());
-        
         //need to improve upon this....
         Serial comms = Serial.getInstance();
         

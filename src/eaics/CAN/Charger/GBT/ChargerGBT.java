@@ -22,22 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ChargerGBT  {
-    private State state0;
-    private State state1;
-    private State state2;
-    private State state3;
-    private State state4;
-    private State state5;
-    private State state6;
-    private State state7;
-    private State state8;
-    private State state9;
-    private State state10;
-    private State state11;
-    private State state12;
-    private State waitingToStopState;
-    
-    private State state;
     
     private ScheduledExecutorService handshakeExecutor;
     private boolean isHandshakeExecutorOn;
@@ -68,36 +52,10 @@ public class ChargerGBT  {
     private float minChargerVoltage;
     private int timeOnCharge;
     
-    public void setMaxChargerCurrent(float maxChargerCurrent) // Set all variables for FXMLChargingController
-    {
-        this.maxChargerCurrent = maxChargerCurrent;
-    }
-    public void setMaxChargerVoltage(float maxChargerVoltage) 
-    {
-        this.maxChargerVoltage = maxChargerVoltage;
-    }
-    public void setMinChargerCurrent(float maxChargerCurrent)
-    {
-        this.maxChargerCurrent = maxChargerCurrent;
-    }
-    public void setMinChargerVoltage(float maxChargerVoltage) 
-    {
-        this.maxChargerVoltage = maxChargerVoltage;
-    }
-    public void setObservedCurrent(float observedCurrent) 
-    {
-        this.observedCurrent = observedCurrent;
-    }
-    public void setObservedVoltage(float observedVoltage) 
-    {
-        this.observedVoltage = observedVoltage;
-    }
-    public void setTimeOnCharge(int timeOnCharge) 
-    {
-        this.timeOnCharge = timeOnCharge;
-    }
+    int state = 0;
+    boolean isCharging = false;
+    String error = "";
     
-
     public float getObservedCurrent()  // Set all variables for FXMLChargingController
     {
         return observedCurrent;
@@ -116,36 +74,34 @@ public class ChargerGBT  {
     }
     public float getMinChargerCurrent() 
     {
-        return maxChargerCurrent;
+        return minChargerCurrent;
     }
     public float getMinChargerVoltage() 
     {
-        return maxChargerVoltage;
+        return minChargerVoltage;
     }
     public int getTimeOnCharge() 
     {
         return timeOnCharge;
     }
+
+    public int getState() {
+        return state;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setIsCharging(boolean isCharging) {
+        this.isCharging = isCharging;
+    }
+
+    public boolean isIsCharging() {
+        return isCharging;
+    }
     
-    public ChargerGBT(CANFilter filter)
-    {
-        state0 = new State0(this);
-        state1 = new State1(this);
-        state2 = new State2(this);
-        state3 = new State3(this);
-        state4 = new State4(this);
-        state5 = new State5(this);
-        state6 = new State6(this);
-        state7 = new State7(this);
-        state8 = new State8(this);
-        state9 = new State9(this);
-        state10 = new State10(this);
-        state11 = new State11(this);
-        state12 = new State12(this);
-        waitingToStopState = new WaitingToStopState(this);
-        
-        this.state = state0;
-        
+    public ChargerGBT(CANFilter filter) {
         isHandshakeExecutorOn = false;
         isChargeExecutorOn = false;
         
@@ -167,37 +123,310 @@ public class ChargerGBT  {
         this.evmsMaxTemp = settings.getSetting(5);
     }
     
-    public void handleCharger(CANMessage message) 
-    {        
-        state.action(message);
+    public void handleCharger(CANMessage message)  {        
+        final int CANID = message.getFrameID();
+        int[] data = message.getByteData();
+        
+        if(isCharging) {
+        
+            switch(state) {  
+                //Pre-Handshake state
+                case 0:
+                    if(CANID == 0x1826F456) {
+                        System.out.println("Received Charger Handshake Message (CHM), send BMS Handshake Messages (BHM). Increment to State 1");
+                        error = "Starting Handshake";
+                        startSendHandshake();
+                        setState(1);
+                    }
+                    else if(CANID == 0x101AF456) {
+                        //Ignore - Charge just blasts these while stopping charge
+                        error = "Stopping Charge - "+message.toString();
+                    }
+                    else if(CANID == 0x81FFF456) {
+                        error = "Charger Timeout - "+message.toString();
+                        //System.out.println("Charger Timeout");
+                    }
+                    else if(CANID == 0x1801F456) {
+                         error = "Error Messages - "+message.toString();
+                        //Ignore - error messages
+                    }
+                    else if(CANID == 0x81FF456) {
+                        error = "Charger Error Messages - "+message.toString();
+                        //Ignore - charger error messages
+                    }
+                    else {
+                        error = "Incorrect State 0 - "+message.toString();
+                        //System.out.println("Incorrect state=|"+0+"|, for CHM ID=" + Integer.toHexString(CANID));
+                    }
+                    break;
+                //Handshake
+                case 1:
+                    if(CANID == 0x1801F456) {
+                        if(data[0]==0x00) {// Charger is waiting for BMS's ID
+                            error = "Completed Handshake, Starting Transport Comms";
+                            stopSendHandshake();
+                            sendTransportCommManagement();
+                            setState(2);
+                        }
+                    }
+                    else if(CANID == 0x1826F456) {
+                        error = "Unknown Packet on State 1 - " + message.toString();
+                        //I don't know what this packet is, ask Alex.            
+                    }
+                    else if(CANID == 0x182756F4) {
+                        error = "Handshaking - " + message.toString();
+                    }
+                    else {
+                        error = "Incorrect State 1 - "+message.toString();
+                        System.out.println("Incorrect state=|"+1+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+1+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                //Transport
+                case 2:
+                    if(CANID == 0x1CECF456) {
+                        if(data[0]==0x11) {// Charger is waiting for BMS's ID
+                            if(data[1] == 0x07)  {
+                                System.out.println("(Charger) Acknowledging Pre-ID received from BMS");
+                                error = "Completed Transport Comms, Starting Pre-ID";
+                                sendIdentificationParams();
+                                setState(3);
+                            }
+                        }
+                    }
+                    else {
+                        error = "Incorrect State 2 - "+message.toString();
+                        System.out.println("Incorrect state=|"+2+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+2+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                //ID
+                case 3:
+                    if(CANID == 0x1CECF456) {
+                        if(data[0] == 0x13)  {
+                            System.out.println("(Charger) ID settings acknowledged, sending BRM");
+                            error = "Completed ID Check, sending BRM";
+                            setState(4);
+                        }
+                    }
+                    else {
+                        error = "Incorrect State 3 - "+message.toString();
+                        System.out.println("Incorrect state=|"+3+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+3+"|, for CHM ID=" + CANID);
+                    }
+                    break;    
+                case 4:
+                    if(CANID == 0x1801F456) {
+                        if(data[0] == 0xAA) { // Charger has accepted BMS's ID
+                            error = "Completed BRM, start sending Pre-Parameters";
+                            System.out.println("Charger has received BRM, increment to state 5");
+                            System.out.println("Completed handshake phase, continue to charging parameter setting stage");
+                            sendPreParameterSettings();
+                            setState(5);
+                        }
+                    }
+                    else if(CANID == 0x1807F456) {
+                        error = "Charger Date/Time - "+message.toString();
+                        //ignore because just date and time from charger
+                    }
+                    else {
+                        error = "Incorrect State 4 - "+message.toString();
+                        System.out.println("Incorrect state=|"+4+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+4+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                case 5:
+                    if(CANID == 0x1CECF456) {
+                        if(data[0]==0x11)  {
+                            if(data[1] == 0x02) {
+                                error = "Completed Pre-parameters, start sending Parameters";
+                                System.out.println("(Charger) Acknowledgment of Pre-Parameter settings");
+                                System.out.println("Continue to state 6");
+                                sendParameterSettings();
+                                setState(6);
+                            }
+                        }
+                    }
+                    else if(CANID == 0x1807F456) {
+                        error = "Charger Date/Time - "+message.toString();
+                        //ignore because just date and time from charger
+                    }
+                    else {
+                        error = "Incorrect State 5 - "+message.toString();
+                        System.out.println("Incorrect state=|"+5+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+5+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                case 6:
+                    if(CANID == 0x1CECF456) {
+                        if(data[0]==0x13)  {
+                            if(data[1] == 0x0D) {// Don't think we need this second check???? Remove later if no problem 
+                                error = "ACK parameters";
+                                System.out.println("(Charger) Acknowledgment of Parameter settings");
+                                System.out.println("Continue to state 7");
+                                setState(7);
+                            }
+                        }
+                    }
+                    else {
+                        error = "Incorrect State 6 - "+message.toString();
+                        System.out.println("Incorrect state=|"+6+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+6+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                case 7:
+                    if(CANID == 0x1807F456) {
+                        error = "Time Syncing...";
+                        System.out.println("(Charger) Sending Time Sync Data");
+                        System.out.println("Continue to state 8");
+                        setState(8);
+                    }
+                    else {
+                        error = "Incorrect State 7 - "+message.toString();
+                        System.out.println("Incorrect state=|"+7+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+7+"|, for CHM ID=" + CANID);
+                    }
+                    break;  
+                case 8:
+                    if(CANID == 0x1808F456) {
+                        error = "Charger Stats";
+                        System.out.println("(Charger) Sending Charger stats");
+                        System.out.println("Continue to state 9 READY to charge");
+                        startSendReadyToCharge();
+                        setState(9);
+
+                        System.out.println("Stats" +message.toString());
+                        
+                        // Concatenate hex values, such that the second byte of data is first, then divide by 10 and ensure that it is type casted to a float as data is originally an int
+                        maxChargerVoltage = ((float) ((data[1]*256+data[0]%256)/10.0)); 
+                       
+                        minChargerVoltage = ((float) ((data[3]*256+data[2]%256)/10.0)); 
+                        
+                        // to calculate current it is 400 - data/10
+                        maxChargerCurrent = ((float) (400.0 - (float) ((data[5]*256+data[4]%256)/10.0)));
+                        
+                        minChargerCurrent = ((float) (400.0 - (float) ((data[7]*256+data[6]%256)/10.0)));
+                    }
+                    else {
+                        error = "Incorrect State 8 - "+message.toString();
+                        System.out.println("Incorrect state=|"+8+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+8+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                case 9:
+                    if(CANID == 0x100AF456) {
+                        if(data[0] == 0xAA) {
+                            error = "Ready to Charge";
+                            stopSendReadyToCharge();
+                            startSendChargingPacket();
+                            System.out.println("(Charger) Charger Ready to charge");
+                            System.out.println("Continue to state 10");
+                            setState(10);
+                        }
+                        else if(data[0] == 0x00) {
+                            error = "Charger not Ready";
+                            System.out.println("Charger is not ready for charging");
+                        }
+                    }
+                    else {
+                        error = "Incorrect State 9 - "+message.toString();
+                        System.out.println("Incorrect state=|"+9+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+9+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                case 10:
+                    if(CANID == 0x1CECF456) {
+                        if(data[0]==0x11) {
+                            if(data[1] == 0x02) {
+                                error = "Charing Updates....";
+                                System.out.println("(Charger) Acknowledgment OK to receive charge update");
+                                System.out.println("Continue to state 11");
+                                setState(11);
+                            }
+                        }
+                    }
+                    else {
+                        error = "Incorrect State 10 - "+message.toString();
+                        System.out.println("Incorrect state=|"+10+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+10+"|, for CHM ID=" + CANID);
+                    }
+                    break;
+                case 11:
+                    if(CANID == 0x1CECF456) {
+                        if(data[0] == 0x11) {
+                            if(data[1] == 0x02) {
+                                sendBatteryChargingState(); //This MAY be so slow, this is sending after 3 CEC's were sent
+                            }
+                        }
+                    }
+                    else if(CANID == 0x1812F456) {// The charger is sending back observed voltage/current
+                        System.out.println("(Charger) Charger OK it is sending observed current/voltage");
+                        // Concatenate hex values, such that the second byte of data is first, then divide by 10 and ensure that it is type casted to a float as data is originally an int
+                        observedVoltage = ((float) ((data[1]*256+data[0]%256)/10.0));
+                        // to calculate current it is 400 - data/10
+                        observedCurrent = ((float) (400.0 - (float) ((data[3]*256+data[2]%256)/10.0)));
+                        // convert each bit to a minute. NOTE: the range is 0 to 600 minutes
+                        timeOnCharge = ((data[5]*256+data[4]%256));
+                    }
+                    else if(CANID == 0x100AF456) {
+                        //Don't know what this packet is, Alex fix
+                    }
+                    else if(CANID == 0x101956F4) {
+                        System.out.println("(Charger) Charger request stop charging");
+                        stopCharging();
+                        setState(12);
+                    }
+                    else if(CANID == 0x101AF456) {
+                        setState(12);
+                    }
+                    else {
+                        error = "Incorrect State 11 - "+message.toString();
+                        System.out.println("Incorrect state=|"+11+"|, for CHM ID=" + Integer.toHexString(CANID));
+                        //throw new IllegalStateException("Incorrect state=|"+11+"|, for CHM ID=" + CANID);
+                    }
+                    break;  
+                case 12:
+                    if(CANID == 0x101AF456) {
+                        System.out.println("Stop charging accpeted - go to state 0");
+                        setState(0);
+                    }
+                    break;
+                case 13:
+                    if(CANID == 0x1801F456)  {
+                        System.out.println("Stop charging accpeted - go to state 0");
+                        setState(0);
+                    }
+
+                default:
+                    break;
+            }
+        }
+        else {
+            error = "Not in charging mode - "+message.toString();
+            stopCharging();
+            System.out.println("Not in charging mode...");
+        }
     }
     
-    public static String Int2String(int[] data) 
-    {
+    public static String Int2String(int[] data) {
         return Arrays.toString(data);
     }
     
-    protected void startSendHandshake() 
-    {
+    private void startSendHandshake()  {
         isHandshakeExecutorOn = true;
         
-        Runnable Handshake = new Runnable()  
-        {            
+        Runnable Handshake = new Runnable()  {            
 	    @Override
-	    public void run()  
-            {   
+	    public void run()  {   
                 int[] data = {
                     maxChargeVoltage&0xFF,              //lower byte of charge voltage
                     (maxChargeVoltage>>8)&0xFF,         //upper byte
                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  //filler data
-                };  
-                
-                try 
-                {
+                };   
+                try  {
                     handler.writeMessage(0x182756F4, data);
                 } 
-                catch (IOException ex) 
-                {
+                catch (IOException ex)  {
                     ex.printStackTrace();
                 }
 	    }
@@ -207,23 +436,19 @@ public class ChargerGBT  {
 	this.handshakeExecutor.scheduleAtFixedRate(Handshake, 0, 250, TimeUnit.MILLISECONDS);   // Run every second
     }
     
-    public void stopSendHandshake() 
-    {
-        if(this.isHandshakeExecutorOn)
-        {
+    private void stopSendHandshake() {
+        if(this.isHandshakeExecutorOn) {
             this.handshakeExecutor.shutdown();
         }
         this.isHandshakeExecutorOn = false;
     }
     
-    public void sendTransportCommManagement()
-    {
+    public void sendTransportCommManagement() {
         //hardcoded message
         int[] data = {0x10,0x29,0x00,0x07,0xFF, 0x00, 0x02,0x00};
         try 
         {
             handler.writeMessage(0x1CEC56F4, data);
-            //System.out.println("0x1CEC56F4: "+Int2String(data));
         }
         catch (IOException ex)  
         {
@@ -405,6 +630,7 @@ public class ChargerGBT  {
     
     public void sendParameterSettings() 
     {
+        
         //First message
         //b[0] = byte no. = 01, b[1-2] = Max Voltage of single cell (0.01V)
         //b[3-4] = Max charge current 40000 - 100*Curr(A) , b[5-6] = Battery energy 0.1kWh
@@ -725,88 +951,15 @@ public class ChargerGBT  {
         }
         this.isExeSendReadyToCharge = false;
         
-        if(state == state1)
-        {
-            this.state = waitingToStopState;            
+        if(state == 1) {
+            this.state = 13;            
         }
-        else
-        {
-            this.state = state12;
+        else {
+            this.state = 12;
         }
     }
     
-    public void setState(State state)
-    {
+    public void setState(int state) {
         this.state = state;
-    }
-    
-    public State getState0()
-    {
-        return state0;
-    }
-
-    public State getState1() 
-    {
-        return state1;
-    }
-
-    public State getState2() 
-    {
-        return state2;
-    }
-
-    public State getState3() 
-    {
-        return state3;
-    }
-
-    public State getState4() 
-    {
-        return state4;
-    }
-
-    public State getState5() 
-    {
-        return state5;
-    }
-
-    public State getState6() 
-    {
-        return state6;
-    }
-
-    public State getState7() 
-    {
-        return state7;
-    }
-
-    public State getState8() 
-    {
-        return state8;
-    }
-
-    public State getState9() 
-    {
-        return state9;
-    }
-
-    public State getState10() 
-    {
-        return state10;
-    }
-
-    public State getState11() 
-    {
-        return state11;
-    }
-
-    public State getState12() 
-    {
-        return state12;
-    }
-    
-    public State getWaitingToStopState()
-    {
-        return waitingToStopState;
     }
 }

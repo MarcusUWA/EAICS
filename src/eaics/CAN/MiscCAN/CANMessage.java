@@ -77,9 +77,7 @@ public class CANMessage
             }
             return ret;
         }
-        
-	
-        
+
         public String getRaw()
         {
             return this.raw;
@@ -141,29 +139,14 @@ public class CANMessage
 		return byteData[index];
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		String outString = "";
-		
-		outString = outString + "+-----------------------------------------------------------+\n";
-		outString = outString + "Time: " + this.getTime() + "\n";
-		outString = outString + "Bus: " + this.getBusInt() + "\n";
-		outString = outString + "Frame ID: " + this.getFrameID() + "\n";
-		outString = outString + Integer.toHexString(this.getByte(0)) + " ";
-		outString = outString + Integer.toHexString(this.getByte(1)) + " ";
-		
-		if(numData == 8)
-		{
-		    outString = outString + Integer.toHexString(this.getByte(2)) + " ";
-		    outString = outString + Integer.toHexString(this.getByte(3)) + " ";
-		    outString = outString + Integer.toHexString(this.getByte(4)) + " ";
-		    outString = outString + Integer.toHexString(this.getByte(5)) + " ";
-		    outString = outString + Integer.toHexString(this.getByte(6)) + " ";
-		    outString = outString + Integer.toHexString(this.getByte(7));
-		    
-		}
-		
-		outString = outString + "\n+-----------------------------------------------------------+\n";
+		outString = outString + "Bus: " + this.getBusInt() + ", ";
+		outString = outString + "Frame ID: " + this.getFrameID() + ", ";
+                
+                for(int i = 0; i<numData; i++) {
+		outString = outString + Integer.toHexString(this.getByte(i)) + " ";
+                }
 	
 		return outString;
 	}
