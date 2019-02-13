@@ -22,6 +22,7 @@ public class SettingsGeneral implements Settings {
     TYPEBms bms;
     TYPEThrottle thr;
     TYPEDisplay disp;
+    TYPEVehicle veh;
     
     public SettingsGeneral(){
         bmsFaker = true;
@@ -35,11 +36,15 @@ public class SettingsGeneral implements Settings {
         this.thr = TYPEThrottle.SER;
         this.bms = TYPEBms.ZEVA3;
         this.disp = TYPEDisplay.MGL;
+        this.veh = TYPEVehicle.TRIKE_Prototype;
     }
     
     @Override
     public String getSettingsFileString() {
         String settingsFileString = "";
+        
+        settingsFileString += "VehicleType:" + "\t\t\t" + "#";
+        settingsFileString += veh + "\n";
         
 	settingsFileString += "ChargerType:" + "\t\t\t" + "#";
         settingsFileString += chg + "\n";
@@ -71,9 +76,6 @@ public class SettingsGeneral implements Settings {
             settingsFileString += 0 + "\n";
         }
         
-        
-        
-        
         return settingsFileString;
     }
 
@@ -82,6 +84,24 @@ public class SettingsGeneral implements Settings {
         String[] lines = fileString.split("\\r?\\n");
         for (String line : lines) {
             String[] split = line.split("#");
+            
+            if("VehicleType:".equals(split[0].trim())) {
+                if(split[1].contains(TYPEVehicle.TRIFAN.toString())) {
+                    veh = TYPEVehicle.TRIFAN;
+                }
+                else if(split[1].contains(TYPEVehicle.VERTICAL_TESTRIG.toString())) {
+                    veh = TYPEVehicle.VERTICAL_TESTRIG;
+                }
+                else if(split[1].contains(TYPEVehicle.WAVEFLYER.toString())) {
+                    veh = TYPEVehicle.WAVEFLYER;
+                }
+                else if(split[1].contains(TYPEVehicle.TRIKE_Prototype.toString())) {
+                    veh = TYPEVehicle.TRIKE_Prototype;
+                }
+                else {
+                    veh = TYPEVehicle.TESTING;
+                }  
+            }
 
             if("ChargerType:".equals(split[0].trim())) {
                 if(split[1].contains(TYPECharger.GBT.toString())) {
@@ -141,7 +161,7 @@ public class SettingsGeneral implements Settings {
                 numBatteryModules = Integer.parseInt(split[1].trim());
             }
             
-             if("NumEsc:".equals(split[0].trim())) {
+             if("NumESC:".equals(split[0].trim())) {
                 numEsc = Integer.parseInt(split[1].trim());
             }
              
@@ -228,6 +248,8 @@ public class SettingsGeneral implements Settings {
     public int getNumEsc() {
         return numEsc;
     }
-    
-    
+
+    public TYPEVehicle getVeh() {
+        return veh;
+    }
 }

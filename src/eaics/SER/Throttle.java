@@ -6,6 +6,8 @@
 package eaics.SER;
 
 import eaics.CAN.CANFilter;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -46,7 +48,7 @@ public class Throttle
         if(this.isUsingManualThrottle) {
             String[] msgArray = msg.split(",");
 
-            if(msgArray.length == 16 || msgArray.length == 10)  {
+            if(msgArray.length == 17)  {
                 try  {
                     this.throttleSetting =  Integer.parseInt(msgArray[3]);
                 }
@@ -74,17 +76,19 @@ public class Throttle
             CANFilter filter = CANFilter.getInstance();
             
 	    @Override
-	    public void run() 
-	    {
+	    public void run()  {
                 //DEC: "346095616" = HEX: "14A10000"
                 try
                 {
                     int upperByte = throttleSetting >> 8;
                     int lowerByte = throttleSetting & 0xFF;
-                    if(isSendingThrottleCommands)
-                    {
-                        //filter.getCANHandler(1).writeMessage(346095616, new int[]{lowerByte, upperByte});
-                        filter.getCANHandler(0).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
+                    if(isSendingThrottleCommands) {
+                        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
+                            filter.getCANHandler(1).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
+                        }
+                        else {
+                            filter.getCANHandler(0).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
+                        }
                     }
                 }
                 catch(IOException e)

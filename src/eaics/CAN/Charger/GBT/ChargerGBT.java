@@ -12,6 +12,7 @@ import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEVMS;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
@@ -20,8 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ChargerGBT 
-{
+public class ChargerGBT  {
     private State state0;
     private State state1;
     private State state2;
@@ -151,7 +151,12 @@ public class ChargerGBT
         
         this.evms = filter.getEVMS();
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
-        this.handler = filter.getCANHandler(1); // Must change manually, UPDATE AS A = 0 B = 1
+        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
+            this.handler = filter.getCANHandler(1); // Must change manually, UPDATE AS A = 0 B = 1
+        }
+        else {
+            this.handler = filter.getCANHandler(0); // Must change manually, UPDATE AS A = 0 B = 1
+        }
         
         this.maxChargeVoltage = settings.getSetting(19);
         this.maxChargeCurrent = settings.getSetting(20);
@@ -730,77 +735,77 @@ public class ChargerGBT
         }
     }
     
-    protected void setState(State state)
+    public void setState(State state)
     {
         this.state = state;
     }
     
-    protected State getState0()
+    public State getState0()
     {
         return state0;
     }
 
-    protected State getState1() 
+    public State getState1() 
     {
         return state1;
     }
 
-    protected State getState2() 
+    public State getState2() 
     {
         return state2;
     }
 
-    protected State getState3() 
+    public State getState3() 
     {
         return state3;
     }
 
-    protected State getState4() 
+    public State getState4() 
     {
         return state4;
     }
 
-    protected State getState5() 
+    public State getState5() 
     {
         return state5;
     }
 
-    protected State getState6() 
+    public State getState6() 
     {
         return state6;
     }
 
-    protected State getState7() 
+    public State getState7() 
     {
         return state7;
     }
 
-    protected State getState8() 
+    public State getState8() 
     {
         return state8;
     }
 
-    protected State getState9() 
+    public State getState9() 
     {
         return state9;
     }
 
-    protected State getState10() 
+    public State getState10() 
     {
         return state10;
     }
 
-    protected State getState11() 
+    public State getState11() 
     {
         return state11;
     }
 
-    protected State getState12() 
+    public State getState12() 
     {
         return state12;
     }
     
-    protected State getWaitingToStopState()
+    public State getWaitingToStopState()
     {
         return waitingToStopState;
     }

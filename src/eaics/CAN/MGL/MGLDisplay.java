@@ -6,7 +6,9 @@
 package eaics.CAN.MGL;
 
 import eaics.CAN.CANFilter;
+import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,6 +27,7 @@ public class MGLDisplay {
     boolean amSending = false;
 
     private CANFilter filter;
+    private CANHandler handler;
     
     short bankAngle; //resolution: 0.1 deg
     short pitchAngle; //resolution: 0.1 deg
@@ -39,6 +42,9 @@ public class MGLDisplay {
         gndSpeed = 0; //resolution: knots (mph originally)
         
         this.filter = filter;
+        
+        this.handler = filter.getCANHandler(0);
+        
         runDisplay();
     }
     
@@ -54,16 +60,16 @@ public class MGLDisplay {
             0
         };
          //sent every 4 secs, Fuel Pressure?
-        filter.getCANHandler(0).writeMessageSFF(0x201, send);
+        handler.writeMessageSFF(0x201, send);
         
     }
     
     private void send500ms() throws IOException {
         //sent every 500ms the next few seconds
         //temperature messages for 12 TC sensors in degrees C, 2 bytes per reading, LSB first
-        filter.getCANHandler(0).writeMessageSFF(0x202, new int[]{100,0,0,0,0,0,0,0});
-        filter.getCANHandler(0).writeMessageSFF(0x203, new int[]{0,0,0,0,0,0,0,0});
-        filter.getCANHandler(0).writeMessageSFF(0x204, new int[]{0,0,0,0,0,0,0,0});
+        handler.writeMessageSFF(0x202, new int[]{100,0,0,0,0,0,0,0});
+        handler.writeMessageSFF(0x203, new int[]{0,0,0,0,0,0,0,0});
+        handler.writeMessageSFF(0x204, new int[]{0,0,0,0,0,0,0,0});
         
         int [] byte5 = new int[]{
             (int)filter.getEVMS().getVoltage()%256, //Oil Temp LSB - Now Using Voltage
@@ -76,7 +82,7 @@ public class MGLDisplay {
             0  //Aux2 MSB
         };
         
-        filter.getCANHandler(0).writeMessageSFF(0x205, byte5);
+        handler.writeMessageSFF(0x205, byte5);
         
         int [] byte6 = new int[]{
             0, //Fuel Pressure LSB
@@ -88,7 +94,7 @@ public class MGLDisplay {
             0, //Fuel Level2 LSB
             0  //Fuel Level2 MSB
         };
-        filter.getCANHandler(0).writeMessageSFF(0x206, byte6);
+        handler.writeMessageSFF(0x206, byte6);
 
         int [] byte7 = new int[]{
             0, //Temperature
@@ -98,7 +104,7 @@ public class MGLDisplay {
             0,0,0,0 //unused
         };
         
-        filter.getCANHandler(0).writeMessageSFF(0x207, byte7);
+        handler.writeMessageSFF(0x207, byte7);
     }
     
     private void send200ms() throws IOException {
@@ -116,7 +122,7 @@ public class MGLDisplay {
             0   //Current
         };
         
-        filter.getCANHandler(0).writeMessageSFF(0x208, msg);
+        handler.writeMessageSFF(0x208, msg);
     }
     
     public void runDisplay() {

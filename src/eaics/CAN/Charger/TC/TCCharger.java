@@ -6,9 +6,11 @@
 package eaics.CAN.Charger.TC;
 
 import eaics.CAN.CANFilter;
+import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
 import eaics.Settings.SettingsEVMS;
+import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,6 +27,7 @@ public class TCCharger {
     CANFilter filter;
     float outputVoltage;
     float outputCurrent;
+    CANHandler handler;
 
     private SettingsEVMS settings;
     
@@ -44,8 +47,16 @@ public class TCCharger {
         this.outputCurrent = 0;
         this.statusByte = 0;
         
+
+        
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
 
+        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
+            this.handler = filter.getCANHandler(0);
+        }
+        else {
+            this.handler = filter.getCANHandler(1);
+        }
         this.chargeVoltage = settings.getSetting(19);
         this.chargeCurrent = settings.getSetting(20);
     }
@@ -67,7 +78,7 @@ public class TCCharger {
         }
     }
     
-    public void runCharger(int CANPort) {
+    public void runCharger() {
         chargerExecutor = null;
         
        // System.out.println("Starting Charger...");
@@ -82,7 +93,7 @@ public class TCCharger {
                 chargeStatus = true;
                 
                 try {
-                    filter.getCANHandler(1).writeMessage(
+                    handler.writeMessage(
                             0x1806E5F4, 
                             new int[]{
                                 (int)chargeVoltage/256,
@@ -106,9 +117,9 @@ public class TCCharger {
 
     }
     
-    public void stopCharger(int canPort) {
+    public void stopCharger() {
         try {
-            filter.getCANHandler(canPort).writeMessage(0x1806E5F4, new int[]{
+            handler.writeMessage(0x1806E5F4, new int[]{
                 (int)chargeVoltage/256,
                 (int)chargeVoltage%256,
                 (int)chargeCurrent/256,

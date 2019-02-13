@@ -28,7 +28,7 @@ public class WaitingToStopState implements State
         if(CANID == 0x1801F456)
         {
             System.out.println("Stop charging accpeted - go to state 0");
-            chargerGBT.setState(chargerGBT.getState0());
+           // chargerGBT.setState(chargerGBT.getState0());
         }
     }        
 }

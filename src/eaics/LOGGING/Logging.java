@@ -41,7 +41,7 @@ public class Logging
     
     private boolean spl = true;
     
-    float dbReading ;
+    float dbReading;
     
     public Logging() throws IOException {
         this.filter = CANFilter.getInstance();
@@ -200,15 +200,17 @@ public class Logging
                     columnData += "--,";
                 }
                 
+                if(spl) {
+                    columnData += dbReading + ",";
+                }
+                
+                columnData += Serial.getInstance().getAirPress().getSensorValue()+",";
+                
                 Temp temp = Serial.getInstance().getTemp();
                 for(int i = 0; i<temp.getTempSensors().length; i++) {
                     columnData += temp.getTempSensors()[i]+",";
                 }
                 
-                if(spl) {
-                    columnData += dbReading;
-                }
-
                 columnData +="\n";
 		fileWriter.write(columnData);
 	    }
@@ -254,16 +256,16 @@ public class Logging
             columnHeadings += "ESC " + ii + " Throttle Command, ";			
         }
 
-        columnHeadings += "Load Cell Total, ";
+        columnHeadings += "Load Cell Total (kg), ";
 
         columnHeadings += "Calibration Factor, ";
 
         for(int i = 1; i <= 4; i++) 
         {
-            columnHeadings += "Load Cell "+i+",";
+            columnHeadings += "Load Cell "+i+"(kg),";
         }
         
-        columnHeadings += "Weight, ";
+        columnHeadings += "Weight (kg), ";
         
         columnHeadings += "Bank Angle, ";
         columnHeadings += "Pitch Angle, ";
@@ -274,11 +276,15 @@ public class Logging
         columnHeadings += "Charging Current, ";
         columnHeadings += "Status Byte, ";
         
-        for(int i = 1; i <=6; i++) {
-            columnHeadings += "Aux Temp "+i+",";
+        if(spl) {
+            columnHeadings += "SPL(dB), ";
         }
         
-        columnHeadings += "SPL";
+        columnHeadings += "Differential Air Pressure(Pa), ";
+        
+        for(int i = 1; i <=6; i++) {
+            columnHeadings += "Aux Temp (deg C)"+i+",";
+        }
       
         columnHeadings += "\n";
 

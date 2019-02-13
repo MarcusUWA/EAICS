@@ -17,11 +17,12 @@ import eaics.CAN.MGL.MGLDisplay;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 
 /**
  *
- * @author Troy
+ * @author Markcuz & Troy
  */
 public class CANFilter {
     private static CANFilter instance;
@@ -29,10 +30,8 @@ public class CANFilter {
     private CANHandler bus0CANHandler;
     private CANHandler bus1CANHandler;
     
-    private boolean bus0online = true;
-    private boolean bus1online = true;
-    
     public static final int NUM_OF_ESC = SettingsEAICS.getInstance().getGeneralSettings().getNumEsc();
+    
     
     public static final int NUM_OF_BMS = SettingsEAICS.getInstance().getGeneralSettings().getNumBatteryModules()*2;//24
     
@@ -77,27 +76,29 @@ public class CANFilter {
 	return instance;
     }
 
-    private CANFilter()
-    {
+    private CANFilter() {
+        SettingsEAICS settings = SettingsEAICS.getInstance();
+        
         bus0CANHandler = new CANHandler("can0");
-        try
-        {
+        try {
             bus0CANHandler.openPort();
             bus0CANHandler.startReading();
         }
-        catch(IOException e)
-        {
+        catch(IOException e) {
             e.printStackTrace();
         }
-        bus1CANHandler = new CANHandler("can1");
-        try
-        {
-            bus1CANHandler.openPort();
-            bus1CANHandler.startReading();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
+        
+        if(settings.getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
+            bus1CANHandler = new CANHandler("can1");
+            try
+            {
+                bus1CANHandler.openPort();
+                bus1CANHandler.startReading();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         this.evms = new EVMS();
@@ -403,7 +404,12 @@ public class CANFilter {
                 handler = this.bus0CANHandler;
                 break;
             case 1:
-                handler = this.bus1CANHandler;
+                if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
+                    handler = this.bus1CANHandler;
+                }
+                else {
+                    throw new IllegalArgumentException("This bus number does not exist");
+                }
                 break;
             default:
                 throw new IllegalArgumentException("This bus number does not exist");

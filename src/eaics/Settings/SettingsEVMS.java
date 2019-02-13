@@ -176,8 +176,7 @@ public class SettingsEVMS implements Settings {
     }
     
     @Override
-    public void update()
-    {
+    public void update() {
         CANHandler handle = CANFilter.getInstance().getCANHandler(0);
         
         int[] msg1 = {

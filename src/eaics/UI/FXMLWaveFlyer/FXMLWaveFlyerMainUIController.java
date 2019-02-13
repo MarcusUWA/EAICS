@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eaics.UI.Trifan;
+package eaics.UI.FXMLWaveFlyer;
 
 import eaics.CAN.Battery.BMS.BMS12v3;
-import eaics.CAN.CANFilter;
 import eaics.CAN.Battery.CurrentSensor;
-import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
+import eaics.CAN.CANFilter;
+import eaics.CAN.ESC.ESC;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
+import eaics.Settings.SettingsEAICS;
 import eaics.UI.MainUIController;
+import static eaics.UI.MainUIController.refreshFrequency;
+import eaics.UI.Trifan.TrifanMainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javafx.util.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -27,109 +29,57 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
+ *
+ * @author Markcuz
  */
-public class TrifanMainUIController extends MainUIController
-{    
+public class FXMLWaveFlyerMainUIController extends MainUIController {
+
     private Logging logging;
     
-    @FXML
-    Button buttonSettings;   
-    
-    // Big Labels - Top of Page ----------------------------------------------
+    boolean escData = true;
     
     @FXML
-    private Label powerLabel;
+    Button buttonSettings;
+
+    @FXML
+    Button buttonBattery;
+    
     @FXML
     private Label timeLabel;
+    @FXML
+    private Label powerLabel;
     @FXML
     private Label voltageLabel;
     @FXML
     private Label currentLabel;
-    
-    // ESC (Left Wing) ---------------------------------------------------------
-    
     @FXML
-    private Label leftRPMLabel;
+    private Label ipLabel;
     @FXML
-    private Label leftControllerTempLabel;
-    @FXML
-    private Label leftMotorTempLabel;
-    @FXML
-    private Label leftMotorPowerLabel;
-    @FXML
-    private ProgressBar leftRPM;
-    
-    // ESC (Bottom Wing) -------------------------------------------------------
+    private Label auxLabel;
     
     @FXML
-    private Label bottomRPMLabel;
-    @FXML
-    private Label bottomControllerTempLabel; 
-    @FXML
-    private Label bottomMotorTempLabel;
-    @FXML
-    private Label bottomMotorPowerLabel;
-    @FXML
-    private ProgressBar bottomRPM;
-    
-    // ESC (Top Wing) ----------------------------------------------------------
+    private Label capacityLabel;
     
     @FXML
-    private Label topRPMLabel;
-    @FXML
-    private Label topControllerTempLabel;
-    @FXML
-    private Label topMotorTempLabel;
-    @FXML
-    private Label topMotorPowerLabel;
-    @FXML
-    private ProgressBar topRPM;
+    private Label socLabel;
     
-    // ESC (Right Wing) --------------------------------------------------------
-    
-    @FXML
-    private Label rightRPMLabel;
-    @FXML
-    private Label rightControllerTempLabel;
-    @FXML
-    private Label rightMotorTempLabel;
-    @FXML
-    private Label rightMotorPowerLabel;
-    @FXML
-    private ProgressBar rightRPM;
-    
-    // Thrust Label - Bottom of Page -------------------------------------------
-    
-    @FXML
-    private Label thrustLabel;
-    @FXML
-    private ProgressIndicator timeIndicator;
-    @FXML
-    private ProgressIndicator powerIndicator;
     @FXML
     private ImageView wifi_icon;
     @FXML
     private ImageView can_icon;
     @FXML 
     private ImageView status_icon;
-    
-    @FXML 
-    private Label auxLabel;
-    @FXML 
-    protected Label ipLabel;
     
     public void refreshIP() throws IOException 
     {
@@ -149,9 +99,24 @@ public class TrifanMainUIController extends MainUIController
         }
     }
     
+    private void handleStopCharge() {        
+        int[] chg = {0x40,0,0,0xF0,0xCC,0xCC,0xCC,0xCC};
+        
+        try 
+        {
+            System.out.println("Stop charging");
+            CANFilter.getInstance().getCANHandler(0).writeMessage(0x101956F4, chg);
+        } 
+        catch (IOException ex) 
+        {
+            ex.printStackTrace();
+        }
+        
+        CANFilter.getInstance().getChargerGBT().stopCharging();
+    }
+
     @FXML
-    private void handleSettingsPressed(ActionEvent event) throws IOException
-    {
+    private void handleSettingsPressed(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings.fxml"));
         
         try 
@@ -171,7 +136,6 @@ public class TrifanMainUIController extends MainUIController
             stage.setScene(scene);
             stage.setTitle("Settings!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 
@@ -190,8 +154,7 @@ public class TrifanMainUIController extends MainUIController
             Pane pane = loader.load();
 
             batteryPageController = loader.getController();
-            batteryPageController.initSettings(this);
-	    batteryPageController.initData(loadCell);	    
+	    batteryPageController.initData(loadCell);
    
             Stage stage = new Stage();
  
@@ -203,7 +166,6 @@ public class TrifanMainUIController extends MainUIController
             stage.setScene(scene);
             stage.setTitle("Battery!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 
@@ -211,15 +173,16 @@ public class TrifanMainUIController extends MainUIController
             System.out.println("Failed to open Battery Window");
 	    e.printStackTrace();
         }
-    } 
-    
+    }
+
     public void initData(Logging logging) throws IOException 
     {
-        this.logging = logging;
         
+        this.logging = logging;
         this.serial = Serial.getInstance();
         this.loadCell = serial.getCell();
-	
+        this.throttle = serial.getThrottle();
+        
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours
         
@@ -239,10 +202,8 @@ public class TrifanMainUIController extends MainUIController
                 
                 FileInputStream input = null;
                 Image image;
-		
-                // Warnings ----------------------------------------------------
-
-		//EVMS Status Icons
+                
+                //EVMS Status Icons
 		if(evmsV3.getStatus() != status) 
                 {
                     status = evmsV3.getStatus();
@@ -259,6 +220,8 @@ public class TrifanMainUIController extends MainUIController
                             {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            
+                            handleStopCharge();
                             
                             image = new Image(input);
                             status_icon.setImage(image);
@@ -406,25 +369,22 @@ public class TrifanMainUIController extends MainUIController
 		// Check if the charger is off
 		if(evmsV3.getHeadlights() == 1 && !filter.getHasWarnedChargerOff())
 		{
-		    Alert alert = new Alert(AlertType.INFORMATION);
+		    Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		    alert.setHeaderText("WARNING");
 		    alert.setContentText("DC-DC is off");
 		    alert.show();
                     filter.setHasWarnedChargerOff(true);    
 		}
-
+                
                 //+------------------------------------------------------------+
 		//EVMS - Electric Vehicle Management System
 		//+------------------------------------------------------------+
 		
 		//Calculation variable
-		double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
-                
-		powerLabel.setText("" + String.format("%.2f", kwPower));
-		powerIndicator.setProgress((kwPower / (400*500)));
-		
+
                 double time = evmsV3.getAmpHours() / (currentSensor.getCurrent()/1000);
                 time *= 60;
+                
 		if(Double.isNaN(time))
                 {
                     timeLabel.setText("--");
@@ -437,86 +397,35 @@ public class TrifanMainUIController extends MainUIController
                 {
                     timeLabel.setText("" + String.format("%.2f", time));
                 }
-                
-                if(time > maxTime)
-                {
-                    timeIndicator.setProgress(0.999999);
+		
+                if(!escData) {
+                    voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
                 }
-                else
-                {
-                    timeIndicator.setProgress(time / maxTime);
+                else {
+                    voltageLabel.setText(Integer.toString((int)esc[0].getBatteryVoltage()));
+                }
+                
+                if(!escData) {
+                    currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
+                }
+                else {
+                    currentLabel.setText(Integer.toString((int)esc[0].getBatteryCurrent()));
                 }
 		
-                voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
+                if(!escData) {
+                    double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
+                    powerLabel.setText("" + String.format("%.2f", kwPower));
+                }
+                else {
+                    double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
+                    powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
+                }
                 
-                currentLabel.setText("" + String.format("%.1f", currentSensor.getCurrent()/1000.0));
+                capacityLabel.setText("" + evmsV3.getAmpHours());
+                
+                socLabel.setText("" + Math.round((evmsV3.getAmpHours() / SettingsEAICS.getInstance().getEVMSSettings().getSetting(0)) * 100));
                 
 		//+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Left Wing
-		//+------------------------------------------------------------+
-		
-		leftRPMLabel.setText("" + esc[0].getRpm());
-		
-		leftControllerTempLabel.setText("" + esc[0].getControllerTemp());
-		
-		leftMotorTempLabel.setText("" + esc[0].getMotorTemp());
-                
-                double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
-                leftMotorPowerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
-                
-                leftRPM.setProgress((double)esc[0].getRpm() / maxProgress);
-		
-		
-                //+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Bottom
-		//+------------------------------------------------------------+
-		
-		bottomRPMLabel.setText("" + esc[1].getRpm());
-		
-		bottomControllerTempLabel.setText("" + esc[1].getControllerTemp());
-		
-		bottomMotorTempLabel.setText("" + esc[1].getMotorTemp());
-                
-                double kwBottomRightMotor = esc[1].getBatteryVoltage() * esc[1].getBatteryCurrent() / 1000;
-                bottomMotorPowerLabel.setText("" + String.format("%.2f", kwBottomRightMotor));
-                
-                bottomRPM.setProgress((double)esc[1].getRpm() / maxProgress);
-		
-		
-                //+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Top
-		//+------------------------------------------------------------+
-		
-		topRPMLabel.setText("" + esc[2].getRpm());
-		
-		topControllerTempLabel.setText("" + esc[2].getControllerTemp());
-		
-		topMotorTempLabel.setText("" + esc[2].getMotorTemp());
-                
-                double kwPowerTopMotor = esc[2].getBatteryVoltage() * esc[2].getBatteryCurrent() / 1000;
-                topMotorPowerLabel.setText("" + String.format("%.2f", kwPowerTopMotor));
-                
-                topRPM.setProgress((double)esc[2].getRpm() / maxProgress);
-		
-		
-                //+------------------------------------------------------------+
-		//ESC - Electronic Speed Controller - Right Wing
-		//+------------------------------------------------------------+
-		
-		rightRPMLabel.setText("" + esc[3].getRpm());
-		
-		rightControllerTempLabel.setText("" + esc[3].getControllerTemp());
-		
-		rightMotorTempLabel.setText("" + esc[3].getMotorTemp());
-                
-                double kwPowerRightMotor = esc[3].getBatteryVoltage() * esc[3].getBatteryCurrent() / 1000;
-                rightMotorPowerLabel.setText("" + String.format("%.2f", kwPowerRightMotor));
-                
-                rightRPM.setProgress((double)esc[3].getRpm() / maxProgress);
-                
-		
-		//+------------------------------------------------------------+
-                
                 
                 auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
             }
@@ -525,5 +434,4 @@ public class TrifanMainUIController extends MainUIController
         refreshUI.setCycleCount(Timeline.INDEFINITE);
         refreshUI.play();
     }
-
 }

@@ -26,7 +26,7 @@ public class Temp {
     public void setMsg(String msg) {
             String[] msgArray = msg.split(",");
             
-            if(msgArray.length == 16) {
+            if(msgArray.length == 17) {
                 for(int i = 0; i<numSensors; i++) {
                     try {
                         tempSensors[i] = Double.parseDouble(msgArray[10+i]);

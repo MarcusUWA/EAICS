@@ -45,8 +45,6 @@
             <Button mnemonicParsing="false" onAction="#handleSendLogging" prefHeight="39.0" prefWidth="200.0" text="Send Logs" GridPane.rowIndex="5" />
             <Button mnemonicParsing="false" onAction="#handleCalibrateLoadCell" prefHeight="39.0" prefWidth="200.0" text="Calib. Load Cell" GridPane.rowIndex="7" />
             <Button fx:id="buttonGeneralSettingsPage1" mnemonicParsing="false" onAction="#handleAdvancedZEVASettingsPage" prefHeight="39.0" prefWidth="200.0" text="Advanced ZEVA" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <ToggleButton fx:id="toggleGBT" mnemonicParsing="false" onAction="#toggleButtonAction" prefHeight="40.0" prefWidth="200.0" text="Test GBT Charger" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-            <ToggleButton fx:id="testMGL" mnemonicParsing="false" onAction="#handleTestMGL" prefHeight="40.0" prefWidth="200.0" text="Test MGL Monitor" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <Button fx:id="pixhawkButton" mnemonicParsing="false" onAction="#handleUpdatePixhawk" prefHeight="39.0" prefWidth="240.0" text="Set PC IP (for PixHawk)" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
@@ -89,7 +87,7 @@
                </font>
             </Label>
             <Button mnemonicParsing="false" onAction="#handleGeneralSettings" prefHeight="95.0" prefWidth="180.0" text="General Settings" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="Basic ZEVA" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button disable="true" mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="Basic ZEVA" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>

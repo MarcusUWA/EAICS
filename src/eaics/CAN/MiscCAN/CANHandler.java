@@ -11,6 +11,8 @@ import de.entropia.can.CanSocket.CanId;
 import de.entropia.can.CanSocket.CanInterface;
 import de.entropia.can.CanSocket.Mode;
 import eaics.CAN.CANFilter;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 
 /**
@@ -44,9 +46,14 @@ public class CANHandler
         this.startedReading = false;
         this.portBinded = false;
         
+        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.TESTING) {
+            noCAN = true;
+        }
+        
         if(noCAN) {
             System.out.println("Initialise: CAN turned off");
         }
+        
         else {
             try {
                 socket = new CanSocket(Mode.RAW);

@@ -5,6 +5,7 @@
  */
 package eaics.UI.FXMLBattery;
 
+import eaics.SER.AirPressure;
 import eaics.SER.Serial;
 import eaics.SER.Temp;
 import java.net.URL;
@@ -49,8 +50,8 @@ public class FXMLAuxTempController implements Initializable {
     int timeToRefresh = 500;
     
     Temp temp;
-    
-
+    AirPressure press;
+   
     /**
      * Initializes the controller class.
      */
@@ -62,6 +63,7 @@ public class FXMLAuxTempController implements Initializable {
     public void init() {
         
         temp = Serial.getInstance().getTemp();
+        press = Serial.getInstance().getAirPress();
         updateScreen();
         
         Timeline refreshUI;
@@ -87,7 +89,7 @@ public class FXMLAuxTempController implements Initializable {
         temp5.setText(String.format("%.1f",temp.getTempSensors()[4]));
         temp6.setText(String.format("%.1f",temp.getTempSensors()[5]));
         
-        airSpeed.setText("Not Connected");
+        airSpeed.setText(String.format("%.1f",press.getSensorValue()));
     }
     
     @FXML // Delete the charging screne and go back to the previous scene.

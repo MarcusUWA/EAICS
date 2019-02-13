@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eaics.UI.FXMLWaveFlyer.FXMLWaveFlyerMainUIController">
+ <children>
+      <ImageView fitHeight="107.0" fitWidth="357.0" layoutX="175.0" layoutY="347.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../Resources/ElectroAeroBannerBlue.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="87.0" layoutY="15.0" prefHeight="20.0" prefWidth="412.0" text="ElectroNautic Instrumentation and Control System" AnchorPane.leftAnchor="87.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="374.0" layoutY="176.0" prefWidth="100.0" text="kW" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="176.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="powerLabel" alignment="CENTER" layoutX="349.0" layoutY="93.0" prefHeight="60.0" prefWidth="150.0" text="0.00" textAlignment="CENTER" AnchorPane.rightAnchor="141.0" AnchorPane.topAnchor="93.0">
+         <font>
+            <Font size="64.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="232.0" layoutY="210.0" prefWidth="180.0" text="Time&#10;Remaining" textAlignment="CENTER" AnchorPane.leftAnchor="232.0" AnchorPane.topAnchor="210.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="349.0" layoutY="60.0" prefWidth="150.0" text="Power" AnchorPane.rightAnchor="141.0" AnchorPane.topAnchor="60.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonSettings" layoutX="20.0" layoutY="420.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSettingsPressed" prefHeight="40.0" prefWidth="180.0" text="Settings" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" />
+      <Line endX="639.0" layoutY="47.0" startX="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="40.0" />
+      <Label fx:id="timeLabel" alignment="CENTER" layoutX="249.0" layoutY="250.0" prefHeight="40.0" prefWidth="150.0" text="--" textAlignment="CENTER" AnchorPane.leftAnchor="249.0" AnchorPane.topAnchor="250.0">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="274.0" layoutY="300.0" prefHeight="30.0" prefWidth="100.0" text="Minutes" AnchorPane.leftAnchor="274.0" AnchorPane.topAnchor="300.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="wifi_icon" fitHeight="30.0" fitWidth="30.0" layoutX="664.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="5.0">
+         <image>
+            <Image url="@../../Resources/wifi-on.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="can_icon" fitHeight="30.0" fitWidth="30.0" layoutX="710.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="5.0">
+         <image>
+            <Image url="@../../Resources/CAN-disconn.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="status_icon" fitHeight="30.0" fitWidth="30.0" layoutX="753.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+         <image>
+            <Image url="@../../Resources/idle.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="40.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voltage" AnchorPane.bottomAnchor="243.0" AnchorPane.leftAnchor="40.0" />
+      <Text layoutX="532.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current" AnchorPane.bottomAnchor="243.0" AnchorPane.rightAnchor="61.46533203125" />
+      <Label fx:id="currentLabel" alignment="TOP_CENTER" layoutX="515.0" layoutY="250.0" prefHeight="40.0" prefWidth="80.0" text="0A" textAlignment="CENTER" AnchorPane.bottomAnchor="186.0" AnchorPane.rightAnchor="45.0">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="voltageLabel" alignment="TOP_CENTER" layoutX="23.0" layoutY="250.0" prefHeight="30.0" prefWidth="80.0" text="0V" textAlignment="CENTER" AnchorPane.bottomAnchor="186.0" AnchorPane.leftAnchor="23.0">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="605.0" layoutY="373.0" prefHeight="20.0" prefWidth="150.0" text="Aux Voltage (V)" textAlignment="CENTER" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="10.0" />
+      <Label fx:id="auxLabel" alignment="CENTER" layoutX="594.0" layoutY="395.0" prefHeight="18.0" prefWidth="150.0" text="0" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="17.0" layoutY="374.0" prefHeight="20.0" prefWidth="150.0" text="EAICS IP Address" textAlignment="CENTER" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="10.0" />
+      <Label fx:id="ipLabel" alignment="CENTER" layoutX="22.0" layoutY="394.0" prefHeight="20.0" prefWidth="150.0" text="0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonBattery" layoutX="521.0" layoutY="419.0" mnemonicParsing="false" onAction="#handleBatteryPressed" prefHeight="40.0" prefWidth="180.0" text="Battery" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Label layoutX="160.0" layoutY="60.0" text="Speed">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="powerLabel1" alignment="CENTER" layoutX="116.0" layoutY="93.0" prefHeight="60.0" prefWidth="150.0" text="0" textAlignment="CENTER">
+         <font>
+            <Font size="64.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="146.0" layoutY="176.0" prefWidth="100.0" text="Knots">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="367.0" layoutY="210.0" prefWidth="150.0" text="Capacity &#10;Remaining" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="capacityLabel" alignment="CENTER" layoutX="367.0" layoutY="252.0" prefHeight="40.0" prefWidth="150.0" text="--" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="392.0" layoutY="300.0" prefHeight="30.0" prefWidth="100.0" text="kWh">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="196.0" layoutY="328.0" prefHeight="44.0" prefWidth="255.0" text="ElectroNautic" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="250.0" layoutY="443.0" prefHeight="23.0" prefWidth="140.0" text="WaveFlyer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="13.0" layoutY="308.0" prefWidth="100.0" text="Volts" />
+      <Label alignment="CENTER" layoutX="146.0" layoutY="301.0" prefHeight="30.0" prefWidth="100.0" text="\%">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="socLabel" alignment="CENTER" layoutX="121.0" layoutY="252.0" prefHeight="40.0" prefWidth="150.0" text="--" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="121.0" layoutY="219.0" prefWidth="150.0" text="State Of Charge" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="505.0" layoutY="293.0" prefHeight="30.0" prefWidth="100.0" text="Amps">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

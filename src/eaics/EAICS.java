@@ -9,6 +9,7 @@ import eaics.Settings.SettingsEAICS;
 import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
+import eaics.Settings.TYPEVehicle;
 import eaics.UI.MainUIController;
 import java.io.IOException;
 import javafx.application.Application;
@@ -22,55 +23,55 @@ import javafx.stage.Stage;
  */
 public class EAICS extends Application { 
     
-    //Strings to define different operating conditions
-    public static final String TRIFAN = "xti trifan 600";
-    public static final String TRIKE = "ABM4-Y1";
-    public static final String AEROSKI = "ElectroNautic Jetski";
-    
-    public static String currentAircraft;
-    
     private static Logging logging;
     
-    public static void main(String[] args) throws InterruptedException, IOException 
-    {
-        currentAircraft = TRIKE;
+    public static void main(String[] args) throws InterruptedException, IOException  {
+        
+        SettingsEAICS settings = SettingsEAICS.getInstance();
+        settings.loadSettings();
+        
+        //System.out.println("Settings read: ESC: "+settings.getGeneralSettings().getNumEsc());
         
         //need to improve upon this....
         Serial comms = Serial.getInstance();
         
-        SettingsEAICS settings = SettingsEAICS.getInstance();
-        settings.loadSettings();
-  
         CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
-	// Pix Hawk Code ------------------------------------------------------
-        String ipAddressString = settings.getPixHawkSettings().getIpAddress();
-	final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
-	
-	// Logging to a CSV File Code ------------------------------------------
-	
-        logging = new Logging();
-	    
-	// Launch the User Interface (UI) --------------------------------------
-
-        launch(args);
+        if((settings.getGeneralSettings().getVeh()==TYPEVehicle.WAVEFLYER)||settings.getGeneralSettings().getVeh() == TYPEVehicle.TRIFAN) {
+            // Pix Hawk Code ------------------------------------------------------
+            String ipAddressString = settings.getPixHawkSettings().getIpAddress();
+            final Process pixHawkProgram = Runtime.getRuntime().exec("sudo mavproxy.py --master=/dev/ttyACM0 --baudrate 57600 --out " + ipAddressString + ":14550 --aircraft MyCopter");   //start the pixHawkProgram
+        }
+            
+            // Logging to a CSV File Code ------------------------------------------
+            
+            logging = new Logging();
+            
+            // Launch the User Interface (UI) --------------------------------------
+            
+            launch(args);
     }
     
     @Override
-    public void start(Stage stage) throws Exception 
-    {
+    public void start(Stage stage) throws Exception {
         FXMLLoader loader;
-                
-        switch (currentAircraft) 
-        {
-            case TRIKE:
+        SettingsEAICS settings = SettingsEAICS.getInstance();
+            
+        switch (settings.getGeneralSettings().getVeh())  {
+            case TRIKE_Prototype:
                 loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trike/FXMLTrikeMainUI.fxml"));
                 break;
             case TRIFAN:
                 loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
                 break;
+            case WAVEFLYER:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLWaveFlyer/FXMLWaveFlyerMainUI.fxml"));
+                break;
+            case VERTICAL_TESTRIG:
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLWaveFlyer/FXMLTrikeMainUI.fxml"));
+                break;
             default:
-                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrifanMainUI.fxml"));
+                loader = new FXMLLoader(getClass().getResource("/eaics/UI/Trifan/FXMLTrikeMainUI.fxml"));
                 break;
         }
         

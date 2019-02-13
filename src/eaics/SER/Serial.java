@@ -9,7 +9,6 @@ package eaics.SER;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
-import eaics.Settings.SettingsEAICS;
 
 /**
  * Serial class to handle serial communications
@@ -155,6 +154,9 @@ public class Serial {
     public Temp getTemp() {
         return temp;
     }
-    
+
+    public AirPressure getAirPress() {
+        return airPress;
+    }
     
 }

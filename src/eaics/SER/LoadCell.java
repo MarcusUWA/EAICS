@@ -32,7 +32,7 @@ public class LoadCell {
             //System.out.println("Serial: "+msg);
             String[] msgArray = msg.split(",");
             
-            if(msgArray.length == 10|| msgArray.length == 16) {
+            if(msgArray.length == 17) {
                 try {
                     this.time =  Long.parseLong(msgArray[0]);
                 }

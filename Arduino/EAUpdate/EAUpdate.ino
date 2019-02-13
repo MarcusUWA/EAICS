@@ -67,7 +67,7 @@ float calibration_factorS = 17550;
 #define throttlePin A0
 float throttle = 0;
 
-int pressurePin = A1;   
+#define pressurePin A1
 
 // which analog pin to connect
 #define THERM2 A2  
@@ -133,7 +133,7 @@ float pressureValue;
     throttleFunction();
     temp();
     loadCell();
-    pressureOffsetFunction();
+    pressureFunction();
     
     printing();
     
@@ -164,6 +164,7 @@ float pressureValue;
   }
 
   void pressureOffsetFunction() {   
+    analogReference(DEFAULT);
     int tempSum;
     int tempValue;
     for(int i=0; i<10; i++) {
@@ -171,11 +172,29 @@ float pressureValue;
          tempSum+=tempValue;
     }
     pressureOffset=tempSum/10.0;
+    analogReference(EXTERNAL);
   }
   
   void pressureFunction() {
-    int tempValue = analogRead(pressurePin)-pressureOffset; 
-    pressureValue=((5*tempValue)/1024.0)-2.5;
+    analogReference(DEFAULT);
+    uint16_t samples[NUMSAMPLES];
+    for (int i=0; i< NUMSAMPLES; i++) {
+      samples[i] = analogRead(pressurePin)-pressureOffset;
+      delay(10);
+    }
+
+    float average = 0.0;
+
+    for (int i=0; i< NUMSAMPLES; i++) {
+      average += samples[i];
+    }
+
+    average /= NUMSAMPLES;
+    
+    pressureValue=((5*average)/1024.0)-2.5;
+    pressureValue = pressureValue*1000;
+    
+    analogReference(EXTERNAL);
   }
 
   void temp() {
@@ -183,15 +202,10 @@ float pressureValue;
     
       for (int i=0; i< NUMSAMPLES; i++) {
             samples[i][0] = analogRead(THERM2);
-            delay(10);
             samples[i][1] = analogRead(THERM3);
-            delay(10);
             samples[i][2] = analogRead(THERM4);
-            delay(10);
             samples[i][3] = analogRead(THERM5);
-            delay(10);
             samples[i][4] = analogRead(THERM6);
-            delay(10);
             samples[i][5] = analogRead(THERM7);
             delay(10);
       }

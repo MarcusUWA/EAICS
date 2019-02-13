@@ -6,12 +6,8 @@
 package eaics.UI;
 
 import eaics.CAN.CANFilter;
-import eaics.CAN.Charger.GBT.ChargerGBT;
-import eaics.CAN.MGL.MGLDisplay;
 import eaics.LOGGING.Logging;
 import eaics.Settings.IPAddress;
-import eaics.SER.LoadCell;
-import eaics.SER.Serial;
 import eaics.Settings.SettingsEAICS;
 import eaics.UI.FXMLSettings.FXMLAdvZEVASettingsPage;
 import eaics.UI.FXMLSettings.FXMLCalibrateLoadCellController;
@@ -30,7 +26,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,7 +36,7 @@ import javafx.stage.Stage;
  * @author Troy
  */
 public class FXMLSettingsController implements Initializable {
-    String version = "3.7.0";
+    String version = "3.7.4";
     
     FXMLAdvZEVASettingsPage advZEVASettingsPage;
     FXMLConnectWifiController wifiConnectController;
@@ -51,8 +46,6 @@ public class FXMLSettingsController implements Initializable {
     FXMLGeneralSettingsController genSettings;
     
     FXMLLoggingPageController loggingController;
-    
-    ChargerGBT chg;
     
     FXMLCalibrateLoadCellController calib;
     
@@ -73,18 +66,12 @@ public class FXMLSettingsController implements Initializable {
     @FXML 
     Button wifiConnect;
     
-    @FXML 
-    ToggleButton toggleGBT;
-    
     MainUIController gui;
     
     //refresh rate in ms
     int refreshFrequency = 10;
     
     private CANFilter filter;
-    private LoadCell loadCell;
-    
-    private String msg;
     
     @FXML
     private Label labelLANIP;
@@ -126,18 +113,8 @@ public class FXMLSettingsController implements Initializable {
         stage.close();
     }
     
-    @FXML
-    private void toggleButtonAction(ActionEvent event)
-    {
-        //chg.setChargeMode(toggleGBT.isSelected());
-    }
-    
     @FXML   
     private void handleAdvancedZEVASettingsPage(ActionEvent event) {   
-        openSettingsPage();
-    }
-
-    private void openSettingsPage() {
         
 	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLAdvZEVASettingsPage.fxml"));
 	
@@ -277,10 +254,7 @@ public class FXMLSettingsController implements Initializable {
     
     public void initData(Logging logging) {
         this.filter = CANFilter.getInstance();
-        this.chg = filter.getChargerGBT();
         this.logging = logging;
-        
-        mgl = filter.getMgl();
         
         pixhawkIPLabel.setText(SettingsEAICS.getInstance().getPixHawkSettings().getIpAddress());
         
@@ -387,24 +361,5 @@ public class FXMLSettingsController implements Initializable {
             System.out.println("Failed to open General Settings Window");
             e.printStackTrace();
         }
-    }
-    
-    @FXML
-    ToggleButton testMGL;
-    
-    MGLDisplay mgl;
-    
-    @FXML 
-    private void handleTestMGL(ActionEvent event) {
-
-        if(testMGL.isSelected()) {
-            mgl.startDisplay();
-            testMGL.setText("Stop Display");
-        }
-        else {
-            mgl.stopDisplay();
-            testMGL.setText("Start Display");
-        }
-        
     }
 }

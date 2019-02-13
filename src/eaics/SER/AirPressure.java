@@ -17,8 +17,21 @@ public class AirPressure {
         sensorValue = 0;
     }
     
-    public void setMsg(String toString) {
-       
+    public void setMsg(String msg) {
+        String[] msgArray = msg.split(",");
+            
+        if(msgArray.length == 17) {
+            try {
+                sensorValue = Double.parseDouble(msgArray[16]);
+            }
+            catch (NumberFormatException e) {
+                sensorValue = 0;
+            }
+        }
+
+        else {
+            System.out.println("Invalid Serial Length: "+msgArray.length);
+        }
     }
 
     public double getSensorValue() {

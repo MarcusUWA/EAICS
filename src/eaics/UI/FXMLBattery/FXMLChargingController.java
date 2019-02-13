@@ -15,8 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML; // Allows the injection of FXML code, e.g. the @FXML
 import javafx.stage.Stage; // Allows a change of screen
 
-
-import eaics.CAN.Charger.GBT.ChargerGBT; // Get the gbt charger so that you can create an instance to run the charger
 import eaics.CAN.CANFilter; // Access variables sent via CAN
 import eaics.Settings.SettingsEAICS; // Access charging typesa and other settings
 import eaics.Settings.TYPECharger;
@@ -45,7 +43,6 @@ public class FXMLChargingController implements Initializable {
     private CANFilter filter;
     SettingsEAICS settings;
     FXMLNumpadController numpad;
-    ChargerGBT GBTObject; // Create attribute that can store the GBT charger instance
     
     private int timeToRefresh = 200; // Time to refresh the screen
     
@@ -289,10 +286,11 @@ public class FXMLChargingController implements Initializable {
             StartStop.setText("Stop Charging");
             if(settings.getGeneralSettings().getChargerType()==TYPECharger.GBT) {
                 System.out.println("GBT charger started");
-                this.GBTObject = filter.getChargerGBT(); // Start charging with GBT protocol
+                
+                filter.getChargerGBT().setState(filter.getChargerGBT().getState0()); // Start charging with GBT protocol
             }
             else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
-                filter.getChargerTC().runCharger(1);
+                filter.getChargerTC().runCharger();
             }
             else {
                 System.out.println("No Charger Selected");
@@ -302,10 +300,10 @@ public class FXMLChargingController implements Initializable {
             StartStop.setText("Start Charging");
             if(settings.getGeneralSettings().getChargerType()==TYPECharger.GBT) {
                 System.out.println("Stopped GBT Charging");
-                this.GBTObject.stopCharging(); // Stop charging
+                filter.getChargerGBT().stopCharging(); // Stop charging
             }
             else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
-                filter.getChargerTC().stopCharger(1);
+                filter.getChargerTC().stopCharger();
             }
             else {
                 System.out.println("No Charger Selected");
