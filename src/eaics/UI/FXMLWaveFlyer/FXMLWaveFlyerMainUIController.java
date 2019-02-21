@@ -31,6 +31,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -81,6 +82,9 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
     @FXML 
     private ImageView status_icon;
     
+    @FXML
+    private ToggleButton precharge;
+    
     public void refreshIP() throws IOException 
     {
         ip.updateIPAddress();
@@ -99,22 +103,19 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
         }
     }
     
-    private void handleStopCharge() {        
-        int[] chg = {0x40,0,0,0xF0,0xCC,0xCC,0xCC,0xCC};
-        
-        try 
-        {
-            System.out.println("Stop charging");
-            CANFilter.getInstance().getCANHandler(0).writeMessage(0x101956F4, chg);
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
+    @FXML
+    private void handleTogglePrecharge() throws IOException {   
+        CANFilter filter = CANFilter.getInstance();
+        if(precharge.isSelected()) {
+            precharge.setText("Precharge Off");
+            filter.getPreCharge().setState(0, true);
         }
-        
-        CANFilter.getInstance().getChargerGBT().stopCharging();
+        else {
+            precharge.setText("Precharge On");
+            filter.getPreCharge().setState(0, false);
+        }
     }
-
+    
     @FXML
     private void handleSettingsPressed(ActionEvent event) throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/eaics/UI/FXMLSettings.fxml"));
@@ -220,8 +221,6 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
                             {
                                 Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
-                            handleStopCharge();
                             
                             image = new Image(input);
                             status_icon.setImage(image);

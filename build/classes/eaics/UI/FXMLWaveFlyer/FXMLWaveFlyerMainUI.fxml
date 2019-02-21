@@ -155,5 +155,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <ToggleButton fx:id="precharge" layoutX="23.0" layoutY="119.0" mnemonicParsing="false" onAction="#handleTogglePrecharge" text="Precharge On" />
    </children>
 </AnchorPane>

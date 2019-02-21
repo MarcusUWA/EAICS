@@ -88,6 +88,7 @@
             </Label>
             <Button mnemonicParsing="false" onAction="#handleGeneralSettings" prefHeight="95.0" prefWidth="180.0" text="General Settings" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Button disable="true" mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="Basic ZEVA" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#handleMGMAdjust" prefHeight="27.0" prefWidth="199.0" text="MGM Adjust" GridPane.columnIndex="2" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>

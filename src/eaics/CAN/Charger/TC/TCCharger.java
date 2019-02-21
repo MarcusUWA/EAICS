@@ -52,10 +52,10 @@ public class TCCharger {
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
 
         if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
-            this.handler = filter.getCANHandler(0);
+            this.handler = filter.getCANHandler(1);
         }
         else {
-            this.handler = filter.getCANHandler(1);
+            this.handler = filter.getCANHandler(0);
         }
         this.chargeVoltage = settings.getSetting(19);
         this.chargeCurrent = settings.getSetting(20);

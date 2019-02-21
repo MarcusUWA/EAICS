@@ -11,6 +11,7 @@ import eaics.CAN.Battery.EVMS;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.Battery.BMS.BMS12v3Faker;
+import eaics.CAN.Battery.CANPrecharger;
 import eaics.CAN.Charger.GBT.ChargerGBT;
 import eaics.CAN.Charger.TC.TCCharger;
 import eaics.CAN.MGL.MGLDisplay;
@@ -48,6 +49,7 @@ public class CANFilter {
      
     //CCB
     private CCB[] ccb;
+    private CANPrecharger preCharge;
     
     //chargers
     private ChargerGBT chargerGBT;
@@ -120,7 +122,7 @@ public class CANFilter {
         this.ccb = new CCB[NUM_OF_CCB];
         for(int ii = 0; ii < NUM_OF_CCB; ii++)
         {
-            this.ccb[ii] = new CCB();
+            this.ccb[ii] = new CCB(this);
         }
 
         this.chargerGBT = new ChargerGBT(this);
@@ -134,6 +136,8 @@ public class CANFilter {
         
         this.faker = new BMS12v3Faker(this.bus0CANHandler, 3700);
         
+        this.preCharge = new CANPrecharger(this);
+ 
     }
 
     public void run(CANMessage message)
@@ -156,15 +160,20 @@ public class CANFilter {
 		evms.setEVMS_v2(message);
 		break;
 	    case 30:			  //EVMS_v3 Broadcast Status (Tx)
-		evms.setEVMS_v3(message);
+                evms.setEVMS_v3(message);
 		break;
-                
                 
             //Begin Current Sensor CAN Messages
 	    case 40:
 		currentSensor.setAll(message);
 		break;
+                
+            case 0x31:
+                preCharge.setAll(message);
 
+            case 0x40:
+                System.out.println("MiniDAQ Message");
+                System.out.println(message.toString());
                 
             //Begin CCB CAN Messages
 	    case 80://EVMS -> CCB1
@@ -420,6 +429,9 @@ public class CANFilter {
     public TCCharger getChargerTC() {
         return chargerTC;
     }
-    
-    
+
+    public CANPrecharger getPreCharge() {
+        return preCharge;
+    }
+
 }

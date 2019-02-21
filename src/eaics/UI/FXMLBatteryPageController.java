@@ -123,7 +123,7 @@ public class FXMLBatteryPageController implements Initializable
             @Override
             public void handle(ActionEvent event) 
 	    {
-		//updateScreen();
+		updateScreen();
             }
         }));
         refreshUI.setCycleCount(Timeline.INDEFINITE);
@@ -256,18 +256,6 @@ public class FXMLBatteryPageController implements Initializable
             System.out.println("Failed to open Battery Window");
 	    e.printStackTrace();
         }
-    }
-    
-    @FXML
-    private void handleCellPage2(ActionEvent event) throws IOException
-    {
-	openCellPage(1);        
-    }
-    
-    @FXML
-    private void handleCellPage3(ActionEvent event) throws IOException
-    {
-        openCellPage(2);
     }
     
     private void openCellPage(int pageNumber){

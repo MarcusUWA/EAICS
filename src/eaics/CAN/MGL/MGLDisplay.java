@@ -9,6 +9,7 @@ import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -34,6 +35,13 @@ public class MGLDisplay {
     short yawAngle; //resolution: 0.1 deg
     int gndSpeed; //resolution: knots (mph originally)
     
+    int oilTemp = 0;
+    int oilPress = 0;
+    int ff1pc = 0, ff1pr = 0, ff2pc = 0, ff2pr = 0;
+    int aux1 = 0; int aux2 = 0;
+    int fuelPressure = 0, coolant = 0, fuelLevel1 = 0, fuelLevel2 = 0, temp = 0, voltage = 0, map = 0, current =0;
+    
+    
     public MGLDisplay(CANFilter filter) {
 
         bankAngle = 0; //resolution: 0.1 deg
@@ -43,21 +51,28 @@ public class MGLDisplay {
         
         this.filter = filter;
         
-        this.handler = filter.getCANHandler(0);
+        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
+            this.handler = filter.getCANHandler(1);
+        }
+        else {
+            handler = filter.getCANHandler(0);
+        }
+        
         
         runDisplay();
     }
     
+    
     private void send4s() throws IOException {
         int[] send = new int[]{
-            0, //Fuel Flow 1 Pulse Count
-            0,
-            0,//Fuel Flow 1 pulse ratio
-            0,
-            0,//Fuel Flow 2 Pulse Count
-            0,
-            0, //Fuel Flow 2 pulse ratio
-            0
+            (int)ff1pc%256, //Fuel Flow 1 Pulse Count
+            (int)ff1pc/256,
+            (int)ff1pr%256,//Fuel Flow 1 pulse ratio
+            (int)ff1pr/256,
+            (int)ff2pc%256, //Fuel Flow 2 Pulse Count
+            (int)ff2pc/256,
+            (int)ff2pr%256,//Fuel Flow 3 pulse ratio
+            (int)ff2pr/256,
         };
          //sent every 4 secs, Fuel Pressure?
         handler.writeMessageSFF(0x201, send);
@@ -72,35 +87,39 @@ public class MGLDisplay {
         handler.writeMessageSFF(0x204, new int[]{0,0,0,0,0,0,0,0});
         
         int [] byte5 = new int[]{
-            (int)filter.getEVMS().getVoltage()%256, //Oil Temp LSB - Now Using Voltage
-            (int)filter.getEVMS().getVoltage()/256, //Oil Temp MSB
-            (int)(filter.getCurrentSensor().getCurrent()*1000)%256, //Oil Pressure LSB
-            (int)(filter.getCurrentSensor().getCurrent()*1000)/256, //Oil Pressure MSB
-            0, //Aux1 LSB
-            0, //Aux1 MSB
-            0, //Aux2 LSB
-            0  //Aux2 MSB
+            //(int)filter.getEVMS().getVoltage()%256, //Oil Temp LSB - Now Using Voltage
+            //(int)filter.getEVMS().getVoltage()/256, //Oil Temp MSB
+            //(int)(filter.getCurrentSensor().getCurrent()*1000)%256, //Oil Pressure LSB
+            //(int)(filter.getCurrentSensor().getCurrent()*1000)/256, //Oil Pressure MSB
+            oilTemp%256,
+            oilTemp/256,
+            oilPress%256,
+            oilPress/256,
+            aux1%256, //Aux1 LSB
+            aux1/256, //Aux1 MSB
+            aux2%256, //Aux2 LSB
+            aux2/256  //Aux2 MSB
         };
         
         handler.writeMessageSFF(0x205, byte5);
         
         int [] byte6 = new int[]{
-            0, //Fuel Pressure LSB
-            0, //Fuel Pressure MSB
-            0, //Coolant LSB
-            0, //Coolant MSB
-            0, //Fuel Level1 LSB
-            0, //Fuel Level1 MSB
-            0, //Fuel Level2 LSB
-            0  //Fuel Level2 MSB
+            fuelPressure%256, //Fuel Pressure LSB
+            fuelPressure/256, //Fuel Pressure MSB
+            coolant%256, //Coolant LSB
+            coolant/256, //Coolant MSB
+            fuelLevel1%256, //Fuel Level1 LSB
+            fuelLevel1/256, //Fuel Level1 MSB
+            fuelLevel2%256, //Fuel Level2 LSB
+            fuelLevel2/256  //Fuel Level2 MSB
         };
         handler.writeMessageSFF(0x206, byte6);
 
         int [] byte7 = new int[]{
-            0, //Temperature
-            0, //Temperature
-            0, //Voltage 
-            0, //Voltage
+            temp%256, //Temperature
+            temp/256, //Temperature
+            voltage%256, //Voltage 
+            voltage/256, //Voltage
             0,0,0,0 //unused
         };
         
@@ -116,10 +135,10 @@ public class MGLDisplay {
             filter.getESC()[0].getRpm()/256,  //RPM1 LSB
             0, //RPM2 LSB
             0,  //RPM2 LSB
-            0, //MAP
-            0,  //MAP
-            0, //Current
-            0   //Current
+            map%256, //MAP
+            map/256,  //MAP
+            current%256, //Current
+            current/256   //Current
         };
         
         handler.writeMessageSFF(0x208, msg);
@@ -215,5 +234,70 @@ public class MGLDisplay {
     public int getGndSpeed() {
         return gndSpeed;
     }
+
+    public void setFf1pc(int ff1pc) {
+        this.ff1pc = ff1pc;
+    }
+
+    public void setFf1pr(int ff1pr) {
+        this.ff1pr = ff1pr;
+    }
+
+    public void setFf2pc(int ff2pc) {
+        this.ff2pc = ff2pc;
+    }
+
+    public void setFf2pr(int ff2pr) {
+        this.ff2pr = ff2pr;
+    }
+
+    public void setAux1(int aux1) {
+        this.aux1 = aux1;
+    }
+
+    public void setAux2(int aux2) {
+        this.aux2 = aux2;
+    }
+
+    public void setFuelPressure(int fuelPressure) {
+        this.fuelPressure = fuelPressure;
+    }
+
+    public void setCoolant(int coolant) {
+        this.coolant = coolant;
+    }
+
+    public void setFuelLevel1(int fuelLevel1) {
+        this.fuelLevel1 = fuelLevel1;
+    }
+
+    public void setFuelLevel2(int fuelLevel2) {
+        this.fuelLevel2 = fuelLevel2;
+    }
+
+    public void setTemp(int temp) {
+        this.temp = temp;
+    }
+
+    public void setVoltage(int voltage) {
+        this.voltage = voltage;
+    }
+
+    public void setMap(int map) {
+        this.map = map;
+    }
+
+    public void setCurrent(int current) {
+        this.current = current;
+    }
+
+    public void setOilTemp(int oilTemp) {
+        this.oilTemp = oilTemp;
+    }
+
+    public void setOilPress(int oilPress) {
+        this.oilPress = oilPress;
+    }
+    
     
 }

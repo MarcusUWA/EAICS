@@ -5,14 +5,17 @@
  */
 package eaics.CAN.Battery;
 
+import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANMessage;
 
 public class CCB 
 {
     private boolean isCCB_On;
+    
+    CANFilter filter;
 
-    public CCB() {
-	
+    public CCB(CANFilter filter) {
+	filter = this.filter;
     }
     
     public void setAll(CANMessage message){

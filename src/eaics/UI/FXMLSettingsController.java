@@ -49,6 +49,8 @@ public class FXMLSettingsController implements Initializable {
     
     FXMLCalibrateLoadCellController calib;
     
+    FXMLMGMTestController MGLTest;
+    
     private Logging logging;
     
     @FXML
@@ -354,6 +356,35 @@ public class FXMLSettingsController implements Initializable {
         
             stage.setScene(scene);
             stage.setTitle("General Settings");
+            
+            stage.show();
+        }        
+        catch (Exception e) {
+            System.out.println("Failed to open General Settings Window");
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void handleMGMAdjust(ActionEvent event) {
+        
+        MGLTest = new FXMLMGMTestController();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLMGMTest.fxml"));
+        try {
+            Pane pane = loader.load();
+            MGLTest = loader.getController();
+            MGLTest.initData();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(closeButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("MGL Test");
             
             stage.show();
         }        

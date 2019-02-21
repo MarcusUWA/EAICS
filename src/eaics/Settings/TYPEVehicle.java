@@ -10,11 +10,11 @@ package eaics.Settings;
  * @author Markcuz
  */
 public enum TYPEVehicle {
-    TRIFAN("XTI Trifan"), 
+    TRIFAN("XTITrifan"), 
     TRIKE_Prototype("ABM4-Y1"), 
-    WAVEFLYER("ElectroNautic WaveFlyer"),
-    VERTICAL_TESTRIG("EA Vertical Test Rig"),
-    TESTING("EA Testing")
+    WAVEFLYER("ElectroNauticWaveFlyer"),
+    VERTICAL_TESTRIG("EA VerticalTestRig"),
+    TESTING("EATesting")
     ;
     
     private final String text;

@@ -101,6 +101,7 @@ public class SettingsGeneral implements Settings {
                 else {
                     veh = TYPEVehicle.TESTING;
                 }  
+                System.out.println("Vehicle type: "+veh);
             }
 
             if("ChargerType:".equals(split[0].trim())) {
