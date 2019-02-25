@@ -5,15 +5,18 @@
  */
 package eaics.CAN.Battery.BMS;
 
+import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
  * @author Troy
  */
-public class BMS12v3 
-{
+public class BMS12v3 {
     
     private SettingsEAICS settings;
         private final int BPID = 300;
@@ -24,13 +27,19 @@ public class BMS12v3
 	
 	public static final int NUMBER_OF_CELLS = 12;
 	public static final int NUMBER_OF_TEMP_SENSORS = 2;
+        
+        private ScheduledExecutorService displayExecutor;
+        
+        CANFilter filter;
 	
-	public BMS12v3(int inID)
-	{
+	public BMS12v3(CANFilter filter, int inID) {
             this.settings = SettingsEAICS.getInstance();
 	    this.MODULE_ID = inID;
 	    this.voltage = new int[NUMBER_OF_CELLS];
 	    this.temp = new int[NUMBER_OF_TEMP_SENSORS];
+            this.filter = filter;
+            
+            startPolling();
 	}
 	
 	public void setAll(CANMessage message)
@@ -117,4 +126,19 @@ public class BMS12v3
 	    
 	    return outString;
 	}
+        
+        private void startPolling() {
+            displayExecutor = null;
+            Runnable Id = new Runnable() { 
+
+            int count = 0;
+
+            @Override
+            public void run() {
+                filter.getCANHandler(0).writeMessage(BPID+10*MODULE_ID, new int[]{0, 0, 0, 0, 0, 0, 0, 0 });
+            }
+        };
+        displayExecutor = Executors.newScheduledThreadPool(1);
+        displayExecutor.scheduleAtFixedRate(Id, 0, 1000, TimeUnit.MILLISECONDS);
+        }
 }

@@ -92,24 +92,19 @@ public class TCCharger {
                 
                 chargeStatus = true;
                 
-                try {
-                    handler.writeMessage(
-                            0x1806E5F4, 
-                            new int[]{
-                                (int)chargeVoltage/256,
-                                (int)chargeVoltage%256,
-                                (int)chargeCurrent/256,
-                                (int)chargeCurrent%256,
-                                0,
-                                0,
-                                0,
-                                0
-                            }
-                    );
-                } catch (IOException ex) {
-                    System.out.println("Failed...");
-                    //Logger.getLogger(TCCharger.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                handler.writeMessage(
+                        0x1806E5F4,
+                        new int[]{
+                            (int)chargeVoltage/256,
+                            (int)chargeVoltage%256,
+                            (int)chargeCurrent/256,
+                            (int)chargeCurrent%256,
+                            0,
+                            0,
+                            0,
+                            0
+                        }
+                ); //Logger.getLogger(TCCharger.class.getName()).log(Level.SEVERE, null, ex);
             }
         };
         chargerExecutor = Executors.newScheduledThreadPool(1);
@@ -118,16 +113,12 @@ public class TCCharger {
     }
     
     public void stopCharger() {
-        try {
-            handler.writeMessage(0x1806E5F4, new int[]{
-                (int)chargeVoltage/256,
-                (int)chargeVoltage%256,
-                (int)chargeCurrent/256,
-                (int)chargeCurrent%256,
-                1,0,0,0});
-        } catch (IOException ex) {
-            Logger.getLogger(TCCharger.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        handler.writeMessage(0x1806E5F4, new int[]{
+            (int)chargeVoltage/256,
+            (int)chargeVoltage%256,
+            (int)chargeCurrent/256,
+            (int)chargeCurrent%256,
+            1,0,0,0});
         if(chargerExecutor!=null) {
             chargerExecutor.shutdown();
         }

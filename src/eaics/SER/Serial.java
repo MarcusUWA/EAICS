@@ -9,6 +9,9 @@ package eaics.SER;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
+import eaics.CAN.CANFilter;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEThrottle;
 
 /**
  * Serial class to handle serial communications
@@ -26,7 +29,7 @@ public class Serial {
     private SerialPort sp = null;
     
     private LoadCell cell;
-    private Throttle throttle;
+    private SERThrottle throttle = null;
     private Temp temp;
     private AirPressure airPress;
     
@@ -40,8 +43,9 @@ public class Serial {
         this.path = path;
         
         this.cell = new LoadCell(4);
-        
-        this.throttle = new Throttle();
+        if(SettingsEAICS.getInstance().getGeneralSettings().getThr()==TYPEThrottle.SER) {
+            this.throttle = new SERThrottle(CANFilter.getInstance());
+        }
         
         this.temp = new Temp(6);
         
@@ -147,7 +151,7 @@ public class Serial {
         return cell;
     }
 
-    public Throttle getThrottle() {
+    public SERThrottle getThrottle() {
         return throttle;
     }
 

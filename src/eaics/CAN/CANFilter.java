@@ -11,13 +11,16 @@ import eaics.CAN.Battery.EVMS;
 import eaics.CAN.Battery.CurrentSensor;
 import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.Battery.BMS.BMS12v3Faker;
+import eaics.CAN.Battery.BMS.BMSElectro;
 import eaics.CAN.Battery.CANPrecharger;
+import eaics.CAN.Battery.CANThrottle;
 import eaics.CAN.Charger.GBT.ChargerGBT;
 import eaics.CAN.Charger.TC.TCCharger;
 import eaics.CAN.MGL.MGLDisplay;
 import eaics.CAN.MiscCAN.CANHandler;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEThrottle;
 import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
 
@@ -44,6 +47,8 @@ public class CANFilter {
     private CurrentSensor currentSensor;
     private BMS12v3Faker faker;
     
+    private BMSElectro[] bmsElec;
+    
     //Esc
     private ESC[] esc;
      
@@ -58,6 +63,9 @@ public class CANFilter {
     //Displays
     private MGLDisplay mgl;
     
+    //Throttle
+    private CANThrottle throttle;
+     
     //Warnings
     private boolean hasWarnedError;
     private boolean hasWarnedChargerOff;
@@ -114,7 +122,14 @@ public class CANFilter {
         this.bms = new BMS12v3[NUM_OF_BMS];
         for(int ii = 0; ii < NUM_OF_BMS; ii++)
         {
-            this.bms[ii] = new BMS12v3(ii);
+            this.bms[ii] = new BMS12v3(this,ii);
+        }
+        
+        int numModules = SettingsEAICS.getInstance().getGeneralSettings().getNumBatteryModules();
+        this.bmsElec = new BMSElectro[numModules];
+        for(int ii = 0; ii < numModules; ii++)
+        {
+            this.bmsElec[ii] = new BMSElectro(this, ii);
         }
 
         this.currentSensor = new CurrentSensor();
@@ -137,23 +152,30 @@ public class CANFilter {
         this.faker = new BMS12v3Faker(this.bus0CANHandler, 3700);
         
         this.preCharge = new CANPrecharger(this);
+        
+        if(settings.getGeneralSettings().getThr()==TYPEThrottle.CAN) {
+          //settings for bolt on throttle
+          //this.throttle = new CANThrottle(this,0,1,30,226);
+          
+          //settings for MGM throttle
+          this.throttle = new CANThrottle(this,0,1,56,209);
+        }
  
     }
 
-    public void run(CANMessage message)
-    {
-        /*
-        System.out.println("Filtering... CANID: "+message.getFrameID());
-        
+    public void run(CANMessage message) {
+
         StringBuilder sb = new StringBuilder();
+       /* 
+        System.out.println("Filtering... CANID: "+message.getFrameID());
         sb.append("Data: ");
         
         for(int i = 0; i<message.getByteData().length; i++) {   
             sb.append(String.format("%02X ", message.getByte(i)));
         }
         
-        System.out.println(sb.toString());
-        */
+        System.out.println(sb.toString());*/
+        
 	switch (message.getFrameID()) {
             //Begin EVMS CAN Messages
 	    case 10:			  //EVMS_v2 Broadcast Status (Tx)
@@ -170,10 +192,13 @@ public class CANFilter {
                 
             case 0x31:
                 preCharge.setAll(message);
+                break;
 
             case 0x40:
-                System.out.println("MiniDAQ Message");
-                System.out.println(message.toString());
+                if(SettingsEAICS.getInstance().getGeneralSettings().getThr()==TYPEThrottle.CAN) {
+                    throttle.setAll(message);
+                }
+                break;
                 
             //Begin CCB CAN Messages
 	    case 80://EVMS -> CCB1
@@ -195,7 +220,7 @@ public class CANFilter {
                 break;
 
                 
-            //Begin BMS Module Information
+            //Begin Zeva BMS Module Information
             case 300: case 310: case 320: case 330: case 340: case 350: case 360: case 370:
             case 380: case 390: case 400: case 410: case 420: case 430: case 440: case 450:
             case 460: case 470: case 480: case 490: case 500: case 510: case 520: case 530:
@@ -280,6 +305,10 @@ public class CANFilter {
 		bms[23].setAll(message);
 		break;
             
+            case 0xA0: case 0xA1: case 0xA2: case 0xA3: case 0xA4: case 0xA5: case 0xA6: case 0xA7: case 0xA8: case 0xA9: case 0xAA: case 0xAB: case 0xAC: case 0xAD: case 0xAE: case 0xAF:
+                bmsElec[message.getFrameID()-0xA0].setAll(message);
+                break;
+                
                 
             //Begin ESC CAN Messages
 	    case 346095617: case 346095618: case 346095619: case 346095620:	  //MGM ESC module Left -- offset by 0 in MGM
@@ -331,7 +360,6 @@ public class CANFilter {
                 
 	    default:
                 System.out.println("Unknown packet, Frame ID: " + Integer.toHexString(message.getFrameID()));
-                StringBuilder sb = new StringBuilder();
                 sb.append("Data: ");
         
                 for(int i = 0; i<message.getByteData().length; i++) {   
@@ -433,5 +461,15 @@ public class CANFilter {
     public CANPrecharger getPreCharge() {
         return preCharge;
     }
+
+    public BMSElectro[] getBmsElec() {
+        return bmsElec;
+    }
+
+    public CANThrottle getThrottle() {
+        return throttle;
+    }
+    
+    
 
 }

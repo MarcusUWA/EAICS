@@ -145,6 +145,7 @@ float pressureValue;
   }
 
   void throttleFunction() {
+    analogReference(DEFAULT);
     float thrAv = 0;
   
         for (int i=0; i< NUMSAMPLES; i++) {
@@ -161,6 +162,7 @@ float pressureValue;
   
       if(throttle<0) throttle = 0;
       else if(throttle>1023) throttle = 1023;
+      analogReference(EXTERNAL);
   }
 
   void pressureOffsetFunction() {   

@@ -73,11 +73,7 @@ public class CANMiniDAQ {
 
             @Override
             public void run() {
-                try {
-                    filter.getCANHandler(0).writeMessage(0x30, new int[]{0, 1, 0, 0, 0, 0, 0, 0 });
-                } catch (IOException ex) {
-                    Logger.getLogger(CANPrecharger.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                filter.getCANHandler(0).writeMessage(0x30, new int[]{0, 1, 0, 0, 0, 0, 0, 0 });
             }
         };
         displayExecutor = Executors.newScheduledThreadPool(1);

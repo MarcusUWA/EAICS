@@ -40,13 +40,9 @@ public class BMS12v3Faker {
         };
         
                 
-        try {
-            handler.writeMessage(id+1, data);
-            handler.writeMessage(id+2, data);
-            handler.writeMessage(id+3, data);
-            handler.writeMessage(id+4, temp);
-        } catch (IOException ex) {
-            Logger.getLogger(BMS12v3Faker.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        handler.writeMessage(id+1, data);
+        handler.writeMessage(id+2, data);
+        handler.writeMessage(id+3, data);
+        handler.writeMessage(id+4, temp);
     }
 }

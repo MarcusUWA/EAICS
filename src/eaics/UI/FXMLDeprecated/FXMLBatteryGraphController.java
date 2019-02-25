@@ -13,7 +13,7 @@ import eaics.CAN.Battery.EVMS;
 import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.SER.Throttle;
+import eaics.SER.SERThrottle;
 import static eaics.UI.MainUIController.refreshFrequency;
 import eaics.UI.Trifan.TrifanMainUIController;
 import java.io.FileInputStream;

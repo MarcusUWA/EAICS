@@ -12,6 +12,8 @@ import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -241,7 +243,61 @@ public class TrifanMainUIController extends MainUIController
                 Image image;
 		
                 // Warnings ----------------------------------------------------
-
+                if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.WAVEFLYER) {
+                    if(filter.getCANHandler(0).isCanActive()) {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1_Single.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                else {
+                    if(filter.getCANHandler(0).isCanActive()&&filter.getCANHandler(1).isCanActive()) {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else if(filter.getCANHandler(0).isCanActive()&&(!filter.getCANHandler(1).isCanActive())){
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan2.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else if(!filter.getCANHandler(0).isCanActive()&&filter.getCANHandler(1).isCanActive()){
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1and2.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                
+                image = new Image(input);
+                can_icon.setImage(image);
 		//EVMS Status Icons
 		if(evmsV3.getStatus() != status) 
                 {

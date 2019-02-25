@@ -5,7 +5,7 @@
  */
 package eaics.UI.Trike;
 
-import eaics.SER.Throttle;
+import THROTTLE.Throttle;
 import eaics.UI.MainUIController;
 import java.io.IOException;
 import java.net.URL;
@@ -205,6 +205,8 @@ public class FXMLLoadProfileController implements Initializable
                                 System.out.println("Throttle: " + lines.get(ii)[0] + " Time: " + lines.get(ii)[1]);
 
                                 throttle.setThrottleSetting(lines.get(ii)[0]);
+                                
+                                System.out.println("Sent Throttle Setting - "+throttle.getThrottleSetting());
                                 startTime = System.currentTimeMillis();
                                 endTime = startTime+(lines.get(ii)[1] * 1000);
 

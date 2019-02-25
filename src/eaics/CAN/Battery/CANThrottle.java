@@ -5,71 +5,53 @@
  */
 package eaics.CAN.Battery;
 
+import THROTTLE.Throttle;
 import eaics.CAN.CANFilter;
-import eaics.Settings.SettingsEAICS;
-import eaics.Settings.TYPEVehicle;
-import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import eaics.CAN.MiscCAN.CANMessage;
 
 /**
  *
  * @author Markcuz
  */
-public class CANThrottle {
-    CANFilter filter;
-    int refreshRate = 100; //in ms
+public class CANThrottle extends Throttle{
     
-    int DAQNum;
-    int DAQInput;
+    final int DAQNum;
+    final int DAQInput;
     
-    int escAddress = 0x14A10000;
+    int lowerThresh;
+    int upperThresh;
     
-    int throttleSetting = 0;
-    
-    private ScheduledExecutorService displayExecutor;
-    
-    private boolean isSendingThrottleCommands;
+    int rawValue;
 
-    public CANThrottle(CANFilter filter, int daqNum, int inputNum, int escAddr) {
-	this.filter = filter;
-        
-        this.escAddress = escAddr;
-        
+    public CANThrottle(CANFilter filter, int daqNum, int inputNum, int lowerThresh, int upperThresh) {
+        super(filter);
         this.DAQNum = daqNum;
         this.DAQInput = inputNum;
-       // sendMessages();
+        
+        this.lowerThresh = lowerThresh;
+        this.upperThresh = upperThresh;
     }
     
-    public void setThrottle(int value){
-        throttleSetting = value;
-    }
-    
-    private void sendMessages() {
-        displayExecutor = null;
-        Runnable Id = new Runnable() { 
+    public void setAll(CANMessage message) {
+        if(isUsingManualThrottle) {
+            if(message.getByte(0)==DAQNum) {
+                rawValue = message.getByte(DAQInput);
+                throttleSetting = (rawValue-lowerThresh)*1024/(upperThresh-lowerThresh);
 
-            int count = 0;
-
-            @Override
-            public void run() {
-                try {
-                    int upperByte = throttleSetting >> 8;
-                    int lowerByte = throttleSetting & 0xFF;
-                    if(isSendingThrottleCommands) {
-                        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
-                            filter.getCANHandler(1).writeMessage(escAddress, new int[]{lowerByte, upperByte});
-                        }
-                        else {
-                            filter.getCANHandler(0).writeMessage(escAddress, new int[]{lowerByte, upperByte});
-                        }
-                    }
-                } catch (IOException ex) {
+                if(throttleSetting<0) {
+                    throttleSetting = 0;
+                }
+                else if(throttleSetting>1024) {
+                    throttleSetting=1024;
                 }
             }
-        };
-        displayExecutor = Executors.newScheduledThreadPool(1);
-        displayExecutor.scheduleAtFixedRate(Id, 0, 50, TimeUnit.MILLISECONDS);
+        }
+        //System.out.println("Raw Value: "+rawValue);
     }
+
+    public int getRawValue() {
+        return rawValue;
+    }
+    
+    
 }

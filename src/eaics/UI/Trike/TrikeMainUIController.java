@@ -13,6 +13,9 @@ import eaics.CAN.ESC.ESC;
 import eaics.CAN.Battery.EVMS;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
+import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEThrottle;
+import eaics.Settings.TYPEVehicle;
 import eaics.UI.FXMLBattery.FXMLAuxTempController;
 import eaics.UI.MainUIController;
 import java.io.FileInputStream;
@@ -122,15 +125,8 @@ public class TrikeMainUIController extends MainUIController
     private void handleStopCharge() {        
         int[] chg = {0x40,0,0,0xF0,0xCC,0xCC,0xCC,0xCC};
         
-        try 
-        {
-            System.out.println("Stop charging");
-            CANFilter.getInstance().getCANHandler(0).writeMessage(0x101956F4, chg);
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        System.out.println("Stop charging");
+        CANFilter.getInstance().getCANHandler(0).writeMessage(0x101956F4, chg);
         
         CANFilter.getInstance().getChargerGBT().stopCharging();
     }
@@ -287,20 +283,24 @@ public class TrikeMainUIController extends MainUIController
         }
     }
 
-    public void initData(Logging logging) throws IOException 
-    {
-        
+    public void initData(Logging logging) throws IOException {
         this.logging = logging;
         this.serial = Serial.getInstance();
         this.loadCell = serial.getCell();
-        this.throttle = serial.getThrottle();
         
-        if(this.throttle.isSendingThrottleCommands())
-        {
+        this.filter = CANFilter.getInstance();
+        
+        if(SettingsEAICS.getInstance().getGeneralSettings().getThr()==TYPEThrottle.CAN) {
+            this.throttle = filter.getThrottle();
+        }
+        else {
+            this.throttle = serial.getThrottle();
+        }
+        
+        if(this.throttle.isSendingThrottleCommands()){
             startStopThrottle.setText("Disable Throttle");
         }
-        else
-        {
+        else{
             startStopThrottle.setText("Enable Throttle");
         }
 	
@@ -310,11 +310,9 @@ public class TrikeMainUIController extends MainUIController
         refreshIP();
         
         Timeline refreshUI;
-        refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>() 
-	{	    
+        refreshUI = new Timeline(new KeyFrame(Duration.millis(refreshFrequency), new EventHandler<ActionEvent>()  {	    
             @Override
-            public void handle(ActionEvent event) 
-	    {
+            public void handle(ActionEvent event)  {
                 CANFilter filter = CANFilter.getInstance();
                 EVMS evmsV3 = (EVMS) filter.getEVMS();
 		ESC[] esc = filter.getESC();
@@ -324,13 +322,67 @@ public class TrikeMainUIController extends MainUIController
                 FileInputStream input = null;
                 Image image;
                 
+                if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.WAVEFLYER) {
+                    if(filter.getCANHandler(0).isCanActive()) {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1_Single.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                else {
+                    if(filter.getCANHandler(0).isCanActive()&&filter.getCANHandler(1).isCanActive()) {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else if(filter.getCANHandler(0).isCanActive()&&(!filter.getCANHandler(1).isCanActive())){
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan2.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else if(!filter.getCANHandler(0).isCanActive()&&filter.getCANHandler(1).isCanActive()){
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1and2.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                
+                image = new Image(input);
+                can_icon.setImage(image);
+                
                 //EVMS Status Icons
-		if(evmsV3.getStatus() != status) 
-                {
+		if(evmsV3.getStatus() != status)  {
                     status = evmsV3.getStatus();
 
-                    switch(status) 
-                    {
+                    switch(status)  {
                         //idle state
                         case 0:
                             try 

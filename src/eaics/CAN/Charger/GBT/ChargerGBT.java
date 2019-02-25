@@ -423,12 +423,7 @@ public class ChargerGBT  {
                     (maxChargeVoltage>>8)&0xFF,         //upper byte
                     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  //filler data
                 };   
-                try  {
-                    handler.writeMessage(0x182756F4, data);
-                } 
-                catch (IOException ex)  {
-                    ex.printStackTrace();
-                }
+                handler.writeMessage(0x182756F4, data);
 	    }
 	};
 
@@ -446,14 +441,7 @@ public class ChargerGBT  {
     public void sendTransportCommManagement() {
         //hardcoded message
         int[] data = {0x10,0x29,0x00,0x07,0xFF, 0x00, 0x02,0x00};
-        try 
-        {
-            handler.writeMessage(0x1CEC56F4, data);
-        }
-        catch (IOException ex)  
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEC56F4, data);
     }
     
     public void sendIdentificationParams() 
@@ -472,15 +460,8 @@ public class ChargerGBT  {
             (fullVoltage*10)&0xFF //Rated Voltage of Battery Low Byte 0.1V
         }; 
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg1);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg1));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg1);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg1));
 
         //Second message
         //b[0] = byte no. = 02, b[1] = Pack Voltage 0.1V (MSB)
@@ -496,16 +477,8 @@ public class ChargerGBT  {
             0x00 //Batt serial
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg2);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg2));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-            Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        handler.writeMessage(0x1CEB56F4, chg2);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg2));
 
         //Third message
         //b[0] = byte no. = 03, b[1-2] = Batt SER (MSB)
@@ -522,15 +495,8 @@ public class ChargerGBT  {
             0x00 //no times charged
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg3);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg3));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg3);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg3));
 
         //Fourth message
         //b[0] = byte no. = 04, b[1] = No. Times charged (MSB)
@@ -547,15 +513,8 @@ public class ChargerGBT  {
             0x00  //Times charged
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg4);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg4));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg4);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg4));
 
         //Fifth-Seventh Message are all reserved..
         int[] chg = {
@@ -569,39 +528,18 @@ public class ChargerGBT  {
             0x00
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg));
 
         chg[0] = 0x06;
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg));
 
         chg[0] = 0x07;
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg));
     }
     
     public void sendPreParameterSettings()
@@ -617,15 +555,8 @@ public class ChargerGBT  {
             0x00
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEC56F4, chg);
-            //System.out.println("0x1CEC56F4: "+Int2String(chg));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEC56F4, chg);
+        //System.out.println("0x1CEC56F4: "+Int2String(chg));
     }
     
     public void sendParameterSettings() 
@@ -646,15 +577,8 @@ public class ChargerGBT  {
             (maxChargeVoltage*10)&0xFF
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg1);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg1));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg1);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg1));
 
         //Second message
         //b[0] = byte no. = 02, b[1] = Max Charge Voltage
@@ -674,15 +598,8 @@ public class ChargerGBT  {
             0xFF
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg2);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg2));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg2);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg2));
     }
     
     public void startSendReadyToCharge() 
@@ -697,15 +614,8 @@ public class ChargerGBT  {
 	    @Override
 	    public void run() 
 	    {
-                try 
-                {
-                    handler.writeMessage(0x100956F4, chg1);
-                    //System.out.println("0x100956F4: "+Int2String(chg1));
-                } 
-                catch (IOException ex) 
-                {
-                    ex.printStackTrace();
-                }
+                handler.writeMessage(0x100956F4, chg1);
+                //System.out.println("0x100956F4: "+Int2String(chg1));
 	    }
 	};
 
@@ -821,29 +731,19 @@ public class ChargerGBT  {
 	    @Override
 	    public void run() 
 	    {
-                try 
-                {  
-                    handler.writeMessage(0x181056F4, chg1);  //10ms
-                    //System.out.println("0x181056F4: "+Int2String(chg1));
-                    
-                    if(++count == 25)
-                    {
-                        handler.writeMessage(0x1cec56f4, chg2);  //250ms
-                        //System.out.println("0x1CEC56F4: "+Int2String(chg2));
-                        count = 0;
-                    }
-                    
-                    if(++count2 == 1000)
-                    {
-                        handler.writeMessage(0x181356F4, chg3);
-                        //System.out.println("0x181356F4: "+Int2String(chg3));
-                        count2 = 0;
-                    }
-                } 
-                catch (IOException ex) 
+                handler.writeMessage(0x181056F4, chg1);  //10ms
+                //System.out.println("0x181056F4: "+Int2String(chg1));
+                if(++count == 25) 
                 {
-                    ex.printStackTrace();
-                    Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
+                    handler.writeMessage(0x1cec56f4, chg2);  //250ms
+                    //System.out.println("0x1CEC56F4: "+Int2String(chg2));
+                    count = 0;
+                }
+                if(++count2 == 1000)
+                {
+                    handler.writeMessage(0x181356F4, chg3);
+                    //System.out.println("0x181356F4: "+Int2String(chg3));
+                    count2 = 0;
                 }
 	    }
 	};
@@ -857,17 +757,8 @@ public class ChargerGBT  {
         //hardcoded
         int[] chg = {0x10, 0x09, 0x00, 0x02, 0xFF, 0x00, 0x11, 0x00};
         
-        try 
-        {
-            handler.writeMessage(0x1CEC56F4, chg);
-            //System.out.println("0x1CEC56F4: "+Int2String(chg));
-            
-        }
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-            Logger.getLogger(ChargerGBT.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        handler.writeMessage(0x1CEC56F4, chg);
+        //System.out.println("0x1CEC56F4: "+Int2String(chg));
      }
      
     public void sendBatteryChargingState() 
@@ -918,17 +809,10 @@ public class ChargerGBT  {
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF
         };
         
-        try 
-        {
-            handler.writeMessage(0x1CEB56F4, chg1);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg1));
-            handler.writeMessage(0x1CEB56F4, chg2);
-            //System.out.println("0x1CEB56F4: "+Int2String(chg2));
-        } 
-        catch (IOException ex) 
-        {
-            ex.printStackTrace();
-        }
+        handler.writeMessage(0x1CEB56F4, chg1);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg1));
+        handler.writeMessage(0x1CEB56F4, chg2);
+        //System.out.println("0x1CEB56F4: "+Int2String(chg2));
     }
     
     public void stopCharging() //not needed for prototype

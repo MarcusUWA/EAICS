@@ -14,6 +14,9 @@ import eaics.CAN.CANFilter;
 import eaics.Settings.SettingsEAICS;
 import eaics.Settings.TYPEVehicle;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -39,12 +42,18 @@ public class CANHandler
     
     private boolean noCAN = false;
     
+    private boolean canActive;
+    int heartbeatCount = 0;
+    
+    private ScheduledExecutorService heartBeatExecutor;
+    
     public CANHandler(String canSocketString) {
         this.canSocketString = canSocketString;
         
         this.amReading = true;
         this.startedReading = false;
         this.portBinded = false;
+        this.canActive = false;
         
         if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.TESTING) {
             noCAN = true;
@@ -67,6 +76,8 @@ public class CANHandler
         }
         
         canMessage = new CANMessage();
+        
+        CANHeartbeat();
     }
     
     public void openPort() throws IOException  {
@@ -105,26 +116,19 @@ public class CANHandler
             portBinded = false;
         }
         else {
-            if(!portBinded) 
-            {
+            if(!portBinded) {
                 throw new IllegalStateException("Port not open");
             }
-            else 
-            {
+            else {
                 amReading = true;
 
                 //Thread for reading...
-                if(!startedReading) 
-                {
-                    threadReadCAN = new Thread(new Runnable()
-                    {
-                        public void run()
-                        {
-                            try 
-                            {
+                if(!startedReading)  {
+                    threadReadCAN = new Thread(new Runnable() {
+                        public void run() {
+                            try  {
                                 CANFilter filter = CANFilter.getInstance();
-                                while(amReading&&portBinded) 
-                                {
+                                while(amReading&&portBinded)  {
                                     //to receive all that is needed is the below line
                                     CanFrame currentFrame = socket.recv();
 
@@ -133,6 +137,8 @@ public class CANHandler
                                     int data[] = byte2int(currentFrame.getData());
 
                                     canMessage.newMessage(canSocketString, canID, data);
+                                    
+                                    heartbeatCount = 0;
                                     /*
                                     if(canSocketString.equals("can0"))
                                     {
@@ -158,6 +164,28 @@ public class CANHandler
                 }
             }
         }
+    }
+    
+    private void CANHeartbeat() {
+        heartBeatExecutor = null;
+        Runnable Id = new Runnable() { 
+
+            @Override
+            public void run() {
+                heartbeatCount++;
+                
+                if(heartbeatCount>5) {
+                    canActive = false;
+                }
+                else {
+                    canActive = true;
+                }
+                
+                //System.out.println(canSocketString +" CANActive state: "+canActive+" count: "+heartbeatCount);
+            }
+        };
+        heartBeatExecutor  = Executors.newScheduledThreadPool(1);
+        heartBeatExecutor.scheduleAtFixedRate(Id, 0, 500, TimeUnit.MILLISECONDS);
     }
     
     /**
@@ -198,7 +226,7 @@ public class CANHandler
     }
     
     
-    public void writeMessage(int id, int[] data) throws IOException  {
+    public void writeMessage(int id, int[] data){
         if(noCAN) {
             System.out.println("Close: CAN turned off");
             portBinded = false;
@@ -228,8 +256,14 @@ public class CANHandler
                 //Packaging the frame
                 CanFrame frame = new CanFrame(canIf, frameID, frameData);
 
-                //Sending the frame
-                socket.send(frame);
+                try {
+                    //Sending the frame
+                    socket.send(frame);
+                    heartbeatCount = 0;
+                } catch (IOException ex) {
+                    System.out.println("No buffer space available OR CANBus not correctly terminated");
+                   // canActive = false;
+                }
             }
         }
     }
@@ -260,13 +294,23 @@ public class CANHandler
                 //Packaging the frame
                 CanFrame frame = new CanFrame(canIf, frameID, frameData);
 
-                //Sending the frame
-                socket.send(frame);
+                try {
+                    //Sending the frame
+                    socket.send(frame);
+                    heartbeatCount = 0;
+                } catch (IOException ex) {
+                    System.out.println("No buffer space available OR CANBus not correctly terminated");
+                  //  canActive = false;
+                }
             }
         }
     }
     
     private void stopReading() {        
         amReading = false;
+    }
+
+    public boolean isCanActive() {
+        return canActive;
     }
 }

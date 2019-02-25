@@ -221,17 +221,10 @@ public class SettingsEVMS implements Settings {
             this.stationaryMode.getSetting()
         };     
         
-        try
-        {
-            handle.writeMessage(0x20, msg1);
-            handle.writeMessage(0x21, msg2);
-            handle.writeMessage(0x22, msg3);
-            handle.writeMessage(0x23, msg4);
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        handle.writeMessage(0x20, msg1);
+        handle.writeMessage(0x21, msg2);
+        handle.writeMessage(0x22, msg3);
+        handle.writeMessage(0x23, msg4);
     }
 
     public void setSetting(int index, int setting)

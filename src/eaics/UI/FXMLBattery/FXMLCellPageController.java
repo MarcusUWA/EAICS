@@ -220,6 +220,62 @@ public class FXMLCellPageController implements Initializable {
             B3C4.setText(String.format("%.2f", filter.getBMS()[1+currentModule*2].getVoltage(10)/1000.0)+" V");
             B3C5.setText(String.format("%.2f", filter.getBMS()[1+currentModule*2].getVoltage(11)/1000.0)+" V");
             
+            float max = 0, min = 10000, ave = 0, sum = 0;
+            for(int i = 0; i< 12; i++) {
+                for(int j = 0; j<2; j++) {
+                    int voltage = filter.getBMS()[j+currentModule*2].getVoltage(i);
+                    
+                    if(voltage<min) {
+                        min = voltage;
+                    }
+                    
+                    if(voltage>max) {
+                        max = voltage;
+                    }
+
+                    sum = sum + voltage;
+                }
+            }
+            
+            ave = (float) (sum/24.0);
+            
+            LabelMax.setText(String.format("%.2f", max/1000.0)+" V");
+            LabelMin.setText(String.format("%.2f", min/1000.0)+" V");
+            LabelAve.setText(String.format("%.2f", max/1000.0)+" V");
+        }
+        else if(settings.getGeneralSettings().getBms()==TYPEBms.ELECAERO) {
+            B0C0.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(0)/1000.0)+" V");
+            B0C1.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(1)/1000.0)+" V");
+            B0C2.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(2)/1000.0)+" V");
+            B0C3.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(3)/1000.0)+" V");
+            B0C4.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(4)/1000.0)+" V");
+            B0C5.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(5)/1000.0)+" V");
+            
+            B1C0.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(6)/1000.0)+" V");
+            B1C1.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(7)/1000.0)+" V");
+            B1C2.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(8)/1000.0)+" V");
+            B1C3.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(9)/1000.0)+" V");
+            B1C4.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(10)/1000.0)+" V");
+            B1C5.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(11)/1000.0)+" V");
+            
+            B2C0.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(12)/1000.0)+" V");
+            B2C1.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(13)/1000.0)+" V");
+            B2C2.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(14)/1000.0)+" V");
+            B2C3.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(15)/1000.0)+" V");
+            B2C4.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(16)/1000.0)+" V");
+            B2C5.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(17)/1000.0)+" V");
+            
+            B3C0.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(18)/1000.0)+" V");
+            B3C1.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(19)/1000.0)+" V");
+            B3C2.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(20)/1000.0)+" V");
+            B3C3.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(21)/1000.0)+" V");
+            B3C4.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(22)/1000.0)+" V");
+            B3C5.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getVoltage(23)/1000.0)+" V");
+            
+            T0.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getTemp(1)));
+            T1.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getTemp(2)));
+            T2.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getTemp(3)));
+            T3.setText(String.format("%.2f", filter.getBmsElec()[currentModule].getTemp(4)));
             
             float max = 0, min = 10000, ave = 0, sum = 0;
             for(int i = 0; i< 12; i++) {

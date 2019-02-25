@@ -5,13 +5,13 @@
  */
 package eaics.UI;
 
+import THROTTLE.Throttle;
 import eaics.UI.FXMLSettings.FXMLLoggingPageController;
 import eaics.UI.Trike.FXMLLoadProfileController;
 import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
-import eaics.SER.Throttle;
 import eaics.Settings.IPAddress;
 import java.io.IOException;
 import java.net.URL;
