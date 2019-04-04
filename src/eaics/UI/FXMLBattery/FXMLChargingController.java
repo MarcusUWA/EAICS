@@ -88,6 +88,10 @@ public class FXMLChargingController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) 
     {
         // TODO
+        if(SettingsEAICS.getInstance().getGeneralSettings().getChargerType()==TYPECharger.None) {
+            StartStop.setDisable(true);
+            StartStop.setVisible(false);
+        }
     }    
     
     public void initialiseChargingScene() { 
@@ -106,8 +110,6 @@ public class FXMLChargingController implements Initializable {
                 StartStop.setText("Start Charging");
             }
         }
-        
-        
         
         updateScreen();
         
@@ -147,6 +149,7 @@ public class FXMLChargingController implements Initializable {
             
             chargerStatus.setText(filter.getChargerGBT().getError());
         }
+        
         else if(settings.getGeneralSettings().getChargerType()==TYPECharger.TC) {
             ChargerMaxVoltage.setText("N/A");
             ChargerMinVoltage.setText("N/A");
@@ -198,14 +201,43 @@ public class FXMLChargingController implements Initializable {
             ChargerMaxCurrent.setText("N/A");
             ChargerMinCurrent.setText("N/A");
             
-            ObservedCurrent.setText("N/A");
-            ObservedVoltage.setText("N/A");
+            ObservedCurrent.setText(String.format("%.1f",filter.getChargerTC().getOutputCurrent())+" A");
+            ObservedVoltage.setText(String.format("%.1f",filter.getChargerTC().getOutputVoltage())+" V");
 
             // Power [kW] = current*voltage/1000
-            ObservedPower.setText("N/A");
+            ObservedPower.setText(String.format("%.1f",
+                    filter.getChargerTC().getOutputCurrent()*filter.getChargerTC().getOutputVoltage()/1000.0));
 
             // Integer is converted to string
             TimeCharging.setText("N/A");
+            
+            String statusString = "";
+            if(filter.getChargerTC().getStatusByte()==0x00) {
+                statusString="Charging...";
+            }
+            else {
+                if((filter.getChargerTC().getStatusByte()&0x01)==0x01) {
+                    statusString+="HardWare ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x02)==0x02) {
+                    statusString+="Temp ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x04)==0x04) {
+                    statusString+="Volts ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x08)==0x08) {
+                    statusString+="Ready ";
+                }
+
+                if((filter.getChargerTC().getStatusByte()&0x10)==0x10) {
+                    statusString+="Comms";
+                }
+            }
+
+            chargerStatus.setText(statusString);
         }
         
         chargeVoltage.setText(String.format(settings.getEVMSSettings().getSetting(19)+" V"));

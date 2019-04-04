@@ -34,8 +34,7 @@ public class CANFilter {
     private CANHandler bus0CANHandler;
     private CANHandler bus1CANHandler;
     
-    public static final int NUM_OF_ESC = SettingsEAICS.getInstance().getGeneralSettings().getNumEsc();
-    
+    public static final int NUM_OF_ESC = SettingsEAICS.getInstance().getGeneralSettings().getNumEsc(); 
     
     public static final int NUM_OF_BMS = SettingsEAICS.getInstance().getGeneralSettings().getNumBatteryModules()*2;//24
     
@@ -79,6 +78,7 @@ public class CANFilter {
                 if(instance == null)
                 {
                     instance = new CANFilter();
+
                 }
 	    }
 	}
@@ -357,6 +357,8 @@ public class CANFilter {
             case 0x18000000: case 0x18000002: case 0x18000001:
                 break;
                 
+            case 0x1806e5f4:
+                break;
                 
 	    default:
                 System.out.println("Unknown packet, Frame ID: " + Integer.toHexString(message.getFrameID()));

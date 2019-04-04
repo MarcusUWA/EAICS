@@ -173,7 +173,6 @@ public class TrifanMainUIController extends MainUIController
             stage.setScene(scene);
             stage.setTitle("Settings!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 
@@ -205,7 +204,6 @@ public class TrifanMainUIController extends MainUIController
             stage.setScene(scene);
             stage.setTitle("Battery!!");
             
-            stage.setMaximized(true);
             stage.show();
         }
         catch (Exception e) 
@@ -575,15 +573,6 @@ public class TrifanMainUIController extends MainUIController
                 
                 
                 auxLabel.setText("" + String.format("%.2f", evmsV3.getAuxVoltage()));
-                /*
-                
-                System.out.println("Sending to 0x30");
-                try {
-                    filter.getCANHandler(0).writeMessage(0x30, new int[]{0x00,0x01});
-                } catch (IOException ex) {
-                    Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-*/
             }
             
         }));

@@ -9,7 +9,9 @@ import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
 import eaics.Settings.IPAddress;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import eaics.UI.FXMLSettings.FXMLAdvZEVASettingsPage;
+import eaics.UI.FXMLSettings.FXMLCANController;
 import eaics.UI.FXMLSettings.FXMLCalibrateLoadCellController;
 import eaics.UI.FXMLSettings.FXMLConnectWifiController;
 import eaics.UI.FXMLSettings.FXMLGeneralSettingsController;
@@ -36,7 +38,7 @@ import javafx.stage.Stage;
  * @author Troy
  */
 public class FXMLSettingsController implements Initializable {
-    String version = "3.7.4";
+    String version = "3.7.7";
     
     FXMLAdvZEVASettingsPage advZEVASettingsPage;
     FXMLConnectWifiController wifiConnectController;
@@ -50,6 +52,8 @@ public class FXMLSettingsController implements Initializable {
     FXMLCalibrateLoadCellController calib;
     
     FXMLMGMTestController MGLTest;
+    
+    FXMLCANController canSettings;
     
     private Logging logging;
     
@@ -89,6 +93,12 @@ public class FXMLSettingsController implements Initializable {
     
     @FXML
     private Button closeButton;
+    
+    @FXML 
+    private Button mgmAdjust;
+    
+    @FXML 
+    private Button loadCell;
     
     @FXML 
     private Label pixhawkIPLabel;
@@ -260,6 +270,13 @@ public class FXMLSettingsController implements Initializable {
         
         pixhawkIPLabel.setText(SettingsEAICS.getInstance().getPixHawkSettings().getIpAddress());
         
+        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.TRIFAN) {
+            mgmAdjust.setDisable(true);
+            mgmAdjust.setVisible(false);
+            loadCell.setDisable(true);
+            loadCell.setVisible(false);
+            
+        }
 	softwareVersionLabel.setText(version);
     }
 
@@ -361,6 +378,35 @@ public class FXMLSettingsController implements Initializable {
         }        
         catch (Exception e) {
             System.out.println("Failed to open General Settings Window");
+            e.printStackTrace();
+        }
+    }
+    
+     @FXML
+    private void handleCANSettings(ActionEvent event) {
+        
+        canSettings = new FXMLCANController();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLSettings/FXMLCAN.fxml"));
+        try {
+            Pane pane = loader.load();
+            canSettings = loader.getController();
+            canSettings.setupScreen();
+        
+            Stage stage = new Stage();
+        
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(closeButton.getScene().getWindow());
+        
+            Scene scene = new Scene(pane);
+        
+            stage.setScene(scene);
+            stage.setTitle("CANBus Settings");
+            
+            stage.show();
+        }        
+        catch (Exception e) {
+            System.out.println("Failed to open CANBus Settings Window");
             e.printStackTrace();
         }
     }

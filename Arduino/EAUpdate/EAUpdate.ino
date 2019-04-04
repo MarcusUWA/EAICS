@@ -172,6 +172,7 @@ float pressureValue;
     for(int i=0; i<10; i++) {
          tempValue = analogRead(pressurePin)-512;
          tempSum+=tempValue;
+         delay(10);
     }
     pressureOffset=tempSum/10.0;
     analogReference(EXTERNAL);
@@ -204,10 +205,15 @@ float pressureValue;
     
       for (int i=0; i< NUMSAMPLES; i++) {
             samples[i][0] = analogRead(THERM2);
+            delay(10);
             samples[i][1] = analogRead(THERM3);
+            delay(10);
             samples[i][2] = analogRead(THERM4);
+            delay(10);
             samples[i][3] = analogRead(THERM5);
+            delay(10);
             samples[i][4] = analogRead(THERM6);
+            delay(10);
             samples[i][5] = analogRead(THERM7);
             delay(10);
       }
@@ -247,6 +253,7 @@ float pressureValue;
     }
   
     sum = weight1+weight2+weight3+weight4;
+    delay(10);
   }
 
   void tare() {

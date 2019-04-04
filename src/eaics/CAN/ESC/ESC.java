@@ -28,31 +28,28 @@ public class ESC
     private int warnings;
     private int failures;
     private int remainingBatteryCapacity;
-    private int throttleCommand;
     
     public ESC(int escID){
-		this.escID = escID;
-                this.offset = 5;
-		
-		//Packet 1 - 7 data bytes
-		this.batteryVoltage = 0.0;
-		this.batteryCurrent = 0.0;
-		this.rpm = 0;
-		//Packet 2 - 7 data bytes
-		this.odometer = 0;
-		this.controllerTemp = 0;
-		this.motorTemp = 0;
-		this.battTemp = 0;
-		//Packet 3 - 8 data bytes
-		this.requestedOutputPWM = 0.0;
-		this.realOutputPWM = 0.0;
-		this.warnings = 0;
-		this.failures = 0;
-		//Packet 4 - 8 bytes
-		this.remainingBatteryCapacity = 0;
-                
-		//Incoming Packet
-		this.throttleCommand = 0;
+        this.escID = escID;
+        this.offset = 5;
+
+        //Packet 1 - 7 data bytes
+        this.batteryVoltage = 0.0;
+        this.batteryCurrent = 0.0;
+        this.rpm = 0;
+        //Packet 2 - 7 data bytes
+        this.odometer = 0;
+        this.controllerTemp = 0;
+        this.motorTemp = 0;
+        this.battTemp = 0;
+        //Packet 3 - 8 data bytes
+        this.requestedOutputPWM = 0.0;
+        this.realOutputPWM = 0.0;
+        this.warnings = 0;
+        this.failures = 0;
+        //Packet 4 - 8 bytes
+        this.remainingBatteryCapacity = 0;
+
     }
     
     public void setAll(CANMessage message){
@@ -140,17 +137,7 @@ public class ESC
     {
 		return this.remainingBatteryCapacity;
     }
-    /*
-    public void setThrottleCommand(int throttleCommand)
-    {
-		this.throttleCommand = throttleCommand;
-    }
-    
-    public int getThrottleCommand()
-    {
-		return this.throttleCommand;
-    }
-    */
+
     public String getLoggingString()
     {
 		String outString = "";
@@ -167,7 +154,6 @@ public class ESC
 		outString += warnings + ", ";
 		outString += failures + ", ";
 		outString += remainingBatteryCapacity + ", ";
-		outString += throttleCommand + ", ";
 		
 		return outString;
     }

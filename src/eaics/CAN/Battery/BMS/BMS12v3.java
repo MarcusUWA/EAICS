@@ -8,6 +8,7 @@ package eaics.CAN.Battery.BMS;
 import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,6 @@ public class BMS12v3 {
 	private int MODULE_ID;
 	private int[] voltage;
 	private int[] temp;
-        
 	
 	public static final int NUMBER_OF_CELLS = 12;
 	public static final int NUMBER_OF_TEMP_SENSORS = 2;
@@ -39,13 +39,14 @@ public class BMS12v3 {
 	    this.temp = new int[NUMBER_OF_TEMP_SENSORS];
             this.filter = filter;
             
-            startPolling();
+            if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.TRIKE_Prototype) {
+                startPolling();
+            }
 	}
 	
-	public void setAll(CANMessage message)
-	{
-	    switch(message.getFrameID() - (BPID + 10 * MODULE_ID))
-	    {
+	public void setAll(CANMessage message) {
+           // System.out.println(message);
+	    switch(message.getFrameID() - (BPID + 10 * MODULE_ID)) {
 		case 1:
 		    for (int ii = 0; ii < 4; ii++)
 		    {
@@ -130,15 +131,24 @@ public class BMS12v3 {
         private void startPolling() {
             displayExecutor = null;
             Runnable Id = new Runnable() { 
+                int count = 0;
 
-            int count = 0;
-
-            @Override
-            public void run() {
-                filter.getCANHandler(0).writeMessage(BPID+10*MODULE_ID, new int[]{0, 0, 0, 0, 0, 0, 0, 0 });
-            }
-        };
-        displayExecutor = Executors.newScheduledThreadPool(1);
-        displayExecutor.scheduleAtFixedRate(Id, 0, 1000, TimeUnit.MILLISECONDS);
+                @Override
+                public void run() {
+                  //  System.out.println("Polling BMS");
+                    filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getBmsCAN()).writeMessage(BPID+10*MODULE_ID, 
+                            new int[]{
+                                SettingsEAICS.getInstance().getEVMSSettings().getSetting(15)>>8, 
+                                SettingsEAICS.getInstance().getEVMSSettings().getSetting(15)&0xFF, 
+                                0, 
+                                0, 
+                                0, 
+                                0, 
+                                0, 
+                                0 });
+                }
+            };
+            displayExecutor = Executors.newScheduledThreadPool(1);
+            displayExecutor.scheduleAtFixedRate(Id, 0, 500, TimeUnit.MILLISECONDS);
         }
 }

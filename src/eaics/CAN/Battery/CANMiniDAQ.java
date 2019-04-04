@@ -7,18 +7,18 @@ package eaics.CAN.Battery;
 
 import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANMessage;
-import java.io.IOException;
+import eaics.Settings.SettingsEAICS;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Markcuz
  */
 public class CANMiniDAQ {
+    
+    final int CANaddress = 0x40;
     
     CANFilter filter;
     int[] input1;
@@ -73,11 +73,11 @@ public class CANMiniDAQ {
 
             @Override
             public void run() {
-                filter.getCANHandler(0).writeMessage(0x30, new int[]{0, 1, 0, 0, 0, 0, 0, 0 });
+                filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getMinidaqCAN()).writeMessage(CANaddress, new int[]{0, 1, 0, 0, 0, 0, 0, 0 });
             }
         };
         displayExecutor = Executors.newScheduledThreadPool(1);
-        displayExecutor.scheduleAtFixedRate(Id, 0, 50, TimeUnit.MILLISECONDS);
+        displayExecutor.scheduleAtFixedRate(Id, 0, 200, TimeUnit.MILLISECONDS);
     }
 
     public int[] getInput1() {

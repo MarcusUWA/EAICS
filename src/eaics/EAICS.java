@@ -29,11 +29,11 @@ public class EAICS extends Application {
         
         SettingsEAICS settings = SettingsEAICS.getInstance();
         settings.loadSettings();
+       
+        CANFilter filter = CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
         //need to improve upon this....
         Serial comms = Serial.getInstance();
-        
-        CANFilter.getInstance();    //Start the CANHandler and create all objects.
         
         if((settings.getGeneralSettings().getVeh()==TYPEVehicle.WAVEFLYER)||settings.getGeneralSettings().getVeh() == TYPEVehicle.TRIFAN) {
             // Pix Hawk Code ------------------------------------------------------

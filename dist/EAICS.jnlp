@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="EAICS.jar" size="691306" download="eager" />
+    <jar href="EAICS.jar" size="706449" download="eager" />
     <jar href="lib/jSerialComm-2.3.0.jar" size="372797" download="eager" />
     <jar href="lib/jsch-0.1.55.jar" size="280681" download="eager" />
     <jar href="lib/libsocket-can-java.jar" size="52235" download="eager" />

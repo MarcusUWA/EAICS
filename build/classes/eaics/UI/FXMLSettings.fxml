@@ -43,7 +43,7 @@
             <Button fx:id="buttonResetSOC" mnemonicParsing="false" onAction="#handleResetSOC" prefHeight="39.0" prefWidth="200.0" text="Reset SoC" GridPane.rowIndex="2" />
             <Button mnemonicParsing="false" onAction="#handleAdjustLogging" prefHeight="39.0" prefWidth="200.0" text="Adjust Logging" GridPane.rowIndex="4" />
             <Button mnemonicParsing="false" onAction="#handleSendLogging" prefHeight="39.0" prefWidth="200.0" text="Send Logs" GridPane.rowIndex="5" />
-            <Button mnemonicParsing="false" onAction="#handleCalibrateLoadCell" prefHeight="39.0" prefWidth="200.0" text="Calib. Load Cell" GridPane.rowIndex="7" />
+            <Button fx:id="loadCell" mnemonicParsing="false" onAction="#handleCalibrateLoadCell" prefHeight="39.0" prefWidth="200.0" text="Calib. Load Cell" GridPane.rowIndex="7" />
             <Button fx:id="buttonGeneralSettingsPage1" mnemonicParsing="false" onAction="#handleAdvancedZEVASettingsPage" prefHeight="39.0" prefWidth="200.0" text="Advanced ZEVA" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <Button fx:id="pixhawkButton" mnemonicParsing="false" onAction="#handleUpdatePixhawk" prefHeight="39.0" prefWidth="240.0" text="Set PC IP (for PixHawk)" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -88,7 +88,8 @@
             </Label>
             <Button mnemonicParsing="false" onAction="#handleGeneralSettings" prefHeight="95.0" prefWidth="180.0" text="General Settings" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Button disable="true" mnemonicParsing="false" prefHeight="95.0" prefWidth="180.0" text="Basic ZEVA" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button mnemonicParsing="false" onAction="#handleMGMAdjust" prefHeight="27.0" prefWidth="199.0" text="MGM Adjust" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Button fx:id="mgmAdjust" mnemonicParsing="false" onAction="#handleMGMAdjust" prefHeight="27.0" prefWidth="199.0" text="MGM Adjust" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Button mnemonicParsing="false" onAction="#handleCANSettings" prefHeight="95.0" prefWidth="180.0" text="CANBus Settings" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

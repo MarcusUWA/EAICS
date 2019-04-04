@@ -27,20 +27,27 @@ public class SettingsEAICS {
     private SettingsGeneral generalSettings;
     private SettingsEVMS evmsSettings;
     private SettingsPixhawk pixHawkSettings;
+    private SettingsCAN canSettings;
     
     private static final String SETTINGS_HEADING = "+-----------------------------------------------+\n";
     private static final String SETTINGS_FOOTER = "+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^+\n";
     private static final String SETTINGS_GENERAL = "GENERAL_SETTINGS";
     private static final String SETTINGS_BMS = "BMS_SETTINGS";
     private static final String SETTINGS_PIXHAWK = "PIXHAWK_SETTINGS";
+    private static final String SETTINGS_CAN = "CANBUS_SETTINGS";
     
+    public boolean settingsLoaded = false;
     
     private SettingsEAICS()
     {
+        System.out.println("Settings init");
+        
         this.filePath = "/home/pi/EAICS/settingsFile.conf";
         this.generalSettings = new SettingsGeneral();
         this.evmsSettings = new SettingsEVMS();
         this.pixHawkSettings = new SettingsPixhawk();
+        this.canSettings = new SettingsCAN();
+        
     }
     
     public static SettingsEAICS getInstance() 
@@ -70,12 +77,17 @@ public class SettingsEAICS {
     public SettingsGeneral getGeneralSettings() {
         return generalSettings;
     }
+
+    public SettingsCAN getCanSettings() {
+        return canSettings;
+    }
        
     public void update() {
         System.out.println("Update Settings");
         generalSettings.update();
         evmsSettings.update();
 	pixHawkSettings.update();
+        canSettings.update();
 	writeSettings();	
     }
     
@@ -96,6 +108,9 @@ public class SettingsEAICS {
             boolean readingPixHawk = false;
             String pixHawkFileString = "";
             
+            boolean readingCan = false;
+            String canFileString = "";
+            
 	    while ((inFileString = reader.readLine()) != null) {
 		if(inFileString.contains("+---")) {
 		    inFileString = reader.readLine();	// skip heading lines
@@ -114,25 +129,26 @@ public class SettingsEAICS {
 		    readingPixHawk = true;
 		}
                 
+                if(inFileString.contains(SETTINGS_CAN))
+		{
+		    readingCan = true;
+		}
+                
                 
                 if(readingGeneral) { 
                     if(inFileString.contains("+^^^")) {
                        readingGeneral = false;
                        continue;
                     }
-                    /*
-		    String[] line = inFileString.split("\\s+");
-		    
-                    //only passing the value... need to fix this...
-                    for(int ii = 0; ii < line.length; ii++) {
-                        if(line[ii].startsWith("#")) {
-                            //removing the # character
-                            generalFileString += line[ii].substring(1) + "\n";
-                        }
+                    generalFileString += inFileString + "\n";  
+                }
+                
+                if(readingCan) { 
+                    if(inFileString.contains("+^^^")) {
+                       readingCan = false;
+                       continue;
                     }
-                    */
-                    generalFileString += inFileString + "\n";
-		    
+                    canFileString += inFileString + "\n";  
                 }
                 
                 if(readingBMS) { 
@@ -169,9 +185,12 @@ public class SettingsEAICS {
                 }
 	    }
             
+            canSettings.setSettings(canFileString);
             generalSettings.setSettings(generalFileString);
             evmsSettings.setSettings(bmsFileString);
             pixHawkSettings.setSettings(pixHawkFileString);
+
+            settingsLoaded = true;
 	}
         catch(FileNotFoundException e){
             writeSettings();
@@ -182,6 +201,8 @@ public class SettingsEAICS {
         finally {
             update();
         }
+        
+        
     }
     
     public void writeSettings() {
@@ -195,6 +216,14 @@ public class SettingsEAICS {
 	    writer.write(SETTINGS_HEADING);
             
             writer.write(generalSettings.getSettingsFileString());
+            
+            writer.write(SETTINGS_FOOTER);
+            
+            writer.write(SETTINGS_HEADING);
+	    writer.write("\t\t" + SETTINGS_CAN + "\n");
+	    writer.write(SETTINGS_HEADING);
+            
+            writer.write(canSettings.getSettingsFileString());
             
             writer.write(SETTINGS_FOOTER);
            

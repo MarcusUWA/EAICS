@@ -5,22 +5,20 @@
  */
 package eaics.CAN.Battery.BMS;
 
-import eaics.CAN.Battery.CANPrecharger;
 import eaics.CAN.CANFilter;
 import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Markcuz
  */
 public class BMSElectro {
+    
+    final int canAddress = 0xB0;
     private SettingsEAICS settings;
         private final int requestID = 0x80;
         private final int baseResponseID = 0xA0;
@@ -129,7 +127,7 @@ public class BMSElectro {
 
             @Override
             public void run() {
-                filter.getCANHandler(0).writeMessage(0xB0, new int[]{MODULE_ID, 0, 0, 0, 0, 0, 0, 0 });
+                filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getBmsCAN()).writeMessage(canAddress, new int[]{MODULE_ID, 0, 0, 0, 0, 0, 0, 0 });
             }
         };
         displayExecutor = Executors.newScheduledThreadPool(1);

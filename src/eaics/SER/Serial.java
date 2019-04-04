@@ -117,7 +117,9 @@ public class Serial {
                     }
                     else {
                         cell.setMsg(buffer.toString());
-                        throttle.setMsg(buffer.toString());
+                        if(SettingsEAICS.getInstance().getGeneralSettings().getThr()==TYPEThrottle.SER) {
+                            throttle.setMsg(buffer.toString());
+                        }
                         temp.setMsg(buffer.toString());
                         airPress.setMsg(buffer.toString());
                         buffer.setLength(0);

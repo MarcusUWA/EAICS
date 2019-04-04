@@ -11,12 +11,9 @@ import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEAICS;
 import eaics.Settings.SettingsEVMS;
 import eaics.Settings.TYPEVehicle;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -46,14 +43,12 @@ public class TCCharger {
         this.outputVoltage = 0;
         this.outputCurrent = 0;
         this.statusByte = 0;
-        
 
-        
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
 
         if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
-            this.handler = filter.getCANHandler(1);
-        }
+            this.handler = filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getChargerCAN());
+       }
         else {
             this.handler = filter.getCANHandler(0);
         }
@@ -91,7 +86,8 @@ public class TCCharger {
                 chargeCurrent = settings.getSetting(20)*10;
                 
                 chargeStatus = true;
-                
+
+               // System.out.println("Sending CHG message");
                 handler.writeMessage(
                         0x1806E5F4,
                         new int[]{

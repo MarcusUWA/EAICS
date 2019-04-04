@@ -253,7 +253,7 @@ public class Logging
             columnHeadings += "ESC " + ii + " Warnings, ";
             columnHeadings += "ESC " + ii + " Failures, ";
             columnHeadings += "ESC " + ii + " Remaining Battery Capacity, ";
-            columnHeadings += "ESC " + ii + " Throttle Command, ";			
+//            columnHeadings += "ESC " + ii + " Throttle Command, ";			
         }
 
         columnHeadings += "Load Cell Total (kg), ";

@@ -13,13 +13,10 @@ import eaics.CAN.MiscCAN.CANMessage;
 import eaics.Settings.SettingsEVMS;
 import eaics.Settings.SettingsEAICS;
 import eaics.Settings.TYPEVehicle;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ChargerGBT  {
     
@@ -108,7 +105,7 @@ public class ChargerGBT  {
         this.evms = filter.getEVMS();
         this.settings = SettingsEAICS.getInstance().getEVMSSettings();
         if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
-            this.handler = filter.getCANHandler(1); // Must change manually, UPDATE AS A = 0 B = 1
+            this.handler = filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getChargerCAN()); // Must change manually, UPDATE AS A = 0 B = 1
         }
         else {
             this.handler = filter.getCANHandler(0); // Must change manually, UPDATE AS A = 0 B = 1

@@ -7,8 +7,6 @@ package eaics.UI;
 
 import eaics.UI.FXMLBattery.FXMLChargingController;
 import eaics.UI.FXMLBattery.FXMLCellPageController;
-import eaics.UI.FXMLDeprecated.FXMLBatteryCellPageController;
-import eaics.UI.FXMLDeprecated.FXMLBatteryGraphController;
 import eaics.Settings.SettingsEVMS;
 import eaics.CAN.Battery.BMS.BMS12v3;
 import eaics.CAN.CANFilter;
@@ -49,20 +47,10 @@ public class FXMLBatteryPageController implements Initializable
     
     private int timeToRefresh = 5000;
     
-    private static final int numberOfCellPages = 3;
-    
     // The page variables
-    FXMLBatteryCellPageController[] cellPage = new FXMLBatteryCellPageController[numberOfCellPages];
-    private FXMLBatteryGraphController batteryGraphController;
     private FXMLCellPageController cellController;
     private FXMLChargingController chargingController; // Used to create the Charging Page scene
-    
-    @FXML
-    Button buttonCellPage1;
-    @FXML
-    Button buttonCellPage2;
-    @FXML
-    Button buttonCellPage3;
+
     @FXML
     Button buttonBatterySummary;
     @FXML
@@ -110,11 +98,6 @@ public class FXMLBatteryPageController implements Initializable
     {
         this.filter = CANFilter.getInstance();
         this.loadCell = cell;
-	for(int ii = 0; ii < numberOfCellPages; ii++)
-	{
-	    this.cellPage[ii] = new FXMLBatteryCellPageController();
-	}
-        
         updateScreen();
         
         Timeline refreshUI;
@@ -242,7 +225,7 @@ public class FXMLBatteryPageController implements Initializable
             Stage stage = new Stage();
  
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonCellPage1.getScene().getWindow());
+            stage.initOwner(closeButton.getScene().getWindow());
 
             Scene scene = new Scene(pane);
   
@@ -256,62 +239,6 @@ public class FXMLBatteryPageController implements Initializable
             System.out.println("Failed to open Battery Window");
 	    e.printStackTrace();
         }
-    }
-    
-    private void openCellPage(int pageNumber){
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDeprecated/FXMLBatteryCellPage.fxml"));
-        
-        try {
-            Pane pane = loader.load();
-	    
-            cellPage[pageNumber] = loader.getController();
-	    cellPage[pageNumber].initData(pageNumber);
-        
-            Stage stage = new Stage();
-        
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonCellPage1.getScene().getWindow());
-        
-            Scene scene = new Scene(pane);
-        
-            stage.setScene(scene);
-            stage.setTitle("Battery Cell Page " + (pageNumber + 1));
-            
-            stage.show();
-        }
-        catch (Exception e) 
-        {
-            System.out.println("Failed to open Battery Cell Page " + (pageNumber + 1));
-        }	
-    }
-    
-    @FXML
-    private void handleBatterySummary(ActionEvent event) throws IOException
-    {
-	FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDepercated/FXMLBatteryGraph.fxml"));
-        
-        try 
-	{
-            Pane pane = loader.load();
-
-            batteryGraphController = loader.getController();
-            batteryGraphController.initData();
-        
-            Stage stage = new Stage();
-        
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(buttonBatterySummary.getScene().getWindow());
-        
-            Scene scene = new Scene(pane);
-        
-            stage.setScene(scene);
-            stage.setTitle("Battery Summary");
-            stage.show();
-        }
-        catch (Exception e) 
-        {
-            System.out.println("Failed to open Battery Summary Window");
-        }	
     }
     
     @FXML

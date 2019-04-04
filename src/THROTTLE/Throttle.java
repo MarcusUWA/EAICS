@@ -21,11 +21,15 @@ public abstract class Throttle {
     private ScheduledExecutorService executor;
     private boolean isSendingThrottleCommands;
     
+    int busNum;
+    int escAddress;
+    
     public boolean isUsingManualThrottle;
     CANFilter filter;
     
     public Throttle(CANFilter filter) {
         this.filter = filter;
+        this.escAddress = 0x14A10000;
         throttleSetting = 0;
         startSendThrottleCommands();
         this.isSendingThrottleCommands = false;
@@ -61,13 +65,13 @@ public abstract class Throttle {
                 int upperByte = throttleSetting >> 8; //e.printStackTrace();
                 int lowerByte = throttleSetting & 0xFF;
                 if(isSendingThrottleCommands) {
-                   // System.out.println("Outputting throttle: "+throttleSetting);
+                    //System.out.println("Outputting throttle on CAN"+ SettingsEAICS.getInstance().getCanSettings().getThrottleCAN()+" : "+throttleSetting);
 
                     if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
-                        filter.getCANHandler(1).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
+                        filter.getCANHandler(busNum).writeMessage(escAddress, new int[]{lowerByte, upperByte});
                     }
                     else {
-                        filter.getCANHandler(0).writeMessage(0x14A10000, new int[]{lowerByte, upperByte});
+                        filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getThrottleCAN()).writeMessage(escAddress, new int[]{lowerByte, upperByte});
                     }
                 }
             }

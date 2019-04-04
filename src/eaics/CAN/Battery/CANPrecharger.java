@@ -6,14 +6,12 @@
 package eaics.CAN.Battery;
 
 import eaics.CAN.CANFilter;
-import eaics.CAN.MGL.MGLDisplay;
 import eaics.CAN.MiscCAN.CANMessage;
+import eaics.Settings.SettingsEAICS;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +19,7 @@ import java.util.logging.Logger;
  */
 public class CANPrecharger {
     
+    final int canAddress = 0x30;
     CANFilter filter;
     int[] error;
     int[] status;
@@ -34,7 +33,7 @@ public class CANPrecharger {
         this.error = new int[64];
         this.status = new int[64];
         
-       // sendMessages();
+        sendMessages();
     }
     
     public void setAll(CANMessage message){
@@ -53,21 +52,23 @@ public class CANPrecharger {
         displayExecutor = null;
         Runnable Id = new Runnable() { 
 
+            
             int count = 0;
 
             @Override
             public void run() {
+               
                 if(setState) {
-                    filter.getCANHandler(0).writeMessage(0x30, new int[]{0, 1, 0, 0, 0, 0, 0, 0 });
+                    filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getPrechargeCAN()).writeMessage(canAddress, new int[]{0, 1, 0, 0, 0, 0, 0, 0});
                 }
                 else {
-                    filter.getCANHandler(0).writeMessage(0x30, new int[]{0, 0, 0, 0, 0, 0, 0, 0});
+                    filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getPrechargeCAN()).writeMessage(canAddress, new int[]{0, 0, 0, 0, 0, 0, 0, 0});
                 }
 
             }
         };
         displayExecutor = Executors.newScheduledThreadPool(1);
-        displayExecutor.scheduleAtFixedRate(Id, 0, 50, TimeUnit.MILLISECONDS);
+        displayExecutor.scheduleAtFixedRate(Id, 0, 200, TimeUnit.MILLISECONDS);
     }
     
     public int getError(int num) {

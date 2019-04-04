@@ -220,6 +220,11 @@ public class FXMLCellPageController implements Initializable {
             B3C4.setText(String.format("%.2f", filter.getBMS()[1+currentModule*2].getVoltage(10)/1000.0)+" V");
             B3C5.setText(String.format("%.2f", filter.getBMS()[1+currentModule*2].getVoltage(11)/1000.0)+" V");
             
+            T0.setText(Integer.toString(filter.getBMS()[0+currentModule].getTemp(0)));
+            T1.setText(Integer.toString(filter.getBMS()[0+currentModule].getTemp(1)));
+            T2.setText(Integer.toString(filter.getBMS()[1+currentModule].getTemp(0)));
+            T3.setText(Integer.toString(filter.getBMS()[1+currentModule].getTemp(1)));
+            
             float max = 0, min = 10000, ave = 0, sum = 0;
             for(int i = 0; i< 12; i++) {
                 for(int j = 0; j<2; j++) {

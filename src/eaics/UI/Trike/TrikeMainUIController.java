@@ -321,7 +321,7 @@ public class TrikeMainUIController extends MainUIController
                 
                 FileInputStream input = null;
                 Image image;
-                
+               
                 if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.WAVEFLYER) {
                     if(filter.getCANHandler(0).isCanActive()) {
                         try {
@@ -575,14 +575,24 @@ public class TrikeMainUIController extends MainUIController
                     voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
                 }
                 else {
-                    voltageLabel.setText(Integer.toString((int)esc[0].getBatteryVoltage()));
+                    //voltageLabel.setText(Integer.toString((int)esc[0].getBatteryVoltage()));
+                    int voltageSum = 0;
+                    //temp adding sum of voltge here...
+                    for(int i = 0; i<SettingsEAICS.getInstance().getGeneralSettings().getNumBatteryModules()*2; i++) {
+                        for(int j = 0; j<12; j++) {
+                            voltageSum+=CANFilter.getInstance().getBMS()[i].getVoltage(j);
+                        }
+                    }
+                    
+                    //voltageLabel.setText("" + String.format("%.1f", (float)voltageSum/1000.0));
+                    voltageLabel.setText(Integer.toString(voltageSum/1000));
                 }
                 
                 if(!escData) {
                     currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
                 }
                 else {
-                    currentLabel.setText(Integer.toString((int)esc[0].getBatteryCurrent()));
+                    currentLabel.setText(Double.toString((int)esc[0].getBatteryCurrent()));
                 }
 		
 		//+------------------------------------------------------------+

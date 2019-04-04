@@ -13,6 +13,7 @@ import eaics.CAN.ESC.ESC;
 import eaics.LOGGING.Logging;
 import eaics.SER.Serial;
 import eaics.Settings.SettingsEAICS;
+import eaics.Settings.TYPEVehicle;
 import eaics.UI.MainUIController;
 import static eaics.UI.MainUIController.refreshFrequency;
 import eaics.UI.Trifan.TrifanMainUIController;
@@ -47,8 +48,6 @@ import javafx.util.Duration;
 public class FXMLWaveFlyerMainUIController extends MainUIController {
 
     private Logging logging;
-    
-    boolean escData = true;
     
     @FXML
     Button buttonSettings;
@@ -108,6 +107,7 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
         CANFilter filter = CANFilter.getInstance();
         if(precharge.isSelected()) {
             precharge.setText("Precharge Off");
+            System.out.println("Settings precharge....");
             filter.getPreCharge().setState(0, true);
         }
         else {
@@ -203,6 +203,63 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
                 
                 FileInputStream input = null;
                 Image image;
+                
+                if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()==TYPEVehicle.WAVEFLYER) {
+                    if(filter.getCANHandler(0).isCanActive()) {
+                        
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1_Single.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                else {
+                    if(filter.getCANHandler(0).isCanActive()&&filter.getCANHandler(1).isCanActive()) {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/CAN-conn.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else if(filter.getCANHandler(0).isCanActive()&&(!filter.getCANHandler(1).isCanActive())){
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan2.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else if(!filter.getCANHandler(0).isCanActive()&&filter.getCANHandler(1).isCanActive()){
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    else {
+                        try {
+                            input = new FileInputStream("/home/pi/EAICS/images/noCan1and2.png");
+                        } 
+                        catch (FileNotFoundException ex)  {
+                            Logger.getLogger(TrifanMainUIController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                
+                image = new Image(input);
+                can_icon.setImage(image);
                 
                 //EVMS Status Icons
 		if(evmsV3.getStatus() != status) 
@@ -397,28 +454,13 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
                     timeLabel.setText("" + String.format("%.2f", time));
                 }
 		
-                if(!escData) {
-                    voltageLabel.setText(Integer.toString((int)evmsV3.getVoltage()));
-                }
-                else {
-                    voltageLabel.setText(Integer.toString((int)esc[0].getBatteryVoltage()));
-                }
-                
-                if(!escData) {
-                    currentLabel.setText(Integer.toString(currentSensor.getCurrent()/1000));
-                }
-                else {
-                    currentLabel.setText(Integer.toString((int)esc[0].getBatteryCurrent()));
-                }
+        
+                voltageLabel.setText(String.format("%.1f", evmsV3.getVoltage()));
+
+                currentLabel.setText(String.format("%.1f", currentSensor.getCurrent()/1000.0));
 		
-                if(!escData) {
-                    double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
-                    powerLabel.setText("" + String.format("%.2f", kwPower));
-                }
-                else {
-                    double kwPowerLeftMotor = esc[0].getBatteryVoltage() * esc[0].getBatteryCurrent() / 1000;
-                    powerLabel.setText("" + String.format("%.2f", kwPowerLeftMotor));
-                }
+                double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
+                powerLabel.setText("" + String.format("%.2f", kwPower));
                 
                 capacityLabel.setText("" + evmsV3.getAmpHours());
                 

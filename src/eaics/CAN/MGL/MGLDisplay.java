@@ -52,14 +52,14 @@ public class MGLDisplay {
         this.filter = filter;
         
         if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.WAVEFLYER) {
-            this.handler = filter.getCANHandler(1);
+            this.handler = filter.getCANHandler(SettingsEAICS.getInstance().getCanSettings().getDisplayCAN());
         }
         else {
             handler = filter.getCANHandler(0);
         }
-        
-        
-        runDisplay();
+        if(SettingsEAICS.getInstance().getGeneralSettings().getVeh()!=TYPEVehicle.TRIFAN) {
+            runDisplay();
+        }
     }
     
     

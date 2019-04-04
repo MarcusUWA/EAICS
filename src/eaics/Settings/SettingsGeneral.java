@@ -25,9 +25,9 @@ public class SettingsGeneral implements Settings {
     TYPEVehicle veh;
     
     public SettingsGeneral(){
-        bmsFaker = true;
+        bmsFaker = false;
         
-        this.numBatteryModules = 4; //default for one box 96s, one module = 24 BMS
+        this.numBatteryModules = 1; //default for one box 96s, one module = 24 BMS
         
         this.numEsc = 1;
         
