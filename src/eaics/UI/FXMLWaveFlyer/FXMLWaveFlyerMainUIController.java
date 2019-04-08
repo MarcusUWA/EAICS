@@ -60,6 +60,8 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
     @FXML
     private Label powerLabel;
     @FXML
+    private Label speedLabel;
+    @FXML
     private Label voltageLabel;
     @FXML
     private Label currentLabel;
@@ -183,6 +185,7 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
         this.serial = Serial.getInstance();
         this.loadCell = serial.getCell();
         this.throttle = serial.getThrottle();
+        this.gps = serial.getGPS();
         
 	int maxProgress = 10000;
 	int maxTime = 2*60; //2 hours
@@ -461,6 +464,8 @@ public class FXMLWaveFlyerMainUIController extends MainUIController {
 		
                 double kwPower = (evmsV3.getVoltage() * (currentSensor.getCurrent() / 1000)) / 1000;
                 powerLabel.setText("" + String.format("%.2f", kwPower));
+               
+                speedLabel.setText("" + String.format("%.1f", gps.getSpeed()));
                 
                 capacityLabel.setText("" + evmsV3.getAmpHours());
                 

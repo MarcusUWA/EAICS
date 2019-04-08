@@ -32,6 +32,7 @@ public class Serial {
     private SERThrottle throttle = null;
     private Temp temp;
     private AirPressure airPress;
+    private SERGps gps = null;
     
     private SerialPort[] commPorts = null;
 
@@ -46,6 +47,8 @@ public class Serial {
         if(SettingsEAICS.getInstance().getGeneralSettings().getThr()==TYPEThrottle.SER) {
             this.throttle = new SERThrottle(CANFilter.getInstance());
         }
+        
+        this.gps = new SERGps();
         
         this.temp = new Temp(6);
         
@@ -122,6 +125,7 @@ public class Serial {
                         }
                         temp.setMsg(buffer.toString());
                         airPress.setMsg(buffer.toString());
+                        gps.setMsg(buffer.toString());
                         buffer.setLength(0);
                     } 
                 }
@@ -165,4 +169,7 @@ public class Serial {
         return airPress;
     }
     
+    public SERGps getGPS() {
+        return gps;
+    }
 }

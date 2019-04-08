@@ -12,6 +12,7 @@ import eaics.CAN.CANFilter;
 import eaics.LOGGING.Logging;
 import eaics.SER.LoadCell;
 import eaics.SER.Serial;
+import eaics.SER.SERGps;
 import eaics.Settings.IPAddress;
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +34,7 @@ public abstract class MainUIController implements Initializable
     protected LoadCell loadCell;
     protected Serial serial;
     protected Throttle throttle;
+    protected SERGps gps;
     
     protected FXMLBatteryPageController batteryPageController;
     public FXMLSettingsController settingsPageController;
